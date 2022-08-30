@@ -22,7 +22,7 @@ jobs:
           pip install flake8 black
 
       - name: Lint with flake8
-        run: flake8
+        run: flake8 --max-line-length=119
 
       - name: Check code format with black
         run: black --check --line-length 119 .

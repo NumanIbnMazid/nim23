@@ -6,6 +6,7 @@ jobs:
   flake8_black:
     name: Run flake 8 and black
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v2

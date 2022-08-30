@@ -14,9 +14,9 @@ media/
 /public/media/
 
 # Django Migrations #
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+# **/migrations/**
+# !**/migrations
+# !**/migrations/__init__.py
 
 # Flask stuff:
 instance/

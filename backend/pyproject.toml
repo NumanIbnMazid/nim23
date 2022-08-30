@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "numanibnmazid.com"
+version = "0.1.0"
+description = "Portfolio web application of Numan Ibn Mazid"
+authors = ["Numan Ibn Mazid <numanibnmazid@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "3.9.12"
+Django = "^4.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

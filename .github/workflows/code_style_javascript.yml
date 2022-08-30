@@ -29,6 +29,7 @@ jobs:
           fi
 
       - name: Run linters
+        run: yarn run eslint . --ext .ts,.tsx,.js,.jsx --fix
         uses: wearerequired/lint-action@v2
         with:
           eslint: true

@@ -14,7 +14,6 @@ services:
       - db
     env_file: .env
     build: ./backend
-    # command: /entrypoint
     volumes:
       - ./backend:/app
     ports:
@@ -26,7 +25,6 @@ services:
     depends_on:
       - backend
     build: ./frontend
-    # command: /entrypoint
     volumes:
       - ./frontend/src:/app/src
     ports:

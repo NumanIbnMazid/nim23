@@ -20,15 +20,9 @@ jobs:
       - name: Install Node.js dependencies
         working-directory: ./frontend
         run: |
-          if [ -e yarn.lock ]; then
-          yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
+          yarn install
 
       - name: Run linters
         working-directory: ./frontend
         run: |
-          yarn run eslint . --ext .ts,.tsx,.js,.jsx --fix
+          eslint . --ext .js,.jsx,.ts,.tsx

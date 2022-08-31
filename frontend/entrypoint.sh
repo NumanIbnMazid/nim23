@@ -1,5 +1,5 @@
 #!/bin/sh
 
-yarn start
+yarn run start
 
 exec "$@"

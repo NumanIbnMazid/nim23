@@ -1,5 +1,10 @@
 module.exports = {
   root: true,
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true
+  },
   parserOptions: {
     sourceType: 'module',
     parser: 'esprima',

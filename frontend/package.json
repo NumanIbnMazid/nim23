@@ -13,6 +13,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-standard": "^5.0.0",
     "esprima": "^4.0.1",
     "prettier": "^2.7.1",
     "vue": "^3.2.13"
@@ -23,10 +24,10 @@
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-standard": "^6.1.0",
     "eslint": "^8.2.0",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-promise": "^6.0.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-vue": "^8.0.3"

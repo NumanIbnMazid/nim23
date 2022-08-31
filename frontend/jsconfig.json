@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
+		"jsx": "preserve",
     "baseUrl": "./",
     "moduleResolution": "node",
     "paths": {

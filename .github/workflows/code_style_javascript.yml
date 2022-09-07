@@ -1,0 +1,28 @@
+name: Code Style (JavaScript)
+
+on: [push, pull_request]
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.17.0
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        working-directory: ./frontend
+        run: |
+          yarn install
+
+      - name: Run linters
+        working-directory: ./frontend
+        run: |
+          yarn run lint

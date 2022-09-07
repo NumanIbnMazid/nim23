@@ -14,9 +14,9 @@ media/
 /public/media/
 
 # Django Migrations #
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+# **/migrations/**
+# !**/migrations
+# !**/migrations/__init__.py
 
 # Flask stuff:
 instance/
@@ -135,68 +135,21 @@ cython_debug/
 /facerecognition.sqlite
 /facerecognition.sqlite
 
-# ************************************** React JS **************************************
+# ************************************** JavaScript/Vue JS **************************************
 
-# Logs
-logs
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# Typescript v1 declaration files
-typings/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-.DS_STORE
-scripts/flow/*/.flowconfig
-.flowconfig
-*~
-.grunt
-_SpecRunner.html
-__benchmarks__
-build/
-remote-repo/
-coverage/
-.module-cache
-fixtures/dom/public/react-dom.js
-fixtures/dom/public/react.js
-test/the-files-to-test.generated.js
-*.log*
-chrome-user-data
-
-packages/react-devtools-core/dist
-packages/react-devtools-extensions/chrome/build
-packages/react-devtools-extensions/chrome/*.crx
-packages/react-devtools-extensions/chrome/*.pem
-packages/react-devtools-extensions/firefox/build
-packages/react-devtools-extensions/firefox/*.xpi
-packages/react-devtools-extensions/firefox/*.pem
-packages/react-devtools-extensions/shared/build
-packages/react-devtools-extensions/.tempUserDataDir
-packages/react-devtools-inline/dist
-packages/react-devtools-shell/dist
-packages/react-devtools-timeline/dist
+pnpm-debug.log*
 
 # ************************************** Editor **************************************
 
@@ -205,6 +158,7 @@ packages/react-devtools-timeline/dist
 *.swo
 
 # PyCharm #
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
@@ -237,9 +191,23 @@ Control.system-ca-bundle
 GitHub.sublime-settings
 
 # Visual Studio Code #
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+
+# Others #
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ************************************** Others **************************************
+
+# Data
+/data
+/.adhoc

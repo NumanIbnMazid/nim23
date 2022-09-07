@@ -2,10 +2,13 @@ version: '3'
 
 services:
   db:
-    image: postgres
+    image: postgres:14.5-alpine
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    env_file: .env
+    environment:
+      - POSTGRES_USER=numanibnmazid
+      - POSTGRES_PASSWORD=numanibnmazid
+      - POSTGRES_DB=numanibnmazid_portfolio
     networks:
       - net-tier
 
@@ -13,6 +16,9 @@ services:
     depends_on:
       - db
     env_file: .env
+    environment:
+      WAIT_HOSTS: db:5432
+      DATABASE_HOST: db
     build: ./backend
     volumes:
       - ./backend:/app

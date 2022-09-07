@@ -9,6 +9,7 @@ license = "MIT"
 python = "3.9.12"
 Django = "^4.1"
 psycopg2-binary = "^2.9.3"
+pydantic = "^1.10.2"
 
 [tool.poetry.dev-dependencies]
 

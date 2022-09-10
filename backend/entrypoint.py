@@ -11,17 +11,27 @@ application = reload(wsgi)
 try:
     from django.contrib.auth import get_user_model
 
+    SUPERUSER_USERNAME = os.environ.get(
+		'DJANGO_SUPERUSER_USERNAME', 'admin'
+	)
+    SUPERUSER_EMAIL = os.environ.get(
+        'DJANGO_SUPERUSER_EMAIL', 'admin@example.com'
+	)
+    SUPERUSER_PASSWORD = os.environ.get(
+        'DJANGO_SUPERUSER_PASSWORD', 'admin'
+	)
+
     if not get_user_model().objects.filter(
-        username=os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
+        username=SUPERUSER_USERNAME
     ).exists():
         print("Creating django superuser ...")
         get_user_model().objects.create_superuser(
-            username=os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin'),
-			email=os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com'),
-            password=os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin')
+            username=SUPERUSER_USERNAME,
+            email=SUPERUSER_EMAIL,
+            password=SUPERUSER_PASSWORD
         )
         print('Django superuser created successfully...')
     else:
-        print(f"Django Super Admin ({os.environ.get('DJANGO_SU_EMAIL')}) already exists!")
+        print(f"Django superuser ({SUPERUSER_USERNAME}) already exists!")
 except IntegrityError:
     pass

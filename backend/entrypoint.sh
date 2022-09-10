@@ -9,6 +9,10 @@ done
 echo "PostgreSQL started"
 
 python manage.py migrate --noinput || exit 1
+
+# run entrypoint.py to create superuser and for other required staffs
+python entrypoint.py
+
 python manage.py collectstatic --no-input
 python manage.py runserver 0.0.0.0:8000
 

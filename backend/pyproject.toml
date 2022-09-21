@@ -12,6 +12,7 @@ psycopg2-binary = "^2.9.3"
 pydantic = "^1.10.2"
 argon2-cffi = "^21.3.0"
 autopep8 = "^1.7.0"
+python-dotenv = "^0.21.0"
 
 [tool.poetry.dev-dependencies]
 

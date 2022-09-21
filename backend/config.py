@@ -1,11 +1,15 @@
 from typing import Any
 from pydantic import BaseSettings, Field
+from pathlib import Path
 
 
 class BaseConfig(BaseSettings):
 	MODE: str = Field(..., regex="(DEVELOPMENT|STAGING|PRODUCTION)")
 	LOG_LEVEL: str = Field("DEBUG", regex="(DEBUG|INFO|WARNING|ERROR|CRITICAL)")
 	SECRET_KEY: str = Field(..., env="SECRET_KEY")
+
+	class Config:
+		env_file = f"{Path(__file__).resolve().parent.parent}/.env"
 
 
 class DatabaseConfig(BaseConfig):

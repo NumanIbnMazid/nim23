@@ -1,6 +1,6 @@
 #!/bin/sh
 
 yarn run lint
-yarn run start --host
+yarn run start
 
 exec "$@"

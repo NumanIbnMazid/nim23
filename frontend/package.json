@@ -1,24 +1,28 @@
 {
-  "name": "numanibnmazid-portfolio-frontend",
+  "name": "numan_ibn_mazid-portfolio-frontend",
   "version": "0.1.0",
-  "description": "Portfolio Web Application of Numan Ibn Mazid",
+  "description": "Numan Ibn Mazid's Portfolio Web Application",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint --no-fix --max-warnings 0"
+		"lint": "eslint --no-fix --max-warnings 0"
   },
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^10.4.12",
-    "eslint": "^8.24.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.5.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "autoprefixer": "^10.4.8",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-solid": "^0.7.3",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8",
+    "typescript": "*",
     "vite": "^3.0.9",
     "vite-plugin-solid": "^2.3.0"
   },

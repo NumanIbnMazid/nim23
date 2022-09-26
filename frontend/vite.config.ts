@@ -6,9 +6,9 @@ export default defineConfig({
   server: {
     port: 3000,
     // TODO: Remove `host: true` from production
-    // host: true
+    host: true
   },
   build: {
-    target: 'esnext'
+    target: 'esnext',
   },
 });

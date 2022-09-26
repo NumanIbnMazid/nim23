@@ -1,38 +1,30 @@
 module.exports = {
-  root: true,
-  "env": {
-    "browser": true,
-    "amd": true,
-    "node": true
+  env: {
+    browser: true,
+    es2021: true,
   },
-  parserOptions: {
-    sourceType: 'module',
-    parser: 'esprima',
-  },
-  // standard eslint
   extends: [
+    "airbnb-base",
     "eslint:recommended",
-    "prettier",
-    "plugin:vue/recommended"
+    "plugin:solid/recommended",
+    "prettier"
   ],
-  // required to lint *.vue files
   plugins: [
-    "prettier",
-    "vue"
+    "solid",
+    "prettier"
   ],
-  // check if imports actually resolve
-  'settings': {
-    'import/resolver': {
-      'webpack': {
-        'config': 'build/webpack.base.conf.js'
-      },
-      node: {
-        extensions: ['.js', '.jsx', '.vue']
-      }
-    }
+  overrides: [
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
-  // custom rules here
-  'rules': {
+  rules: {
+    // Solid Rules
+    "solid/reactivity": "warn",
+    "solid/no-destructure": "warn",
+    "solid/jsx-no-undef": "error",
+    // Custom Eslint Rules
     "prettier/prettier": "off",
     "spaced-comment": "off",
     "no-console": "warn",
@@ -48,5 +40,5 @@ module.exports = {
     "no-unused-vars": ["error"],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-  }
-}
+  },
+};

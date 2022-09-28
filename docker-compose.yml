@@ -35,7 +35,7 @@ services:
     volumes:
       - ./frontend/src:/app/src
     ports:
-      - "8080:8080"
+      - "3000:3000"
     stdin_open: true
     tty: true
     environment:

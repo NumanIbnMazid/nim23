@@ -2,6 +2,8 @@
 
 - [*] Configure standard django settings
 - [ ] Design Vue Portfolio Template
+- [*] Configure Tailwind CSS
+- [ ] Fix hamburger menu
 
 ## Bug Fix
 

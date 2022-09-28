@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-		"lint": "eslint --no-fix --max-warnings 0"
+    "lint": "eslint --no-fix --max-warnings 0"
   },
   "license": "MIT",
   "devDependencies": {
@@ -27,6 +27,8 @@
     "vite-plugin-solid": "^2.3.0"
   },
   "dependencies": {
+    "@solidjs/router": "^0.4.3",
+    "solid-icons": "^1.0.1",
     "solid-js": "^1.5.1"
   }
 }

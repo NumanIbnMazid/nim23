@@ -3,7 +3,7 @@
 # ----------------------------------------------------
 from pathlib import Path
 import os
-from config import config
+from conf import config
 
 # ----------------------------------------------------
 # *** Project's BASE DIRECTORY ***
@@ -31,68 +31,68 @@ ALLOWED_HOSTS = ["*"]
 THIRD_PARTY_APPS = []
 LOCAL_APPS = []
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+					"django.contrib.admin",
+					"django.contrib.auth",
+					"django.contrib.contenttypes",
+					"django.contrib.sessions",
+					"django.contrib.messages",
+					"django.contrib.staticfiles",
 ] + THIRD_PARTY_APPS + LOCAL_APPS
 
 # ----------------------------------------------------
 # *** Middleware Definition ***
 # ----------------------------------------------------
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"django.middleware.security.SecurityMiddleware",
+	"django.contrib.sessions.middleware.SessionMiddleware",
+	"django.middleware.common.CommonMiddleware",
+	"django.middleware.csrf.CsrfViewMiddleware",
+	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"django.contrib.messages.middleware.MessageMiddleware",
+	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 # ----------------------------------------------------
 # *** Root URL Config ***
 # ----------------------------------------------------
-ROOT_URLCONF = "project.urls"
+ROOT_URLCONF = "config.urls"
 
 # ----------------------------------------------------
 # *** Templates Definition ***
 # ----------------------------------------------------
 TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
+	{
+		"BACKEND": "django.template.backends.django.DjangoTemplates",
+		"DIRS": [],
+		"APP_DIRS": True,
+		"OPTIONS": {
+			"context_processors": [
+				"django.template.context_processors.debug",
+				"django.template.context_processors.request",
+				"django.contrib.auth.context_processors.auth",
+				"django.contrib.messages.context_processors.messages",
+			],
+		},
+	},
 ]
 
 # ----------------------------------------------------
 # *** WSGI Application ***
 # ----------------------------------------------------
-WSGI_APPLICATION = "project.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # ----------------------------------------------------
 # *** Database Configuration ***
 # ----------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config.DATABASE.NAME,
-        'USER': config.DATABASE.USER,
-        'PASSWORD': config.DATABASE.PASSWORD,
-        'HOST': config.DATABASE.HOST,
-        'PORT': config.DATABASE.PORT
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': config.DATABASE.NAME,
+		'USER': config.DATABASE.USER,
+		'PASSWORD': config.DATABASE.PASSWORD,
+		'HOST': config.DATABASE.HOST,
+		'PORT': config.DATABASE.PORT
+	}
 }
 
 # ----------------------------------------------------
@@ -100,26 +100,26 @@ DATABASES = {
 # ----------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
 PASSWORD_HASHERS = [
-    # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+	# https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
+	"django.contrib.auth.hashers.Argon2PasswordHasher",
+	"django.contrib.auth.hashers.PBKDF2PasswordHasher",
+	"django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+	"django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+	{
+		"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+	},
+	{
+		"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+	},
 ]
 
 # ----------------------------------------------------
@@ -142,45 +142,44 @@ MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media/')
 STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static/')
 # Static Files Directories
 STATICFILES_DIRS = [
-    os.path.join(PUBLIC_ROOT, 'staticfiles'),
+	os.path.join(PUBLIC_ROOT, 'staticfiles'),
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+	"django.contrib.staticfiles.finders.FileSystemFinder",
+	"django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 # ----------------------------------------------------
 # *** Logging ***
 # ----------------------------------------------------
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
-        }
-    },
-    "handlers": {
-        "console": {
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "class": "logging.StreamHandler",
-            "formatter": "verbose"
-        }
-    },
+	"version": 1,
+	"disable_existing_loggers": False,
+	"formatters": {
+		"verbose": {
+			"format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+		}
+	},
+	"handlers": {
+		"console": {
+			"level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+			"class": "logging.StreamHandler",
+			"formatter": "verbose"
+		}
+	},
 	"loggers": {
-        "django": {
-            "handlers": [],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "propagate": True,
-        },
-    },
-    "root": {
-        "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-        "handlers": ["console"]
-    }
+		"django": {
+			"handlers": [],
+			"level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+			"propagate": True,
+		},
+	},
+	"root": {
+		"level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+		"handlers": ["console"]
+	}
 }
 
 # ----------------------------------------------------

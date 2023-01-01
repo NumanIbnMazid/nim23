@@ -21,19 +21,19 @@ class DatabaseConfig(BaseConfig):
 
 
 class ProjectConfig(BaseConfig):
-    DATABASE = DatabaseConfig()
+	DATABASE = DatabaseConfig()
 
 
 class ProjectDevelopmentConfig(ProjectConfig):
-    ...
+	...
 
 
 class ProjectStagingConfig(ProjectConfig):
-    ...
+	...
 
 
 class ProjectProductionConfig(ProjectConfig):
-    ...
+	...
 
 
 class ConfigFactory:

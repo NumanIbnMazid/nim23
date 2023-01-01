@@ -1,0 +1,12 @@
+<!-- index.html -->
+{% load unicorn %}
+<html>
+  <head>
+    {% unicorn_scripts %}
+  </head>
+  <body>
+    {% csrf_token %}
+    <h1>{% unicorn 'hello-world' name=hello.world.name %}</h1>
+    <h2>Welcome to Numan Ibn Mazid's Portfolio</h2>
+  </body>
+</html>

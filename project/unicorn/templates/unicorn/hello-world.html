@@ -1,0 +1,11 @@
+<div>
+  <form action="#">
+    <div class="flex flex-col lg:flex-row justify-center items-center mt-2 mb-6">
+      <div class="flex flex-col basis-full w-full lg:basis-1/2 mr-0 lg:mr-3 my-3 lg:my-0">
+        <input unicorn:model="name" type="text" class="form-input" required
+               placeholder="Enter Your Name">
+        <br>
+        <label for="name" class="form-label text-xl">Hello {{ name|title }} !</label>
+      </div>
+  </form>
+</div>

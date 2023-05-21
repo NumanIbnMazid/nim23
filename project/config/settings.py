@@ -28,21 +28,16 @@ ALLOWED_HOSTS = ["*"]
 # ----------------------------------------------------
 # *** Application Definition ***
 # ----------------------------------------------------
-THIRD_PARTY_APPS = [
-    # Django Unicorn
-    "django_unicorn",
-]
-LOCAL_APPS = [
-    "unicorn",
-]
+THIRD_PARTY_APPS = []
+LOCAL_APPS = []
 INSTALLED_APPS = [
-                     "django.contrib.admin",
-                     "django.contrib.auth",
-                     "django.contrib.contenttypes",
-                     "django.contrib.sessions",
-                     "django.contrib.messages",
-                     "django.contrib.staticfiles",
-                 ] + THIRD_PARTY_APPS + LOCAL_APPS
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+] + THIRD_PARTY_APPS + LOCAL_APPS
 
 # ----------------------------------------------------
 # *** Middleware Definition ***

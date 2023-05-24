@@ -144,19 +144,19 @@ yarn-error.log*
 pnpm-debug.log*
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # next.js
 .next/
-/out/
+out/
 
 # production
-/build
+build
 
 # private markdown
 meta.md
@@ -176,21 +176,21 @@ meta.md
 
 
 # rss
-/public/rss
-/public/feed.xml
+public/rss
+public/feed.xml
 public/sitemap.xml
 
 
 # pwa
-/public/sw.js
-/public/workbox-*.js
-/public/worker-*.js
-/public/sw.js.map
-/public/workbox-*.js.map
-/public/worker-*.js.map
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/sw.js.map
+public/workbox-*.js.map
+public/worker-*.js.map
 
 
-/store
+store
 
 tsconfig.tsbuildinfo
 

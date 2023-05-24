@@ -36,6 +36,7 @@ export default async function handler(
   });
 
   let totalVisitors = 0;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   response.rows?.forEach((row: any) => {
     totalVisitors += parseInt(row.metricValues[0].value);
   });

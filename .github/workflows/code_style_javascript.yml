@@ -27,9 +27,5 @@ jobs:
         working-directory: frontend
 
       - name: Lint with ESLint
-        run: yarn eslint . --quiet --max-warnings=0 --ignore-path ../.gitignore
-        working-directory: frontend
-
-      - name: Check for ESLint errors
-        run: yarn eslint . --quiet --max-warnings=0 --ignore-path ../.gitignore
+        run: yarn lint
         working-directory: frontend

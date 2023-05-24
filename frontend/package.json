@@ -46,6 +46,7 @@
     "@types/next-pwa": "^5.6.0",
     "@types/nprogress": "^0.2.0",
     "@types/rss": "^0.0.29",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
     "autoprefixer": "^10.4.13",
     "eslint": "8.14.0",
     "eslint-config-next": "^13.1.6",

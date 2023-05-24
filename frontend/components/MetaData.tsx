@@ -10,7 +10,7 @@ type Props = {
   suffix?: string;
 };
 
-const getFaviconPath = (isDarkMode: boolean = true): string => {
+const getFaviconPath = (isDarkMode = true): string => {
   return `/favicon-${isDarkMode ? "dark" : "light"}.ico`;
 };
 

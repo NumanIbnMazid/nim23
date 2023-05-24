@@ -16,7 +16,7 @@ export default function Form() {
   const sendButtonRef = useRef<HTMLButtonElement>(null!);
   const formRef = useRef<HTMLFormElement>(null!);
 
-  const FailToastId: string = "failed";
+  const FailToastId = "failed";
 
   function sendEmail(e: React.SyntheticEvent) {
     e.preventDefault();

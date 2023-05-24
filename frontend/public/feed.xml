@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Jatin Sharma]]></title>
+        <description><![CDATA[I've been writing online since 2021, mostly about web development
+            and tech careers. In total, I've written 81 articles
+            till now.]]></description>
+        <link>https://j471n.in</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Wed, 24 May 2023 15:37:33 GMT</lastBuildDate>
+        <atom:link href="https://j471n.in/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Wed, 24 May 2023 15:37:33 GMT</pubDate>
+        <copyright><![CDATA[All rights reserved 2023, Jatin Sharma]]></copyright>
+        <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - February 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/ce-feb-2023</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ce-feb-2023</guid>
+            <pubDate>Sat, 26 Feb 2028 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Operating System and it's concepts]]></title>
+            <description><![CDATA[In this article, I'll be explaining what is an operating system, its functions, types and services. What are kernel, shell and system calls? and what is CPU scheduling? This will be a short or brief introduction about each of the mentioned topics.]]></description>
+            <link>https://j471n.in/blogs/os-conepts</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/os-conepts</guid>
+            <pubDate>Sat, 11 Feb 2023 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[My VS Code setup]]></title>
+            <description><![CDATA[In this article, I'll be sharing my personal Visual Studio Code setup. This includes the theme and icons that I use, as well as a list of extensions that I find essential for my daily development work.]]></description>
+            <link>https://j471n.in/blogs/vs-code-setup</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/vs-code-setup</guid>
+            <pubDate>Wed, 01 Feb 2023 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - January 2023]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/ce-jan-2023</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ce-jan-2023</guid>
+            <pubDate>Sat, 28 Jan 2023 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use Google Analytics Data API]]></title>
+            <description><![CDATA[In this article, I am going to walk you through that how you Google Analytics Data API to fetch data from Google Analytics in the simplest way I can. After reading this article you'll be able to use this in your project with ease.]]></description>
+            <link>https://j471n.in/blogs/google-analytics-data-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/google-analytics-data-api</guid>
+            <pubDate>Tue, 27 Dec 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - December 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/ce-dec-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ce-dec-2022</guid>
+            <pubDate>Sun, 25 Dec 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Learn Typescript from Scratch]]></title>
+            <description><![CDATA[In this article, I'll give a brief introduction to Typescript. I'll cover most of the topics with examples as well. After reading this post, you can use typescript in your projects (using typescript in React or other frameworks is out of reach). Let's get down to business.]]></description>
+            <link>https://j471n.in/blogs/ts</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ts</guid>
+            <pubDate>Wed, 14 Dec 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Make Your Video Player Float Using PiP API]]></title>
+            <description><![CDATA[In this article, I am going to make your video player float by using Picture-in-Picture (PiP) JavaScript Web API. This could be an important feature you can add to your website. If your website is showing a demo or has many videos.]]></description>
+            <link>https://j471n.in/blogs/pip-web-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/pip-web-api</guid>
+            <pubDate>Tue, 13 Dec 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - November 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/ce-nov-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ce-nov-2022</guid>
+            <pubDate>Tue, 29 Nov 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to Access Local Sever on Other Devices]]></title>
+            <description><![CDATA[In this article, I am going to show you how you can access your local/localhost server on any other device (Android or iOS).]]></description>
+            <link>https://j471n.in/blogs/access-local-server</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/access-local-server</guid>
+            <pubDate>Sat, 26 Nov 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - October 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions of September that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-oct-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-oct-2022</guid>
+            <pubDate>Fri, 28 Oct 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How I Made My Portfolio with Next.js]]></title>
+            <description><![CDATA[In this article you will be looking at my portfolio built with Next.js. Blog and Styling is powered by MDX and TailwindCSS respectively.]]></description>
+            <link>https://j471n.in/blogs/portfolio-tutorial</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/portfolio-tutorial</guid>
+            <pubDate>Thu, 13 Oct 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - September 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions of September that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-sep-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-sep-2022</guid>
+            <pubDate>Fri, 30 Sep 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Icon: Google Photos]]></title>
+            <description><![CDATA[I will create the Google Photos icon in this article using HTML & CSS. Let's look at how we do that.]]></description>
+            <link>https://j471n.in/blogs/css-icon-google-photos</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-icon-google-photos</guid>
+            <pubDate>Sun, 18 Sep 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Detect When Users Switch Tabs using JavaScript]]></title>
+            <description><![CDATA[In this article, I'll show you how to find out when users change tabs in browsers using JavaScript. It's going to be fun, it's helpful to see how often the user loses his attention. You can even use it to add the data to the database.]]></description>
+            <link>https://j471n.in/blogs/detect-when-users-switch-tabs-using-javascript</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/detect-when-users-switch-tabs-using-javascript</guid>
+            <pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #15 - Overlap]]></title>
+            <description><![CDATA[In this article, I will solve a CSS Challenge called "Overlap" at cssbattle.dev]]></description>
+            <link>https://j471n.in/blogs/css-battle-15</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-15</guid>
+            <pubDate>Sun, 04 Sep 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - August 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions of August that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-aug-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-aug-2022</guid>
+            <pubDate>Wed, 31 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[I made all countries' flags using HTML & CSS]]></title>
+            <description><![CDATA[In this article, I have made all (195) countries' flags by just using HTML and CSS. At the end of the article. You will have a special Bonus (you have to reach the end of the article to see it).]]></description>
+            <link>https://j471n.in/blogs/countries-flags</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/countries-flags</guid>
+            <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #14 - Web Maker Logo]]></title>
+            <description><![CDATA[In this article, I will solve a Totally Triangle CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-14</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-14</guid>
+            <pubDate>Sun, 21 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Windows Commands Cheat Sheet]]></title>
+            <description><![CDATA[This is the Cheat Sheet of Windows Commands. It gives you all the commands and a short description of the command. I've also attached the documentation link for further reading.]]></description>
+            <link>https://j471n.in/blogs/windows-commands</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/windows-commands</guid>
+            <pubDate>Wed, 17 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Flag: India]]></title>
+            <description><![CDATA[On the occasion of Independence day of India, I am starting a new series called CSS Flag. This is the first post where I'll create an Indian Flag using CSS.]]></description>
+            <link>https://j471n.in/blogs/css-flag-india</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-flag-india</guid>
+            <pubDate>Mon, 15 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Icon: Google Pay]]></title>
+            <description><![CDATA[I will create the Google Pay icon in this article using CSS only. Let's look at how we do that.]]></description>
+            <link>https://j471n.in/blogs/css-icon-gpay</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-icon-gpay</guid>
+            <pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #13 - Totally Triangle]]></title>
+            <description><![CDATA[In this article, I will solve a Totally Triangle CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-13</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-13</guid>
+            <pubDate>Tue, 09 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #12 - Wiggly Moustache]]></title>
+            <description><![CDATA[In this article, I will solve a Wiggly Moustache CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-12</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-12</guid>
+            <pubDate>Thu, 04 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #11 - Eye of Sauron]]></title>
+            <description><![CDATA[In this article, I will solve a Eye of Sauron CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-11</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-11</guid>
+            <pubDate>Mon, 01 Aug 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - July 2022]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions of July that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-july-2022</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-july-2022</guid>
+            <pubDate>Sun, 31 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #10 - Cloaked Spirits]]></title>
+            <description><![CDATA[In this article, I will solve a `Cloaked Spirits` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-10</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-10</guid>
+            <pubDate>Wed, 27 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #9 - Tesseract]]></title>
+            <description><![CDATA[In this article, I will solve a `Tesseract` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-9</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-9</guid>
+            <pubDate>Sat, 23 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #8 - Forking Crazy]]></title>
+            <description><![CDATA[In this article, I will solve a `Forking Crazy` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-8</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-8</guid>
+            <pubDate>Thu, 21 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #7 - Leafy Trail]]></title>
+            <description><![CDATA[In this article, I will solve a `Leafy Trail` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-7</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-7</guid>
+            <pubDate>Wed, 20 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Icon: Android]]></title>
+            <description><![CDATA[In this article, I will create a Android icon by using CSS only. Let's look at how we do that.]]></description>
+            <link>https://j471n.in/blogs/css-icon-android</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-icon-android</guid>
+            <pubDate>Mon, 18 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #6 - Missing Slice]]></title>
+            <description><![CDATA[In this article, I have solved an Missing Slice CSS Challenge on CSS Battle. It contains two ways by which you can solve this challenge.]]></description>
+            <link>https://j471n.in/blogs/css-battle-6</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-6</guid>
+            <pubDate>Sun, 10 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[IP Address & Classes]]></title>
+            <description><![CDATA[In this article, I have solved an `Acid Rain` CSS Challenge on CSS Battle. It contains two ways by which you can solve this challenge.]]></description>
+            <link>https://j471n.in/blogs/ip-address-and-classes</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/ip-address-and-classes</guid>
+            <pubDate>Wed, 06 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #5 - Acid Rain]]></title>
+            <description><![CDATA[In this article, I have solved an `Acid Rain` CSS Challenge on CSS Battle. It contains two ways by which you can solve this challenge.]]></description>
+            <link>https://j471n.in/blogs/css-battle-5</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-5</guid>
+            <pubDate>Sun, 03 Jul 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - June]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions of June that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-june</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-june</guid>
+            <pubDate>Thu, 30 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #4 - Ups n Downs]]></title>
+            <description><![CDATA[In this article, I will solve a `Ups n Downs` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-4</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-4</guid>
+            <pubDate>Tue, 28 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #3 - Push Button]]></title>
+            <description><![CDATA[In this article, I will solve a `Push Button` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-3</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-3</guid>
+            <pubDate>Mon, 27 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Icon: Microsoft]]></title>
+            <description><![CDATA[In this article, I will create a Microsoft icon by using CSS only.]]></description>
+            <link>https://j471n.in/blogs/css-icon-microsoft</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-icon-microsoft</guid>
+            <pubDate>Sun, 26 Jun 2022 16:30:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #2 - Carrom]]></title>
+            <description><![CDATA[In this article, I will solve a `Carrom` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-2</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-2</guid>
+            <pubDate>Sun, 26 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Battle: #1 - Simply Square]]></title>
+            <description><![CDATA[In this article, I will solve a `Simply Square` CSS Challenge on CSS Battle.]]></description>
+            <link>https://j471n.in/blogs/css-battle-1</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-battle-1</guid>
+            <pubDate>Sat, 25 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Preview File before uploading in React]]></title>
+            <description><![CDATA[This article will explain how you can build a file previewer in React that works for images and videos. With this article's help, you can create your own and make support for other files.]]></description>
+            <link>https://j471n.in/blogs/preview-file-in-react</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/preview-file-in-react</guid>
+            <pubDate>Sat, 04 Jun 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Active Navbar with Next.js Routes]]></title>
+            <description><![CDATA[This is the walkthrough of how you can make an active navigation bar by using Next.js router and it'll highlight the current page user visiting in the navbar.]]></description>
+            <link>https://j471n.in/blogs/active-navbar-next-js</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/active-navbar-next-js</guid>
+            <pubDate>Thu, 26 May 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Truncate String with CSS]]></title>
+            <description><![CDATA[In this article, I am going to cover how you can create truncate strings or paragraphs by just using CSS.]]></description>
+            <link>https://j471n.in/blogs/truncate-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/truncate-css</guid>
+            <pubDate>Thu, 19 May 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to add RSS feed in Next.js Blog]]></title>
+            <description><![CDATA[In this article, I will explain how you can create an RSS feed for your Next.js application in XML and JSON format.]]></description>
+            <link>https://j471n.in/blogs/rss-feed-for-nextjs</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/rss-feed-for-nextjs</guid>
+            <pubDate>Mon, 16 May 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use Spotify API with Next.js]]></title>
+            <description><![CDATA[In this article, I am going to explain how you can use the Spotify API to fetch the data of your account using Next.js API routes.]]></description>
+            <link>https://j471n.in/blogs/spotify-api-nextjs</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/spotify-api-nextjs</guid>
+            <pubDate>Thu, 12 May 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Paths and Comments in Bash]]></title>
+            <description><![CDATA[In this article, I've discussed about the Absolute and Relative paths and how you can use them and also how you can write the Single and Multiline comments in the bash script.]]></description>
+            <link>https://j471n.in/blogs/paths-and-comments-in-bash</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/paths-and-comments-in-bash</guid>
+            <pubDate>Mon, 09 May 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Chrome Extensions of the Month - April]]></title>
+            <description><![CDATA[In this article, we are going to look at some of the best extensions that you need to install for better productivity. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/chrome-extensions-april</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/chrome-extensions-april</guid>
+            <pubDate>Tue, 26 Apr 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Create Bash Script & File Permissions]]></title>
+            <description><![CDATA[In this article, I have talked about how you can create a bash script and what are the permission for the files, and how you can manipulate those permissions.]]></description>
+            <link>https://j471n.in/blogs/create-bash-script-and-file-permissions</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/create-bash-script-and-file-permissions</guid>
+            <pubDate>Fri, 22 Apr 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Getting Started with Bash]]></title>
+            <description><![CDATA[In this article we are going to learn about what is bash and how we are going to install in windows?]]></description>
+            <link>https://j471n.in/blogs/getting-started-with-bash</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/getting-started-with-bash</guid>
+            <pubDate>Wed, 13 Apr 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Scroll to the top with JS]]></title>
+            <description><![CDATA[You may have seen various types of website in that there is a button that takes you to the top of the page. Have you ever wondered how it actually works? Well, it's not rocket science or something it's very easy to do and after reading this article I am sure your website will have that button too. So without further due, let's get into it.]]></description>
+            <link>https://j471n.in/blogs/scroll-to-the-top-with-js</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/scroll-to-the-top-with-js</guid>
+            <pubDate>Wed, 09 Mar 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Google Docs with Next.js]]></title>
+            <description><![CDATA[In this article, we are going to build a notification panel style with CSS and will toggle the button with JS. It's very simple to do.]]></description>
+            <link>https://j471n.in/blogs/next-google-docs</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/next-google-docs</guid>
+            <pubDate>Sun, 20 Feb 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[JavaScript Cheat Sheet that you should bookmark]]></title>
+            <description><![CDATA[This is the Cheat Sheet of JavaScript. It contains explanations, code examples, basic and important operators, functions, principles, methods, and many more. It provides a good overview of the language.]]></description>
+            <link>https://j471n.in/blogs/js-cheatsheet</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/js-cheatsheet</guid>
+            <pubDate>Tue, 01 Feb 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Notification Panel]]></title>
+            <description><![CDATA[In this article, we are going to build a notification panel style with CSS and will toggle the button with JS. It's very simple to do.]]></description>
+            <link>https://j471n.in/blogs/notification-panel</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/notification-panel</guid>
+            <pubDate>Sun, 23 Jan 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[6 ways to center a div]]></title>
+            <description><![CDATA[This article show how you can make Center a child div vertically and horizontally respect to it's parent. There are many ways to do it. These ways are the best to use.]]></description>
+            <link>https://j471n.in/blogs/6-ways-to-center-a-div</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/6-ways-to-center-a-div</guid>
+            <pubDate>Thu, 20 Jan 2022 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Image Slider with Vanila JS]]></title>
+            <description><![CDATA[In this article, we are going to make an Image Slider also known as carousel with a clean UI. It can slide the images with awesome animation and it will track the current image which you can see via dots on the bottom. First, Let's see what are we building.]]></description>
+            <link>https://j471n.in/blogs/image-slider-with-vanila-js</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/image-slider-with-vanila-js</guid>
+            <pubDate>Fri, 31 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Colorful Rain with JS]]></title>
+            <description><![CDATA[In this article, we are going to build a container that generates rain by using JS. And it is a colorful rain with random colors. You can play with colors however you want.]]></description>
+            <link>https://j471n.in/blogs/colorful-rain-with-js</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/colorful-rain-with-js</guid>
+            <pubDate>Wed, 15 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Why I ditched chrome for Edge?]]></title>
+            <description><![CDATA[I've been using google chrome for a long time I love the extensions and the look and feel of chrome but then I realized that all these extensions now work on the new Microsoft edge plus edge got a bunch of additional features. That I always wish chrome had let's take a look at why edge may be the better choice.]]></description>
+            <link>https://j471n.in/blogs/why-i-ditched-chrome-for-edge</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/why-i-ditched-chrome-for-edge</guid>
+            <pubDate>Sun, 12 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Creative Hover Menu with CSS]]></title>
+            <description><![CDATA[In this article, we are going to make the navigation menu, but it will be in the verticle form, I'll recommend you to use this as the full page menu.first-letter]]></description>
+            <link>https://j471n.in/blogs/creative-hover-menu-with-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/creative-hover-menu-with-css</guid>
+            <pubDate>Sat, 11 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Typing Effect with typed.js]]></title>
+            <description><![CDATA[This article show how you can make typing effect using Typed.js, In this you can pass array as argument and it will iterate over that and will show you the result in the typing form.]]></description>
+            <link>https://j471n.in/blogs/typing-effect-with-typedjs</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/typing-effect-with-typedjs</guid>
+            <pubDate>Thu, 09 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Countdown Loading with JS]]></title>
+            <description><![CDATA[In this article, we are building a countdown with the help of Javascript and CSS. It can also be used as the loading countdown.]]></description>
+            <link>https://j471n.in/blogs/countdown-loading-with-js</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/countdown-loading-with-js</guid>
+            <pubDate>Tue, 07 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use Battery Status API?]]></title>
+            <description><![CDATA[In this article, we are gonna build a Battery Informer which will display the battery status and the other information along with it such as the charging status, charging level and the discharging time.]]></description>
+            <link>https://j471n.in/blogs/battery-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/battery-api</guid>
+            <pubDate>Mon, 06 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Typing Effect by using CSS]]></title>
+            <description><![CDATA[As you may have already seen some website which has some kind of typing animation. It looks cool right but what if I tell you it is very easy to do and you can do it with just CSS only, not without using JS.]]></description>
+            <link>https://j471n.in/blogs/typing-effect-by-using-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/typing-effect-by-using-css</guid>
+            <pubDate>Fri, 03 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Clean Loading Animation]]></title>
+            <description><![CDATA[In this article, we are going to build another loading animation with pure CSS.]]></description>
+            <link>https://j471n.in/blogs/clean-loading-animation</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/clean-loading-animation</guid>
+            <pubDate>Thu, 02 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Curved Timeline in CSS]]></title>
+            <description><![CDATA[In this article, we are gonna build a curved timeline for your website which you can use later on in your portfolio to display your work history or maybe something else you want.]]></description>
+            <link>https://j471n.in/blogs/curved-timeline-in-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/curved-timeline-in-css</guid>
+            <pubDate>Sun, 28 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use Web Storage API?]]></title>
+            <description><![CDATA[In this article, we are going to look at the different types of web storage such as Local Storage, Session Storage, and Cookies to be more precise]]></description>
+            <link>https://j471n.in/blogs/web-storage-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/web-storage-api</guid>
+            <pubDate>Fri, 19 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Video as Text background using CSS]]></title>
+            <description><![CDATA[In this article, we will use any video as the background of the text. As you may have already know you cannot use directly video as the text background.]]></description>
+            <link>https://j471n.in/blogs/video-as-text-background-using-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/video-as-text-background-using-css</guid>
+            <pubDate>Sat, 13 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Timeline with CSS]]></title>
+            <description><![CDATA[In this article, we are gonna build a timeline for your website which you can use later on in your portfolio to display your work history or maybe something else you want.]]></description>
+            <link>https://j471n.in/blogs/timeline-with-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/timeline-with-css</guid>
+            <pubDate>Wed, 10 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Fully functional google search with next.js]]></title>
+            <description><![CDATA[In this article, we are gonna build a Battery Informer which will display the battery status and the other information along with it such as the charging status, charging level and the discharging time.]]></description>
+            <link>https://j471n.in/blogs/next-google</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/next-google</guid>
+            <pubDate>Thu, 04 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Glassmorphism Circle Loading Animation]]></title>
+            <description><![CDATA[In this article we are gonna build a loading spinner with the glassmorphism with transform rotations]]></description>
+            <link>https://j471n.in/blogs/glassmorphism-circle-loading-animation</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/glassmorphism-circle-loading-animation</guid>
+            <pubDate>Tue, 02 Nov 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Prevent Heroku Server from Sleeping for FREE]]></title>
+            <description><![CDATA[In this article, I am gonna tell you about how you can run the Heroku server free for a lifetime. So let's get into it.]]></description>
+            <link>https://j471n.in/blogs/prevent-heroku-server-from-sleeping-for-free</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/prevent-heroku-server-from-sleeping-for-free</guid>
+            <pubDate>Sun, 31 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to share anything from your website by Web Share API]]></title>
+            <description><![CDATA[In this article we are going to look at Web Share API. With the Web Share API, web apps are able to use the same system-provided share capabilities as platform-specific apps.]]></description>
+            <link>https://j471n.in/blogs/web-share-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/web-share-api</guid>
+            <pubDate>Fri, 29 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[5 very useful chrome/edge extensions for developers]]></title>
+            <description><![CDATA[In this article we are going to look at some useful chrome extension which can be very handy as a developer.]]></description>
+            <link>https://j471n.in/blogs/5-very-useful-chrome-edge-extensions-for-developers</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/5-very-useful-chrome-edge-extensions-for-developers</guid>
+            <pubDate>Thu, 28 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Glassmorphism Loading Animation]]></title>
+            <description><![CDATA[In this article we are gonna build a loading spinner with the glassmorphism UI.]]></description>
+            <link>https://j471n.in/blogs/glassmorphism-loading-animation</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/glassmorphism-loading-animation</guid>
+            <pubDate>Wed, 27 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Some Strange Concept of JavaScript]]></title>
+            <description><![CDATA[In this article, we are going to look at some weird and strange concepts of Javascript, Some of which you may know and some may not. So stay tuned till the end.]]></description>
+            <link>https://j471n.in/blogs/some-strange-concept-of-javascript</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/some-strange-concept-of-javascript</guid>
+            <pubDate>Mon, 25 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[10 CSS Resources that you should bookmark]]></title>
+            <description><![CDATA[In this article we are going to look at some awesome resource for you that can improve your productivity.]]></description>
+            <link>https://j471n.in/blogs/10-css-resources-that-you-should-bookmark</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/10-css-resources-that-you-should-bookmark</guid>
+            <pubDate>Sun, 24 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use ::before and ::after in Tailwind CSS]]></title>
+            <description><![CDATA[This article explains how you can use `::before` and `::after` selectors in Tailwind CSS]]></description>
+            <link>https://j471n.in/blogs/before-and-after-in-tailwind-css</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/before-and-after-in-tailwind-css</guid>
+            <pubDate>Fri, 22 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[CSS Gradient Loading Animation]]></title>
+            <description><![CDATA[In this article we are gonna build a loading spinner for you website. which is in the gradient form you can customize that as you want.]]></description>
+            <link>https://j471n.in/blogs/css-gradient-loading-animation</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/css-gradient-loading-animation</guid>
+            <pubDate>Fri, 22 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Some Javascript Methods you should know]]></title>
+            <description><![CDATA[This article exlains some javascript methods that you should know, such as concat, split, join etc.]]></description>
+            <link>https://j471n.in/blogs/some-javascript-methods-you-should-know</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/some-javascript-methods-you-should-know</guid>
+            <pubDate>Thu, 21 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[10 Git Commands everybody should know]]></title>
+            <description><![CDATA[In this article there are 10 git commands which will help you in your projects]]></description>
+            <link>https://j471n.in/blogs/10-git-commands-everybody-should-know</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/10-git-commands-everybody-should-know</guid>
+            <pubDate>Wed, 20 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Convert Next.js app to PWA]]></title>
+            <description><![CDATA[In this article it is explained that how you can turn your next.js web app to Progressive Web App.]]></description>
+            <link>https://j471n.in/blogs/convert-nextjs-app-to-pwa</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/convert-nextjs-app-to-pwa</guid>
+            <pubDate>Tue, 19 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use the dev.to API?]]></title>
+            <description><![CDATA[This article is the breif documentation about how you can fetch the data from the dev.to API]]></description>
+            <link>https://j471n.in/blogs/dev-to-api</link>
+            <guid isPermaLink="true">https://j471n.in/blogs/dev-to-api</guid>
+            <pubDate>Tue, 19 Oct 2021 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

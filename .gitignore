@@ -176,18 +176,18 @@ meta.md
 
 
 # rss
-public/rss
-public/feed.xml
-public/sitemap.xml
+frontend/public/rss
+frontend/public/feed.xml
+frontend/public/sitemap.xml
 
 
 # pwa
-public/sw.js
-public/workbox-*.js
-public/worker-*.js
-public/sw.js.map
-public/workbox-*.js.map
-public/worker-*.js.map
+frontend/public/sw.js
+frontend/public/workbox-*.js
+frontend/public/worker-*.js
+frontend/public/sw.js.map
+frontend/public/workbox-*.js.map
+frontend/public/worker-*.js.map
 
 
 store

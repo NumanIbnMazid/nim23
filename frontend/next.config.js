@@ -24,9 +24,13 @@ module.exports = withPWA({
       "i.scdn.co", // images from spotify
       "images.unsplash.com",
       "m.media-amazon.com", // for imdb images
+      "encrypted-tbn0.gstatic.com", // TEMP
     ],
   },
   typescript: {
     ignoreBuildErrors: false,
   },
+  env:{
+    BACKEND_API_BASE_URL : process.env.BACKEND_API_BASE_URL
+  }
 });

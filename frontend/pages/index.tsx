@@ -26,7 +26,7 @@ export default function Home({ blogs }: { blogs: FrontMatter[] }) {
   return (
     <>
       <Metadata
-        title="Jatin Sharma"
+        title="Numan Ibn Mazid's Portfolio"
         description={pageMeta.home.description}
         previewImage={pageMeta.home.image}
         keywords={pageMeta.home.keywords}

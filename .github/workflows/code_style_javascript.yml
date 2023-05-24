@@ -5,8 +5,8 @@ on:
     paths:
       - frontend/**
   push:
-    branches:
-      - main
+    tags:
+      - "*"
 
 jobs:
   run-eslint:

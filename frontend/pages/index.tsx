@@ -1,28 +1,64 @@
 // Page Components START----------
-import BlogsSection from "@components/Home/BlogsSection";
-import SkillSection from "@components/Home/SkillSection";
-import Image from "next/image";
-import Metadata from "@components/MetaData";
-import Contact from "@components/Contact";
+import BlogsSection from "@components/Home/BlogsSection"
+import SkillSection from "@components/Home/SkillSection"
+import ExperienceSection from "@components/Home/ExperienceSection"
+import Image from "next/image"
+import Metadata from "@components/MetaData"
+import Contact from "@components/Contact"
 import {
   FadeContainer,
   headingFromLeft,
   opacityVariant,
   popUp,
-} from "@content/FramerMotionVariants";
-import AnimatedHeading from "@components/FramerMotion/AnimatedHeading";
-import { homeProfileImage, cvURL } from "@utils/utils";
-import getRSS from "@lib/generateRSS";
-import generateSitemap from "@lib/sitemap";
-import { motion } from "framer-motion";
-import { FiDownload } from "react-icons/fi";
-import MDXContent from "@lib/MDXContent";
-import pageMeta from "@content/meta";
-import React from "react";
-import { FrontMatter } from "@lib/types";
-import Link from "next/link";
+} from "@content/FramerMotionVariants"
+import AnimatedHeading from "@components/FramerMotion/AnimatedHeading"
+import { homeProfileImage, cvURL } from "@utils/utils"
+import getRSS from "@lib/generateRSS"
+import generateSitemap from "@lib/sitemap"
+import { motion } from "framer-motion"
+import { FiDownload } from "react-icons/fi"
+import MDXContent from "@lib/MDXContent"
+import pageMeta from "@content/meta"
+import staticData from "@content/StaticData"
+import React from "react"
+// import { FrontMatter } from "@lib/types"
+import Link from "next/link"
+import { useEffect, useState } from 'react'
+import { getAllBlogs } from "@lib/backendAPI"
 
-export default function Home({ blogs }: { blogs: FrontMatter[] }) {
+
+export default function Home() {
+  const [blogs, setBlogs] = useState([])
+
+  useEffect(() => {
+    fetchBlogs()
+  }, [])
+
+  const fetchBlogs = async () => {
+    const blogsData = await getAllBlogs(3)
+
+    // TODO:Integrate with backend API
+    // ******* Faking data Starts *******
+    const fakeBlogsData = blogsData.map((blog: { title: any, body: any }, index: number) => ({
+      title: blog.title,
+      slug: `blog-${index + 1}`,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
+      excerpt: blog.body,
+      date: new Date(),
+      readingTime: {text: "3 min read"},
+    }))
+    // Need to use `blogsData` in below `setBlogs` function!
+    // ******* Faking data Ends *******
+
+    setBlogs(fakeBlogsData)
+  }
+
+  // ******* Loader Starts *******
+  if (blogs.length === 0) {
+    return <div>Loading...</div>
+  }
+  // ******* Loader Ends *******
+
   return (
     <>
       <Metadata
@@ -61,13 +97,13 @@ export default function Home({ blogs }: { blogs: FrontMatter[] }) {
                   variants={opacityVariant}
                   className="text-5xl font-bold lg:text-6xl font-arial"
                 >
-                  Numan Ibn Mazid
+                  {staticData.personal.name}
                 </motion.h1>
                 <motion.p
                   variants={opacityVariant}
                   className="font-medium text-xs md:text-sm lg:text-lg text-[#383838] dark:text-gray-200"
                 >
-                  Software Engineer
+                  {staticData.personal.profession}
                 </motion.p>
               </div>
 
@@ -75,8 +111,7 @@ export default function Home({ blogs }: { blogs: FrontMatter[] }) {
                 variants={opacityVariant}
                 className=" text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
               >
-                Currently Working as a Software Engineer at SELISE Digital Platforms.
-                (Stack: Python, Django, Javascript)
+                {staticData.personal.current_position}
               </motion.p>
             </div>
 
@@ -93,6 +128,7 @@ export default function Home({ blogs }: { blogs: FrontMatter[] }) {
         </motion.section>
 
         <div>
+          <ExperienceSection />
           <SkillSection />
           <BlogsSection blogs={blogs} />
           <Contact />

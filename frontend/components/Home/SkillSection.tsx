@@ -20,6 +20,7 @@ export default function SkillSection() {
   const fetchSkills = async () => {
     const skillsData = await getAllSkills()
 
+    // TODO:Integrate with backend API
     // ******* Faking data Starts *******
     const fakeSkillsData = skillsData.map((skill: { title: any }, index: number) => ({
       name: `Python ${index + 1}`,

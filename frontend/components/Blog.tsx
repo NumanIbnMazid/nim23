@@ -1,11 +1,13 @@
-import Link from "next/link";
-import { getFormattedDate } from "@utils/date";
-import { FrontMatter } from "@lib/types";
-import { useRef } from "react";
-import Image from "next/image";
-import { homeProfileImage } from "@utils/utils";
-import { motion } from "framer-motion";
-import { BlogCardAnimation } from "@content/FramerMotionVariants";
+import Link from "next/link"
+import { getFormattedDate } from "@utils/date"
+import { FrontMatter } from "@lib/types"
+import { useRef } from "react"
+import Image from "next/image"
+import { homeProfileImage } from "@utils/utils"
+import { motion } from "framer-motion"
+import { BlogCardAnimation } from "@content/FramerMotionVariants"
+import staticData from "@content/StaticData"
+
 
 export default function Blog({
   blog,
@@ -52,7 +54,7 @@ export default function Blog({
           <div className="z-10 flex items-center gap-3 font-barlow">
             <div className="w-[30px]">
               <Image
-                alt="Jatin Sharma"
+                alt="{staticData.personal.name}"
                 height={933}
                 width={933}
                 src={homeProfileImage}
@@ -61,7 +63,7 @@ export default function Blog({
             </div>
             <div className="flex flex-col">
               <Link href="/about" className="text-sm font-bold hover:underline">
-                Jatin Sharma
+                {staticData.personal.name}
               </Link>
               <span className="text-xs">
                 {getFormattedDate(new Date(blog.date))}

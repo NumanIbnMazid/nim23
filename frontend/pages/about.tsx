@@ -2,19 +2,38 @@ import MDXContent from "@lib/MDXContent";
 import pageMeta from "@content/meta";
 import { MovieType, PostType } from "@lib/types";
 import StaticPage from "@components/StaticPage";
-import { getRecentWatchedMovies } from "@lib/supabase";
+// import { getRecentWatchedMovies } from "@lib/supabase";
+import { getAllMovies } from "@lib/backendAPI"
+import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard";
 import { motion } from "framer-motion";
 import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants";
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv";
 
 export default function About({
-  about,
-  movies,
+  about
 }: {
   about: PostType;
   movies: MovieType[];
 }) {
+
+  const [movies, setMovies] = useState([])
+
+  useEffect(() => {
+    fetchMovies()
+  }, [])
+
+  const fetchMovies = async () => {
+    const moviesData = await getAllMovies()
+    setMovies(moviesData)
+  }
+
+  // ******* Loader Starts *******
+  if (movies.length === 0) {
+    return <div>Loading...</div>
+  }
+  // ******* Loader Ends *******
+
   return (
     <>
       <StaticPage metadata={pageMeta.about} page={about} />
@@ -47,13 +66,9 @@ export async function getStaticProps() {
   const { post: about } = await new MDXContent("static_pages").getPostFromSlug(
     "about"
   );
-
-  const { movies } = await getRecentWatchedMovies();
-
   return {
     props: {
-      about,
-      movies,
+      about
     },
   };
 }

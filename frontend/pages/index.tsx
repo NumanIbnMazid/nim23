@@ -36,21 +36,7 @@ export default function Home() {
 
   const fetchBlogs = async () => {
     const blogsData = await getAllBlogs(3)
-
-    // TODO:Integrate with backend API
-    // ******* Faking data Starts *******
-    const fakeBlogsData = blogsData.map((blog: { title: any, body: any }, index: number) => ({
-      title: blog.title,
-      slug: `blog-${index + 1}`,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-      excerpt: blog.body,
-      date: new Date(),
-      readingTime: {text: "3 min read"},
-    }))
-    // Need to use `blogsData` in below `setBlogs` function!
-    // ******* Faking data Ends *******
-
-    setBlogs(fakeBlogsData)
+    setBlogs(blogsData)
   }
 
   // ******* Loader Starts *******
@@ -150,11 +136,10 @@ export function HomeHeading({ title }: { title: React.ReactNode | string }) {
 }
 
 export async function getStaticProps() {
-  const blogs = new MDXContent("posts").getAllPosts(3);
   await getRSS();
   await generateSitemap();
 
   return {
-    props: { blogs },
+    props: { },
   };
 }

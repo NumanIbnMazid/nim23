@@ -1,10 +1,8 @@
 import { FadeContainer, popUp } from "../../content/FramerMotionVariants"
 import { HomeHeading } from "../../pages"
 import { motion } from "framer-motion"
-import * as WindowsAnimation from "@lib/windowsAnimation"
 import React from "react"
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { getAllExperiences } from "@lib/backendAPI"
 import { TimelineItem } from "@components/TimelineItem"
 import { TimelineList } from "@components/TimelineList"
@@ -19,20 +17,7 @@ export default function SkillSection() {
 
   const fetchExperiences = async () => {
     const experiencesData = await getAllExperiences()
-
-    // TODO:Integrate with backend API
-    // ******* Faking data Starts *******
-    const fakeExperiencesData = experiencesData.map((experience: { title: any, body: any }, index: number) => ({
-      title: "Software Engineer",
-      company: experience.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-      company_url: "https:selise.com",
-      duration: "2018 - 2019",
-      description: experience.body
-    }))
-    // Need to use `experiencesData` in below `setExperiences` function!
-    // ******* Faking data Ends *******
-
-    setExperiences(fakeExperiencesData)
+    setExperiences(experiencesData)
   }
 
   // ******* Loader Starts *******
@@ -58,11 +43,11 @@ export default function SkillSection() {
             <TimelineList>
               {experiences.map((experience: { title: string, company: string, company_url: string, duration: string, description: string }, index) => (
                 <motion.div
+                  key={index}
                   variants={popUp}
                   className="flex items-center justify-center gap-4 p-4 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
                 >
                   <TimelineItem
-                    key={index}
                     title={experience.title}
                     meta={experience.company}
                     link={experience.company_url}

@@ -19,17 +19,7 @@ export default function SkillSection() {
 
   const fetchSkills = async () => {
     const skillsData = await getAllSkills()
-
-    // TODO:Integrate with backend API
-    // ******* Faking data Starts *******
-    const fakeSkillsData = skillsData.map((skill: { title: any }, index: number) => ({
-      name: `Python ${index + 1}`,
-      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s"
-    }))
-    // Need to use `skillsData` in below `setSkills` function!
-    // ******* Faking data Ends *******
-
-    setSkills(fakeSkillsData)
+    setSkills(skillsData)
   }
 
   // ******* Loader Starts *******

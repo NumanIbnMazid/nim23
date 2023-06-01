@@ -1,48 +1,58 @@
-import React, { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import {
   FadeContainer,
   popUp,
   popUpFromBottomForText,
   searchBarSlideAnimation,
-} from "@content/FramerMotionVariants";
-import Link from "next/link";
-import Blog from "@components/Blog";
-import Metadata from "@components/MetaData";
-import { BiRss } from "react-icons/bi";
-import { RiCloseCircleLine } from "react-icons/ri";
-import { BsBookmark } from "react-icons/bs";
-import AnimatedDiv from "@components/FramerMotion/AnimatedDiv";
-import PageTop from "@components/PageTop";
-import MDXContent from "@lib/MDXContent";
-import pageMeta from "@content/meta";
-import { FrontMatter } from "@lib/types";
-import { CgSearch } from "react-icons/cg";
+} from "@content/FramerMotionVariants"
+import Link from "next/link"
+import Blog from "@components/Blog"
+import Metadata from "@components/MetaData"
+import { BiRss } from "react-icons/bi"
+import { RiCloseCircleLine } from "react-icons/ri"
+import { BsBookmark } from "react-icons/bs"
+import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
+import PageTop from "@components/PageTop"
+import pageMeta from "@content/meta"
+import { FrontMatter } from "@lib/types"
+import { CgSearch } from "react-icons/cg"
+import { getAllBlogs } from "@lib/backendAPI"
 
-export default function Blogs({ blogs }: { blogs: FrontMatter[] }) {
-  const [searchValue, setSearchValue] = useState("");
-  const [filteredBlogs, setFilteredBlogs] = useState([...blogs]);
-  const searchRef = useRef<HTMLInputElement>(null!);
+
+export default function Blogs() {
+  const [blogs, setBlogs] = useState([])
+  const fetchBlogs = async () => {
+    const blogsData = await getAllBlogs()
+    setBlogs(blogsData)
+  }
+  useEffect(() => {
+    fetchBlogs()
+  }, [])
+
+  const [searchValue, setSearchValue] = useState("")
+  const [filteredBlogs, setFilteredBlogs] = useState([...blogs])
+  const searchRef = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
     setFilteredBlogs(
       blogs.filter((post: FrontMatter) =>
         post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
       )
-    );
-  }, [searchValue, blogs]);
+    )
+  }, [searchValue, blogs])
 
   function handleAutoSearch(e: any) {
     if (e.code === "Slash" && e.ctrlKey) {
-      searchRef.current.focus();
+      searchRef.current.focus()
     }
   }
 
   useEffect(() => {
-    document.addEventListener("keydown", handleAutoSearch);
+    document.addEventListener("keydown", handleAutoSearch)
 
-    return () => document.removeEventListener("keydown", handleAutoSearch);
-  }, []);
+    return () => document.removeEventListener("keydown", handleAutoSearch)
+  }, [])
 
   return (
     <>
@@ -122,7 +132,7 @@ export default function Blogs({ blogs }: { blogs: FrontMatter[] }) {
                   className="grid grid-cols-1 gap-4 mx-auto"
                 >
                   {filteredBlogs.map((blog, index) => {
-                    return <Blog key={index} blog={blog} />;
+                    return <Blog key={index} blog={blog} />
                   })}
                 </AnimatedDiv>
               </>
@@ -135,12 +145,13 @@ export default function Blogs({ blogs }: { blogs: FrontMatter[] }) {
         </section>
       </section>
     </>
-  );
+  )
 }
 
-export async function getStaticProps() {
-  const blogs = new MDXContent("posts").getAllPosts();
-  return {
-    props: { blogs },
-  };
-}
+// export async function getStaticProps() {
+//   // const blogs = new MDXContent("posts").getAllPosts();
+//   const blogs = await getAllBlogs()
+//   return {
+//     props: { blogs },
+//   };
+// }

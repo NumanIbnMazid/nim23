@@ -39,11 +39,11 @@ export default function Home() {
     setBlogs(blogsData)
   }
 
-  // ******* Loader Starts *******
-  if (blogs.length === 0) {
-    return <div>Loading...</div>
-  }
-  // ******* Loader Ends *******
+  // // ******* Loader Starts *******
+  // if (blogs.length === 0) {
+  //   return <div>Loading...</div>
+  // }
+  // // ******* Loader Ends *******
 
   return (
     <>

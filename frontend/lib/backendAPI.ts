@@ -39,19 +39,23 @@ export const getAllSkills = async () => {
 
 // Blogs URL
 const BLOGS_PATH = "/posts"
-let BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
+const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.
  */
 export const getAllBlogs = async (length?: number | undefined) => {
+  let ENDPOINT = null
   // Set limit if length is not undefined
   if (length !== undefined) {
-    BLOGS_ENDPOINT = BLOGS_ENDPOINT + `?_limit=${length}`
+    ENDPOINT = BLOGS_ENDPOINT + `?_limit=${length}`
+  }
+  else {
+    ENDPOINT = BLOGS_ENDPOINT
   }
 
   const allBlogs = await fetch(
-    BLOGS_ENDPOINT
+    ENDPOINT
   )
     .then((response) => response.json())
     .catch((error) => console.log('Error fetching blogs:', error))

@@ -54,7 +54,7 @@ const pageMeta: PageMeta = {
   about: {
     title: "About",
     description:
-      "Hey, I am Jatin Sharma. A Front-end Developer/React Developer from India who loves to design and code. I use React.js or Next.js to build the web application interfaces and the functionalities. At the moment, I am pursuing my Bachelor's degree in Computer Science.",
+      "Hey, I am Numan Ibn Mazid. Experienced professional Software Engineer who enjoys developing innovative software solutions that are tailored to customer desirability and usability.",
     image: "https://imgur.com/b0HRaPv.png",
     keywords: "about, about me, ",
   },

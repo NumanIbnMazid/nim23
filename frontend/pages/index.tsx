@@ -17,11 +17,9 @@ import getRSS from "@lib/generateRSS"
 import generateSitemap from "@lib/sitemap"
 import { motion } from "framer-motion"
 import { FiDownload } from "react-icons/fi"
-import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
 import staticData from "@content/StaticData"
 import React from "react"
-// import { FrontMatter } from "@lib/types"
 import Link from "next/link"
 import { useEffect, useState } from 'react'
 import { getAllBlogs } from "@lib/backendAPI"
@@ -127,7 +125,7 @@ export default function Home() {
 export function HomeHeading({ title }: { title: React.ReactNode | string }) {
   return (
     <AnimatedHeading
-      className="w-full my-2 text-3xl font-bold text-left font-inter"
+      className="w-full my-2 text-3xl font-bold text-left font-inter flex justify-center items-center"
       variants={headingFromLeft}
     >
       {title}

@@ -74,7 +74,7 @@ export default function About({
           variants={FadeContainer}
           className="flex items-center gap-2 pt-10 pb-5 overflow-x-scroll md:gap-4 horizontal-scrollbar"
         >
-          {movies.map((movie) => (
+          {movies.map((movie: MovieType) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </AnimatedDiv>

@@ -81,7 +81,7 @@ export const getAllBlogs = async (length?: number | undefined) => {
 
 // Experience URL
 const EXPERIENCE_PATH = "/posts?_limit=5"
-let EXPERIENCE_ENDPOINT = BACKEND_API_BASE_URL + EXPERIENCE_PATH
+const EXPERIENCE_ENDPOINT = BACKEND_API_BASE_URL + EXPERIENCE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Experience Data.
@@ -96,7 +96,7 @@ export const getAllExperiences = async () => {
 
   // TODO:Integrate with backend API
   // ******* Faking data Starts *******
-  const fakeExperiencesData = allExperiences.map((experience: { title: any, body: any }, index: number) => ({
+  const fakeExperiencesData = allExperiences.map((experience: { title: any, body: any }) => ({
     title: "Software Engineer",
     company: experience.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
     company_url: "https://github.com/NumanIbnMazid",
@@ -113,7 +113,7 @@ export const getAllExperiences = async () => {
 
 // Certificate URL
 const PROJECTS_PATH = "/posts?_limit=5"
-let PROJECTS_ENDPOINT = BACKEND_API_BASE_URL + PROJECTS_PATH
+const PROJECTS_ENDPOINT = BACKEND_API_BASE_URL + PROJECTS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Certificate Data.
@@ -147,7 +147,7 @@ export const getAllProjects = async () => {
 
 // Certificate URL
 const CERTIFICATES_PATH = "/posts?_limit=5"
-let CERTIFICATES_ENDPOINT = BACKEND_API_BASE_URL + CERTIFICATES_PATH
+const CERTIFICATES_ENDPOINT = BACKEND_API_BASE_URL + CERTIFICATES_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Certificate Data.
@@ -181,7 +181,7 @@ export const getAllCertificates = async () => {
 
 // Experience URL
 const MOVIE_PATH = "/posts?_limit=5"
-let MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
+const MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Movie Data.

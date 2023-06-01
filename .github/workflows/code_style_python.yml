@@ -3,7 +3,7 @@ name: Code Style (Python)
 on:
   pull_request:
     paths:
-      - backend/**
+      - project/**
   push:
     tags:
       - "*"

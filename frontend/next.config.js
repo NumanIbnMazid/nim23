@@ -11,6 +11,7 @@ const withPWA = require("next-pwa")({
 });
 
 module.exports = withPWA({
+  // TODO: Uncomment for production
   // reactStrictMode: true,
   images: {
     domains: [

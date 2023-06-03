@@ -24,7 +24,7 @@ export const getAllSkills = async () => {
 
   // TODO:Integrate with backend API
   // ******* Faking data Starts *******
-  const fakeSkillsData = allSkills.map((skill: { title: any }, index: number) => ({
+  const fakeSkillsData = allSkills.map((_skill: { title: string }, index: number) => ({
     name: `Python ${index + 1}`,
     icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s"
   }))

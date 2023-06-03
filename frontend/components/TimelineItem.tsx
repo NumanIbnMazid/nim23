@@ -1,10 +1,10 @@
 type Props = {
   title: string;
   meta: string;
-  link?: string;
-  meta_small?: string;
+  link?: string | null;
+  meta_small?: string | null;
   content: any;
-};
+}
 
 export function TimelineItem({
   title,
@@ -49,5 +49,5 @@ export function TimelineItem({
         ></div>
       </article>
     </>
-  );
+  )
 }

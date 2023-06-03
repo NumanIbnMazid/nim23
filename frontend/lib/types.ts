@@ -57,6 +57,14 @@ export type ProjectType = {
   pinned?: boolean
 }
 
+export type ExperienceType = {
+  title: string
+  company: string
+  company_url: string
+  duration: string
+  description: string
+}
+
 export type SkillType = {
   name: string
   icon: string

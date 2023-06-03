@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { getAllExperiences } from "@lib/backendAPI"
 import { TimelineItem } from "@components/TimelineItem"
 import { TimelineList } from "@components/TimelineList"
+import { ExperienceType } from "@lib/types"
 
 
 export default function SkillSection() {
@@ -41,7 +42,7 @@ export default function SkillSection() {
           <p>Here's a brief rundown of my most recent experiences.</p>
           {experiences ? (
             <TimelineList>
-              {experiences.map((experience: { title: string, company: string, company_url: string, duration: string, description: string }, index) => (
+              {experiences.map((experience: ExperienceType, index) => (
                 <motion.div
                   key={index}
                   variants={popUp}

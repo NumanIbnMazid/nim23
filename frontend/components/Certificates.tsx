@@ -9,6 +9,7 @@ import Image from "next/image"
 import { popUpFromBottomForText } from "@content/FramerMotionVariants"
 import Link from "next/link"
 import { getFormattedDate } from "@utils/date"
+import { CertificateType } from "@lib/types"
 
 
 export default function CertificateSection() {
@@ -42,7 +43,7 @@ export default function CertificateSection() {
       >
         <div className="mt-12 space-y-6">
           <p>Here are some certificates that I have obtained.</p>
-          {certificates.map((cer: {id: number, orgLogo: string, orgName: string, url: string, title: string, issuedDate: Date}) => {
+          {certificates.map((cer: CertificateType) => {
             return (
               <AnimatedDiv
                 className="flex flex-col gap-2 p-3 bg-white rounded-lg shadow md:flex-row md:items-center md:justify-between md:gap-4 dark:bg-darkSecondary/50"

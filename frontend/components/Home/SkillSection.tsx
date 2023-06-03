@@ -7,6 +7,7 @@ import React from "react"
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { getAllSkills } from "@lib/backendAPI"
+import { SkillType } from "@lib/types"
 
 
 export default function SkillSection() {
@@ -39,7 +40,7 @@ export default function SkillSection() {
         viewport={{ once: true }}
         className="grid grid-cols-3 gap-4 my-10"
       >
-        {skills.map((skill: { name?: string, icon: string }, index) => {
+        {skills.map((skill: SkillType, index) => {
           return (
             <motion.div
               variants={popUp}

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { getAllProjects } from "@lib/backendAPI"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import Project from "@components/ProjectSection"
+import { ProjectType } from "@lib/types"
 
 
 export default function ProjectSection() {
@@ -50,7 +51,7 @@ export default function ProjectSection() {
             variants={FadeContainer}
             className="grid grid-cols-1 gap-4 mx-auto md:ml-[20%] xl:ml-[24%]"
           >
-            {projects.map((project: {name: string, githubURL: string, id: number}) => {
+            {projects.map((project: ProjectType) => {
               if (project.name === "" && project.githubURL === "") return null;
               return <Project key={project.id} project={project} />;
             })}

@@ -4,6 +4,8 @@
 from pathlib import Path
 import os
 from conf import config
+from datetime import timedelta
+from rest_framework.settings import api_settings
 
 # ----------------------------------------------------
 # *** Project's BASE DIRECTORY ***
@@ -28,8 +30,17 @@ ALLOWED_HOSTS = ["*"]
 # ----------------------------------------------------
 # *** Application Definition ***
 # ----------------------------------------------------
-THIRD_PARTY_APPS = []
-LOCAL_APPS = []
+THIRD_PARTY_APPS = [
+    # Django REST Framework
+    "rest_framework",
+    # Knox Authentication
+    "knox",
+    # Django REST Framework Yet Another Swagger
+    "drf_yasg",
+]
+LOCAL_APPS = [
+    "users",
+]
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -77,6 +88,13 @@ TEMPLATES = [
         },
     },
 ]
+
+# ----------------------------------------------------
+# *** Authentication Definition ***
+# ----------------------------------------------------
+
+# https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
+AUTH_USER_MODEL = 'users.User'
 
 # ----------------------------------------------------
 # *** WSGI Application ***
@@ -189,3 +207,41 @@ LOGGING = {
 # ----------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SITE_ID = 1
+
+# REST Framework Configuration
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "knox.auth.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+}
+
+# KNOX Configuration
+KNOX_TOKEN_MODEL = "knox.AuthToken"
+
+REST_KNOX = {
+    # "SECURE_HASH_ALGORITHM": "hashlib.sha512",
+    "AUTH_TOKEN_CHARACTER_LENGTH": 64,
+    "TOKEN_TTL": timedelta(hours=730),
+    "USER_SERIALIZER": "knox.serializers.UserSerializer",
+    "TOKEN_LIMIT_PER_USER": None,
+    "AUTO_REFRESH": False,
+    "MIN_REFRESH_INTERVAL": 60,
+    "AUTH_HEADER_PREFIX": "Token",
+    "EXPIRY_DATETIME_FORMAT": api_settings.DATETIME_FORMAT,
+    "TOKEN_MODEL": "knox.AuthToken",
+}
+
+# Swagger Configuration
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'JSON_EDITOR': True,
+}

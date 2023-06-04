@@ -36,7 +36,7 @@ class UserViewset(ModelViewSet):
     def get_portfolio_user(self, request):
         user_qs = get_user_model().objects.filter(is_portfolio_user=True)
         if user_qs.exists():
-            user = user_qs.first()
+            user = user_qs.last()
             serializer = self.get_serializer(user)
             return Response(serializer.data)
         return Response({"message": "No portfolio user found!"}, status=404)

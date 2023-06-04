@@ -64,9 +64,9 @@ class ResponseWrapper(Response, JSONRenderer):
                 )
             else:
                 message = (
-                    message.capitalize() + " successfully!"
+                    "SUCCESS!"
                     if response_success
-                    else "Failed to " + message + "!"
+                    else "FAILED!"
                 )
 
         output_data = {

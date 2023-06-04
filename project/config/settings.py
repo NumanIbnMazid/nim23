@@ -41,14 +41,18 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "users",
 ]
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-] + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = (
+    [
+        "django.contrib.admin",
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.messages",
+        "django.contrib.staticfiles",
+    ]
+    + THIRD_PARTY_APPS
+    + LOCAL_APPS
+)
 
 # ----------------------------------------------------
 # *** Middleware Definition ***
@@ -74,9 +78,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            os.path.join(BASE_DIR, "config", "templates")
-        ],
+        "DIRS": [os.path.join(BASE_DIR, "config", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -94,7 +96,7 @@ TEMPLATES = [
 # ----------------------------------------------------
 
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 # ----------------------------------------------------
 # *** WSGI Application ***
@@ -105,13 +107,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 # *** Database Configuration ***
 # ----------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config.DATABASE.NAME,
-        'USER': config.DATABASE.USER,
-        'PASSWORD': config.DATABASE.PASSWORD,
-        'HOST': config.DATABASE.HOST,
-        'PORT': config.DATABASE.PORT
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config.DATABASE.NAME,
+        "USER": config.DATABASE.USER,
+        "PASSWORD": config.DATABASE.PASSWORD,
+        "HOST": config.DATABASE.HOST,
+        "PORT": config.DATABASE.PORT,
     }
 }
 
@@ -153,16 +155,16 @@ USE_TZ = True
 # ----------------------------------------------------
 # *** Static and Media Files Configuration ***
 # ----------------------------------------------------
-PUBLIC_ROOT = os.path.join(BASE_DIR, 'public/')
+PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
 # STATIC & MEDIA URL
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 # STATIC & MEDIA ROOT
-MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media/')
-STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static/')
+MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
+STATIC_ROOT = os.path.join(PUBLIC_ROOT, "static/")
 # Static Files Directories
 STATICFILES_DIRS = [
-    os.path.join(PUBLIC_ROOT, 'staticfiles'),
+    os.path.join(PUBLIC_ROOT, "staticfiles"),
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
@@ -186,7 +188,7 @@ LOGGING = {
         "console": {
             "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
             "class": "logging.StreamHandler",
-            "formatter": "verbose"
+            "formatter": "verbose",
         }
     },
     "loggers": {
@@ -196,10 +198,7 @@ LOGGING = {
             "propagate": True,
         },
     },
-    "root": {
-        "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-        "handlers": ["console"]
-    }
+    "root": {"level": os.getenv("DJANGO_LOG_LEVEL", "INFO"), "handlers": ["console"]},
 }
 
 # ----------------------------------------------------
@@ -210,12 +209,8 @@ SITE_ID = 1
 
 # REST Framework Configuration
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "knox.auth.TokenAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 # KNOX Configuration
@@ -236,12 +231,8 @@ REST_KNOX = {
 
 # Swagger Configuration
 SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-        }
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
     },
-    'JSON_EDITOR': True,
+    "JSON_EDITOR": True,
 }

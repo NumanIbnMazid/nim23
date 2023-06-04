@@ -1,13 +1,19 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.utils import timezone
 from django.http import Http404
 from utils.snippets import autoslugFromUUID, generate_unique_username_from_email
 from utils.image_upload_helpers import upload_user_image_path
 from django.utils.translation import gettext_lazy as _
 from django.templatetags.static import static
+from django.conf import settings
+from utils.snippets import image_as_base64, get_static_file_path
 
 
 class UserManager(BaseUserManager):
@@ -15,29 +21,25 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError(_('Users must have an email address'))
+            raise ValueError(_("Users must have an email address"))
         now = timezone.now()
         email = self.normalize_email(email)
-        user = self.model(
-            email=email,
-            last_login=now,
-            **extra_fields
-        )
+        user = self.model(email=email, last_login=now, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_user(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_superuser', False)
-        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault("is_superuser", False)
+        extra_fields.setdefault("is_staff", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_staff", True)
 
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True.'))
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(_("Superuser must have is_superuser=True."))
 
         return self._create_user(email, password, **extra_fields)
 
@@ -85,7 +87,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     # Fields for Portfolio
     nick_name = models.CharField(max_length=100, null=True, blank=True)
-    gender = models.CharField(max_length=20, choices=Gender.choices, blank=True, null=True)
+    gender = models.CharField(
+        max_length=20, choices=Gender.choices, blank=True, null=True
+    )
     image = models.ImageField(upload_to=upload_user_image_path, null=True, blank=True)
     dob = models.DateField(null=True, blank=True, verbose_name=_("date of birth"))
     website = models.URLField(null=True, blank=True)
@@ -93,6 +97,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     contact_email = models.EmailField(null=True, blank=True)
     address = models.CharField(max_length=254, null=True, blank=True)
     about = models.TextField(null=True, blank=True)
+    is_portfolio_user = models.BooleanField(default=False)
     """ Additional Fields Ends """
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -100,24 +105,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     class Meta:
-        verbose_name = ("User")
-        verbose_name_plural = ("Users")
+        verbose_name = "User"
+        verbose_name_plural = "Users"
         ordering = ["-date_joined"]
-
 
     def __str__(self):
         return self.get_dynamic_username()
 
     def get_dynamic_username(self):
-        """ Get a dynamic username for a specific user instance. if the user has a name then returns the name,
-        if the user does not have a name but has a username then return username, otherwise returns email as username """
+        """Get a dynamic username for a specific user instance. if the user has a name then returns the name,
+        if the user does not have a name but has a username then return username, otherwise returns email as username
+        """
         if self.name:
             return self.name
         elif self.username:
@@ -126,19 +131,23 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_user_image(self):
         if self.image:
-            return self.image.url
+            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
         else:
             if self.gender and self.gender == "Male":
-                return static("icons/user/avatar-male.png")
-            if self.gender and self.gender == "Female":
-                return static("icons/user/avatar-female.png")
-        return static("icons/user/avatar-default.png")
+                image_path = get_static_file_path("icons/user/avatar-male.png")
+            elif self.gender and self.gender == "Female":
+                image_path = get_static_file_path("icons/user/avatar-female.png")
+            else:
+                image_path = get_static_file_path("icons/user/avatar-default.png")
+
+        if image_path:
+            return image_as_base64(image_path)
+
+        return None
 
 
 @receiver(pre_save, sender=User)
 def update_username_from_email(sender, instance, **kwargs):
-    """ Generates and updates username from user email on User pre_save hook """
+    """Generates and updates username from user email on User pre_save hook"""
     if not instance.pk:
-        instance.username = generate_unique_username_from_email(
-            instance=instance
-        )
+        instance.username = generate_unique_username_from_email(instance=instance)

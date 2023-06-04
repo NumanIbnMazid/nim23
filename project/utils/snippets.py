@@ -6,10 +6,14 @@ from urllib.parse import urlparse
 from django.db import models
 from django.dispatch import receiver
 import uuid
+
 # PDF imports
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
+import os
+import base64
+from django.contrib.staticfiles import finders
 
 
 def random_string_generator(size=4, chars=string.ascii_lowercase + string.digits):
@@ -22,10 +26,10 @@ def random_string_generator(size=4, chars=string.ascii_lowercase + string.digits
     Returns:
         [str]: [Generated random string]
     """
-    return ''.join(random.choice(chars) for _ in range(size))
+    return "".join(random.choice(chars) for _ in range(size))
 
 
-def random_number_generator(size=4, chars='1234567890'):
+def random_number_generator(size=4, chars="1234567890"):
     """[Generates random number]
 
     Args:
@@ -35,7 +39,7 @@ def random_number_generator(size=4, chars='1234567890'):
     Returns:
         [str]: [Generated random number]
     """
-    return ''.join(random.choice(chars) for _ in range(size))
+    return "".join(random.choice(chars) for _ in range(size))
 
 
 def simple_random_string():
@@ -51,8 +55,13 @@ def simple_random_string():
     random_str = random_string_generator()
     random_num = random_number_generator()
     bindings = (
-        random_str + timestamp_d + random_num + timestamp_now +
-        timestamp_y + random_num + timestamp_m
+        random_str
+        + timestamp_d
+        + random_num
+        + timestamp_now
+        + timestamp_y
+        + random_num
+        + timestamp_m
     )
     return bindings
 
@@ -71,9 +80,7 @@ def simple_random_string_with_timestamp(size=None):
     timestamp_y = time.strftime("%d")
     random_str = random_string_generator()
     random_num = random_number_generator()
-    bindings = (
-        random_str + timestamp_d + timestamp_m + timestamp_y + random_num
-    )
+    bindings = random_str + timestamp_d + timestamp_m + timestamp_y + random_num
     if not size == None:
         return bindings[0:size]
     return bindings
@@ -233,8 +240,7 @@ def simple_random_string_with_timestamp(size=None):
 
 
 def autoslugFromUUID():
-    """[Generates auto slug using UUID]
-    """
+    """[Generates auto slug using UUID]"""
 
     def decorator(model):
         assert hasattr(model, "slug"), "Model is missing a slug field"
@@ -246,7 +252,9 @@ def autoslugFromUUID():
                     instance.slug = str(uuid.uuid4())
                 except Exception as e:
                     instance.slug = simple_random_string()
+
         return model
+
     return decorator
 
 
@@ -270,7 +278,11 @@ def generate_unique_username_from_email(instance):
         raise ValueError("Invalid email!")
 
     def generate_username(email):
-        return email.split("@")[0][:15] + "__" + simple_random_string_with_timestamp(size=5)
+        return (
+            email.split("@")[0][:15]
+            + "__"
+            + simple_random_string_with_timestamp(size=5)
+        )
 
     generated_username = generate_username(email=email)
 
@@ -282,3 +294,47 @@ def generate_unique_username_from_email(instance):
         generate_unique_username_from_email(instance=instance)
 
     return generated_username
+
+
+# def image_as_base64(image_file, format='png'):
+#     """
+#     :param `image_file` for the complete path of image.
+#     :param `format` is format for image, eg: `png` or `jpg`.
+#     """
+#     if not os.path.isfile(image_file):
+#         return None
+
+#     encoded_string = ''
+#     with open(image_file, 'rb') as img_f:
+#         encoded_string = base64.b64encode(img_f.read())
+#     return 'data:image/%s;base64,%s' % (format, encoded_string)
+
+
+def get_static_file_path(static_path):
+    """
+    Get the absolute file path for a static file.
+    :param static_path: The static file path relative to the static root.
+    :return: The absolute file path or None if the file is not found.
+    """
+    static_file = finders.find(static_path)
+    if static_file:
+        return static_file
+    return None
+
+
+def image_as_base64(image_file):
+    """
+    :param `image_file` for the complete path of the image.
+    """
+    if not os.path.isfile(image_file):
+        print(f"Image file not found: {image_file}")
+        return None
+
+    # Get the file extension dynamically
+    extension = os.path.splitext(image_file)[1][1:]
+    encoded_string = ""
+
+    with open(image_file, "rb") as img_f:
+        encoded_string = base64.b64encode(img_f.read()).decode("utf-8")
+
+    return f"data:image/{extension};base64,{encoded_string}"

@@ -29,7 +29,7 @@ from django.views import defaults as default_views
 schema_view = get_schema_view(
     openapi.Info(
         title="Numan Ibn Mazid's Portfolio API",
-        default_version='v1',
+        default_version="v1",
         description="API Documentation for Numan Ibn Mazid's Portfolio Project's Backend",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="numanibnmazid@gmail.com"),
@@ -49,18 +49,29 @@ THIRD_PARTY_URLS = [
     # *** Knox URLs ***
     # ----------------------------------------------------
     # path(r'api/auth/', include('knox.urls')),
-    path(r'api/auth/login/', LoginView.as_view(), name='knox_login'),
-    path(r'api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
-    path(r'api/auth/logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
+    path(r"api/auth/login/", LoginView.as_view(), name="knox_login"),
+    path(r"api/auth/logout/", knox_views.LogoutView.as_view(), name="knox_logout"),
+    path(
+        r"api/auth/logoutall/",
+        knox_views.LogoutAllView.as_view(),
+        name="knox_logoutall",
+    ),
     # ----------------------------------------------------
     # *** Swagger URLs ***
     # ----------------------------------------------------
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$',
-            schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', schema_view.with_ui('swagger',
-            cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc',
-            cache_timeout=0), name='schema-redoc'),
+    re_path(
+        r"^swagger(?P<format>\.json|\.yaml)$",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
+    ),
+    re_path(
+        r"^swagger/$",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    re_path(
+        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
+    ),
 ]
 
 urlpatterns = [

@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "name",
             "slug",
-            "nick_name",
+            "nickname",
             "gender",
             "image",
             "dob",

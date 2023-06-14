@@ -86,7 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     slug = models.SlugField(unique=True, max_length=254)
     updated_at = models.DateTimeField(auto_now=True)
     # Fields for Portfolio
-    nick_name = models.CharField(max_length=100, null=True, blank=True)
+    nickname = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(
         max_length=20, choices=Gender.choices, blank=True, null=True
     )

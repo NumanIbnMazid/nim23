@@ -37,6 +37,8 @@ THIRD_PARTY_APPS = [
     "knox",
     # Django REST Framework Yet Another Swagger
     "drf_yasg",
+    # Django CORS Headers
+    "corsheaders",
 ]
 LOCAL_APPS = [
     "users",
@@ -58,6 +60,8 @@ INSTALLED_APPS = (
 # *** Middleware Definition ***
 # ----------------------------------------------------
 MIDDLEWARE = [
+    # Django CORS Headers Middleware
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -236,3 +240,30 @@ SWAGGER_SETTINGS = {
     },
     "JSON_EDITOR": True,
 }
+
+# Django CORS Headers Configuration
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',  # frontend URL here
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]

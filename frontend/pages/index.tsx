@@ -22,15 +22,23 @@ import staticData from "@content/StaticData"
 import React from "react"
 import Link from "next/link"
 import { useEffect, useState } from 'react'
-import { getAllBlogs } from "@lib/backendAPI"
+import { getProfileInfo, getAllBlogs } from "@lib/backendAPI"
+import { ProfileType } from "@lib/types"
 
 
 export default function Home() {
+  const [profileInfo, setProfileInfo] = useState<ProfileType | null>(null)
   const [blogs, setBlogs] = useState([])
 
   useEffect(() => {
+    fetchProfileInfo()
     fetchBlogs()
   }, [])
+
+  const fetchProfileInfo = async () => {
+    const profileData: ProfileType = await getProfileInfo()
+    setProfileInfo(profileData)
+  }
 
   const fetchBlogs = async () => {
     const blogsData = await getAllBlogs(3)
@@ -62,15 +70,15 @@ export default function Home() {
           <div className="relative flex flex-col items-center w-full gap-10 mx-auto">
             <motion.div
               variants={popUp}
-              className="relative flex items-center justify-center p-3 rounded-full w-44 h-44 xs:w-52 xs:h-52 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
+              className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-64 xs:h-64 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
             >
               <Image
-                src={homeProfileImage}
+                src={profileInfo?.image || homeProfileImage}
                 className="rounded-full shadow filter"
                 width={933}
                 height={933}
                 alt="cover Profile Image"
-                quality={75}
+                quality={100}
                 priority
               />
             </motion.div>
@@ -81,11 +89,12 @@ export default function Home() {
                   variants={opacityVariant}
                   className="text-5xl font-bold lg:text-6xl font-arial"
                 >
-                  {staticData.personal.name}
+                  {profileInfo?.name}
+                  {profileInfo?.nickname && <span className="ml-4 text-5xl font-light">({profileInfo.nickname})</span>}
                 </motion.h1>
                 <motion.p
                   variants={opacityVariant}
-                  className="font-medium text-xs md:text-sm lg:text-lg text-[#383838] dark:text-gray-200"
+                  className="font-medium text-xs md:text-sm lg:text-2xl text-[#383838] dark:text-gray-200"
                 >
                   {staticData.personal.profession}
                 </motion.p>
@@ -96,6 +105,45 @@ export default function Home() {
                 className=" text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
               >
                 {staticData.personal.current_position}
+              </motion.p>
+              <motion.p
+                variants={opacityVariant}
+                className=" text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
+              >
+                {profileInfo?.about || staticData.personal.about}
+              </motion.p>
+
+              <div className="flex items-center justify-center p-4">
+                <div className="w-1/2 h-0.5 bg-gradient-to-r from-gray-300 via-transparent to-gray-300"></div>
+              </div>
+
+              <motion.p
+                variants={opacityVariant}
+                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
+              >
+                Address: {profileInfo?.address || "Dhaka, Bangladesh"}
+              </motion.p>
+              <motion.p
+                variants={opacityVariant}
+                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
+              >
+                <span>Email: </span>
+                <span className="text-sky-800 dark:text-sky-400">
+                  <a href={`mailto:${profileInfo?.contact_email || "numanibnmazid@gmail.com"}`}>
+                    {profileInfo?.contact_email || "numanibnmazid@gmail.com"}
+                  </a>
+                </span>
+              </motion.p>
+              <motion.p
+                variants={opacityVariant}
+                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
+              >
+                <span>Contact: </span>
+                <span className="text-sky-800 dark:text-sky-400">
+                  <a href={`tel:${profileInfo?.contact || "+880 1685238317"}`}>
+                    {profileInfo?.contact || "+880 1685238317"}
+                  </a>
+                </span>
               </motion.p>
             </div>
 

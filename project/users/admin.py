@@ -15,7 +15,7 @@ class UserAdmin(BaseUserAdmin):
                     "slug",
                     "is_portfolio_user",
                     "name",
-                    "nick_name",
+                    "nickname",
                     "gender",
                     "image",
                     "dob",

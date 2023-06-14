@@ -17,6 +17,7 @@ djangorestframework = "^3.14.0"
 drf-yasg = "^1.21.5"
 django-rest-knox = "^4.2.0"
 pillow = "^9.5.0"
+django-cors-headers = "^4.1.0"
 
 [tool.poetry.dev-dependencies]
 

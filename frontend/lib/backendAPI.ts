@@ -1,4 +1,35 @@
+
 const BACKEND_API_BASE_URL = process.env.BACKEND_API_BASE_URL
+const BACKEND_API_TOKEN = process.env.BACKEND_API_TOKEN
+
+
+// *** PROFILE ***
+// Profile URL
+const PROFILE_PATH = "users/get_portfolio_user/"
+const PROFILE_ENDPOINT = "http://127.0.0.1:8000/api/" + PROFILE_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve Portfolio User Information.
+ */
+export const getProfileInfo = async () => {
+  const portfolioProfile = await fetch(
+    PROFILE_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (portfolioProfile.ok) {
+    const responseData = await portfolioProfile.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching portfolio profile: ${portfolioProfile.status} ${portfolioProfile.statusText}`
+    // Handle the error or display the error message
+    console.log(errorMessage)
+  }
+}
 
 // *** SKILLS ***
 

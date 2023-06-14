@@ -9,11 +9,37 @@ import { ReadTimeResults } from "reading-time"
 export type PersonalStaticData = {
   name: string,
   profession: string,
-  current_position: string
+  current_position: string,
+  about: string
 }
 
 export type StaticData = {
   personal: PersonalStaticData
+}
+
+/* Profile Types */
+export type ProfileType = {
+  id: number
+  username: string
+  email: string
+  name: string
+  slug: string
+  nickname: string
+  gender: string
+  image: string
+  dob: string
+  website: string
+  contact: string
+  contact_email: string
+  address: string
+  about: string
+  is_portfolio_user: string
+  is_active: string
+  is_staff: string
+  is_superuser: string
+  date_joined: string
+  last_login: string
+  updated_at: string
 }
 
 /* Custom Animated Components types */

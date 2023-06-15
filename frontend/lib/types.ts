@@ -84,11 +84,22 @@ export type ProjectType = {
 }
 
 export type ExperienceType = {
-  title: string
+  id: number
+  slug: string
   company: string
+  company_image: string
   company_url: string
+  address: string
+  designation: string
+  job_type: string
+  start_date: string
+  end_date: string
   duration: string
+  duration_in_days: string
+  currently_working: string
   description: string
+  created_at: string
+  updated_at: string
 }
 
 export type SkillType = {

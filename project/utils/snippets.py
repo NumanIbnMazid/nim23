@@ -171,38 +171,38 @@ def simple_random_string_with_timestamp(size=None):
 #     return decorator
 
 
-# def autoslugWithFieldAndUUID(fieldname):
-#     """[Generates auto slug integrating model's field value and UUID]
+def autoslugWithFieldAndUUID(fieldname):
+    """[Generates auto slug integrating model's field value and UUID]
 
-#     Args:
-#         fieldname ([str]): [Model field name to use to generate slug]
-#     """
+    Args:
+        fieldname ([str]): [Model field name to use to generate slug]
+    """
 
-#     def decorator(model):
-#         # some sanity checks first
-#         assert hasattr(model, fieldname), f"Model has no field {fieldname}"
-#         assert hasattr(model, "slug"), "Model is missing a slug field"
+    def decorator(model):
+        # some sanity checks first
+        assert hasattr(model, fieldname), f"Model has no field {fieldname}"
+        assert hasattr(model, "slug"), "Model is missing a slug field"
 
-#         @receiver(models.signals.pre_save, sender=model, weak=False)
-#         def generate_slug(sender, instance, *args, raw=False, **kwargs):
-#             if not raw and not instance.slug:
-#                 source = getattr(instance, fieldname)
-#                 try:
-#                     slug = slugify(source)[:123] + "-" + str(uuid.uuid4())
-#                     Klass = instance.__class__
-#                     qs_exists = Klass.objects.filter(slug=slug).exists()
-#                     if qs_exists:
-#                         new_slug = "{slug}-{randstr}".format(
-#                             slug=slug,
-#                             randstr=random_string_generator(size=4)
-#                         )
-#                         instance.slug = new_slug
-#                     else:
-#                         instance.slug = slug
-#                 except Exception as e:
-#                     instance.slug = simple_random_string()
-#         return model
-#     return decorator
+        @receiver(models.signals.pre_save, sender=model, weak=False)
+        def generate_slug(sender, instance, *args, raw=False, **kwargs):
+            if not raw and not instance.slug:
+                source = getattr(instance, fieldname)
+                try:
+                    slug = slugify(source)[:123] + "-" + str(uuid.uuid4())
+                    Klass = instance.__class__
+                    qs_exists = Klass.objects.filter(slug=slug).exists()
+                    if qs_exists:
+                        new_slug = "{slug}-{randstr}".format(
+                            slug=slug,
+                            randstr=random_string_generator(size=4)
+                        )
+                        instance.slug = new_slug
+                    else:
+                        instance.slug = slug
+                except Exception as e:
+                    instance.slug = simple_random_string()
+        return model
+    return decorator
 
 
 # def autoslugFromField(fieldname):
@@ -319,7 +319,7 @@ def get_static_file_path(static_path):
     static_file = finders.find(static_path)
     if static_file:
         return static_file
-    return None
+    return
 
 
 def image_as_base64(image_file):
@@ -328,7 +328,7 @@ def image_as_base64(image_file):
     """
     if not os.path.isfile(image_file):
         print(f"Image file not found: {image_file}")
-        return None
+        return
 
     # Get the file extension dynamically
     extension = os.path.splitext(image_file)[1][1:]

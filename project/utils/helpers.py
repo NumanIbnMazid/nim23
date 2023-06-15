@@ -1,6 +1,11 @@
 from rest_framework.response import Response
-from functools import wraps
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.renderers import JSONRenderer
+from rest_framework import permissions
+from django.db import models
+from django.http import Http404
+from django.utils.translation import gettext_lazy as _
+from functools import wraps
 
 
 class ResponseWrapper(Response, JSONRenderer):
@@ -8,9 +13,6 @@ class ResponseWrapper(Response, JSONRenderer):
         self,
         data=None,
         error_code=None,
-        template_name=None,
-        headers=None,
-        exception=False,
         content_type=None,
         error_message=None,
         message=None,
@@ -110,3 +112,46 @@ def custom_response_wrapper(viewset_cls):
 
     viewset_cls.finalize_response = wrapped_finalize_response
     return viewset_cls
+
+
+class CustomModelManager(models.Manager):
+    """
+    Custom Model Manager
+    actions: all(), get_by_id(id), get_by_slug(slug)
+    """
+    def all(self):
+        return self.get_queryset()
+
+    def get_by_id(self, id):
+        try:
+            return self.get(id=id)
+        except self.model.DoesNotExist:
+            raise Http404(_("Not Found !!!"))
+        except self.model.MultipleObjectsReturned:
+            return self.get_queryset().filter(id=id).first()
+        except Exception:
+            raise Http404(_("Something went wrong !!!"))
+
+    def get_by_slug(self, slug):
+        try:
+            return self.get(slug=slug)
+        except self.model.DoesNotExist:
+            raise Http404(_("Not Found !!!"))
+        except self.model.MultipleObjectsReturned:
+            return self.get_queryset().filter(id=id).first()
+        except Exception:
+            raise Http404(_("Something went wrong !!!"))
+
+
+class ProjectGenericModelViewset(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
+    lookup_field = "slug"
+
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        limit = self.request.GET.get('_limit')
+        if limit:
+            queryset = queryset[:int(limit)]
+        return queryset

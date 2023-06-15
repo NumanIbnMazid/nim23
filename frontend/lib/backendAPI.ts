@@ -31,6 +31,45 @@ export const getProfileInfo = async () => {
   }
 }
 
+// *** EXPERIENCE ***
+
+// Experience URL
+
+const EXPERIENCE_PATH = "professional-experiences/"
+const EXPERIENCE_ENDPOINT = "http://127.0.0.1:8000/api/" + EXPERIENCE_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Experience Data.
+ */
+export const getAllExperiences = async (length?: number | undefined) => {
+  let ENDPOINT = null
+  // Set limit if length is not undefined
+  if (length !== undefined) {
+    ENDPOINT = EXPERIENCE_ENDPOINT + `?_limit=${length}`
+  }
+  else {
+    ENDPOINT = EXPERIENCE_ENDPOINT
+  }
+
+  const allExperiences = await fetch(
+    ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allExperiences.ok) {
+    const responseData = await allExperiences.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching professional experiences: ${allExperiences.status} ${allExperiences.statusText}`
+    // Handle the error or display the error message
+    console.log(errorMessage)
+  }
+}
+
 // *** SKILLS ***
 
 // Skills URL
@@ -106,38 +145,6 @@ export const getAllBlogs = async (length?: number | undefined) => {
   // ******* Faking data Ends *******
 
   return fakeBlogsData
-}
-
-// *** EXPERIENCE ***
-
-// Experience URL
-const EXPERIENCE_PATH = "/posts?_limit=5"
-const EXPERIENCE_ENDPOINT = BACKEND_API_BASE_URL + EXPERIENCE_PATH
-
-/**
- * Makes a request to the BACKEND API to retrieve all Experience Data.
- */
-export const getAllExperiences = async () => {
-
-  const allExperiences = await fetch(
-    EXPERIENCE_ENDPOINT
-  )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching experiences:', error))
-
-  // TODO:Integrate with backend API
-  // ******* Faking data Starts *******
-  const fakeExperiencesData = allExperiences.map((experience: { title: any, body: any }) => ({
-    title: "Software Engineer",
-    company: experience.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-    company_url: "https://github.com/NumanIbnMazid",
-    duration: "2018 - 2019",
-    description: experience.body
-  }))
-  // Need to return `allExperiences`
-  // ******* Faking data Ends *******
-
-  return fakeExperiencesData
 }
 
 // *** PROJECTS ***

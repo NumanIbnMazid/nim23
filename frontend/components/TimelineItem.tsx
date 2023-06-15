@@ -1,17 +1,28 @@
+import Image from "next/image"
+
+
 type Props = {
-  title: string;
-  meta: string;
-  link?: string | null;
-  meta_small?: string | null;
-  content: any;
+  designation: string
+  company: string
+  company_image: string
+  company_url?: string | null
+  address?: string | null
+  job_type: string
+  duration: string
+  duration_in_days: string
+  description?: any | null
 }
 
 export function TimelineItem({
-  title,
-  meta,
-  link = null,
-  meta_small,
-  content
+  designation,
+  company,
+  company_image,
+  company_url = null,
+  address = null,
+  job_type,
+  duration,
+  duration_in_days,
+  description = null
 }: Props) {
   return (
     <>
@@ -31,21 +42,53 @@ export function TimelineItem({
                 fill="currentColor"
               ></path>
             </svg>
-            <h3 className="p-0 m-0">{title}</h3>
+            <h3 className="p-0 m-0 font-bold">{designation}</h3>
 
-            {link ? (
-              <a className="p-0 m-0" href={link}>
-                {meta}
-              </a>
-            ) : (
-              <p className="p-0 m-0">{meta}</p>
-            )}
-            <p className="p-0 m-0 text-sm text-gray-500">{meta_small}</p>
+            {company_image ? (
+              <div className="mt-2 mb-4">
+                {company_url ? (
+                  <a className="p-0 m-0" href={company_url} target="_blank" rel="noreferrer">
+                    <Image
+                      src={company_image}
+                      className="rounded-full shadow filter"
+                      width={60}
+                      height={60}
+                      alt={company}
+                      quality={100}
+                      priority
+                    />
+                    <p className="p-0 m-0 mt-4">{company}</p>
+                  </a>
+                ) : (
+                  <div className="p-0 m-0">
+                    <Image
+                      src={company_image}
+                      className="rounded-full shadow filter"
+                      width={70}
+                      height={70}
+                      alt={company}
+                      quality={100}
+                      priority
+                    />
+                    <p className="p-0 m-0 mt-4">{company}</p>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            <p className="p-0 m-0 text-sm text-gray-500">
+              <span className="font-bold">{duration}</span>
+              <span className="ml-2 font-light">({duration_in_days})</span>
+            </p>
+
+            {address ? <p className="p-0 m-0 text-sm font-light text-gray-500">{address}</p> : null}
+
+            {job_type ? <p className="p-0 m-0 text-sm font-light text-gray-500 italic">[{job_type}]</p> : null}
           </div>
         </div>
         <div
-          className="relative md:border-b md:border-gray-300 md:dark:border-gray-400 md:col-span-3"
-          dangerouslySetInnerHTML={{ __html: content }}
+          className="relative md:border-gray-300 md:dark:border-gray-400 md:col-span-3"
+          dangerouslySetInnerHTML={{ __html: description }}
         ></div>
       </article>
     </>

@@ -13,8 +13,16 @@ def get_filename(filepath):
 
 
 # User Image Path
-def upload_user_image_path(instance, filename):
+def get_user_image_path(instance, filename):
     new_filename = get_filename(filename)
     return "Users/{username}/Images/{final_filename}".format(
         username=slugify(instance.username[:50]), final_filename=new_filename
+    )
+
+
+# Professional Experience Company Image Path
+def get_professional_experience_company_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "ProfessionalExperiences/{company}/Images/{final_filename}".format(
+        company=slugify(instance.company[:50]), final_filename=new_filename
     )

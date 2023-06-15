@@ -1,8 +1,8 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType } from "@lib/types"
+import { MovieType, PostType, ExperienceType } from "@lib/types"
 import StaticPage from "@components/StaticPage"
-import { getAllMovies } from "@lib/backendAPI"
+import { getAllExperiences, getAllMovies } from "@lib/backendAPI"
 import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
@@ -21,16 +21,23 @@ export default function About({
   movies: MovieType[]
 }) {
 
+  const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [movies, setMovies] = useState([])
 
-  useEffect(() => {
-    fetchMovies()
-  }, [])
+  const fetchExperiences = async () => {
+    const experiencesData: ExperienceType[] = await getAllExperiences()
+    setExperiences(experiencesData)
+  }
 
   const fetchMovies = async () => {
     const moviesData = await getAllMovies()
     setMovies(moviesData)
   }
+
+  useEffect(() => {
+    fetchExperiences()
+    fetchMovies()
+  }, [])
 
   // ******* Loader Starts *******
   if (movies.length === 0) {
@@ -51,7 +58,7 @@ export default function About({
           className="grid min-h-screen py-20 place-content-center"
         >
           <div>
-            <ExperienceSection />
+            <ExperienceSection experiences={experiences} />
             <SkillSection />
             <Projects />
             <Certificates />

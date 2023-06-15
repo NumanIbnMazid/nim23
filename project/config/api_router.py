@@ -1,8 +1,7 @@
-from django.conf import settings
-from rest_framework.routers import DefaultRouter, SimpleRouter
 from .views import ExampleView
 from .router import router
 from users.api.routers import *
+from portfolios.api.professional_experiences.routers import *
 
 
 router.register("example", ExampleView, basename="example")

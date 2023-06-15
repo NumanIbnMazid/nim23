@@ -9,9 +9,8 @@ from django.contrib.auth.models import (
 from django.utils import timezone
 from django.http import Http404
 from utils.snippets import autoslugFromUUID, generate_unique_username_from_email
-from utils.image_upload_helpers import upload_user_image_path
+from utils.image_upload_helpers import get_user_image_path
 from django.utils.translation import gettext_lazy as _
-from django.templatetags.static import static
 from django.conf import settings
 from utils.snippets import image_as_base64, get_static_file_path
 
@@ -90,7 +89,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(
         max_length=20, choices=Gender.choices, blank=True, null=True
     )
-    image = models.ImageField(upload_to=upload_user_image_path, null=True, blank=True)
+    image = models.ImageField(upload_to=get_user_image_path, null=True, blank=True)
     dob = models.DateField(null=True, blank=True, verbose_name=_("date of birth"))
     website = models.URLField(null=True, blank=True)
     contact = models.CharField(max_length=30, null=True, blank=True)
@@ -143,7 +142,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if image_path:
             return image_as_base64(image_path)
 
-        return None
+        return
 
 
 @receiver(pre_save, sender=User)

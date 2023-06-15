@@ -22,18 +22,19 @@ import staticData from "@content/StaticData"
 import React from "react"
 import Link from "next/link"
 import { useEffect, useState } from 'react'
-import { getProfileInfo, getAllBlogs } from "@lib/backendAPI"
-import { ProfileType } from "@lib/types"
+import { getProfileInfo, getAllExperiences, getAllBlogs } from "@lib/backendAPI"
+import { ProfileType, ExperienceType } from "@lib/types"
 
 
 export default function Home() {
   const [profileInfo, setProfileInfo] = useState<ProfileType | null>(null)
+  const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [blogs, setBlogs] = useState([])
 
-  useEffect(() => {
-    fetchProfileInfo()
-    fetchBlogs()
-  }, [])
+  const fetchExperiences = async () => {
+    const experiencesData: ExperienceType[] = await getAllExperiences()
+    setExperiences(experiencesData)
+  }
 
   const fetchProfileInfo = async () => {
     const profileData: ProfileType = await getProfileInfo()
@@ -44,6 +45,12 @@ export default function Home() {
     const blogsData = await getAllBlogs(3)
     setBlogs(blogsData)
   }
+
+  useEffect(() => {
+    fetchProfileInfo()
+    fetchExperiences()
+    fetchBlogs()
+  }, [])
 
   // // ******* Loader Starts *******
   // if (blogs.length === 0) {
@@ -160,9 +167,39 @@ export default function Home() {
         </motion.section>
 
         <div>
-          <ExperienceSection />
+
+          {/* Experience Section */}
+          <ExperienceSection experiences={experiences} />
+
+          {/* View all experiences link */}
+          <Link
+            href="/about"
+            className="flex items-center justify-center gap-1 font-medium transition border-transparent font-inter active:scale-95 active:border-black w-fit group md:ml-7"
+          >
+            View all experiences
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="w-6 h-6 ml-1 transition group-hover:translate-x-2"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17.5 12h-15m11.667-4l3.333 4-3.333-4zm3.333 4l-3.333 4 3.333-4z"
+              ></path>
+            </svg>
+          </Link>
+
+          {/* Skills Section */}
           <SkillSection />
+
+          {/* Blogs Section */}
           <BlogsSection blogs={blogs} />
+
+          {/* Contact Section */}
           <Contact />
         </div>
       </div>

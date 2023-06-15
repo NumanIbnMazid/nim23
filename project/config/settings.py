@@ -39,9 +39,12 @@ THIRD_PARTY_APPS = [
     "drf_yasg",
     # Django CORS Headers
     "corsheaders",
+    # Django CKEditor
+    "ckeditor",
 ]
 LOCAL_APPS = [
     "users",
+    "portfolios",
 ]
 INSTALLED_APPS = (
     [

@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         null=True,
-                        upload_to=utils.image_upload_helpers.upload_user_image_path,
+                        upload_to=utils.image_upload_helpers.get_user_image_path,
                     ),
                 ),
                 (

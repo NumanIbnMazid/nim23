@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = [
+        fields = (
             "id",
             "username",
             "email",
@@ -29,8 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             "last_login",
             "updated_at",
-        ]
-        read_only_fields = [
+        )
+        read_only_fields = (
             "id",
             "username",
             "is_active",
@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
             "is_superuser",
             "date_joined",
             "last_login",
-        ]
+        )
 
     def get_image(self, obj):
         return obj.get_user_image()

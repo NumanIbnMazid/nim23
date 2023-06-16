@@ -1,14 +1,14 @@
 from rest_framework import permissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.viewsets import GenericViewSet
 from knox.views import LoginView as KnoxLoginView
 from django.contrib.auth import login
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import get_user_model
-from rest_framework.viewsets import ModelViewSet
 from .serializers import UserSerializer
 from utils.helpers import custom_response_wrapper
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 
 class LoginView(KnoxLoginView):
@@ -24,7 +24,7 @@ class LoginView(KnoxLoginView):
 
 
 @custom_response_wrapper
-class UserViewset(ModelViewSet):
+class UserViewset(GenericViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer

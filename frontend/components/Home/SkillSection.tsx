@@ -1,18 +1,14 @@
-import { FadeContainer, popUp } from "../../content/FramerMotionVariants"
-import { HomeHeading } from "../../pages"
-import { motion } from "framer-motion"
-import { useDarkMode } from "@context/darkModeContext"
-import * as WindowsAnimation from "@lib/windowsAnimation"
-import React from "react"
+import { FadeContainer, popUp } from '../../content/FramerMotionVariants'
+import { HomeHeading } from '../../pages'
+import { motion } from 'framer-motion'
+import React from 'react'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getAllSkills } from "@lib/backendAPI"
-import { SkillType } from "@lib/types"
-
+import { getAllSkills } from '@lib/backendAPI'
+import { SkillType } from '@lib/types'
 
 export default function SkillSection() {
-  const { isDarkMode } = useDarkMode()
-  const [skills, setSkills] = useState([])
+  const [skills, setSkills] = useState<SkillType[]>([])
 
   useEffect(() => {
     fetchSkills()
@@ -38,31 +34,36 @@ export default function SkillSection() {
         whileInView="visible"
         variants={FadeContainer}
         viewport={{ once: true }}
-        className="grid grid-cols-3 gap-4 my-10"
+        className="grid grid-cols-4 gap-4 my-10"
       >
         {skills.map((skill: SkillType, index) => {
+          const level = Number(skill.level) || 0 // Convert level to a number or use 0 if it's null or invalid
+          const progressPercentage = (level / 5) * 100 // Calculate the progress percentage
+          const progressBarStyle = {
+            width: `${progressPercentage}%`,
+          }
+
           return (
             <motion.div
               variants={popUp}
               key={index}
-              title={skill.name}
-              onMouseMove={(e: React.MouseEvent<HTMLDivElement>) =>
-                WindowsAnimation.showHoverAnimation(e, isDarkMode)
-              }
-              onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) =>
-                WindowsAnimation.removeHoverAnimation(e)
-              }
-              className="flex items-center justify-center gap-4 p-4 origin-center transform border border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
+              title={skill.title}
+              className="p-2 origin-center transform border border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
             >
-              <div className="relative transition pointer-events-none select-none group-hover:scale-110 sm:group-hover:scale-100">
-                {/* @ts-ignore */}
-                {/* <Icon className="w-8 h-8" /> */}
-                <Image src={skill.icon} width={50} height={50} alt="Skill Image" />
-                {/* <b>{skill.icon}</b> */}
+              <div className="flex items-center justify-center">
+                <div className="relative transition pointer-events-none select-none group-hover:scale-110 sm:group-hover:scale-100">
+                  <Image src={skill.image} width={50} height={50} alt={skill.title} />
+                </div>
+
+                <p className="hidden text-sm font-semibold pointer-events-none select-none sm:inline-flex md:text-base ml-2">
+                  {skill.title}
+                </p>
               </div>
-              <p className="hidden text-sm font-semibold pointer-events-none select-none sm:inline-flex md:text-base">
-                {skill.name}
-              </p>
+              {skill.level !== null ? (
+                <div className="w-full h-2 bg-gray-300 rounded-full my-2 dark:bg-gray-200">
+                  <div className="h-full bg-emerald-600 rounded-full dark:bg-emerald-400" style={progressBarStyle} />
+                </div>
+              ) : null}
             </motion.div>
           )
         })}

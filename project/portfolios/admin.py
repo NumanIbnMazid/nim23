@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from utils.mixins import CustomModelAdminMixin
 from portfolios.models import (
-    ProfessionalExperience,
+    ProfessionalExperience, Skill
 )
 from ckeditor.widgets import CKEditorWidget
 
@@ -18,5 +18,15 @@ class ProfessionalExperienceAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = ProfessionalExperience
 
-
 admin.site.register(ProfessionalExperience, ProfessionalExperienceAdmin)
+
+
+# ----------------------------------------------------
+# *** Skill ***
+# ----------------------------------------------------
+
+class SkillAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    class Meta:
+        model = Skill
+
+admin.site.register(Skill, SkillAdmin)

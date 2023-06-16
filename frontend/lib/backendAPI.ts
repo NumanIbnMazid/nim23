@@ -73,35 +73,29 @@ export const getAllExperiences = async (length?: number | undefined) => {
 // *** SKILLS ***
 
 // Skills URL
-const SKILLS_PATH = "/todos?_limit=10"
-const SKILLS_ENDPOINT = BACKEND_API_BASE_URL + SKILLS_PATH
+const SKILLS_PATH = "skills/"
+const SKILLS_ENDPOINT = "http://127.0.0.1:8000/api/" + SKILLS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Skills Data.
  */
 export const getAllSkills = async () => {
-  // Make a request to the DEV API to retrieve a specific page of posts
   const allSkills = await fetch(
-    SKILLS_ENDPOINT
-    // {
-    //   headers: {
-    //     api_key: DEV_API!,
-    //   },
-    // }
+    SKILLS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
   )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching skills:', error))
 
-  // TODO:Integrate with backend API
-  // ******* Faking data Starts *******
-  const fakeSkillsData = allSkills.map((_skill: { title: string }, index: number) => ({
-    name: `Python ${index + 1}`,
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s"
-  }))
-  // Need to return `fakeSkillsData`
-  // ******* Faking data Ends *******
-
-  return fakeSkillsData
+  if (allSkills.ok) {
+    const responseData = await allSkills.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Skills: ${allSkills.status} ${allSkills.statusText}`
+    console.log(errorMessage)
+  }
 }
 
 

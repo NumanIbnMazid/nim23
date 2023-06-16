@@ -2,10 +2,15 @@ from django.db import models
 from django.conf import settings
 from django.utils import dateformat
 from django.utils.timezone import datetime
+from django.db.models.signals import pre_save
+from django.db.models import Max
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from utils.helpers import CustomModelManager
 from utils.snippets import autoslugWithFieldAndUUID, image_as_base64, get_static_file_path
-from utils.image_upload_helpers import get_professional_experience_company_image_path
+from utils.image_upload_helpers import (
+    get_professional_experience_company_image_path, get_skill_image_path
+)
 from ckeditor.fields import RichTextField
 
 
@@ -19,13 +24,13 @@ class ProfessionalExperience(models.Model):
     Details: Includes Job Experiences and other professional experiences.
     """
     class JobType(models.TextChoices):
-        FULL_TIME = _('Full Time'), _('Full Time')
-        PART_TIME = _('Part Time'), _('Part Time')
-        CONTRACTUAL = _('Contractual'), _('Contractual')
-        REMOTE = _('Remote'), _('Remote')
+        FULL_TIME = 'Full Time', _('Full Time')
+        PART_TIME = 'Part Time', _('Part Time')
+        CONTRACTUAL = 'Contractual', _('Contractual')
+        REMOTE = 'Remote', _('Remote')
 
-    slug = models.SlugField(max_length=255, unique=True)
-    company = models.CharField(max_length=150)
+    company = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     company_image = models.ImageField(upload_to=get_professional_experience_company_image_path, blank=True, null=True)
     company_url = models.URLField(blank=True, null=True)
     address = models.CharField(max_length=254, blank=True, null=True)
@@ -105,5 +110,74 @@ class ProfessionalExperience(models.Model):
         if self.company_image:
             image_path = settings.MEDIA_ROOT + self.company_image.url.lstrip("/media/")
         else:
-            image_path = get_static_file_path("icons/office-building.png")
+            image_path = get_static_file_path("icons/company.png")
         return image_as_base64(image_path)
+
+
+""" *************** Skill *************** """
+
+
+@autoslugWithFieldAndUUID(fieldname="title")
+class Skill(models.Model):
+    """
+    Skill model.
+    """
+    class Level(models.TextChoices):
+        One = 1, '1'
+        Two = 2, '2'
+        Three = 3, '3'
+        Four = 4, '4'
+        Five = 5, '5'
+
+    title = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    image = models.ImageField(upload_to=get_skill_image_path, blank=True, null=True)
+    level = models.CharField(choices=Level.choices, default=None, blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # custom model manager
+    objects = CustomModelManager()
+
+    class Meta:
+        db_table = 'skill'
+        verbose_name = _('Skill')
+        verbose_name_plural = _('Skills')
+        ordering = ('order', '-created_at')
+        get_latest_by = "created_at"
+
+    def __str__(self):
+        return self.title
+
+    def get_image(self):
+        if self.image:
+            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+        else:
+            image_path = get_static_file_path("icons/skill.png")
+        return image_as_base64(image_path)
+
+
+@receiver(pre_save, sender=Skill)
+def generate_order(sender, instance, **kwargs):
+    """
+    This method will generate order for new instances only.
+    Order will be generated automatically like 1, 2, 3, 4 and so on.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    """
+    if not instance.pk:  # Only generate order for new instances
+        if instance.order is None:
+            deleted_orders = Skill.objects.filter(order__isnull=False).values_list('order', flat=True)
+            max_order = Skill.objects.aggregate(Max('order')).get('order__max')
+
+            if deleted_orders:
+                deleted_orders = sorted(deleted_orders)
+                reused_order = None
+                for i in range(1, max_order + 2):
+                    if i not in deleted_orders:
+                        reused_order = i
+                        break
+                if reused_order is not None:
+                    instance.order = reused_order
+            else:
+                instance.order = max_order + 1 if max_order is not None else 1

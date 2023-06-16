@@ -103,8 +103,14 @@ export type ExperienceType = {
 }
 
 export type SkillType = {
-  name: string
-  icon: string
+  id: number
+  slug: string
+  title: string
+  image: string
+  level: string
+  order: number
+  created_at: string
+  updated_at: string
 }
 
 export type CertificateType = {

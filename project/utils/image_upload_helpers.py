@@ -26,3 +26,11 @@ def get_professional_experience_company_image_path(instance, filename):
     return "ProfessionalExperiences/{company}/Images/{final_filename}".format(
         company=slugify(instance.company[:50]), final_filename=new_filename
     )
+
+
+# Skill Image Path
+def get_skill_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Skills/{title}/Images/{final_filename}".format(
+        title=slugify(instance.title[:50]), final_filename=new_filename
+    )

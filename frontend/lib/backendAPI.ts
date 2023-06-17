@@ -98,6 +98,34 @@ export const getAllSkills = async () => {
   }
 }
 
+// *** EDUCATIONS ***
+
+// Educations URL
+const EDUCATIONS_PATH = "educations/"
+const EDUCATIONS_ENDPOINT = "http://127.0.0.1:8000/api/" + EDUCATIONS_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Skills Data.
+ */
+export const getAllEducations = async () => {
+  const allEducations = await fetch(
+    EDUCATIONS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allEducations.ok) {
+    const responseData = await allEducations.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Educations: ${allEducations.status} ${allEducations.statusText}`
+    console.log(errorMessage)
+  }
+}
+
 
 // *** BLOGS ***
 

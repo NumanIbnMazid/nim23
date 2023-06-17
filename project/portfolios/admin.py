@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from utils.mixins import CustomModelAdminMixin
 from portfolios.models import (
-    ProfessionalExperience, Skill
+    ProfessionalExperience, Skill, Education, EducationMedia
 )
 from ckeditor.widgets import CKEditorWidget
 
@@ -30,3 +30,20 @@ class SkillAdmin(CustomModelAdminMixin, admin.ModelAdmin):
         model = Skill
 
 admin.site.register(Skill, SkillAdmin)
+
+
+# ----------------------------------------------------
+# *** Education ***
+# ----------------------------------------------------
+
+class EducationMediaAdmin(admin.StackedInline):
+    model = EducationMedia
+
+
+class EducationAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    inlines = [EducationMediaAdmin]
+
+    class Meta:
+        model = Education
+
+admin.site.register(Education, EducationAdmin)

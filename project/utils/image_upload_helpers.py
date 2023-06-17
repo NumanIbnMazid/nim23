@@ -34,3 +34,17 @@ def get_skill_image_path(instance, filename):
     return "Skills/{title}/Images/{final_filename}".format(
         title=slugify(instance.title[:50]), final_filename=new_filename
     )
+
+
+# Education School Image Path
+def get_education_school_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Educations/{school}/Images/{final_filename}".format(
+        school=slugify(instance.school[:50]), final_filename=new_filename
+    )
+
+def get_education_media_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Educations/{school}/Media/{final_filename}".format(
+        school=slugify(instance.education.school[:50]), final_filename=new_filename
+    )

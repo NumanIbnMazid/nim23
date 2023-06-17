@@ -9,7 +9,6 @@ import { headingFromLeft } from "@content/FramerMotionVariants"
 import { useRouter } from 'next/router'
 
 
-// export default function ExperienceSection({ experienceProps = null }) {
 export default function ExperienceSection({ experiences }: { experiences: ExperienceType[] }) {
   const router = useRouter()
   // limit experiences to 1 if on home page otherwise show all
@@ -42,7 +41,7 @@ export default function ExperienceSection({ experiences }: { experiences: Experi
         viewport={{ once: true }}
         className="grid grid-cols-1 mb-10"
       >
-        <div className="mt-12 space-y-6">
+        <div className="mt-7 space-y-6">
           <p>Here's a brief rundown of my professional experiences.</p>
           {experiencesToDisplay ? (
             <TimelineList>
@@ -50,7 +49,7 @@ export default function ExperienceSection({ experiences }: { experiences: Experi
                 <motion.div
                   key={index}
                   variants={popUp}
-                  className="flex items-center justify-center gap-4 p-4 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
+                  className="flex items-center justify-center gap-4 p-2 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
                 >
                   <TimelineItem
                     designation={experience.designation}

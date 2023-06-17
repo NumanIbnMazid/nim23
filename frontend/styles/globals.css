@@ -307,3 +307,24 @@ code > .line::before {
 
 
 /* Custom CSS */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Add this line */
+}
+.modal {
+  position: relative;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}

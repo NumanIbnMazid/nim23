@@ -113,6 +113,34 @@ export type SkillType = {
   updated_at: string
 }
 
+export type EducationMediaType = {
+  id: number
+  education: number
+  title: string
+  slug: string
+  file: string
+  description: string
+  created_at: string
+  updated_at: string
+}
+
+export type EducationType = {
+  id: number
+  slug: string
+  school: string
+  image?: string
+  degree: string
+  address?: string
+  field_of_study?: string
+  duration: string
+  grade?: string
+  activities?: string
+  description?: string
+  education_media?: EducationMediaType[]
+  created_at: string
+  updated_at: string
+}
+
 export type CertificateType = {
   id: string
   title: string

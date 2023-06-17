@@ -1,8 +1,8 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType, ExperienceType } from "@lib/types"
+import { MovieType, PostType, ExperienceType, EducationType } from "@lib/types"
 import StaticPage from "@components/StaticPage"
-import { getAllExperiences, getAllMovies } from "@lib/backendAPI"
+import { getAllExperiences, getAllEducations, getAllMovies } from "@lib/backendAPI"
 import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
@@ -10,6 +10,7 @@ import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import SkillSection from "@components/Home/SkillSection"
 import ExperienceSection from "@components/Home/ExperienceSection"
+import Education from "@components/Education"
 import Certificates from "@components/Certificates"
 import Projects from "@components/Projects"
 
@@ -22,11 +23,17 @@ export default function About({
 }) {
 
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
+  const [educations, setEducations] = useState<EducationType[]>([])
   const [movies, setMovies] = useState([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences()
     setExperiences(experiencesData)
+  }
+
+  const fetchEducations = async () => {
+    const educationsData: EducationType[] = await getAllEducations()
+    setEducations(educationsData)
   }
 
   const fetchMovies = async () => {
@@ -36,6 +43,7 @@ export default function About({
 
   useEffect(() => {
     fetchExperiences()
+    fetchEducations()
     fetchMovies()
   }, [])
 
@@ -60,6 +68,7 @@ export default function About({
           <div>
             <ExperienceSection experiences={experiences} />
             <SkillSection />
+            <Education educations={educations} />
             <Projects />
             <Certificates />
           </div>

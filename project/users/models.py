@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 )
 from django.utils import timezone
 from django.http import Http404
-from utils.snippets import autoslugFromUUID, generate_unique_username_from_email
+from utils.snippets import autoSlugFromUUID, generate_unique_username_from_email
 from utils.image_upload_helpers import get_user_image_path
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -70,7 +70,7 @@ class UserManager(BaseUserManager):
         return instance
 
 
-@autoslugFromUUID()
+@autoSlugFromUUID()
 class User(AbstractBaseUser, PermissionsMixin):
     class Gender(models.TextChoices):
         MALE = "Male", _("Male")

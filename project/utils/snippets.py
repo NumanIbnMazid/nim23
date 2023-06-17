@@ -171,7 +171,7 @@ def simple_random_string_with_timestamp(size=None):
 #     return decorator
 
 
-def autoslugWithFieldAndUUID(fieldname):
+def autoSlugWithFieldAndUUID(fieldname):
     """[Generates auto slug integrating model's field value and UUID]
 
     Args:
@@ -239,7 +239,7 @@ def autoslugWithFieldAndUUID(fieldname):
 #     return decorator
 
 
-def autoslugFromUUID():
+def autoSlugFromUUID():
     """[Generates auto slug using UUID]"""
 
     def decorator(model):

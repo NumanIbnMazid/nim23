@@ -35,7 +35,7 @@ const MediaModal: React.FC<MediaModalProps> = ({ title, file, description }) => 
     if (fileExtension === 'pdf') {
       return <PDFViewer base64String={file} />
     }
-    return <Image src={file} alt={title} className="mb-4" width={1000} height={1000} quality={75} />
+    return <Image src={file} alt={title} className="mb-4" width={1000} height={1000} quality={75} style={{ width: "auto", height: "auto" }} />
   }
 
   return (

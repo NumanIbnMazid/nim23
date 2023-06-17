@@ -3,8 +3,9 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 
-// Set the worker URL for pdf.js
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+// Set the worker for pdf.js
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.js"
 
 interface PDFViewerProps {
   base64String: string

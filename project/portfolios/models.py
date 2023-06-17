@@ -9,7 +9,8 @@ from django.utils.translation import gettext_lazy as _
 from utils.helpers import CustomModelManager
 from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, image_as_base64, get_static_file_path
 from utils.image_upload_helpers import (
-    get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path
+    get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path,
+    get_certification_image_path, get_certification_media_path
 )
 from ckeditor.fields import RichTextField
 
@@ -267,6 +268,83 @@ class EducationMedia(models.Model):
 
     def __str__(self):
         return self.education.__str__()
+
+    def get_file(self):
+        if self.file:
+            file_path = settings.MEDIA_ROOT + self.file.url.lstrip("/media/")
+            return image_as_base64(file_path)
+        return
+
+
+""" *************** Certification *************** """
+
+
+@autoSlugWithFieldAndUUID(fieldname="title")
+class Certification(models.Model):
+    title = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    organization = models.CharField(max_length=150)
+    address = models.CharField(max_length=254, blank=True, null=True)
+    image = models.ImageField(upload_to=get_certification_image_path, blank=True, null=True)
+    issue_date = models.DateField()
+    expiration_date = models.DateField(blank=True, null=True)
+    does_not_expire = models.BooleanField(default=False)
+    credential_id = models.CharField(max_length=254, blank=True, null=True)
+    credential_url = models.URLField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # custom model manager
+    objects = CustomModelManager()
+
+    class Meta:
+        db_table = 'certification'
+        verbose_name = _('Certification')
+        verbose_name_plural = _('Certifications')
+        ordering = ['-issue_date']
+        get_latest_by = "created_at"
+
+    def __str__(self):
+        return self.title
+
+    def get_image(self):
+        if self.image:
+            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+        else:
+            image_path = get_static_file_path("icons/certificate.png")
+        return image_as_base64(image_path)
+
+    def get_expiration_date(self):
+        if self.does_not_expire:
+            return _('Does not expire')
+        elif self.expiration_date:
+            return self.expiration_date.strftime("%B %Y")
+        return _('Not Specified')
+
+
+@autoSlugFromUUID()
+class CertificationMedia(models.Model):
+    certification = models.ForeignKey(Certification, on_delete=models.CASCADE, related_name="certification_media")
+    title = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    file = models.FileField(upload_to=get_certification_media_path)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # custom model manager
+    objects = CustomModelManager()
+
+    class Meta:
+        db_table = 'certification_media'
+        verbose_name = _('Certification Media')
+        verbose_name_plural = _('Certification Media')
+        get_latest_by = "created_at"
+        order_with_respect_to = 'certification'
+
+    def __str__(self):
+        return self.certification.__str__()
 
     def get_file(self):
         if self.file:

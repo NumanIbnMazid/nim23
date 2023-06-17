@@ -105,7 +105,7 @@ const EDUCATIONS_PATH = "educations/"
 const EDUCATIONS_ENDPOINT = "http://127.0.0.1:8000/api/" + EDUCATIONS_PATH
 
 /**
- * Makes a request to the BACKEND API to retrieve all Skills Data.
+ * Makes a request to the BACKEND API to retrieve all Educations Data.
  */
 export const getAllEducations = async () => {
   const allEducations = await fetch(
@@ -122,6 +122,34 @@ export const getAllEducations = async () => {
     return responseData.data
   } else {
     const errorMessage = `Error fetching Educations: ${allEducations.status} ${allEducations.statusText}`
+    console.log(errorMessage)
+  }
+}
+
+// *** CERTIFICATES ***
+
+// Certificates URL
+const CERTIFICATES_PATH = "certifications/"
+const CERTIFICATES_ENDPOINT = "http://127.0.0.1:8000/api/" + CERTIFICATES_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Certificates Data.
+ */
+export const getAllCertificates = async () => {
+  const allCertificates = await fetch(
+    CERTIFICATES_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allCertificates.ok) {
+    const responseData = await allCertificates.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Educations: ${allCertificates.status} ${allCertificates.statusText}`
     console.log(errorMessage)
   }
 }
@@ -201,39 +229,6 @@ export const getAllProjects = async () => {
   // ******* Faking data Ends *******
 
   return fakeProjectsData
-}
-
-// *** CERTIFICATES ***
-
-// Certificate URL
-const CERTIFICATES_PATH = "/posts?_limit=5"
-const CERTIFICATES_ENDPOINT = BACKEND_API_BASE_URL + CERTIFICATES_PATH
-
-/**
- * Makes a request to the BACKEND API to retrieve all Certificate Data.
- */
-export const getAllCertificates = async () => {
-
-  const allCertificates = await fetch(
-    CERTIFICATES_ENDPOINT
-  )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching Certificates:', error))
-
-  // TODO:Integrate with backend API
-  // ******* Faking data Starts *******
-  const fakeCertificatesData = allCertificates.map((certificate: { title: any, body: any }, index: number) => ({
-    id: index,
-    title: certificate.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-    orgName: "Hackerrank",
-    orgLogo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-    issuedDate: new Date(),
-    url: "https://github.com/NumanIbnMazid"
-  }))
-  // Need to return `allExperiences`
-  // ******* Faking data Ends *******
-
-  return fakeCertificatesData
 }
 
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import Image from 'next/image'
 import { TimelineList } from '@components/TimelineList'
-import { EducationType, EducationMediaType } from '@lib/types'
+import { EducationType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
 
 
@@ -14,9 +14,6 @@ export default function EducationSection({ educations }: { educations: Education
     return <div>Loading...</div>
   }
   // ******* Loader Ends *******
-  const handleClick = (param: any) => {
-    console.log('Button clicked with parameter:', param);
-  }
 
   return (
     <section className="mx-5">
@@ -37,9 +34,9 @@ export default function EducationSection({ educations }: { educations: Education
                 <motion.div
                   key={index}
                   variants={popUp}
-                  className="flex items-center justify-center gap-4 p-2 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
+                  className="gap-4 p-2 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
                 >
-                  <article className="relative grid md:grid-cols-6 md:gap-10 before:content-[''] mx-4 before:block before:h-full before:absolute before:left-[-25px] md:before:left-[-37px] before:border-l-2 before:border-gray-300 dark:before:border-gray-700 md:space-x-4">
+                  <article className="relative grid md:grid-cols-6 md:gap-10 before:content-[''] mx-6 before:block before:h-full before:absolute before:left-[-25px] md:before:left-[-37px] before:border-l-2 before:border-gray-300 dark:before:border-gray-700 md:space-x-4">
                     <div className="relative pb-12 md:col-span-3">
                       <div className="sticky top-28">
                         <svg
@@ -105,7 +102,7 @@ export default function EducationSection({ educations }: { educations: Education
                         <div className="mt-4">
                           <div className="mt-4">
                             <h2 className="font-bold">Attachments</h2>
-                            {education.education_media.map((media: EducationMediaType, mediaIndex) => (
+                            {education.education_media.map((media: MediaType, mediaIndex) => (
                               <div key={mediaIndex} className="my-4">
                                   <MediaModal
                                   key={mediaIndex}

@@ -48,3 +48,17 @@ def get_education_media_path(instance, filename):
     return "Educations/{school}/Media/{final_filename}".format(
         school=slugify(instance.education.school[:50]), final_filename=new_filename
     )
+
+
+# Certification Image Path
+def get_certification_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Certifications/{organization}/Images/{final_filename}".format(
+        organization=slugify(instance.organization[:50]), final_filename=new_filename
+    )
+
+def get_certification_media_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Certifications/{organization}/Media/{final_filename}".format(
+        organization=slugify(instance.certification.organization[:50]), final_filename=new_filename
+    )

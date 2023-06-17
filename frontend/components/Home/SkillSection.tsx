@@ -34,7 +34,7 @@ export default function SkillSection() {
         whileInView="visible"
         variants={FadeContainer}
         viewport={{ once: true }}
-        className="grid grid-cols-4 gap-4 my-10"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-10"
       >
         {skills.map((skill: SkillType, index) => {
           const level = Number(skill.level) || 0 // Convert level to a number or use 0 if it's null or invalid
@@ -55,7 +55,7 @@ export default function SkillSection() {
                   <Image src={skill.image} width={50} height={50} alt={skill.title} />
                 </div>
 
-                <p className="hidden text-sm font-semibold pointer-events-none select-none sm:inline-flex md:text-base ml-2">
+                <p className="text-sm font-semibold pointer-events-none select-none sm:inline-flex md:text-base ml-2">
                   {skill.title}
                 </p>
               </div>

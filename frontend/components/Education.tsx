@@ -26,7 +26,7 @@ export default function EducationSection({ educations }: { educations: Education
         viewport={{ once: true }}
         className="grid grid-cols-1 mb-10"
       >
-        <div className="mt-6 space-y-6">
+        <div className="mt-12 space-y-6">
           <p>Here's a brief rundown of my Academic Background.</p>
           {educations ? (
             <TimelineList>

@@ -69,8 +69,8 @@ export default function About({
             <ExperienceSection experiences={experiences} />
             <SkillSection />
             <Education educations={educations} />
-            <Projects />
             <Certificates />
+            <Projects />
           </div>
         </motion.section>
       </div>

@@ -27,16 +27,18 @@ export default function SkillSection() {
 
   return (
     <section className="mx-5">
-      <HomeHeading title="My Top Skills" />
+      <HomeHeading title="Skills" />
 
       <motion.div
         initial="hidden"
         whileInView="visible"
         variants={FadeContainer}
         viewport={{ once: true }}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-10"
+        className="mt-12 space-y-6 mb-10"
       >
-        {skills.map((skill: SkillType, index) => {
+        <p>Here are some of my top Skills.</p>
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-10'>
+          {skills.map((skill: SkillType, index) => {
           const level = Number(skill.level) || 0 // Convert level to a number or use 0 if it's null or invalid
           const progressPercentage = (level / 5) * 100 // Calculate the progress percentage
           const progressBarStyle = {
@@ -67,6 +69,7 @@ export default function SkillSection() {
             </motion.div>
           )
         })}
+        </div>
       </motion.div>
     </section>
   )

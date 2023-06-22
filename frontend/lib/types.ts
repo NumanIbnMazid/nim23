@@ -72,15 +72,31 @@ export type SpotifyArtist = {
   popularity: number
 }
 
+export type MediaType = {
+  id: number
+  title: string
+  slug: string
+  file: string
+  description: string
+  created_at: string
+  updated_at: string
+}
+
 export type ProjectType = {
   id: string
-  name: string
-  coverImage: string
-  description: string
-  githubURL: string
-  previewURL?: string
-  tools?: string[]
-  pinned?: boolean
+  title: string
+  slug: string
+  image: string
+  short_description: string
+  technology?: string
+  duration: string
+  duration_in_days?: string
+  preview_url?: string
+  github_url?: string
+  description?: string
+  project_media?: MediaType[]
+  created_at: string
+  updated_at: string
 }
 
 export type ExperienceType = {
@@ -109,16 +125,6 @@ export type SkillType = {
   image: string
   level: string
   order: number
-  created_at: string
-  updated_at: string
-}
-
-export type MediaType = {
-  id: number
-  title: string
-  slug: string
-  file: string
-  description: string
   created_at: string
   updated_at: string
 }

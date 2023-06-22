@@ -1,8 +1,8 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType, ExperienceType, EducationType } from "@lib/types"
+import { MovieType, PostType, ExperienceType, EducationType, ProjectType } from "@lib/types"
 import StaticPage from "@components/StaticPage"
-import { getAllExperiences, getAllEducations, getAllMovies } from "@lib/backendAPI"
+import { getAllExperiences, getAllEducations, getAllProjects, getAllMovies } from "@lib/backendAPI"
 import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
@@ -12,7 +12,7 @@ import SkillSection from "@components/Home/SkillSection"
 import ExperienceSection from "@components/Home/ExperienceSection"
 import Education from "@components/Education"
 import Certificates from "@components/Certificates"
-import Projects from "@components/Projects"
+import ProjectSection from "@components/ProjectSection"
 
 
 export default function About({
@@ -24,6 +24,7 @@ export default function About({
 
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
+  const [projects, setProjects] = useState<ProjectType[]>([])
   const [movies, setMovies] = useState([])
 
   const fetchExperiences = async () => {
@@ -36,6 +37,11 @@ export default function About({
     setEducations(educationsData)
   }
 
+  const fetchProjects = async () => {
+    const projectsData: ProjectType[] = await getAllProjects()
+    setProjects(projectsData)
+  }
+
   const fetchMovies = async () => {
     const moviesData = await getAllMovies()
     setMovies(moviesData)
@@ -44,6 +50,7 @@ export default function About({
   useEffect(() => {
     fetchExperiences()
     fetchEducations()
+    fetchProjects()
     fetchMovies()
   }, [])
 
@@ -70,7 +77,7 @@ export default function About({
             <SkillSection />
             <Education educations={educations} />
             <Certificates />
-            <Projects />
+            <ProjectSection projects={projects} />
           </div>
         </motion.section>
       </div>

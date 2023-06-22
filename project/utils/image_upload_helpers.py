@@ -62,3 +62,17 @@ def get_certification_media_path(instance, filename):
     return "Certifications/{organization}/Media/{final_filename}".format(
         organization=slugify(instance.certification.organization[:50]), final_filename=new_filename
     )
+
+
+# Project Image Path
+def get_project_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Projects/{title}/Images/{final_filename}".format(
+        title=slugify(instance.title[:50]), final_filename=new_filename
+    )
+
+def get_project_media_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Projects/{title}/Media/{final_filename}".format(
+        title=slugify(instance.project.title[:50]), final_filename=new_filename
+    )

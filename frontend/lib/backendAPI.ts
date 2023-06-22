@@ -154,6 +154,65 @@ export const getAllCertificates = async () => {
   }
 }
 
+// *** PROJECTS ***
+
+// Certificates URL
+const PROJECTS_PATH = "projects/"
+const PROJECTS_ENDPOINT = "http://127.0.0.1:8000/api/" + PROJECTS_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Certificates Data.
+ */
+export const getAllProjects = async () => {
+  const allProjects = await fetch(
+    PROJECTS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allProjects.ok) {
+    const responseData = await allProjects.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Projects: ${allProjects.status} ${allProjects.statusText}`
+    console.log(errorMessage)
+  }
+}
+
+// *** MOVIES ***
+
+// Experience URL
+const MOVIE_PATH = "/posts?_limit=5"
+const MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Movie Data.
+ */
+export const getAllMovies = async () => {
+
+  const allMovies = await fetch(
+    MOVIE_ENDPOINT
+  )
+    .then((response) => response.json())
+    .catch((error) => console.log('Error fetching Movies:', error))
+
+  // ******* Faking data Starts *******
+  const fakeMoviesData = allMovies.map((movie: { title: any, body: any }, index: number) => ({
+    id: index,
+    url: "https://github.com/NumanIbnMazid",
+    name: movie.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
+    watched: false,
+    rating: 4
+  }))
+  // Need to return `allMovies`
+  // ******* Faking data Ends *******
+  return fakeMoviesData
+}
+
 
 // *** BLOGS ***
 
@@ -195,70 +254,4 @@ export const getAllBlogs = async (length?: number | undefined) => {
   // ******* Faking data Ends *******
 
   return fakeBlogsData
-}
-
-// *** PROJECTS ***
-
-// Certificate URL
-const PROJECTS_PATH = "/posts?_limit=5"
-const PROJECTS_ENDPOINT = BACKEND_API_BASE_URL + PROJECTS_PATH
-
-/**
- * Makes a request to the BACKEND API to retrieve all Certificate Data.
- */
-export const getAllProjects = async () => {
-
-  const allProjects = await fetch(
-    PROJECTS_ENDPOINT
-  )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching Projects:', error))
-
-  // TODO:Integrate with backend API
-  // ******* Faking data Starts *******
-  const fakeProjectsData = allProjects.map((project: { title: any, body: any }, index: number) => ({
-    id: index,
-    name: project.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-    description: project.body,
-    coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-    tools: ["Python", "Django", "JavaScript", "React", "Redux", "Node.js", "Express.js", "MongoDB", "PostgreSQL", "Docker", "AWS"],
-    githubURL: "https://github.com/NumanIbnMazid",
-    previewURL: "https://github.com/NumanIbnMazid"
-  }))
-  // Need to return `allExperiences`
-  // ******* Faking data Ends *******
-
-  return fakeProjectsData
-}
-
-
-// *** MOVIES ***
-
-// Experience URL
-const MOVIE_PATH = "/posts?_limit=5"
-const MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
-
-/**
- * Makes a request to the BACKEND API to retrieve all Movie Data.
- */
-export const getAllMovies = async () => {
-
-  const allMovies = await fetch(
-    MOVIE_ENDPOINT
-  )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching Movies:', error))
-
-  // ******* Faking data Starts *******
-  const fakeMoviesData = allMovies.map((movie: { title: any, body: any }, index: number) => ({
-    id: index,
-    url: "https://github.com/NumanIbnMazid",
-    name: movie.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-    watched: false,
-    rating: 4
-  }))
-  // Need to return `allMovies`
-  // ******* Faking data Ends *******
-  return fakeMoviesData
 }

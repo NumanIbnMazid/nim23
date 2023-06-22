@@ -16,6 +16,7 @@ class CertificationMediaSerializer(serializers.ModelSerializer):
 class CertificationSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     certification_media = CertificationMediaSerializer(many=True, read_only=True)
+    issue_date = serializers.SerializerMethodField()
     expiration_date = serializers.SerializerMethodField()
 
     class Meta:
@@ -25,6 +26,9 @@ class CertificationSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         return obj.get_image()
+
+    def get_issue_date(self, obj):
+        return obj.get_issue_date()
 
     def get_expiration_date(self, obj):
         return obj.get_expiration_date()

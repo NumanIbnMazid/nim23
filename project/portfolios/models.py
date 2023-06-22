@@ -178,22 +178,6 @@ class Education(models.Model, DurationMixin):
         return image_as_base64(image_path)
 
 
-    # def get_duration(self):
-    #     if self.end_date is None and not self.current:
-    #         raise ValueError(_("End date is required to calculate duration in days. Please provide end date or mark as present."))
-    #     if self.current and self.end_date is not None:
-    #         raise ValueError(_("End date is not required when marked as present. Please remove end date or mark as not present."))
-
-    #     end_date = None
-    #     if self.end_date is not None:
-    #         end_date = self.end_date.strftime("%b %Y")
-    #     if self.current:
-    #         end_date = _("Present")
-    #     start_date = self.start_date.strftime("%b %Y")
-    #     return f"{start_date} - {end_date}"
-
-
-
 @autoSlugFromUUID()
 class EducationMedia(ModelMediaMixin):
     education = models.ForeignKey(Education, on_delete=models.CASCADE, related_name="education_media")

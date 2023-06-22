@@ -2,15 +2,9 @@ import random
 import string
 import time
 from django.utils.text import slugify
-from urllib.parse import urlparse
 from django.db import models
 from django.dispatch import receiver
 import uuid
-
-# PDF imports
-from io import BytesIO
-from django.http import HttpResponse
-from django.template.loader import get_template
 import os
 import base64
 from django.contrib.staticfiles import finders
@@ -240,8 +234,6 @@ def autoSlugWithFieldAndUUID(fieldname):
 
 
 def autoSlugFromUUID():
-    """[Generates auto slug using UUID]"""
-
     def decorator(model):
         assert hasattr(model, "slug"), "Model is missing a slug field"
 
@@ -249,7 +241,17 @@ def autoSlugFromUUID():
         def generate_slug(sender, instance, *args, raw=False, **kwargs):
             if not raw and not instance.slug:
                 try:
-                    instance.slug = str(uuid.uuid4())
+                    slug = str(uuid.uuid4())
+                    Klass = instance.__class__
+                    qs_exists = Klass.objects.filter(slug=slug).exists()
+                    if qs_exists:
+                        new_slug = "{slug}-{randstr}".format(
+                            slug=slug,
+                            randstr=random_string_generator(size=4)
+                        )
+                        instance.slug = new_slug
+                    else:
+                        instance.slug = slug
                 except Exception as e:
                     instance.slug = simple_random_string()
 

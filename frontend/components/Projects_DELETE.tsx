@@ -52,8 +52,9 @@ export default function ProjectSection() {
             className="grid grid-cols-1 gap-4 mx-auto md:ml-[20%] xl:ml-[24%]"
           >
             {projects.map((project: ProjectType) => {
-              if (project.name === "" && project.githubURL === "") return null;
-              return <Project key={project.id} project={project} />;
+              if (project.title === "" && project.github_url === "") return null;
+              // return <Project key={project.id} project={project} />;
+              return null
             })}
           </AnimatedDiv>
         </div>

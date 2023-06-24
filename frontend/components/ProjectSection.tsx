@@ -45,9 +45,15 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
                   <OgImage src={project?.image as string} alt={project.title} />
 
                   <div className="flex flex-col justify-start gap-3">
-                    <h1 className="font-bold text-neutral-900 dark:text-neutral-200 text-xl">
-                      {project.title}
-                    </h1>
+                    <Link
+                      href={`projects/${project.slug}`}
+                      title="View Project Details"
+                      rel="noopener noreferrer"
+                      className="text-gray-500 hover:text-black dark:hover:text-white hover:underline">
+                        <h1 className="font-bold text-neutral-900 dark:text-neutral-200 text-xl">
+                          {project.title}
+                        </h1>
+                    </Link>
 
                     <h2 className="text-neutral-900 dark:text-neutral-200 text-sm">
                       {project.short_description}

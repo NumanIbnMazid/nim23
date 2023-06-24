@@ -156,12 +156,12 @@ export const getAllCertificates = async () => {
 
 // *** PROJECTS ***
 
-// Certificates URL
+// Projects URL
 const PROJECTS_PATH = "projects/"
 const PROJECTS_ENDPOINT = "http://127.0.0.1:8000/api/" + PROJECTS_PATH
 
 /**
- * Makes a request to the BACKEND API to retrieve all Certificates Data.
+ * Makes a request to the BACKEND API to retrieve all Projects Data.
  */
 export const getAllProjects = async () => {
   const allProjects = await fetch(
@@ -178,6 +178,25 @@ export const getAllProjects = async () => {
     return responseData.data
   } else {
     const errorMessage = `Error fetching Projects: ${allProjects.status} ${allProjects.statusText}`
+    console.log(errorMessage)
+  }
+}
+
+export const getProjectDetails = async (slug: string) => {
+  const projectDetails = await fetch(
+    PROJECTS_ENDPOINT + slug,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (projectDetails.ok) {
+    const responseData = await projectDetails.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Project Details: ${projectDetails.status} ${projectDetails.statusText}`
     console.log(errorMessage)
   }
 }

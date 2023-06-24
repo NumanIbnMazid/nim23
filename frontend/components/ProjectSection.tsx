@@ -67,11 +67,19 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
                     ></div>
                     )}
 
+
                     {project.technology && (
                     <div className="flex flex-wrap items-center gap-1">
-                      <span className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-darkPrimary">
-                        {project.technology}
-                      </span>
+                      {project.technology.split(',').map((technology, index) => {
+                        return (
+                          <span
+                            key={`${technology}-${index}`}
+                            className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-darkPrimary"
+                          >
+                            {technology}
+                          </span>
+                        )
+                      })}
                     </div>
                     )}
 

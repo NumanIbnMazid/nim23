@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.timezone import datetime
 from django.utils.translation import gettext_lazy as _
 from utils.helpers import CustomModelManager
-from utils.snippets import image_as_base64
+from utils.snippets import file_as_base64
 
 
 """
@@ -50,7 +50,7 @@ class ModelMediaMixin(models.Model):
     def get_file(self):
         if self.file:
             file_path = settings.MEDIA_ROOT + self.file.url.lstrip("/media/")
-            return image_as_base64(file_path)
+            return file_as_base64(file_path)
         return
 
 

@@ -340,3 +340,24 @@ def image_as_base64(image_file):
         encoded_string = base64.b64encode(img_f.read()).decode("utf-8")
 
     return f"data:image/{extension};base64,{encoded_string}"
+
+
+def file_as_base64(file_path):
+    """
+    Convert a file to base64.
+
+    :param file_path: The complete path of the file.
+    :return: The base64 representation of the file.
+    """
+    if not os.path.isfile(file_path):
+        print(f"File not found: {file_path}")
+        return
+
+    # Get the file extension dynamically
+    extension = os.path.splitext(file_path)[1][1:]
+    encoded_string = ""
+
+    with open(file_path, "rb") as file:
+        encoded_string = base64.b64encode(file.read()).decode("utf-8")
+
+    return f"data:application/{extension};base64,{encoded_string}"

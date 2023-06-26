@@ -61,7 +61,7 @@ export default function ProjectDetailsSection() {
             viewport={{ once: true }}
             className="pageTop"
           >
-            <section className="mx-12">
+            <section className="">
               <HomeHeading title={project.title} />
 
               <motion.div

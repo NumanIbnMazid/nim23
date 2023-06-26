@@ -21,6 +21,13 @@
 - Utilities
 
   - Configure EmailJS (Contact Form). Better if mail would send via backend api.
+  - Fix Utilities Page.
+  - Fix Every page's meta option.
+  - Fix Snippets, Newsletter, RSS, dev.to. Fix footer.
+  - Fix Visitor Count.
+  - Fix Bar code Scanner.
+  - Fix Spotify.
+  - Implement Youtube Stats.
 
 ## Bug Fix
 

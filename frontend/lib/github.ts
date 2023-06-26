@@ -1,4 +1,6 @@
-import { GithubRepo } from "./types";
+import { GithubRepo } from "./types"
+
+const GitHubAccessToken = process.env.GITHUB_ACCESS_TOKEN
 
 const tempData = {
   "login": "NumanIbnMazid",
@@ -37,23 +39,36 @@ const tempData = {
 
 // its for /api/stats/github
 export async function fetchGithub() {
-  const fake = false;
-  if (fake) return tempData;
-  return fetch("https://api.github.com/users/NumanIbnMazid").then((res) => res.json());
+  const fake = false
+  if (fake) return tempData
+
+  return fetch(
+    "https://api.github.com/users/NumanIbnMazid",
+    {
+      headers: {
+        Authorization: `Bearer ${GitHubAccessToken}`,
+      },
+    }
+  ).then((res) => res.json())
 }
 
 // its for getting temporary old data
 export function getOldStats() {
-  return tempData;
+  return tempData
 }
 
 /* Retrieves the number of stars and forks for the user's repositories on GitHub. */
 export async function getGithubStarsAndForks() {
   // Fetch user's repositories from the GitHub API
   const res = await fetch(
-    "https://api.github.com/users/NumanIbnMazid/repos?per_page=100"
-  );
-  const userRepos = await res.json();
+    "https://api.github.com/users/NumanIbnMazid/repos?per_page=100",
+    {
+      headers: {
+        Authorization: `Bearer ${GitHubAccessToken}`,
+      },
+    }
+  )
+  const userRepos = await res.json()
 
   /* Default Static Data: If use exceeded the rate limit of api */
   if (
@@ -61,30 +76,30 @@ export async function getGithubStarsAndForks() {
       "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting")
   ) {
     return {
-      githubStars: 0,
-      forks: 0,
-    };
+      githubStars: 7,
+      forks: 4,
+    }
   }
   // filter those repos that are forked
   const mineRepos: GithubRepo[] = userRepos?.filter(
     (repo: GithubRepo) => !repo.fork
-  );
+  )
 
   // Calculate the total number of stars for the user's repositories
   const githubStars = mineRepos.reduce(
     (accumulator: number, repository: GithubRepo) => {
-      return accumulator + repository["stargazers_count"];
+      return accumulator + repository["stargazers_count"]
     },
     0
-  );
+  )
 
   // Calculate the total number of forks for the user's repositories
   const forks = mineRepos.reduce(
     (accumulator: number, repository: GithubRepo) => {
-      return accumulator + repository["forks_count"];
+      return accumulator + repository["forks_count"]
     },
     0
-  );
+  )
 
-  return { githubStars, forks };
+  return { githubStars, forks }
 }

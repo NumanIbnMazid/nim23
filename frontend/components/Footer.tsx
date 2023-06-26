@@ -100,28 +100,18 @@ export default function Footer({
 
         <motion.div
           variants={opacityVariant}
-          className="flex items-center justify-center gap-2 mt-5 text-black dark:text-white"
+          className="flex items-center justify-center gap-2 mt-5 text-black dark:text-white font-light"
         >
-          <span>Powered by</span>
+          <span>Developed by</span>
 
           <Link
             target="_blank"
             aria-label="Next.js"
             rel="noreferrer"
-            href="https://nextjs.org"
+            href="https://www.linkedin.com/in/numanibnmazid/"
             className="font-semibold hover:underline"
           >
-            Next.js
-          </Link>
-          <span>and</span>
-          <Link
-            target="_blank"
-            aria-label="Vercel"
-            rel="noreferrer"
-            href="https://vercel.com"
-            className="font-semibold hover:underline"
-          >
-            Vercel
+            Numan Ibn Mazid
           </Link>
         </motion.div>
       </motion.div>

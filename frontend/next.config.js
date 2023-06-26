@@ -33,6 +33,7 @@ module.exports = withPWA({
   },
   env:{
     BACKEND_API_BASE_URL : process.env.BACKEND_API_BASE_URL,
-    BACKEND_API_TOKEN : process.env.BACKEND_API_TOKEN
+    BACKEND_API_TOKEN : process.env.BACKEND_API_TOKEN,
+    GITHUB_ACCESS_TOKEN : process.env.GITHUB_ACCESS_TOKEN,
   }
 });

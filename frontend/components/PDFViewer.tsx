@@ -39,7 +39,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ base64String }) => {
         file={base64String}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        {Array.from(new Array(numPages || 0), (el, index) => (
+        {Array.from(new Array(numPages || 0), (_, index) => (
           <div
             key={`page_${index + 1}`}
             className="max-w-full max-h-full"

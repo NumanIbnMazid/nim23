@@ -11,7 +11,8 @@ from utils.mixins import ModelMediaMixin, DurationMixin
 from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, image_as_base64, get_static_file_path
 from utils.image_upload_helpers import (
     get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path,
-    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path
+    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path, get_interest_image_path,
+    get_movie_image_path
 )
 from ckeditor.fields import RichTextField
 
@@ -287,7 +288,7 @@ class Project(models.Model, DurationMixin):
         db_table = 'project'
         verbose_name = _('Project')
         verbose_name_plural = _('Projects')
-        ordering = ['order']
+        ordering = ('order', '-created_at')
         get_latest_by = "created_at"
 
     def __str__(self):
@@ -342,3 +343,100 @@ def generate_order(sender, instance, **kwargs):
                     instance.order = reused_order
             else:
                 instance.order = max_order + 1 if max_order is not None else 1
+
+
+""" *************** Interest *************** """
+
+
+@autoSlugWithFieldAndUUID(fieldname="title")
+class Interest(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    icon = models.ImageField(upload_to=get_interest_image_path, blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # custom model manager
+    objects = CustomModelManager()
+
+    class Meta:
+        db_table = 'interest'
+        verbose_name = _('Interest')
+        verbose_name_plural = _('Interests')
+        ordering = ('order', '-created_at')
+        get_latest_by = "created_at"
+
+    def __str__(self):
+        return self.title
+
+    def get_icon(self):
+        if self.icon:
+            icon_path = settings.MEDIA_ROOT + self.icon.url.lstrip("/media/")
+        else:
+            icon_path = get_static_file_path("icons/interest.png")
+        return image_as_base64(icon_path)
+
+
+# Signals
+
+@receiver(pre_save, sender=Interest)
+def generate_order(sender, instance, **kwargs):
+    """
+    This method will generate order for new instances only.
+    Order will be generated automatically like 1, 2, 3, 4 and so on.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    """
+    if not instance.pk:  # Only generate order for new instances
+        if instance.order is None:
+            deleted_orders = Interest.objects.filter(order__isnull=False).values_list('order', flat=True)
+            max_order = Interest.objects.aggregate(Max('order')).get('order__max')
+
+            if deleted_orders:
+                deleted_orders = sorted(deleted_orders)
+                reused_order = None
+                for i in range(1, max_order + 2):
+                    if i not in deleted_orders:
+                        reused_order = i
+                        break
+                if reused_order is not None:
+                    instance.order = reused_order
+            else:
+                instance.order = max_order + 1 if max_order is not None else 1
+
+
+
+""" *************** Movie *************** """
+
+
+@autoSlugWithFieldAndUUID(fieldname="name")
+class Movie(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    image = models.ImageField(upload_to=get_movie_image_path, blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+    year = models.PositiveIntegerField(blank=True, null=True)
+    watched = models.BooleanField(default=True)
+    rating = models.PositiveIntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # custom model manager
+    objects = CustomModelManager()
+
+    class Meta:
+        db_table = 'movie'
+        verbose_name = _('Movie')
+        verbose_name_plural = _('Movies')
+        ordering = ('-updated_at',)
+        get_latest_by = "created_at"
+
+    def __str__(self):
+        return self.name
+
+    def get_image(self):
+        if self.image:
+            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+        else:
+            image_path = get_static_file_path("icons/movie.png")
+        return image_as_base64(image_path)

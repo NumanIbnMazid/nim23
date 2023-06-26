@@ -76,3 +76,19 @@ def get_project_media_path(instance, filename):
     return "Projects/{title}/Media/{final_filename}".format(
         title=slugify(instance.project.title[:50]), final_filename=new_filename
     )
+
+
+# Interest Image Path
+def get_interest_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Interests/{title}/Images/{final_filename}".format(
+        title=slugify(instance.title[:50]), final_filename=new_filename
+    )
+
+
+# Movie Image Path
+def get_movie_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Movies/{name}/Images/{final_filename}".format(
+        name=slugify(instance.name[:50]), final_filename=new_filename
+    )

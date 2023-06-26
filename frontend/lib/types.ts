@@ -163,6 +163,16 @@ export type CertificateType = {
   updated_at: string
 }
 
+export type InterestType = {
+  id: number
+  slug: string
+  title: string
+  icon: string
+  order: number
+  created_at: string
+  updated_at: string
+}
+
 export type SocialPlatform = {
   title: string
   Icon: IconType
@@ -272,10 +282,13 @@ export type Snippet = {
 
 export type MovieType = {
   id: number
+  slug: string
   name: string
   image: string
   url: string
   year: number
   watched: boolean
   rating: number
+  created_at: string
+  updated_at: string
 }

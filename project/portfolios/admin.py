@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 from utils.mixins import CustomModelAdminMixin
 from portfolios.models import (
-    ProfessionalExperience, Skill, Education, EducationMedia, Certification, CertificationMedia, Project, ProjectMedia
+    ProfessionalExperience, Skill, Education, EducationMedia, Certification, CertificationMedia, Project, ProjectMedia, Interest, Movie
 )
 from ckeditor.widgets import CKEditorWidget
 
@@ -81,3 +81,25 @@ class ProjectAdmin(CustomModelAdminMixin, admin.ModelAdmin):
         model = Project
 
 admin.site.register(Project, ProjectAdmin)
+
+
+# ----------------------------------------------------
+# *** Interest ***
+# ----------------------------------------------------
+
+class InterestAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    class Meta:
+        model = Interest
+
+admin.site.register(Interest, InterestAdmin)
+
+
+# ----------------------------------------------------
+# *** Movie ***
+# ----------------------------------------------------
+
+class MovieAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    class Meta:
+        model = Movie
+
+admin.site.register(Movie, MovieAdmin)

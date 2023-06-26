@@ -201,37 +201,63 @@ export const getProjectDetails = async (slug: string) => {
   }
 }
 
-// *** MOVIES ***
 
-// Experience URL
-const MOVIE_PATH = "/posts?_limit=5"
-const MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
+// *** INTERESTS ***
+
+// Interests URL
+const INTERESTS_PATH = "interests/"
+const INTERESTS_ENDPOINT = "http://127.0.0.1:8000/api/" + INTERESTS_PATH
 
 /**
- * Makes a request to the BACKEND API to retrieve all Movie Data.
+ * Makes a request to the BACKEND API to retrieve all Interests Data.
  */
-export const getAllMovies = async () => {
-
-  const allMovies = await fetch(
-    MOVIE_ENDPOINT
+export const getAllInterests = async () => {
+  const allInterests = await fetch(
+    INTERESTS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
   )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching Movies:', error))
 
-  // ******* Faking data Starts *******
-  const fakeMoviesData = allMovies.map((movie: { title: any, body: any }, index: number) => ({
-    id: index,
-    url: "https://github.com/NumanIbnMazid",
-    name: movie.title.split(' ').slice(0, 3).join(' ').toUpperCase(),
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-    watched: false,
-    rating: 4
-  }))
-  // Need to return `allMovies`
-  // ******* Faking data Ends *******
-  return fakeMoviesData
+  if (allInterests.ok) {
+    const responseData = await allInterests.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Interests: ${allInterests.status} ${allInterests.statusText}`
+    console.log(errorMessage)
+  }
 }
 
+
+// *** MOVIES ***
+
+// Movies URL
+const MOVIE_PATH = "movies/"
+const MOVIE_ENDPOINT = "http://127.0.0.1:8000/api/" + MOVIE_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Movies Data.
+ */
+export const getAllMovies = async () => {
+  const allMovies = await fetch(
+    MOVIE_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allMovies.ok) {
+    const responseData = await allMovies.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Movies: ${allMovies.status} ${allMovies.statusText}`
+    console.log(errorMessage)
+  }
+}
 
 // *** BLOGS ***
 

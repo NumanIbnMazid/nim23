@@ -13,6 +13,7 @@ import ExperienceSection from "@components/Home/ExperienceSection"
 import Education from "@components/Education"
 import Certificates from "@components/Certificates"
 import ProjectSection from "@components/ProjectSection"
+import InterestSection from "@components/Interest"
 
 
 export default function About({
@@ -78,6 +79,7 @@ export default function About({
             <Education educations={educations} />
             <Certificates />
             <ProjectSection projects={projects} />
+            <InterestSection />
           </div>
         </motion.section>
       </div>

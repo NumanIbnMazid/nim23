@@ -31,9 +31,12 @@ export type ProfileType = {
   website: string
   contact: string
   contact_email: string
+  linkedin: string
+  github: string
   address: string
   about: string
   is_portfolio_user: string
+  resume_link: string
   is_active: string
   is_staff: string
   is_superuser: string

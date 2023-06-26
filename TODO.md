@@ -18,6 +18,10 @@
     - A demo body element
     - Footer
 
+- Utilities
+
+  - Configure EmailJS (Contact Form). Better if mail would send via backend api.
+
 ## Bug Fix
 
 -

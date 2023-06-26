@@ -6,9 +6,11 @@ import { ProjectType } from '@lib/types'
 import { motion } from 'framer-motion'
 import { popUp } from '../content/FramerMotionVariants'
 import { FadeContainer } from '../content/FramerMotionVariants'
-import { HomeHeading } from '../pages'
 import React from 'react'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
+import AnimatedHeading from "@components/FramerMotion/AnimatedHeading"
+import { headingFromLeft } from "@content/FramerMotionVariants"
+
 
 export default function ProjectSection({ projects }: { projects: ProjectType[] }) {
   // ******* Loader Starts *******
@@ -19,7 +21,17 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
 
   return (
     <section className="mx-5">
-      <HomeHeading title="Projects" />
+      <div>
+        <AnimatedHeading
+          className="w-full my-2 text-3xl font-bold text-left font-inter flex justify-center items-center"
+          variants={headingFromLeft}
+        >
+          <span className="mr-2">Projects</span>
+          <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">
+            {projects.length}
+          </span>
+        </AnimatedHeading>
+      </div>
 
       <motion.div
         initial="hidden"
@@ -29,10 +41,10 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
         className="grid grid-cols-1 mb-10"
       >
         <div className="mt-12 space-y-6">
-          <p>
-            I've been making various types of projects some of them were basics and some of them were complicated. So
-            far I've made <span className="font-bold text-gray-600 dark:text-gray-200">{projects.length}+</span>{' '}
-            projects.
+          <p className="mb-12">
+            I believe that projects are not just tasks to be completed, but opportunities to bring ideas to life, solve problems, and make a meaningful impact.
+            In each project, I follow a meticulous approach, combining innovative thinking, strategic planning, and attention to detail.
+            Here I will showcase some of the exciting projects I have worked on.
           </p>
           <AnimatedDiv variants={FadeContainer} className="grid grid-cols-1 gap-4 mx-auto md:ml-[20%] xl:ml-[24%]">
             {projects.map((project: ProjectType, index) => (

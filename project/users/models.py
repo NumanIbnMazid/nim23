@@ -94,9 +94,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     website = models.URLField(null=True, blank=True)
     contact = models.CharField(max_length=30, null=True, blank=True)
     contact_email = models.EmailField(null=True, blank=True)
+    linkedin = models.URLField(null=True, blank=True)
+    github = models.URLField(null=True, blank=True)
     address = models.CharField(max_length=254, null=True, blank=True)
     about = models.TextField(null=True, blank=True)
     is_portfolio_user = models.BooleanField(default=False)
+    resume_link = models.URLField(null=True, blank=True)
     """ Additional Fields Ends """
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

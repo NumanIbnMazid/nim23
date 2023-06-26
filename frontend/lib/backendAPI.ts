@@ -6,7 +6,7 @@ const BACKEND_API_TOKEN = process.env.BACKEND_API_TOKEN
 // *** PROFILE ***
 // Profile URL
 const PROFILE_PATH = "users/get_portfolio_user/"
-const PROFILE_ENDPOINT = "http://127.0.0.1:8000/api/" + PROFILE_PATH
+const PROFILE_ENDPOINT = BACKEND_API_BASE_URL + PROFILE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve Portfolio User Information.
@@ -36,7 +36,7 @@ export const getProfileInfo = async () => {
 // Experience URL
 
 const EXPERIENCE_PATH = "professional-experiences/"
-const EXPERIENCE_ENDPOINT = "http://127.0.0.1:8000/api/" + EXPERIENCE_PATH
+const EXPERIENCE_ENDPOINT = BACKEND_API_BASE_URL + EXPERIENCE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Experience Data.
@@ -74,7 +74,7 @@ export const getAllExperiences = async (length?: number | undefined) => {
 
 // Skills URL
 const SKILLS_PATH = "skills/"
-const SKILLS_ENDPOINT = "http://127.0.0.1:8000/api/" + SKILLS_PATH
+const SKILLS_ENDPOINT = BACKEND_API_BASE_URL + SKILLS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Skills Data.
@@ -102,7 +102,7 @@ export const getAllSkills = async () => {
 
 // Educations URL
 const EDUCATIONS_PATH = "educations/"
-const EDUCATIONS_ENDPOINT = "http://127.0.0.1:8000/api/" + EDUCATIONS_PATH
+const EDUCATIONS_ENDPOINT = BACKEND_API_BASE_URL + EDUCATIONS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Educations Data.
@@ -130,7 +130,7 @@ export const getAllEducations = async () => {
 
 // Certificates URL
 const CERTIFICATES_PATH = "certifications/"
-const CERTIFICATES_ENDPOINT = "http://127.0.0.1:8000/api/" + CERTIFICATES_PATH
+const CERTIFICATES_ENDPOINT = BACKEND_API_BASE_URL + CERTIFICATES_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Certificates Data.
@@ -158,7 +158,7 @@ export const getAllCertificates = async () => {
 
 // Projects URL
 const PROJECTS_PATH = "projects/"
-const PROJECTS_ENDPOINT = "http://127.0.0.1:8000/api/" + PROJECTS_PATH
+const PROJECTS_ENDPOINT = BACKEND_API_BASE_URL + PROJECTS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Projects Data.
@@ -206,7 +206,7 @@ export const getProjectDetails = async (slug: string) => {
 
 // Interests URL
 const INTERESTS_PATH = "interests/"
-const INTERESTS_ENDPOINT = "http://127.0.0.1:8000/api/" + INTERESTS_PATH
+const INTERESTS_ENDPOINT = BACKEND_API_BASE_URL + INTERESTS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Interests Data.
@@ -235,7 +235,7 @@ export const getAllInterests = async () => {
 
 // Movies URL
 const MOVIE_PATH = "movies/"
-const MOVIE_ENDPOINT = "http://127.0.0.1:8000/api/" + MOVIE_PATH
+const MOVIE_ENDPOINT = BACKEND_API_BASE_URL + MOVIE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Movies Data.
@@ -263,7 +263,7 @@ export const getAllMovies = async () => {
 
 // Blogs URL
 const BLOGS_PATH = "/posts"
-const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
+const BLOGS_ENDPOINT = "https://jsonplaceholder.typicode.com" + BLOGS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.

@@ -36,7 +36,10 @@ export default function SkillSection() {
         viewport={{ once: true }}
         className="mt-12 space-y-6 mb-10"
       >
-        <p>Here are some of my top Skills.</p>
+        <p className="mb-12">
+          I possess a diverse range of skills that contribute to my effectiveness in tech industry.
+          Through experience and continuous learning, I have developed proficiency in various areas. Here are some of my key skills.
+        </p>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-10'>
           {skills.map((skill: SkillType, index) => {
           const level = Number(skill.level) || 0 // Convert level to a number or use 0 if it's null or invalid

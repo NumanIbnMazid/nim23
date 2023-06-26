@@ -21,9 +21,9 @@ export default function Contact() {
           variants={popUpFromBottomForText}
           className="px-4 py-2 font-medium dark:text-gray-300"
         >
-          Is there something on your mind you'd like to talk about? Whether it's
-          related to work or just a casual conversation, I am here and ready to
-          listen. Please don't hesitate to reach out to me at any time. 🙋‍♂️.
+          Do you have something on your mind that you'd like to discuss? Whether it's work-related or simply a casual conversation, I'm here and eager to lend an ear.
+          Please don't hesitate to get in touch with me at any time. 🌟 I'm always ready for engaging discussions and open to connecting with you.
+          Let's start a conversation and explore new ideas together. 🗣️
         </AnimatedText>
       </section>
 

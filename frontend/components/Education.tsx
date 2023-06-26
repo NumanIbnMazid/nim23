@@ -27,7 +27,11 @@ export default function EducationSection({ educations }: { educations: Education
         className="grid grid-cols-1 mb-10"
       >
         <div className="mt-12 space-y-6">
-          <p>Here's a brief rundown of my Academic Background.</p>
+          <p className="mb-12">
+            I believe that education plays a crucial role in personal and professional growth. Throughout my academic journey,
+            I have pursued knowledge and embraced learning opportunities that have shaped my skills and perspectives.
+            Here is an overview of my educational background and academic achievements.
+          </p>
           {educations ? (
             <TimelineList>
               {educations.map((education: EducationType, index) => (

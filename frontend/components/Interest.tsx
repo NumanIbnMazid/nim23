@@ -37,7 +37,10 @@ export default function InterestSection() {
         viewport={{ once: true }}
         className="mt-12 space-y-6 mb-10"
       >
-        <p>Here are some of my interests.</p>
+        <p className="mb-12">
+          Beyond my professional pursuits, I have a diverse range of interests that fuel my creativity, enhance my problem-solving abilities,
+          and bring balance to my life. Here are a few of my passions outside of work.
+        </p>
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-10'>
           {interests.map((interest: InterestType, index) => {
           return (

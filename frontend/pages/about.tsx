@@ -71,7 +71,7 @@ export default function About({
           whileInView="visible"
           variants={FadeContainer}
           viewport={{ once: true }}
-          className="grid min-h-screen py-20 place-content-center"
+          className="grid min-h-screen py-7 place-content-center"
         >
           <div>
             <ExperienceSection experiences={experiences} />

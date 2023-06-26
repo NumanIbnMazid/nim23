@@ -41,7 +41,10 @@ export default function CertificateSection() {
         className="grid grid-cols-1 mb-10"
       >
         <div className="mt-12 space-y-6">
-          <p>Here are some Certificates that I have obtained.</p>
+          <p className="mb-12">
+            Here, I will showcase the certifications and professional achievements I have earned throughout my career.
+            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to excellence.
+          </p>
           {certificates.map((certificate: CertificateType) => {
             return (
               <AnimatedDiv

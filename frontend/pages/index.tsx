@@ -1,33 +1,28 @@
 // Page Components START----------
-import BlogsSection from "@components/Home/BlogsSection"
-import SkillSection from "@components/Home/SkillSection"
-import ExperienceSection from "@components/Home/ExperienceSection"
-import Image from "next/image"
-import Metadata from "@components/MetaData"
-import Contact from "@components/Contact"
-import {
-  FadeContainer,
-  headingFromLeft,
-  opacityVariant,
-  popUp,
-} from "@content/FramerMotionVariants"
-import AnimatedHeading from "@components/FramerMotion/AnimatedHeading"
-import { homeProfileImage, cvURL } from "@utils/utils"
-import getRSS from "@lib/generateRSS"
-import generateSitemap from "@lib/sitemap"
-import { motion } from "framer-motion"
-import { FiDownload } from "react-icons/fi"
-import pageMeta from "@content/meta"
-import staticData from "@content/StaticData"
-import React from "react"
-import Link from "next/link"
+import BlogsSection from '@components/Home/BlogsSection'
+import SkillSection from '@components/Home/SkillSection'
+import ExperienceSection from '@components/Home/ExperienceSection'
+import Image from 'next/image'
+import Metadata from '@components/MetaData'
+import Contact from '@components/Contact'
+import { FadeContainer, headingFromLeft, opacityVariant, popUp } from '@content/FramerMotionVariants'
+import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
+import { homeProfileImage } from '@utils/utils'
+import getRSS from '@lib/generateRSS'
+import generateSitemap from '@lib/sitemap'
+import { motion } from 'framer-motion'
+import { FiDownload } from 'react-icons/fi'
+import pageMeta from '@content/meta'
+import staticData from '@content/StaticData'
+import React from 'react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getProfileInfo, getAllExperiences, getAllBlogs } from "@lib/backendAPI"
-import { ProfileType, ExperienceType } from "@lib/types"
-
+import { getProfileInfo, getAllExperiences, getAllBlogs } from '@lib/backendAPI'
+import { ProfileType, ExperienceType } from '@lib/types'
+import { BsGithub, BsLinkedin } from 'react-icons/bs'
 
 export default function Home() {
-  const [profileInfo, setProfileInfo] = useState<ProfileType | null>(null)
+  const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [blogs, setBlogs] = useState([])
 
@@ -57,6 +52,8 @@ export default function Home() {
   //   return <div>Loading...</div>
   // }
   // // ******* Loader Ends *******
+
+  const latest_experience = experiences[0]
 
   return (
     <>
@@ -90,32 +87,25 @@ export default function Home() {
               />
             </motion.div>
 
-            <div className="flex flex-col w-full gap-3 p-5 text-center select-none ">
+            <div className="flex flex-col w-full gap-3 p-5 text-center select-none">
               <div className="flex flex-col gap-1">
-                <motion.h1
-                  variants={opacityVariant}
-                  className="text-5xl font-bold lg:text-6xl font-arial"
-                >
+                <motion.h1 variants={opacityVariant} className="text-5xl font-bold lg:text-6xl font-arial">
                   {profileInfo?.name}
                   {profileInfo?.nickname && <span className="ml-4 text-5xl font-light">({profileInfo.nickname})</span>}
                 </motion.h1>
                 <motion.p
                   variants={opacityVariant}
-                  className="font-medium text-xs md:text-sm lg:text-2xl text-[#383838] dark:text-gray-200"
+                  className="font-medium text-xs md:text-sm lg:text-2xl text-[#383838] dark:text-gray-200 mt-4"
                 >
-                  {staticData.personal.profession}
+                  <span>{latest_experience?.designation}</span>
+                  <span className="text-xs md:text-sm lg:text-xl mx-2 italic">at</span>
+                  <span>{latest_experience?.company}</span>
                 </motion.p>
               </div>
 
               <motion.p
                 variants={opacityVariant}
-                className=" text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
-              >
-                {staticData.personal.current_position}
-              </motion.p>
-              <motion.p
-                variants={opacityVariant}
-                className=" text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
+                className="text-[#474747] dark:text-gray-300 font-medium text-sm md:text-base text-center"
               >
                 {profileInfo?.about || staticData.personal.about}
               </motion.p>
@@ -124,74 +114,77 @@ export default function Home() {
                 <div className="w-1/2 h-0.5 bg-gradient-to-r from-gray-300 via-transparent to-gray-300"></div>
               </div>
 
-              <motion.p
+              {/* Contact Section */}
+              <motion.div
                 variants={opacityVariant}
-                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
+                className="text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
               >
-                Address: {profileInfo?.address || "Dhaka, Bangladesh"}
-              </motion.p>
-              <motion.p
-                variants={opacityVariant}
-                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
-              >
-                <span>Email: </span>
-                <span className="text-sky-800 dark:text-sky-400">
-                  <a href={`mailto:${profileInfo?.contact_email || "numanibnmazid@gmail.com"}`}>
-                    {profileInfo?.contact_email || "numanibnmazid@gmail.com"}
-                  </a>
-                </span>
-              </motion.p>
-              <motion.p
-                variants={opacityVariant}
-                className=" text-[#474747] dark:text-gray-300 font-small font-light text-sm md:text-base text-center"
-              >
-                <span>Contact: </span>
-                <span className="text-sky-800 dark:text-sky-400">
-                  <a href={`tel:${profileInfo?.contact || "+880 1685238317"}`}>
-                    {profileInfo?.contact || "+880 1685238317"}
-                  </a>
-                </span>
-              </motion.p>
+                {/* Address */}
+                <div>Address: {profileInfo?.address || 'Dhaka, Bangladesh'}</div>
+                {/* Email */}
+                <div className="mt-2">
+                  <span>Email: </span>
+                  <span className="text-sky-800 dark:text-sky-400">
+                    <a href={`mailto:${profileInfo?.contact_email || 'numanibnmazid@gmail.com'}`}>
+                      {profileInfo?.contact_email || 'numanibnmazid@gmail.com'}
+                    </a>
+                  </span>
+                </div>
+                {/* Contact */}
+                <div className="mt-2">
+                  <span>Contact: </span>
+                  <span className="text-sky-800 dark:text-sky-400">
+                    <a href={`tel:${profileInfo?.contact || '+880 1685238317'}`}>
+                      {profileInfo?.contact || '+880 1685238317'}
+                    </a>
+                  </span>
+                </div>
+              </motion.div>
+
+              <motion.div variants={opacityVariant} className="flex items-center justify-center gap-2 mt-4">
+                {/* LinkedIn */}
+                {profileInfo?.linkedin && (
+                  <div className="w-6 h-6 mt-2 mr-2">
+                    <Link
+                      href={profileInfo.linkedin}
+                      title="LinkedIn Profile"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <BsLinkedin className="w-full h-full transition-all hover:scale-110 active:scale-90" />
+                    </Link>
+                  </div>
+                )}
+
+                {/* Github */}
+                {profileInfo?.github && (
+                  <div className="w-6 h-6 mt-2 mr-2">
+                    <Link href={profileInfo.github} title="GitHub Profile" target="_blank" rel="noopener noreferrer">
+                      <BsGithub className="w-full h-full transition-all hover:scale-110 active:scale-90" />
+                    </Link>
+                  </div>
+                )}
+              </motion.div>
             </div>
 
-            <Link
-              href={cvURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2 transition-transform border border-gray-500 rounded-md outline-none select-none dark:border-gray-400 hover:bg-white dark:hover:bg-neutral-800 active:scale-95"
-            >
-              <FiDownload />
-              <p>Resume</p>
-            </Link>
+            {/* Resume Download Button */}
+            {profileInfo?.resume_link && (
+              <Link
+                href={profileInfo?.resume_link || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-5 py-2 transition-transform border border-gray-500 rounded-md outline-none select-none dark:border-gray-400 hover:bg-white dark:hover:bg-neutral-800 active:scale-95"
+              >
+                <FiDownload />
+                <p>Resume</p>
+              </Link>
+            )}
           </div>
         </motion.section>
 
         <div>
-
           {/* Experience Section */}
           <ExperienceSection experiences={experiences} />
-
-          {/* View all experiences link */}
-          <Link
-            href="/about"
-            className="flex items-center justify-center gap-1 font-medium transition border-transparent font-inter active:scale-95 active:border-black w-fit group md:ml-7"
-          >
-            View all experiences
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="w-6 h-6 ml-1 transition group-hover:translate-x-2"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17.5 12h-15m11.667-4l3.333 4-3.333-4zm3.333 4l-3.333 4 3.333-4z"
-              ></path>
-            </svg>
-          </Link>
 
           {/* Skills Section */}
           <SkillSection />
@@ -204,7 +197,7 @@ export default function Home() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export function HomeHeading({ title }: { title: React.ReactNode | string }) {
@@ -215,14 +208,14 @@ export function HomeHeading({ title }: { title: React.ReactNode | string }) {
     >
       {title}
     </AnimatedHeading>
-  );
+  )
 }
 
 export async function getStaticProps() {
-  await getRSS();
-  await generateSitemap();
+  await getRSS()
+  await generateSitemap()
 
   return {
-    props: { },
-  };
+    props: {},
+  }
 }

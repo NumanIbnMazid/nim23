@@ -120,7 +120,7 @@ export default function ProjectDetailsSection() {
                             <h3>{media.title}</h3>
 
                             {/* Image file */}
-                            {isImageFile(media.file) ? (
+                            {isImageFile(media.file) && (
                               <Image
                                 src={media.file}
                                 className=""
@@ -129,14 +129,13 @@ export default function ProjectDetailsSection() {
                                 height={1000}
                                 quality={75}
                                 style={{ width: "auto", height: "auto" }}
-                                priority
                               />
-                            ) : null}
+                            )}
 
                             {/* pdf file */}
-                            {getFileExtensionFromBase64(media.file) === 'pdf' ? (
+                            {getFileExtensionFromBase64(media.file) === 'pdf' && (
                               <PDFViewer base64String={media.file} />
-                            ): null}
+                            )}
 
                             {/* media description */}
                             <p className="mt-4">{media.description}</p>

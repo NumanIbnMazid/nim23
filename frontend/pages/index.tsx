@@ -47,12 +47,6 @@ export default function Home() {
     fetchBlogs()
   }, [])
 
-  // // ******* Loader Starts *******
-  // if (blogs.length === 0) {
-  //   return <div>Loading...</div>
-  // }
-  // // ******* Loader Ends *******
-
   const latest_experience = experiences[0]
 
   return (

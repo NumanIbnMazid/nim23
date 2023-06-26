@@ -21,30 +21,30 @@ type Stats = {
 export default function Stats() {
   const { data: topTracks } = useSWR("/api/stats/tracks", fetcher);
   const { data: artists } = useSWR("/api/stats/artists", fetcher);
-  const { data: devto } = useSWR("/api/stats/devto", fetcher);
+  // const { data: devto } = useSWR("/api/stats/devto", fetcher);
   const { data: github } = useSWR("/api/stats/github", fetcher);
 
   const stats: Stats[] = [
-    {
-      title: "Total Posts",
-      value: devto?.posts.toLocaleString(),
-    },
-    {
-      title: "Blog Followers",
-      value: devto?.followers.toLocaleString(),
-    },
-    {
-      title: "Blog Reactions",
-      value: devto?.likes.toLocaleString(),
-    },
-    {
-      title: "Blog Views",
-      value: devto?.views.toLocaleString(),
-    },
-    {
-      title: "Blog Comments",
-      value: devto?.comments.toLocaleString(),
-    },
+    // {
+    //   title: "Total Posts",
+    //   value: devto?.posts.toLocaleString(),
+    // },
+    // {
+    //   title: "Blog Followers",
+    //   value: devto?.followers.toLocaleString(),
+    // },
+    // {
+    //   title: "Blog Reactions",
+    //   value: devto?.likes.toLocaleString(),
+    // },
+    // {
+    //   title: "Blog Views",
+    //   value: devto?.views.toLocaleString(),
+    // },
+    // {
+    //   title: "Blog Comments",
+    //   value: devto?.comments.toLocaleString(),
+    // },
     {
       title: "Github Repos",
       value: github?.repos,
@@ -211,7 +211,7 @@ function LoadingArtists() {
       {Array.from(Array(5).keys()).map((item) => (
         <div
           key={item}
-          className="h-[80.8px] first:h-[81.6px] first:md:h-[129.6px] md:h-[128.8px]  bg-gray-100  dark:bg-darkPrimary  border-l first:border-t border-r border-b border-gray-300 dark:border-neutral-600 p-4 font-barlow flex items-center gap-5 overflow-hidden"
+          className="h-[80.8px] first:h-[81.6px] first:md:h-[129.6px] md:h-[128.8px] bg-gray-100 dark:bg-darkPrimary border-l first:border-t border-r border-b border-gray-300 dark:border-neutral-600 p-4 font-barlow flex items-center gap-5 overflow-hidden"
         >
           <>
             <div className="hidden tracking-wider origin-center transform font-inter xs:inline-flex">

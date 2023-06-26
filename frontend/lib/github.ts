@@ -1,45 +1,45 @@
 import { GithubRepo } from "./types";
 
 const tempData = {
-  login: "j471n",
-  id: 55713505,
-  node_id: "MDQ6VXNlcjU1NzEzNTA1",
-  avatar_url: "https://avatars.githubusercontent.com/u/55713505?v=4",
-  gravatar_id: "",
-  url: "https://api.github.com/users/j471n",
-  html_url: "https://github.com/j471n",
-  followers_url: "https://api.github.com/users/j471n/followers",
-  following_url: "https://api.github.com/users/j471n/following{/other_user}",
-  gists_url: "https://api.github.com/users/j471n/gists{/gist_id}",
-  starred_url: "https://api.github.com/users/j471n/starred{/owner}{/repo}",
-  subscriptions_url: "https://api.github.com/users/j471n/subscriptions",
-  organizations_url: "https://api.github.com/users/j471n/orgs",
-  repos_url: "https://api.github.com/users/j471n/repos",
-  events_url: "https://api.github.com/users/j471n/events{/privacy}",
-  received_events_url: "https://api.github.com/users/j471n/received_events",
-  type: "User",
-  site_admin: false,
-  name: "Jatin Sharma",
-  company: null,
-  blog: "j471n.in",
-  location: "India",
-  email: null,
-  hireable: true,
-  bio: "React Developer",
-  twitter_username: "j471n_",
-  public_repos: 31,
-  public_gists: 10,
-  followers: 8,
-  following: 1,
-  created_at: "2019-09-23T18:37:14Z",
-  updated_at: "2022-07-02T03:07:58Z",
-};
+  "login": "NumanIbnMazid",
+  "id": 38869177,
+  "node_id": "MDQ6VXNlcjM4ODY5MTc3",
+  "avatar_url": "https://avatars.githubusercontent.com/u/38869177?v=4",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/NumanIbnMazid",
+  "html_url": "https://github.com/NumanIbnMazid",
+  "followers_url": "https://api.github.com/users/NumanIbnMazid/followers",
+  "following_url": "https://api.github.com/users/NumanIbnMazid/following{/other_user}",
+  "gists_url": "https://api.github.com/users/NumanIbnMazid/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/NumanIbnMazid/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/NumanIbnMazid/subscriptions",
+  "organizations_url": "https://api.github.com/users/NumanIbnMazid/orgs",
+  "repos_url": "https://api.github.com/users/NumanIbnMazid/repos",
+  "events_url": "https://api.github.com/users/NumanIbnMazid/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/NumanIbnMazid/received_events",
+  "type": "User",
+  "site_admin": false,
+  "name": "Numan Ibn Mazid",
+  "company": "SELISE DIGITAL PLATFORMS",
+  "blog": "https://www.linkedin.com/in/numanibnmazid/",
+  "location": "Dhaka, Bangladesh",
+  "email": "numanibnmazid@gmail.com",
+  "hireable": true,
+  "bio": "Experienced professional Software Engineer who enjoys developing innovative software solutions that are tailored to customer desirability and usability.",
+  "twitter_username": "NumanIbnMazid",
+  "public_repos": 84,
+  "public_gists": 0,
+  "followers": 13,
+  "following": 35,
+  "created_at": "2018-04-30T21:30:32Z",
+  "updated_at": "2023-06-24T11:38:55Z"
+}
 
 // its for /api/stats/github
 export async function fetchGithub() {
   const fake = false;
   if (fake) return tempData;
-  return fetch("https://api.github.com/users/j471n").then((res) => res.json());
+  return fetch("https://api.github.com/users/NumanIbnMazid").then((res) => res.json());
 }
 
 // its for getting temporary old data
@@ -51,7 +51,7 @@ export function getOldStats() {
 export async function getGithubStarsAndForks() {
   // Fetch user's repositories from the GitHub API
   const res = await fetch(
-    "https://api.github.com/users/j471n/repos?per_page=100"
+    "https://api.github.com/users/NumanIbnMazid/repos?per_page=100"
   );
   const userRepos = await res.json();
 
@@ -61,8 +61,8 @@ export async function getGithubStarsAndForks() {
       "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting")
   ) {
     return {
-      githubStars: 74,
-      forks: 33,
+      githubStars: 0,
+      forks: 0,
     };
   }
   // filter those repos that are forked

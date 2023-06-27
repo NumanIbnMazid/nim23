@@ -51,10 +51,10 @@ export default function Form() {
 
     emailjs
       .send(
-        process.env.NEXT_PUBLIC_YOUR_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_YOUR_TEMPLATE_ID!,
+        process.env.EMAIL_JS_SERVICE_ID!,
+        process.env.EMAIL_JS_TEMPLATE_ID!,
         emailData!,
-        process.env.NEXT_PUBLIC_YOUR_USER_ID
+        process.env.EMAIL_JS_PUBLIC_KEY
       )
       .then(() => {
         formRef.current.reset();

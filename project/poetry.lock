@@ -378,6 +378,33 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-filebrowser"
+version = "4.0.2"
+description = "Media-Management with Grappelli"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-filebrowser-4.0.2.tar.gz", hash = "sha256:bca36fe3d91e68ec7dba41edce6122bae77fd79dedaa09c23f2fde7c85485a3c"},
+    {file = "django_filebrowser-4.0.2-py3-none-any.whl", hash = "sha256:228ae8dd03978f4ab6d2b5c217870ea153d487580dd658addee5fec3f856e231"},
+]
+
+[package.dependencies]
+django-grappelli = ">=3.0,<3.1"
+pillow = "*"
+six = "*"
+
+[[package]]
+name = "django-grappelli"
+version = "3.0.6"
+description = "A jazzy skin for the Django Admin-Interface."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-grappelli-3.0.6.tar.gz", hash = "sha256:7a39f6c5bf5d3333fdbf8345c0427c1129a2fb6a37966d07a1bf74346d708c76"},
+    {file = "django_grappelli-3.0.6-py2.py3-none-any.whl", hash = "sha256:6cef98fe717473f1cb2bddfe68218193d5709ffacf184cdb62138093a6bd8fc5"},
+]
+
+[[package]]
 name = "django-js-asset"
 version = "2.0.0"
 description = "script tag with additional attributes for django.forms.Media"
@@ -409,6 +436,17 @@ files = [
 cryptography = "*"
 django = ">=3.2"
 djangorestframework = "*"
+
+[[package]]
+name = "django-tinymce"
+version = "3.6.1"
+description = "A Django application that contains a widget to render a form field as a TinyMCE editor."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-tinymce-3.6.1.tar.gz", hash = "sha256:6f4f6227c2c608052081a436a1e3054c441caae24c9e0c8c3010536e24749e29"},
+    {file = "django_tinymce-3.6.1-py3-none-any.whl", hash = "sha256:da5732413f51cf854352e3148f06f170b59d95a6c6a43fd9f7ccfdd1849f4bf9"},
+]
 
 [[package]]
 name = "djangorestframework"
@@ -905,6 +943,17 @@ files = [
 ]
 
 [[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
+    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
 name = "sqlparse"
 version = "0.4.4"
 description = "A non-validating SQL parser."
@@ -984,4 +1033,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.9.13"
-content-hash = "e34dcc3aa93890f63ccd00da4cf645202b22a3deba13a4dbba374911bfa6d65d"
+content-hash = "d288429cedb557b8d54dccf32e46dfba14a5e92b3d20f4be3574f22a0c0dc32b"

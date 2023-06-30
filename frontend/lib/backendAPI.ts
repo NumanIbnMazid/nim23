@@ -259,6 +259,54 @@ export const getAllMovies = async () => {
   }
 }
 
+
+// *** CODE_SNIPPETS ***
+
+// Code Snippets URL
+const CODE_SNIPPETS_PATH = "code-snippets/"
+const CODE_SNIPPETS_ENDPOINT = BACKEND_API_BASE_URL + CODE_SNIPPETS_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Code Snippets Data.
+ */
+export const getAllCodeSnippets = async () => {
+  const allCodeSnippets = await fetch(
+    CODE_SNIPPETS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allCodeSnippets.ok) {
+    const responseData = await allCodeSnippets.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Code Snippets: ${allCodeSnippets.status} ${allCodeSnippets.statusText}`
+    console.log(errorMessage)
+  }
+}
+
+export const getCodeSnippetDetails = async (slug: string) => {
+  const codeSnippetDetails = await fetch(
+    CODE_SNIPPETS_ENDPOINT + slug,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (codeSnippetDetails.ok) {
+    const responseData = await codeSnippetDetails.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Code Snippet Details: ${codeSnippetDetails.status} ${codeSnippetDetails.statusText}`
+    console.log(errorMessage)
+  }
+}
+
 // *** BLOGS ***
 
 // Blogs URL

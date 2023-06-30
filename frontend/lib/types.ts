@@ -275,12 +275,15 @@ export type PageMeta = {
   snippets: PageData
 }
 
-export type Snippet = {
+export type CodeSnippetType = {
   slug: string
   title: string
-  date: string
-  excerpt: string
+  short_description: string
+  content: string
   image: string
+  order: number
+  created_at: string
+  updated_at: string
 }
 
 export type MovieType = {

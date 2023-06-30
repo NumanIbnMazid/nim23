@@ -19,6 +19,8 @@ django-rest-knox = "^4.2.0"
 pillow = "^9.5.0"
 django-cors-headers = "^4.1.0"
 django-ckeditor = "^6.5.1"
+django-filebrowser = "^4.0.2"
+django-tinymce = "^3.6.1"
 
 [tool.poetry.dev-dependencies]
 

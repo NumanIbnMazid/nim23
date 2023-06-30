@@ -22,6 +22,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from knox import views as knox_views
 from django.conf import settings
+from filebrowser.sites import site
 from django.views import defaults as default_views
 
 
@@ -72,9 +73,22 @@ THIRD_PARTY_URLS = [
     re_path(
         r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
+    # ----------------------------------------------------
+    # *** CKEDITOR URLs ***
+    # ----------------------------------------------------
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # ----------------------------------------------------
+    # *** TinyMCE URLs ***
+    # ----------------------------------------------------
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 urlpatterns = [
+    # ----------------------------------------------------
+    # *** Django Filebrowser URLs (Needs to be placed before Django Admin Urls) ***
+    # ----------------------------------------------------
+    path('admin/filebrowser/', site.urls),
+    path('grappelli/', include('grappelli.urls')),
     # ----------------------------------------------------
     # *** Django Admin URLs ***
     # ----------------------------------------------------

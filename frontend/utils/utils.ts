@@ -11,7 +11,7 @@ export const navigationRoutes: string[] = [
   "stats",
   "blogs",
   "projects",
-  "snippets",
+  "code-snippets",
   "privacy",
   "contact",
 ]

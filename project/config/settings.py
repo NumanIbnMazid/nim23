@@ -41,13 +41,22 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     # Django CKEditor
     "ckeditor",
+    "ckeditor_uploader",
+    # Django TinyMCE
+    "tinymce",
 ]
 LOCAL_APPS = [
     "users",
     "portfolios",
+    "code_snippets",
 ]
 INSTALLED_APPS = (
     [
+        # Django Filebrowser Needs to be placed before Django Admin
+        # Start Django Filebrowser
+        'grappelli',
+        'filebrowser',
+        # End Django Filebrowser
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
@@ -270,3 +279,44 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# Django CKEditor Configuration
+CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': "100%",
+    },
+}
+
+# Django Filebrowser Configuration
+FILEBROWSER_DIRECTORY = ""
+FILEBROWSER_ADMIN_THUMBNAIL="admin_thumbnail"
+FILEBROWSER_ADMIN_VERSIONS=['thumbnail', 'small', 'medium', 'big', 'large']
+FILEBROWSER_VERSION_QUALITY=90
+
+# Django Tinymce Configuration
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': "100%",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+    'selector': 'textarea',
+    'plugins': '''
+        textcolor save link image media preview codesample contextmenu
+        table code lists fullscreen  insertdatetime  nonbreaking
+        contextmenu directionality searchreplace wordcount visualblocks
+        visualchars code fullscreen autolink lists charmap print  hr
+        anchor pagebreak
+        ''',
+    'toolbar': '''
+        undo redo | formatselect | bold italic backcolor |
+        alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | removeformat | table | code | fullscreen
+        ''',
+    'toolbar_sticky': True,
+    'skin': 'oxide',
+    'menubar': True,
+    'statusbar': True,
+}

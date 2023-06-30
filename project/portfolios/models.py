@@ -1,10 +1,8 @@
 from django.db import models
 from django.conf import settings
-from django.utils import dateformat
-from django.utils.timezone import datetime
+from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
-from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from utils.helpers import CustomModelManager
 from utils.mixins import ModelMediaMixin, DurationMixin

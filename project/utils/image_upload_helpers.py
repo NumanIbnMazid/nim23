@@ -92,3 +92,11 @@ def get_movie_image_path(instance, filename):
     return "Movies/{name}/Images/{final_filename}".format(
         name=slugify(instance.name[:50]), final_filename=new_filename
     )
+
+
+# Code Snippet Image Path
+def get_code_snippet_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Code-Snippets/{title}/Images/{final_filename}".format(
+        title=slugify(instance.title[:50]), final_filename=new_filename
+    )

@@ -9,14 +9,11 @@ export const navigationRoutes: string[] = [
   "home",
   "about",
   "stats",
-  "utilities",
   "blogs",
-  "certificates",
   "projects",
   "snippets",
   "privacy",
-  "newsletter",
-  "rss",
+  "contact",
 ]
 
 export const snippetsImages: { [key: string]: string } = {

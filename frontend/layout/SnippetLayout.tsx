@@ -62,9 +62,16 @@ export default function SnippetLayout({
 
         {code_snippet.language && (
           <div className="flex flex-wrap items-center gap-1">
-            <span className="px-2 py-1 text-base text-gray-500 bg-gray-200 rounded dark:bg-slate-800 italic">
-              {code_snippet.language}
-            </span>
+            {code_snippet.language.split(',').map((code_snippet, index) => {
+              return (
+                <span
+                  key={`${code_snippet}-${index}`}
+                  className="px-2 py-1 text-xs text-gray-500 bg-gray-200 rounded dark:bg-slate-800"
+                >
+                  {code_snippet.toLowerCase()}
+                </span>
+              )
+            })}
           </div>
         )}
 

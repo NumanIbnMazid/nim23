@@ -43,8 +43,8 @@ export default function CodeSnippets() {
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
           >
             <AnimatePresence>
-              {code_snippets.map((snippet, index) => {
-                return <SnippetCard key={index} snippet={snippet} />
+              {code_snippets.map((code_snippet, index) => {
+                return <SnippetCard key={index} code_snippet={code_snippet} />
               })}
             </AnimatePresence>
           </AnimatedDiv>

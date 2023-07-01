@@ -279,8 +279,9 @@ export type CodeSnippetType = {
   slug: string
   title: string
   short_description: string
-  content: string
   image: string
+  language: string
+  content: string
   order: number
   created_at: string
   updated_at: string

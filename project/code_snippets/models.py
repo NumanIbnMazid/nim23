@@ -11,7 +11,7 @@ from utils.image_upload_helpers import (
 )
 
 
-""" *************** Code Snippets *************** """
+""" *************** Code Snippet *************** """
 
 
 @autoSlugWithFieldAndUUID(fieldname="title")
@@ -19,8 +19,9 @@ class CodeSnippet(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     short_description = models.CharField(max_length=255, blank=True)
-    content = models.TextField()
     image = models.ImageField(upload_to=get_code_snippet_image_path, blank=True, null=True)
+    language = models.CharField(max_length=50, blank=True)
+    content = models.TextField()
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

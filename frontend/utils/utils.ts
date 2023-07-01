@@ -12,8 +12,8 @@ export const navigationRoutes: string[] = [
   "blogs",
   "projects",
   "code-snippets",
-  "privacy",
   "contact",
+  "privacy",
 ]
 
 export const snippetsImages: { [key: string]: string } = {

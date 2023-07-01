@@ -4,6 +4,8 @@ import { CodeSnippetType } from "@lib/types"
 import Image from "next/image"
 import cn from 'classnames'
 import { useEffect } from 'react'
+import { getFormattedDate } from "@utils/date"
+
 
 export default function SnippetLayout({
   code_snippet,
@@ -34,22 +36,41 @@ export default function SnippetLayout({
     <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
       <section className="relative max-w-3xl p-5 mx-auto prose sm:pt-10 font-barlow dark:prose-invert">
         <div className="flex items-center justify-between">
-          <h1 className="m-0 text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">
+          <h1 className="m-0 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
             {code_snippet.title}
           </h1>
-
-          <div className="relative flex items-center justify-center w-12 h-12 p-1 overflow-hidden">
+          <div className="relative flex items-center justify-center w-20 h-12 p-1 overflow-hidden">
             <Image
               className="m-0"
               src={code_snippet.image}
               alt={code_snippet.title}
-              width={62}
-              height={62}
+              width={100}
+              height={100}
             ></Image>
           </div>
         </div>
 
-        <p>{code_snippet.short_description}</p>
+        <p className="text-xl">{code_snippet.short_description}</p>
+
+        {code_snippet.language && (
+          <div className="flex flex-wrap items-center gap-1">
+            <span className="px-2 py-1 text-base text-gray-500 bg-gray-200 rounded dark:bg-slate-800 italic">
+              {code_snippet.language}
+            </span>
+          </div>
+        )}
+
+        <div className="mt-4 text-base text-gray-500">
+          <span>Created at: </span>
+          {getFormattedDate(new Date(code_snippet.created_at))}
+        </div>
+
+        {getFormattedDate(new Date(code_snippet.created_at)) !== getFormattedDate(new Date(code_snippet.updated_at)) && (
+        <div className="text-base text-gray-500">
+          <span>Last Update: </span>
+          {getFormattedDate(new Date(code_snippet.updated_at))}
+        </div>
+        )}
 
         <AnimatedDiv
           variants={opacityVariant}

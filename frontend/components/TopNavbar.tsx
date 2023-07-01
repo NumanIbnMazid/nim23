@@ -108,7 +108,7 @@ export default function TopNavbar() {
           variants={FadeContainer}
           className="flex items-center md:gap-2"
         >
-          {navigationRoutes.slice(0, 8).map((link, index) => {
+          {navigationRoutes.slice(0, 7).map((link, index) => {
             return <NavItem key={index} href={`/${link}`} text={link} />;
           })}
         </motion.div>

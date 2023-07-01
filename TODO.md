@@ -29,6 +29,7 @@
   - Fix Bar code Scanner.
   - Fix Spotify.
   - Implement Youtube Stats.
+  - Add YouTube Videos Page
 
 ## Bug Fix
 

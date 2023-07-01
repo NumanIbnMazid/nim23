@@ -5,13 +5,15 @@ import Image from "next/image"
 import cn from 'classnames'
 import { useEffect } from 'react'
 import { getFormattedDate } from "@utils/date"
+import Prism from '../prismSetup'
+
 
 
 export default function SnippetLayout({
   code_snippet,
 }: {
   code_snippet: CodeSnippetType,
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
 
   const hasCode = code_snippet && code_snippet.content.includes('<code>')
@@ -21,20 +23,26 @@ export default function SnippetLayout({
       const style = document.createElement('style');
       style.innerHTML = `
         .text-code code {
-          color: #9c885a; // Set the desired dark text color
+          color: #5292a1
         }
-      `;
-      document.head.appendChild(style);
+      `
+      document.head.appendChild(style)
     }
-  };
+  }
 
   useEffect(() => {
-    injectStyle();
+    injectStyle()
+
+    // Prism JS
+    if (typeof window !== 'undefined') {
+      Prism.highlightAll()
+      Prism.plugins.lineNumbers = true
+    }
   }, [hasCode]);
 
   return (
     <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
-      <section className="relative max-w-3xl p-5 mx-auto prose sm:pt-10 font-barlow dark:prose-invert">
+      <section className="relative max-w-4xl p-5 mx-auto prose sm:pt-10 font-barlow dark:prose-invert">
         <div className="flex items-center justify-between">
           <h1 className="m-0 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
             {code_snippet.title}
@@ -72,12 +80,15 @@ export default function SnippetLayout({
         </div>
         )}
 
+        {/* Content */}
         <AnimatedDiv
           variants={opacityVariant}
           className="text-orange-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
-          <div dangerouslySetInnerHTML={{ __html: code_snippet.content }}
-          className={cn('my-4', { 'text-code': hasCode })} />
+          <div
+            dangerouslySetInnerHTML={{ __html: code_snippet.content }}
+            className={cn('my-4', { 'text-code': hasCode, 'line-numbers': hasCode })}
+          />
         </AnimatedDiv>
       </section>
     </section>

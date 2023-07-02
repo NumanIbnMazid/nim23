@@ -100,3 +100,11 @@ def get_code_snippet_image_path(instance, filename):
     return "Code-Snippets/{title}/Images/{final_filename}".format(
         title=slugify(instance.title[:50]), final_filename=new_filename
     )
+
+
+# Blog Image Path
+def get_blog_image_path(instance, filename):
+    new_filename = get_filename(filename)
+    return "Blogs/{title}/Images/{final_filename}".format(
+        title=slugify(instance.title[:50]), final_filename=new_filename
+    )

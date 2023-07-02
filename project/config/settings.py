@@ -49,6 +49,7 @@ LOCAL_APPS = [
     "users",
     "portfolios",
     "code_snippets",
+    "blogs"
 ]
 INSTALLED_APPS = (
     [

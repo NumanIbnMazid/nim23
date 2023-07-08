@@ -71,7 +71,7 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
             </div>
           </div>
           <p className="flex items-center justify-between text-xs font-medium text-gray-500 dark:text-dark-3 md:text-sm">
-            <span>{blog.reading_time}</span>
+            <span className='px-2 py-1 text-xs rounded bg-gray-700 text-gray-50'>{blog.reading_time}</span>
           </p>
         </div>
       </div>

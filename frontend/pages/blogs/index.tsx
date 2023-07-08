@@ -107,26 +107,6 @@ export default function Blogs() {
                   >
                     All Posts ({filteredBlogs.length})
                   </motion.h3>
-
-                  <div className="flex items-center gap-2">
-                    <Link href="/blogs/bookmark" legacyBehavior>
-                      <motion.div variants={popUp}>
-                        <BsBookmark
-                          title="Bookmark"
-                          className="text-2xl cursor-pointer"
-                        />
-                      </motion.div>
-                    </Link>
-
-                    <Link href="/rss" legacyBehavior>
-                      <motion.div variants={popUp}>
-                        <BiRss
-                          title="RSS"
-                          className="text-3xl cursor-pointer"
-                        />
-                      </motion.div>
-                    </Link>
-                  </div>
                 </AnimatedDiv>
 
                 {/* Blog Section */}

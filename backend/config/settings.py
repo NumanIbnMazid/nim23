@@ -322,3 +322,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+
+
+# ----------------------------------------------------
+# *** Configurable Values ***
+# ----------------------------------------------------
+BLOG_WORDS_PER_MINUTE = 200

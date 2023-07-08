@@ -47,11 +47,11 @@ export default function SnippetPage({
 
       {code_snippet ? (
 
-      <SnippetLayout code_snippet={code_snippet}>
-      </SnippetLayout>
+        <SnippetLayout code_snippet={code_snippet}>
+        </SnippetLayout>
       ) : (
-      <p>Loading...</p>
-    )}
+        <p>Loading...</p>
+      )}
     </>
   )
 }

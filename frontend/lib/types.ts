@@ -219,6 +219,12 @@ export type BlogCategoryType = {
   updated_at: string
 }
 
+export type TableOfContents = {
+  id: string
+  level: number
+  heading: string
+}
+
 export type BlogType = {
   id: number
   slug: string
@@ -227,11 +233,13 @@ export type BlogType = {
   image: string
   overview?: string
   content: string
-  author?: string
+  author: string
   tags?: string
   status: string
-  reading_time?: number
+  reading_time?: string
+  total_words?: number
   order: number
+  table_of_contents: TableOfContents[]
   created_at: string
   updated_at: string
 }
@@ -251,11 +259,6 @@ export type PostType = {
   meta: FrontMatter
   source: MDXRemoteSerializeResult
   tableOfContents: TableOfContents[]
-}
-
-export type TableOfContents = {
-  level: number
-  heading: string
 }
 
 export type SupportMe = {

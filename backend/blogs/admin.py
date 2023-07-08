@@ -20,10 +20,31 @@ admin.site.register(BlogCategory, BlogCategoryAdmin)
 # *** Blog ***
 # ----------------------------------------------------
 
-class BlogAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+class BlogAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': TinyMCE()},
     }
+
+    list_display = (
+        'title', 'category', 'image', 'overview', 'author', 'tags', 'get_reading_time',
+        'get_total_words', 'status', 'order', 'get_table_of_contents'
+    )
+
+    def get_reading_time(self, obj):
+        return obj.get_reading_time()
+
+    get_reading_time.short_description = 'Reading Time'
+
+    def get_total_words(self, obj):
+        return obj.get_total_words()
+
+    get_total_words.short_description = 'Total Words'
+
+    def get_table_of_contents(self, obj):
+        return obj.get_table_of_contents()
+
+    get_table_of_contents.short_description = 'Table of Contents'
+
     class Meta:
         model = Blog
 

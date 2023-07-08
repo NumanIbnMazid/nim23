@@ -4,6 +4,7 @@ import MDXComponents from "@components/MDXComponents"
 import PageNotFound from "pages/404"
 import { MDXRemote } from "next-mdx-remote"
 import { PostType, BlogType } from "@lib/types"
+import { getBlogDetails } from "@lib/backendAPI"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -20,12 +21,12 @@ export default function Post({
   const router = useRouter()
   const { slug } = router.query // Retrieve the slug parameter from the URL
 
-  const [code_snippet, setCodeSnippet] = useState<BlogType>()
+  const [blog, setBlog] = useState<BlogType>()
 
-  const fetchCodeSnippetDetail = async (slug: string) => {
+  const fetchBlogDetail = async (slug: string) => {
     try {
-      const codeSnippetData: BlogType = await getCodeSnippetDetails(slug)
-      setCodeSnippet(codeSnippetData)
+      const blogData: BlogType = await getBlogDetails(slug)
+      setBlog(blogData)
     } catch (error) {
       // Handle error case
       console.error(error)
@@ -35,22 +36,31 @@ export default function Post({
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
     if (typeof slug === 'string') {
-      fetchCodeSnippetDetail(slug)
+      fetchBlogDetail(slug)
     }
   }, [slug])
 
   return (
     <>
-      <Metadata
+      {/* <Metadata
         title={post.meta.title}
         suffix="Numan Ibn Mazid"
         description={post.meta.excerpt}
         previewImage={post.meta.image}
         keywords={post.meta.keywords}
-      />
+      /> */}
 
-      <BlogLayout post={post}>
-        <MDXRemote
+      {blog ? (
+
+        <BlogLayout blog={blog}>
+          <h2>TEST SOURCE</h2>
+        </BlogLayout>
+      ) : (
+        <p>Loading...</p>
+      )}
+
+
+        {/* <MDXRemote
           {...post.source}
           frontmatter={{
             slug: post.meta.slug,
@@ -61,8 +71,8 @@ export default function Post({
             image: post.meta.image,
           }}
           components={MDXComponents}
-        />
-      </BlogLayout>
+        /> */}
+
     </>
   )
 }

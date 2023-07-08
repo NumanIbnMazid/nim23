@@ -34,8 +34,8 @@
   - Implement Loader in All pages.
   - Create and Update Site Logo.
   - Remove all custom model manager as these are not needed in this project scope.
-  - Fix blog slug page.
-  - Generate auto token after expiration or make token to expire never.
+  - (DONE) Fix blog slug page.
+  - (DONE) Generate auto token after expiration or make token to expire never.
 
 ## Bug Fix
 

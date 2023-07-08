@@ -37,6 +37,7 @@
   - (DONE) Fix blog slug page.
   - (DONE) Generate auto token after expiration or make token to expire never.
   - Test Rich Text Editor Image or File Upload and keeo only Tinymce, remove others.
+  - Implement Tailwind Documentation Page's Background Color.
 
 ## Bug Fix
 

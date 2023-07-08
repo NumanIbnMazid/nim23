@@ -1,19 +1,14 @@
 import BlogLayout from "@layout/BlogLayout"
-import Metadata from "@components/MetaData"
-import MDXComponents from "@components/MDXComponents"
 import PageNotFound from "pages/404"
-import { MDXRemote } from "next-mdx-remote"
-import { PostType, BlogType } from "@lib/types"
-import { getBlogDetails } from "@lib/backendAPI"
+import { ProfileType, BlogType } from "@lib/types"
+import { getBlogDetails, getProfileInfo } from "@lib/backendAPI"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 
 export default function Post({
-  post,
   error,
 }: {
-  post: PostType;
   error: boolean;
 }) {
   if (error) return <PageNotFound />
@@ -22,6 +17,13 @@ export default function Post({
   const { slug } = router.query // Retrieve the slug parameter from the URL
 
   const [blog, setBlog] = useState<BlogType>()
+
+  const [profileInfo, setProfileInfo] = useState<ProfileType>()
+
+  const fetchProfileInfo = async () => {
+    const profileData: ProfileType = await getProfileInfo()
+    setProfileInfo(profileData)
+  }
 
   const fetchBlogDetail = async (slug: string) => {
     try {
@@ -36,6 +38,7 @@ export default function Post({
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
     if (typeof slug === 'string') {
+      fetchProfileInfo()
       fetchBlogDetail(slug)
     }
   }, [slug])
@@ -50,11 +53,8 @@ export default function Post({
         keywords={post.meta.keywords}
       /> */}
 
-      {blog ? (
-
-        <BlogLayout blog={blog}>
-          <h2>TEST SOURCE</h2>
-        </BlogLayout>
+      {blog && profileInfo ? (
+        <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout>
       ) : (
         <p>Loading...</p>
       )}

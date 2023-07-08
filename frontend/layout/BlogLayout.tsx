@@ -10,12 +10,11 @@ import { opacityVariant } from '@content/FramerMotionVariants'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { getFormattedDate } from '@utils/date'
 import { BlogType, ProfileType } from '@lib/types'
-import { getProfileInfo } from '@lib/backendAPI'
 import TableOfContents from '@components/TableOfContents'
 import cn from 'classnames'
 import Prism from '../prismSetup'
 
-export default function BlogLayout({ blog }: { blog: BlogType; children: JSX.Element }) {
+export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
@@ -32,14 +31,7 @@ export default function BlogLayout({ blog }: { blog: BlogType; children: JSX.Ele
     }
   }
 
-  const [profileInfo, setProfileInfo] = useState<ProfileType>()
-  const fetchProfileInfo = async () => {
-    const profileData: ProfileType = await getProfileInfo()
-    setProfileInfo(profileData)
-  }
-
   useEffect(() => {
-    fetchProfileInfo()
     // Syntax Highlighting
     injectStyle()
     // Prism JS
@@ -47,7 +39,7 @@ export default function BlogLayout({ blog }: { blog: BlogType; children: JSX.Ele
       Prism.highlightAll()
       Prism.plugins.lineNumbers = true
     }
-  }, [profileInfo, hasCode])
+  }, [hasCode])
 
   return (
     <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">

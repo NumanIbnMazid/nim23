@@ -1,4 +1,3 @@
-import { homeProfileImage } from '../utils/utils'
 import Image from 'next/image'
 import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
 import { FiPrinter } from 'react-icons/fi'
@@ -6,13 +5,14 @@ import Newsletter from '../components/Newsletter'
 import useWindowLocation from '@hooks/useWindowLocation'
 import ScrollProgressBar from '@components/ScrollProgressBar'
 import { useState, useEffect } from 'react'
-import { opacityVariant } from '@content/FramerMotionVariants'
+import { opacityVariant, popUp } from '@content/FramerMotionVariants'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { getFormattedDate } from '@utils/date'
 import { BlogType, ProfileType } from '@lib/types'
 import TableOfContents from '@components/TableOfContents'
 import cn from 'classnames'
 import Prism from '../prismSetup'
+import { motion } from 'framer-motion'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
   const { currentURL } = useWindowLocation()
@@ -77,14 +77,20 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
             {blog.author === 'Numan Ibn Mazid' && (
-              <Image
-                alt={blog.author}
-                height={123}
-                width={123}
-                quality={50}
-                src={profileInfo?.image || homeProfileImage}
-                className="rounded-2xl shadow filter !m-0"
-              />
+              <motion.div
+                variants={popUp}
+                className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-30 xs:h-30 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
+              >
+                <Image
+                  src={profileInfo.image}
+                  className="rounded-full shadow filter"
+                  width={933}
+                  height={933}
+                  alt="cover Profile Image"
+                  quality={100}
+                  priority
+                />
+              </motion.div>
             )}
             <div className="mt-2">
               <span className="text-base text-gray-500">Author: </span>

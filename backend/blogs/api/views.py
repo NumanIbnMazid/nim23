@@ -9,9 +9,19 @@ from blogs.api.serializers import BlogSerializer
 @custom_response_wrapper
 class BlogViewset(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = Blog.objects.all()
+    queryset = Blog.objects.filter(status="Published")
     serializer_class = BlogSerializer
     lookup_field = 'slug'
 
     def get_queryset(self):
-        return Blog.objects.filter(status="Published")
+        queryset = super().get_queryset()
+        limit = self.request.query_params.get('_limit')
+
+        if limit:
+            try:
+                limit = int(limit)
+                queryset = queryset[:limit]
+            except ValueError:
+                pass
+
+        return queryset

@@ -316,9 +316,19 @@ const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.
  */
-export const getAllBlogs = async () => {
+export const getAllBlogs = async (length?: number | undefined) => {
+  let ENDPOINT = null
+  // Set limit if length is not undefined
+  if (length !== undefined) {
+    ENDPOINT = BLOGS_ENDPOINT + `?_limit=${length}`
+  }
+  else {
+    ENDPOINT = BLOGS_ENDPOINT
+  }
+  console.log(ENDPOINT);
+
   const allBlogs = await fetch(
-    BLOGS_ENDPOINT,
+    ENDPOINT,
     {
       headers: {
         Authorization: `Token ${BACKEND_API_TOKEN}`

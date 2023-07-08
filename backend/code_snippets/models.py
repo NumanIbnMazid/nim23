@@ -18,7 +18,7 @@ from utils.image_upload_helpers import (
 class CodeSnippet(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    short_description = models.CharField(max_length=255, blank=True)
+    overview = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to=get_code_snippet_image_path, blank=True, null=True)
     language = models.CharField(max_length=50, blank=True)
     content = models.TextField()

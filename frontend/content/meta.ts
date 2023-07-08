@@ -4,9 +4,9 @@ const pageMeta: PageMeta = {
   home: {
     title: "",
     description:
-      "Hey, I am Jatin Sharma. A Front-end Developer/React Developer from India who loves to design and code. I use React.js or Next.js to build the web application interfaces and the functionalities. At the moment, I am pursuing my Bachelor's degree in Computer Science.",
-    image: "https://imgur.com/KeJgIVl.png",
-    keywords: "portfolio jatin, portfolio j471n, jatin blogs",
+      "Hey, I am Numan Ibn Mazid. I'm a Software Engineer who enjoys developing innovative software solutions that are tailored to customer desirability and usability.",
+    image: "https://my_image.png",
+    keywords: "portfolio numan ibn mazid, portfolio numan, numan blogs",
   },
 
   stats: {
@@ -33,7 +33,7 @@ const pageMeta: PageMeta = {
 
   bookmark: {
     title: "Bookmarked Blogs",
-    description: "Bookmarked Blogs of Jatin Sharma's blogs by you",
+    description: "Bookmarked Blogs of Numan Ibn Mazid's blogs by you",
     image: "https://imgur.com/5XkrVPq.png",
     keywords: "bookmark, blogs, ",
   },

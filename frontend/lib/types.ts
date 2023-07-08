@@ -199,6 +199,43 @@ export type Utilities = {
   data: UtilityType[]
 }
 
+export type CodeSnippetType = {
+  slug: string
+  title: string
+  overview?: string
+  image: string
+  language?: string
+  content: string
+  order: number
+  created_at: string
+  updated_at: string
+}
+
+export type BlogCategoryType = {
+  id: number
+  name: string
+  slug: string
+  created_at: string
+  updated_at: string
+}
+
+export type BlogType = {
+  id: number
+  slug: string
+  title: string
+  category?: BlogCategoryType
+  image: string
+  overview?: string
+  content: string
+  author?: string
+  tags?: string
+  status: string
+  reading_time?: number
+  order: number
+  created_at: string
+  updated_at: string
+}
+
 export type FrontMatter = {
   slug: string
   readingTime: ReadTimeResults
@@ -273,18 +310,6 @@ export type PageMeta = {
   about: PageData
   privacy: PageData
   snippets: PageData
-}
-
-export type CodeSnippetType = {
-  slug: string
-  title: string
-  short_description: string
-  image: string
-  language: string
-  content: string
-  order: number
-  created_at: string
-  updated_at: string
 }
 
 export type MovieType = {

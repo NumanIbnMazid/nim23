@@ -11,7 +11,9 @@ from portfolios.api.interests.routers import *
 from portfolios.api.movies.routers import *
 # Code Snippets
 from code_snippets.api.routers import *
+# Blogs
+from blogs.api.routers import *
 
 
-app_name = "api"
+app_name = "numanibnmazid_portfolio_backend_api"
 urlpatterns = router.urls

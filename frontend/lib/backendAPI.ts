@@ -310,41 +310,46 @@ export const getCodeSnippetDetails = async (slug: string) => {
 // *** BLOGS ***
 
 // Blogs URL
-const BLOGS_PATH = "/posts"
-const BLOGS_ENDPOINT = "https://jsonplaceholder.typicode.com" + BLOGS_PATH
+const BLOGS_PATH = "blogs/"
+const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.
  */
-export const getAllBlogs = async (length?: number | undefined) => {
-  let ENDPOINT = null
-  // Set limit if length is not undefined
-  if (length !== undefined) {
-    ENDPOINT = BLOGS_ENDPOINT + `?_limit=${length}`
-  }
-  else {
-    ENDPOINT = BLOGS_ENDPOINT
-  }
-
+export const getAllBlogs = async () => {
   const allBlogs = await fetch(
-    ENDPOINT
+    BLOGS_ENDPOINT,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
   )
-    .then((response) => response.json())
-    .catch((error) => console.log('Error fetching blogs:', error))
 
-  // TODO:Integrate with backend API
-  // ******* Faking data Starts *******
-  const fakeBlogsData = allBlogs.map((blog: { title: any, body: any }, index: number) => ({
-    title: blog.title,
-    slug: `blog-${index + 1}`,
-    url: "https://github.com/NumanIbnMazid",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYY0pvHu6oaaJRADcCoacoP5BKwJN0i1nqFNCnmKvN&s",
-    excerpt: blog.body,
-    date: new Date(),
-    readingTime: {text: "3 min read"},
-  }))
-  // Need to return `allBlogs`
-  // ******* Faking data Ends *******
+  if (allBlogs.ok) {
+    const responseData = await allBlogs.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Code Blogs: ${allBlogs.status} ${allBlogs.statusText}`
+    console.log(errorMessage)
+  }
+}
 
-  return fakeBlogsData
+export const getBlogDetails = async (slug: string) => {
+  const blogDetails = await fetch(
+    BLOGS_ENDPOINT + slug,
+    {
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (blogDetails.ok) {
+    const responseData = await blogDetails.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Blog Details: ${blogDetails.status} ${blogDetails.statusText}`
+    console.log(errorMessage)
+  }
 }

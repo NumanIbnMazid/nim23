@@ -38,7 +38,7 @@ export default function SnippetLayout({
       Prism.highlightAll()
       Prism.plugins.lineNumbers = true
     }
-  }, [hasCode]);
+  }, [hasCode])
 
   return (
     <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
@@ -58,7 +58,9 @@ export default function SnippetLayout({
           </div>
         </div>
 
-        <p className="text-xl">{code_snippet.short_description}</p>
+        {code_snippet.overview && (
+          <p className="text-xl">{code_snippet.overview}</p>
+        )}
 
         {code_snippet.language && (
           <div className="flex flex-wrap items-center gap-1">
@@ -66,7 +68,7 @@ export default function SnippetLayout({
               return (
                 <span
                   key={`${code_snippet}-${index}`}
-                  className="px-2 py-1 text-xs text-gray-500 bg-gray-200 rounded dark:bg-slate-800"
+                  className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50"
                 >
                   {code_snippet.toLowerCase()}
                 </span>

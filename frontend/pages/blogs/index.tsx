@@ -15,7 +15,7 @@ import { BsBookmark } from "react-icons/bs"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import PageTop from "@components/PageTop"
 import pageMeta from "@content/meta"
-import { FrontMatter } from "@lib/types"
+import { BlogType } from "@lib/types"
 import { CgSearch } from "react-icons/cg"
 import { getAllBlogs } from "@lib/backendAPI"
 
@@ -36,7 +36,7 @@ export default function Blogs() {
 
   useEffect(() => {
     setFilteredBlogs(
-      blogs.filter((post: FrontMatter) =>
+      blogs.filter((post: BlogType) =>
         post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
       )
     )
@@ -65,8 +65,10 @@ export default function Blogs() {
 
       <section className="pageTop flex flex-col gap-2">
         <PageTop pageTitle="Blogs">
-          I've been writing online since 2021, mostly about web development and
-          tech careers. In total, I've written {blogs.length} articles till now.
+          Welcome to my blog page!
+          Here, you will find a collection of insightful and informative articles that I have written on various topics.
+          As a passionate writer and avid learner, I believe in the power of sharing knowledge and experiences through the written word.
+          Till now, I've written {blogs.length} articles.
         </PageTop>
 
         <AnimatedDiv
@@ -127,9 +129,10 @@ export default function Blogs() {
                   </div>
                 </AnimatedDiv>
 
+                {/* Blog Section */}
                 <AnimatedDiv
                   variants={FadeContainer}
-                  className="grid grid-cols-1 gap-4 mx-auto"
+                  className="grid grid-cols-1 gap-4"
                 >
                   {filteredBlogs.map((blog, index) => {
                     return <Blog key={index} blog={blog} />
@@ -147,11 +150,3 @@ export default function Blogs() {
     </>
   )
 }
-
-// export async function getStaticProps() {
-//   // const blogs = new MDXContent("posts").getAllPosts();
-//   const blogs = await getAllBlogs()
-//   return {
-//     props: { blogs },
-//   };
-// }

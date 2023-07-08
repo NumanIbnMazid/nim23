@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import BlogLayout from "@layout/BlogLayout";
-import Metadata from "@components/MetaData";
-import MDXComponents from "@components/MDXComponents";
-import PageNotFound from "pages/404";
-import MDXContent from "@lib/MDXContent";
-import { MDXRemote } from "next-mdx-remote";
-import { GetStaticPropsContext } from "next";
-import { PostType } from "@lib/types";
+import BlogLayout from "@layout/BlogLayout"
+import Metadata from "@components/MetaData"
+import MDXComponents from "@components/MDXComponents"
+import PageNotFound from "pages/404"
+import { MDXRemote } from "next-mdx-remote"
+import { PostType, BlogType } from "@lib/types"
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+
 
 export default function Post({
   post,
@@ -15,23 +15,35 @@ export default function Post({
   post: PostType;
   error: boolean;
 }) {
-  // Adding Views to the supabase database
+  if (error) return <PageNotFound />
+
+  const router = useRouter()
+  const { slug } = router.query // Retrieve the slug parameter from the URL
+
+  const [code_snippet, setCodeSnippet] = useState<BlogType>()
+
+  const fetchCodeSnippetDetail = async (slug: string) => {
+    try {
+      const codeSnippetData: BlogType = await getCodeSnippetDetails(slug)
+      setCodeSnippet(codeSnippetData)
+    } catch (error) {
+      // Handle error case
+      console.error(error)
+    }
+  }
+
+  // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
-    const registerView = () =>
-      fetch(`/api/views/${post.meta.slug}`, {
-        method: "POST",
-      });
-
-    post != null && registerView();
-  }, [post]);
-
-  if (error) return <PageNotFound />;
+    if (typeof slug === 'string') {
+      fetchCodeSnippetDetail(slug)
+    }
+  }, [slug])
 
   return (
     <>
       <Metadata
         title={post.meta.title}
-        suffix="Jatin Sharma"
+        suffix="Numan Ibn Mazid"
         description={post.meta.excerpt}
         previewImage={post.meta.image}
         keywords={post.meta.keywords}
@@ -52,43 +64,5 @@ export default function Post({
         />
       </BlogLayout>
     </>
-  );
-}
-
-type StaticProps = GetStaticPropsContext & {
-  params: {
-    slug: string;
-  };
-};
-
-export async function getStaticProps({ params }: StaticProps) {
-  const { slug } = params;
-  const { post } = await new MDXContent("posts").getPostFromSlug(slug);
-
-  if (post != null) {
-    return {
-      props: {
-        error: false,
-        post,
-      },
-    };
-  } else {
-    return {
-      props: {
-        error: true,
-        post: null,
-      },
-    };
-  }
-}
-
-export async function getStaticPaths() {
-  const paths = new MDXContent("posts")
-    .getSlugs()
-    .map((slug) => ({ params: { slug } }));
-
-  return {
-    paths,
-    fallback: false,
-  };
+  )
 }

@@ -37,7 +37,7 @@ export default function Home() {
   }
 
   const fetchBlogs = async () => {
-    const blogsData = await getAllBlogs(3)
+    const blogsData = await getAllBlogs()
     setBlogs(blogsData)
   }
 

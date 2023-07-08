@@ -2,7 +2,7 @@ FROM python:3.9.12-alpine3.15
 ENV PYTHONUNBUFFERED 1
 
 # Install required dependencies
-RUN apk update && apk add gcc musl-dev libffi-dev
+RUN apk update && apk add gcc musl-dev build-essential libssl-dev libffi-dev
 
 RUN mkdir /app
 WORKDIR /app

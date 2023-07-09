@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "numanibnmazid.com"
+name = "nim23.com"
 version = "0.1.0"
 description = "Portfolio web application of Numan Ibn Mazid"
 authors = ["Numan Ibn Mazid <numanibnmazid@gmail.com>"]

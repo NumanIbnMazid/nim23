@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://numanibnmazid.com/sitemap.xml
+Sitemap: https://nim23.com/sitemap.xml

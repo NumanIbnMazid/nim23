@@ -54,8 +54,9 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
                 className="flex items-center justify-center gap-4 p-4 origin-center transform border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
               >
                 <div className="card">
-                  <OgImage src={project?.image as string} alt={project.title} />
-
+                  {project.image !== null && (
+                    <OgImage src={project?.image} alt={project.title} />
+                  )}
                   <div className="flex flex-col justify-start gap-3">
                     <Link
                       href={`projects/${project.slug}`}

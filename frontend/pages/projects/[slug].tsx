@@ -45,9 +45,12 @@ export default function ProjectDetailsSection() {
   }
 
   const isImageFile = (file: string): boolean => {
-    const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']
-    const fileExtension = getFileExtensionFromBase64(file)
-    return imageExtensions.includes(fileExtension.toLowerCase())
+    if (file !== null) {
+      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']
+      const fileExtension = getFileExtensionFromBase64(file)
+      return imageExtensions.includes(fileExtension.toLowerCase())
+    }
+    return false
   }
 
   return (
@@ -120,7 +123,7 @@ export default function ProjectDetailsSection() {
                             <h3>{media.title}</h3>
 
                             {/* Image file */}
-                            {isImageFile(media.file) && (
+                            {media.file !== null && isImageFile(media.file) && (
                               <Image
                                 src={media.file}
                                 className=""
@@ -133,7 +136,7 @@ export default function ProjectDetailsSection() {
                             )}
 
                             {/* pdf file */}
-                            {getFileExtensionFromBase64(media.file) === 'pdf' && (
+                            {media.file !== null && getFileExtensionFromBase64(media.file) === 'pdf' && (
                               <PDFViewer base64String={media.file} />
                             )}
 

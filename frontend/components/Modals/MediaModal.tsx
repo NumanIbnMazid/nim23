@@ -1,96 +1,216 @@
-import { useState } from 'react'
-import ReactModal from 'react-modal'
-import PDFViewer from '@components/PDFViewer'
+import { BsGithub } from 'react-icons/bs'
+import { MdOutlineLink } from 'react-icons/md'
+import Link from 'next/link'
+import { ProjectType, MediaType } from '@lib/types'
+import { motion } from 'framer-motion'
+import { FadeContainer } from '../../content/FramerMotionVariants'
+import { HomeHeading } from '..'
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { getProjectDetails } from '@lib/backendAPI'
+import { useRouter } from 'next/router'
+import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
+import { opacityVariant } from '@content/FramerMotionVariants'
 import Image from 'next/image'
+import PDFViewer from '@components/PDFViewer'
 
-// Set the app element to avoid accessibility warnings
-ReactModal.setAppElement('#__next')
 
-interface MediaModalProps {
-  title: string
-  file: string
-  description: string
-}
+export default function ProjectDetailsSection() {
+  const router = useRouter()
+  const { slug } = router.query // Retrieve the slug parameter from the URL
 
-const MediaModal: React.FC<MediaModalProps> = ({ title, file, description }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [project, setProject] = useState<ProjectType>()
 
-  const openModal = () => {
-    setModalIsOpen(true)
+  const fetchProjectDetails = async (slug: string) => {
+    try {
+      const projectData: ProjectType = await getProjectDetails(slug)
+      setProject(projectData)
+    } catch (error) {
+      // Handle error case
+      console.error(error)
+    }
   }
 
-  const closeModal = () => {
-    setModalIsOpen(false)
-  }
+  // Add this useEffect to trigger the API request when slug is available
+  useEffect(() => {
+    if (typeof slug === 'string') {
+      fetchProjectDetails(slug)
+    }
+  }, [slug])
 
   function getFileExtensionFromBase64(base64String: string): string {
     const mimeType = base64String.match(/data:(.*?);/)?.[1]
     const [, fileExtension] = mimeType?.split('/') ?? []
-
     return fileExtension || ''
   }
 
-  const renderFile = (file: string) => {
-    const fileExtension = getFileExtensionFromBase64(file)
-    if (fileExtension === 'pdf') {
-      return <PDFViewer base64String={file} />
+  const isImageFile = (file: string): boolean => {
+    if (file !== null) {
+      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']
+      const fileExtension = getFileExtensionFromBase64(file)
+      return imageExtensions.includes(fileExtension.toLowerCase())
     }
-    return <Image src={file} alt={title} className="mb-4" width={1000} height={1000} quality={75} style={{ width: "auto", height: "auto" }} />
+    return false
   }
 
   return (
     <>
-      <button
-        className="text-slate-800 dark:text-slate-200 px-4 py-2 bg-sky-400 dark:bg-sky-800 rounded-lg hover:bg-sky-500 dark:hover:bg-sky-900"
-        onClick={openModal}
-      >
-        {title}
-      </button>
+      {project && (
+        <div className="dark:bg-darkPrimary dark:text-gray-100">
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            variants={FadeContainer}
+            viewport={{ once: true }}
+            className="pageTop"
+          >
+            <section className="">
+              <HomeHeading title={project.title} />
 
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Media Modal"
-        className="modal dark:bg-slate-800 dark:text-slate-100"
-        overlayClassName="modal-overlay"
-      >
-        {/* Modal Body */}
-        <div className="h-full">
-          {/* Header Section */}
-          <div className="sticky top-0 bg-white dark:bg-slate-800 py-3 z-10">
-            <button
-              className="absolute top-4 right-0 font-extrabold bg-red-700 text-red-300 rounded-full hover:text-red-400"
-              onClick={closeModal}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={FadeContainer}
+                viewport={{ once: true }}
+                className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-white dark:bg-darkSecondary dark:border-neutral-700"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <h2 className="text-2xl font-bold mb-2 text-center">{title}</h2>
-          </div>
+                <AnimatedDiv variants={opacityVariant} className="max-w-full prose dark:prose-invert">
+                  {/* project cover image */}
+                  {project.image !== null && (
+                    <div className="flex items-center justify-center">
+                      <Image
+                        src={project.image}
+                        className="shadow filter"
+                        width={300}
+                        height={300}
+                        alt={project.title}
+                        quality={100}
+                        priority
+                      />
+                    </div>
+                  )}
 
-          {/* Modal Content */}
-          <div className="flex-1 overflow-y-auto">
-            {/* File media */}
-            {renderFile(file)}
+                  <div className="">
+                    <div className="text-center">
+                      <h2 className="text-neutral-900 dark:text-neutral-200 text-lg">{project.short_description}</h2>
+                      <p className="p-0 m-0 text-sm text-gray-500">
+                        <span className="font-bold text-base">
+                          {project.duration}
+                          <span className="font-light text-sm ml-2">({project.duration_in_days})</span>
+                        </span>
+                      </p>
+                    </div>
 
-            <p className="mt-4">{description}</p>
-          </div>
+                    {/* project description */}
+                    {project.description && (
+                      <div
+                        className="text-base text-gray-600 dark:text-neutral-300"
+                        dangerouslySetInnerHTML={{ __html: project.description || '' }}
+                      ></div>
+                    )}
 
-          {/* Modal Footer */}
-          <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={closeModal}>
-            Close
-          </button>
+                    {/* project media */}
+                    {project.project_media?.length ? (
+                      // Here there will be a list of media. bullet points. There will be a button. After clicking the button new modal will open with the list of media.
+                      <div className="mb-6">
+                        <h4 className="font-bold">Attachments</h4>
+                        {project.project_media.map((media: MediaType, mediaIndex) => (
+                          <div key={mediaIndex} className="my-4">
+
+                            {/* serial number */}
+                            <h2 className='italic text-gray-400 dark:text-neutral-400'>#{mediaIndex + 1}</h2>
+
+                            {/* media title */}
+                            <h3>{media.title}</h3>
+
+                            {/* Image file */}
+                            {media.file !== null && isImageFile(media.file) && (
+                              <Image
+                                src={media.file}
+                                className=""
+                                alt={media.title}
+                                width={1000}
+                                height={1000}
+                                quality={75}
+                                style={{ width: "auto", height: "auto" }}
+                              />
+                            )}
+
+                            {/* pdf file */}
+                            {media.file !== null && getFileExtensionFromBase64(media.file) === 'pdf' && (
+                              <PDFViewer base64String={media.file} />
+                            )}
+
+                            {/* Fallback */}
+                            {media.file === null &&  (
+                              <span className='text-red-500'>File not found!</span>
+                            )}
+
+                            {/* media description */}
+                            <p className="mt-4">{media.description}</p>
+
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {/* project technology */}
+                    {project.technology && (
+                      <div>
+                        <h4 className="font-bold mb-4">Technology</h4>
+                        <div className="flex flex-wrap items-center gap-1">
+                          {project.technology.split(',').map((technology, index) => {
+                            return (
+                              <span
+                                key={`${technology}-${index}`}
+                                className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-darkPrimary"
+                              >
+                                {technology}
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* project links */}
+                    {project.github_url || project.preview_url ? (
+                      <div>
+                        <h4 className="font-bold mb-4">Links</h4>
+                        <div className="flex items-center gap-4 p-2 mt-4 w-fit">
+                          {project.github_url && (
+                            <Link
+                              href={project.github_url}
+                              title="Source Code on GitHub"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                            >
+                              <BsGithub className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                            </Link>
+                          )}
+
+                          {project.preview_url && (
+                            <Link
+                              href={project.preview_url}
+                              title="Live Preview"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                            >
+                              <MdOutlineLink className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </AnimatedDiv>
+              </motion.div>
+            </section>
+          </motion.section>
         </div>
-      </ReactModal>
+      )}
     </>
   )
 }
-
-export default MediaModal

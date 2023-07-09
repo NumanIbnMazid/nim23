@@ -1,9 +1,9 @@
-import { HomeHeading } from "../../pages";
-import Link from "next/link";
-import Blog from "../Blog";
-import { FrontMatter } from "@lib/types";
+import { HomeHeading } from "../../pages"
+import Link from "next/link"
+import Blog from "../Blog"
+import { BlogType } from "@lib/types"
 
-export default function BlogsSection({ blogs }: { blogs: FrontMatter[] }) {
+export default function BlogsSection({ blogs }: { blogs: BlogType[] }) {
   return (
     <section className="mx-5 mb-5">
 
@@ -36,5 +36,5 @@ export default function BlogsSection({ blogs }: { blogs: FrontMatter[] }) {
         </Link>
       </div>
     </section>
-  );
+  )
 }

@@ -1,8 +1,8 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType } from "@lib/types"
+import { MovieType, PostType, ExperienceType, EducationType, ProjectType } from "@lib/types"
 import StaticPage from "@components/StaticPage"
-import { getAllMovies } from "@lib/backendAPI"
+import { getAllExperiences, getAllEducations, getAllProjects, getAllMovies } from "@lib/backendAPI"
 import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
@@ -10,8 +10,10 @@ import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import SkillSection from "@components/Home/SkillSection"
 import ExperienceSection from "@components/Home/ExperienceSection"
+import Education from "@components/Education"
 import Certificates from "@components/Certificates"
-import Projects from "@components/Projects"
+import ProjectSection from "@components/ProjectSection"
+import InterestSection from "@components/Interest"
 
 
 export default function About({
@@ -21,16 +23,37 @@ export default function About({
   movies: MovieType[]
 }) {
 
+  const [experiences, setExperiences] = useState<ExperienceType[]>([])
+  const [educations, setEducations] = useState<EducationType[]>([])
+  const [projects, setProjects] = useState<ProjectType[]>([])
   const [movies, setMovies] = useState([])
 
-  useEffect(() => {
-    fetchMovies()
-  }, [])
+  const fetchExperiences = async () => {
+    const experiencesData: ExperienceType[] = await getAllExperiences()
+    setExperiences(experiencesData)
+  }
+
+  const fetchEducations = async () => {
+    const educationsData: EducationType[] = await getAllEducations()
+    setEducations(educationsData)
+  }
+
+  const fetchProjects = async () => {
+    const projectsData: ProjectType[] = await getAllProjects()
+    setProjects(projectsData)
+  }
 
   const fetchMovies = async () => {
     const moviesData = await getAllMovies()
     setMovies(moviesData)
   }
+
+  useEffect(() => {
+    fetchExperiences()
+    fetchEducations()
+    fetchProjects()
+    fetchMovies()
+  }, [])
 
   // ******* Loader Starts *******
   if (movies.length === 0) {
@@ -48,13 +71,15 @@ export default function About({
           whileInView="visible"
           variants={FadeContainer}
           viewport={{ once: true }}
-          className="grid min-h-screen py-20 place-content-center"
+          className="grid min-h-screen py-7 place-content-center"
         >
           <div>
-            <ExperienceSection />
+            <ExperienceSection experiences={experiences} />
             <SkillSection />
-            <Projects />
+            <Education educations={educations} />
             <Certificates />
+            <ProjectSection projects={projects} />
+            <InterestSection />
           </div>
         </motion.section>
       </div>

@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "nim23.com"
+version = "0.1.0"
+description = "Portfolio web application of Numan Ibn Mazid"
+authors = ["Numan Ibn Mazid <numanibnmazid@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "3.9.13"
+Django = "^4.2.1"
+psycopg2-binary = "^2.9.6"
+pydantic = "^1.10.2"
+argon2-cffi = "^21.3.0"
+autopep8 = "^1.7.0"
+python-dotenv = "^0.21.0"
+djangorestframework = "^3.14.0"
+drf-yasg = "^1.21.5"
+django-rest-knox = "^4.2.0"
+pillow = "^9.5.0"
+django-cors-headers = "^4.1.0"
+django-ckeditor = "^6.5.1"
+django-filebrowser = "^4.0.2"
+django-tinymce = "^3.6.1"
+beautifulsoup4 = "^4.12.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

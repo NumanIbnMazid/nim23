@@ -1,51 +1,39 @@
-import { SocialPlatform } from "@lib/types";
-import { AiOutlineInstagram, AiOutlineTwitter } from "react-icons/ai";
-import { BsFacebook, BsGithub, BsLinkedin } from "react-icons/bs";
-import { FaDev } from "react-icons/fa";
-import { HiMail } from "react-icons/hi";
-import { SiCodepen } from "react-icons/si";
+import { SocialPlatform } from "@lib/types"
+import { AiOutlineInstagram } from "react-icons/ai"
+import { BsFacebook, BsGithub, BsLinkedin, BsYoutube } from "react-icons/bs"
+import { HiMail } from "react-icons/hi"
 
 const socialMedia: SocialPlatform[] = [
   {
-    title: "Twitter",
-    Icon: AiOutlineTwitter,
-    url: "https://twitter.com/intent/follow?screen_name=j471n_",
-  },
-  {
     title: "LinkedIn",
     Icon: BsLinkedin,
-    url: "https://www.linkedin.com/in/j471n/",
+    url: "https://www.linkedin.com/in/numanibnmazid/",
   },
   {
     title: "Github",
     Icon: BsGithub,
-    url: "https://github.com/j471n",
+    url: "https://github.com/NumanIbnMazid",
   },
   {
     title: "Instagram",
     Icon: AiOutlineInstagram,
-    url: "https://www.instagram.com/j471n_",
-  },
-  {
-    title: "Dev.to",
-    Icon: FaDev,
-    url: "https://dev.to/j471n",
-  },
-  {
-    title: "Codepen",
-    Icon: SiCodepen,
-    url: "https://codepen.io/j471n",
+    url: "https://www.instagram.com/numanibnmazid/",
   },
   {
     title: "Facebook",
     Icon: BsFacebook,
-    url: "https://www.facebook.com/ja7in/",
+    url: "https://www.facebook.com/NumanIbnMazid/",
+  },
+  {
+    title: "YouTube",
+    Icon: BsYoutube,
+    url: "https://www.youtube.com/channel/UCNNlfUfTU61QaJDWPEakkeg",
   },
   {
     title: "Mail",
     Icon: HiMail,
-    url: "mailto:jatinsharma8669@gmail.com",
+    url: "mailto:numanibnmazid@gmail.com",
   },
-];
+]
 
-export default socialMedia;
+export default socialMedia

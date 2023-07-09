@@ -13,18 +13,33 @@ services:
     networks:
       - net-tier
 
-  django_app:
+  backend:
     depends_on:
       - db
     env_file: .env
     environment:
       WAIT_HOSTS: db:5432
       DATABASE_HOST: db
-    build: ./project
+    build: ./backend
     volumes:
-      - ./project:/app
+      - ./backend:/app
     ports:
       - "8000:8000"
+    networks:
+      - net-tier
+
+  frontend:
+    depends_on:
+      - backend
+    build: ./frontend
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     networks:
       - net-tier
 

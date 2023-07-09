@@ -18,6 +18,7 @@ module.exports = {
         darkSecondary: "#25282A",
         darkWhite: "#f2f5fa",
         "dark-3": "#b8b8b8",
+        "orange-1": "#FFA500",
       },
       listStyleType: {
         square: "square",

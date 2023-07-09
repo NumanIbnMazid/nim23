@@ -8,7 +8,7 @@ import { AiFillStar } from "react-icons/ai";
 
 export default function MovieCard({ movie }: { movie: MovieType }) {
   return (
-    <Link href={movie.url} target="_blank" rel="noopener noreferrer">
+    <Link href={movie.url ?? '#'} target={movie.url ? "_blank" : undefined} rel="noopener noreferrer">
       <motion.div
         variants={fromLeftChildren}
         className="relative bg-white dark:bg-darkSecondary shadow-md p-3 rounded-3xl group transition-[opacity,transform] duration-500"

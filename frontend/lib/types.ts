@@ -9,11 +9,40 @@ import { ReadTimeResults } from "reading-time"
 export type PersonalStaticData = {
   name: string,
   profession: string,
-  current_position: string
+  current_position: string,
+  about: string
 }
 
 export type StaticData = {
   personal: PersonalStaticData
+}
+
+/* Profile Types */
+export type ProfileType = {
+  id: number
+  username: string
+  email: string
+  name: string
+  slug: string
+  nickname: string
+  gender: string
+  image: string
+  dob: string
+  website: string
+  contact: string
+  contact_email: string
+  linkedin: string
+  github: string
+  address: string
+  about: string
+  is_portfolio_user: string
+  resume_link: string
+  is_active: string
+  is_staff: string
+  is_superuser: string
+  date_joined: string
+  last_login: string
+  updated_at: string
 }
 
 /* Custom Animated Components types */
@@ -46,38 +75,105 @@ export type SpotifyArtist = {
   popularity: number
 }
 
+export type MediaType = {
+  id: number
+  title: string
+  slug: string
+  file: string
+  description: string
+  created_at: string
+  updated_at: string
+}
+
 export type ProjectType = {
   id: string
-  name: string
-  coverImage: string
-  description: string
-  githubURL: string
-  previewURL?: string
-  tools?: string[]
-  pinned?: boolean
+  title: string
+  slug: string
+  image: string
+  short_description: string
+  technology?: string
+  duration: string
+  duration_in_days?: string
+  preview_url?: string
+  github_url?: string
+  description?: string
+  project_media?: MediaType[]
+  created_at: string
+  updated_at: string
 }
 
 export type ExperienceType = {
-  title: string
+  id: number
+  slug: string
   company: string
+  company_image: string
   company_url: string
+  address: string
+  designation: string
+  job_type: string
+  start_date: string
+  end_date: string
   duration: string
+  duration_in_days: string
+  currently_working: string
   description: string
+  created_at: string
+  updated_at: string
 }
 
 export type SkillType = {
-  name: string
-  icon: string
+  id: number
+  slug: string
+  title: string
+  image: string
+  level: string
+  order: number
+  created_at: string
+  updated_at: string
+}
+
+export type EducationType = {
+  id: number
+  slug: string
+  school: string
+  image?: string
+  degree: string
+  address?: string
+  field_of_study?: string
+  duration: string
+  grade?: string
+  activities?: string
+  description?: string
+  education_media?: MediaType[]
+  created_at: string
+  updated_at: string
 }
 
 export type CertificateType = {
   id: string
   title: string
-  issuedDate: string
-  orgName: string
-  orgLogo: string
-  url: string
-  pinned: boolean
+  slug: string
+  organization: string
+  address?: string
+  image: string
+  issue_date: string
+  expiration_date?: string
+  credential_id?: string
+  credential_url?: string
+  description?: string
+  certification_media?: MediaType[]
+  created_at: string
+  updated_at: string
+}
+
+export type InterestType = {
+  id: number
+  slug: string
+  title: string
+  icon: string
+  order: number
+  created_at: string
+  updated_at: string
 }
 
 export type SocialPlatform = {
@@ -103,6 +199,51 @@ export type Utilities = {
   data: UtilityType[]
 }
 
+export type CodeSnippetType = {
+  slug: string
+  title: string
+  overview?: string
+  image: string
+  language?: string
+  content: string
+  order: number
+  created_at: string
+  updated_at: string
+}
+
+export type BlogCategoryType = {
+  id: number
+  name: string
+  slug: string
+  created_at: string
+  updated_at: string
+}
+
+export type TableOfContents = {
+  id: string
+  level: number
+  heading: string
+}
+
+export type BlogType = {
+  id: number
+  slug: string
+  title: string
+  category?: BlogCategoryType
+  image: string
+  overview?: string
+  content: string
+  author: string
+  tags?: string
+  status: string
+  reading_time?: string
+  total_words?: number
+  order: number
+  table_of_contents: TableOfContents[]
+  created_at: string
+  updated_at: string
+}
+
 export type FrontMatter = {
   slug: string
   readingTime: ReadTimeResults
@@ -118,11 +259,6 @@ export type PostType = {
   meta: FrontMatter
   source: MDXRemoteSerializeResult
   tableOfContents: TableOfContents[]
-}
-
-export type TableOfContents = {
-  level: number
-  heading: string
 }
 
 export type SupportMe = {
@@ -179,20 +315,15 @@ export type PageMeta = {
   snippets: PageData
 }
 
-export type Snippet = {
-  slug: string
-  title: string
-  date: string
-  excerpt: string
-  image: string
-}
-
 export type MovieType = {
   id: number
+  slug: string
   name: string
   image: string
   url: string
   year: number
   watched: boolean
   rating: number
+  created_at: string
+  updated_at: string
 }

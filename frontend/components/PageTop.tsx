@@ -22,7 +22,7 @@ export default function PageTop({
     >
       <AnimatedHeading
         variants={fromLeftVariant}
-        className={`text-4xl  md:text-5xl font-bold text-neutral-900 dark:text-neutral-200 ${headingClass}`}
+        className={`text-4xl text-center md:text-5xl font-bold text-neutral-900 dark:text-neutral-200 ${headingClass}`}
       >
         {pageTitle}
       </AnimatedHeading>

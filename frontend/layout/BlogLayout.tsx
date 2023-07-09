@@ -1,38 +1,45 @@
-import { homeProfileImage } from "../utils/utils";
-import Image from "next/image";
-import ShareOnSocialMedia from "../components/ShareOnSocialMedia";
-import { FiPrinter } from "react-icons/fi";
-import Newsletter from "../components/Newsletter";
-import Link from "next/link";
-import useWindowLocation from "@hooks/useWindowLocation";
-import ScrollProgressBar from "@components/ScrollProgressBar";
-import { useState, useEffect } from "react";
-import { opacityVariant } from "@content/FramerMotionVariants";
-import AnimatedDiv from "@components/FramerMotion/AnimatedDiv";
-import useBookmarkBlogs from "@hooks/useBookmarkBlogs";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
-import { getFormattedDate } from "@utils/date";
-import { PostType } from "@lib/types";
-import { RxPencil2 } from "react-icons/rx";
-import TableOfContents from "@components/TableOfContents";
+import Image from 'next/image'
+import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
+import { FiPrinter } from 'react-icons/fi'
+import Newsletter from '../components/Newsletter'
+import useWindowLocation from '@hooks/useWindowLocation'
+import ScrollProgressBar from '@components/ScrollProgressBar'
+import { useState, useEffect } from 'react'
+import { opacityVariant, popUp } from '@content/FramerMotionVariants'
+import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
+import { getFormattedDate } from '@utils/date'
+import { BlogType, ProfileType } from '@lib/types'
+import TableOfContents from '@components/TableOfContents'
+import cn from 'classnames'
+import Prism from '../prismSetup'
+import { motion } from 'framer-motion'
 
-export default function BlogLayout({
-  post,
-  children,
-}: {
-  post: PostType;
-  children: JSX.Element;
-}) {
-  const { currentURL } = useWindowLocation();
-  const [isTOCActive, setIsTOCActive] = useState(false);
-  const [alreadyBookmarked, setAlreadyBookmarked] = useState(false);
+export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
+  const { currentURL } = useWindowLocation()
+  const [isTOCActive, setIsTOCActive] = useState(false)
+  const hasCode = blog && blog.content.includes('<code>')
 
-  const { isAlreadyBookmarked, addToBookmark, removeFromBookmark } =
-    useBookmarkBlogs("blogs", []);
+  const injectStyle = () => {
+    if (hasCode) {
+      const style = document.createElement('style')
+      style.innerHTML = `
+        .text-code code {
+          color: #5292a1
+        }
+      `
+      document.head.appendChild(style)
+    }
+  }
 
   useEffect(() => {
-    setAlreadyBookmarked(isAlreadyBookmarked(post.meta.slug));
-  }, [isAlreadyBookmarked, post.meta.slug]);
+    // Syntax Highlighting
+    injectStyle()
+    // Prism JS
+    if (typeof window !== 'undefined') {
+      Prism.highlightAll()
+      Prism.plugins.lineNumbers = true
+    }
+  }, [hasCode])
 
   return (
     <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
@@ -40,102 +47,151 @@ export default function BlogLayout({
       <TableOfContents
         isTOCActive={isTOCActive}
         setIsTOCActive={setIsTOCActive}
-        tableOfContents={post.tableOfContents}
+        tableOfContents={blog.table_of_contents}
       />
 
       {/* Blog Content */}
       <section
         className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[35%] lg:ml-[30%] print:!mx-auto"
         style={{
-          maxWidth: "800px",
+          maxWidth: '800px',
           opacity: `${isTOCActive} && "0.3"`,
-          margin: `${post.tableOfContents.length <= 0} && "auto"`,
+          margin: `${blog.table_of_contents.length <= 0} && "auto"`,
         }}
       >
         <ScrollProgressBar />
-        <h1 className="text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">
-          {post.meta.title}
-        </h1>
+        {/* Blog Cover Image */}
+        <div className="flex items-center justify-center mb-4">
+          <Image
+            alt={blog.title}
+            width={1000}
+            height={1000}
+            quality={50}
+            style={{ width: 'auto', height: 'auto' }}
+            src={blog.image}
+            className="rounded-xl shadow filter !m-0"
+          />
+        </div>
+        <h1 className="text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">{blog.title}</h1>
 
-        <div className="flex items-center !w-full text-gray-700 dark:text-gray-300">
-          <div className="flex items-center w-full gap-2">
-            <Image
-              alt="Jatin Sharma"
-              height={30}
-              width={30}
-              src={homeProfileImage}
-              className="rounded-full !m-0"
-            />
-            <div className="flex flex-col w-full text-xs sm:text-sm sm:flex-row sm:justify-between">
-              <p className="flex items-center gap-2 font-medium !my-0">
-                <span>Jatin Sharma</span>
-                <span>•</span>
-                <span>{getFormattedDate(new Date(post.meta.date))}</span>
-              </p>
-
-              <p className="flex items-center gap-2 font-medium !my-0">
-                <span>{post.meta.readingTime.text}</span>
-                <span>•</span>
-                <span>{post.meta.readingTime.words} words</span>
-              </p>
+        <div className="!w-full text-gray-700 dark:text-gray-300">
+          <div className="w-full">
+            {blog.author === 'Numan Ibn Mazid' && (
+              <motion.div
+                variants={popUp}
+                className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-30 xs:h-30 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
+              >
+                <Image
+                  src={profileInfo.image}
+                  className="rounded-full shadow filter"
+                  width={933}
+                  height={933}
+                  alt="cover Profile Image"
+                  quality={100}
+                  priority
+                />
+              </motion.div>
+            )}
+            <div className="mt-2">
+              <span className="text-base text-gray-500">Author: </span>
+              <span className="font-bold text-base text-gray-600 dark:text-gray-400">{blog.author}</span>
             </div>
-          </div>
 
-          <div className="flex gap-2 ml-4">
-            <Link
-              href={`https://github.com/j471n/j471n.in/edit/main/posts/${post.meta.slug}.mdx`}
-              title="Edit on Github"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition select-none active:scale-75"
-            >
-              <RxPencil2 className="text-gray-700 w-7 h-7 dark:text-gray-300 stroke-slate-300 " />
-            </Link>
-            <button
-              title="Save for Later"
-              className="transition active:scale-75"
-              onClick={() => {
-                alreadyBookmarked
-                  ? removeFromBookmark(post.meta.slug)
-                  : addToBookmark(post.meta);
-              }}
-            >
-              {alreadyBookmarked ? (
-                <BsBookmarkFill className="w-6 h-6 " />
-              ) : (
-                <BsBookmark className="w-6 h-6 " />
-              )}
-            </button>
+            <div className="mt-2 text-base text-gray-500">
+              <span>Created at: </span>
+              <span className="font-bold">{getFormattedDate(new Date(blog.created_at))}</span>
+            </div>
+
+            {getFormattedDate(new Date(blog.created_at)) !== getFormattedDate(new Date(blog.updated_at)) && (
+              <div className="text-base text-gray-500 mb-2">
+                <span>Last Update: </span>
+                <span className="font-bold">{getFormattedDate(new Date(blog.updated_at))}</span>
+              </div>
+            )}
+
+            {blog.category && (
+              <div className="text-base text-gray-500 mb-2">
+                <span>Category: </span>
+                <span className="font-bold">{blog.category.name}</span>
+              </div>
+            )}
+
+            {blog.reading_time && (
+              <div className="text-base text-gray-500">
+                <span>Reading Time: </span>
+                <span className="font-bold">{blog.reading_time}</span>
+              </div>
+            )}
+
+            {blog.total_words && (
+              <div className="text-base text-gray-500 mb-3">
+                <span>Total Words: </span>
+                <span className="font-bold">{blog.total_words}</span>
+              </div>
+            )}
+
+            {blog.overview && (
+              <div className="text-base text-gray-500 mb-3">
+                <span>Overview: </span>
+                <span className="font-bold">{blog.overview}</span>
+              </div>
+            )}
+
+            {blog.tags && (
+              <div className="flex flex-wrap items-center gap-1">
+                <span className="text-base text-gray-500">Tags: </span>
+                {blog.tags.split(',').map((tag, index) => {
+                  return (
+                    <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+                      {tag.toLowerCase()}
+                    </span>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Horizontal Line */}
+        <div className="relative flex mt-5 items-center">
+          <div className="flex-grow border-t border-gray-400"></div>
+          <span className="flex-shrink mx-4 text-gray-700 dark:text-gray-400">Content</span>
+          <div className="flex-grow border-t border-gray-400"></div>
+        </div>
+
+        {/* Blog Content */}
 
         <AnimatedDiv
           variants={opacityVariant}
           className="max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
-          {children}
+          <div
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+            className={cn('my-4', { 'text-code': hasCode, 'line-numbers': hasCode })}
+          />
         </AnimatedDiv>
+
+        {/* NewsLetter */}
         <Newsletter />
+
+        {/* Social Media */}
         <div className="flex flex-col items-center w-full gap-4 my-10 print:hidden">
-          <h3
-            style={{ margin: "0" }}
-            className="text-xl font-semibold dark:text-white"
-          >
+          <h3 style={{ margin: '0' }} className="text-xl font-semibold dark:text-white">
             Share on Social Media:
           </h3>
           <ShareOnSocialMedia
             className="flex flex-wrap items-center gap-2 w-fit"
-            title={post.meta.title}
+            title={blog.title}
             url={currentURL}
-            summary={post.meta.excerpt}
-            cover_image={post.meta.image}
+            summary={blog.content}
+            cover_image={blog.image}
           >
-            <div className="p-2 text-white bg-gray-700 rounded-full cursor-pointer">
+            <div className="p-2 text-white bg-gray-700 rounded-full cursor-pointer hover:bg-cyan-700">
               <FiPrinter className="w-4 h-4" onClick={() => window.print()} />
             </div>
           </ShareOnSocialMedia>
         </div>
       </section>
     </section>
-  );
+  )
 }

@@ -85,7 +85,7 @@ function UPIPaymentForm({ close }: { close: () => void }) {
   const generatePaymentQR = (e: FormEvent) => {
     e.preventDefault();
     setQrValue(
-      `upi://pay?pa=${process.env.NEXT_PUBLIC_UPI}&pn=Jatin%20Sharma&am=${amount}&purpose=nothing&cu=INR`
+      `upi://pay?pa=${process.env.NEXT_PUBLIC_UPI}&pn=Numan%20Ibn%20Mazid&am=${amount}&purpose=nothing&cu=INR`
     );
   };
 

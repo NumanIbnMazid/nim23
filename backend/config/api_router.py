@@ -1,0 +1,19 @@
+from .router import router
+# Users
+from users.api.routers import *
+# Portfolios
+from portfolios.api.professional_experiences.routers import *
+from portfolios.api.skills.routers import *
+from portfolios.api.educations.routers import *
+from portfolios.api.certifications.routers import *
+from portfolios.api.projects.routers import *
+from portfolios.api.interests.routers import *
+from portfolios.api.movies.routers import *
+# Code Snippets
+from code_snippets.api.routers import *
+# Blogs
+from blogs.api.routers import *
+
+
+app_name = "numanibnmazid_portfolio_backend_api"
+urlpatterns = router.urls

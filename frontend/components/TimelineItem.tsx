@@ -1,22 +1,33 @@
+import Image from "next/image"
+
+
 type Props = {
-  title: string;
-  meta: string;
-  link?: string | null;
-  meta_small?: string | null;
-  content: any;
+  designation: string
+  company: string
+  company_image: string
+  company_url?: string | null
+  address?: string | null
+  job_type: string
+  duration: string
+  duration_in_days: string
+  description?: any | null
 }
 
 export function TimelineItem({
-  title,
-  meta,
-  link = null,
-  meta_small,
-  content
+  designation,
+  company,
+  company_image,
+  company_url = null,
+  address = null,
+  job_type,
+  duration,
+  duration_in_days,
+  description = null
 }: Props) {
   return (
     <>
-      <article className="relative grid md:grid-cols-5 md:gap-10 before:content-[''] mx-12 before:block before:h-full before:absolute before:left-[-25px] md:before:left-[-37px] before:border-l-2 before:border-gray-300 dark:before:border-gray-700 md:space-x-4 pb-12">
-        <div className="relative pb-12 md:col-span-2">
+      <article className="relative grid md:grid-cols-6 md:gap-10 before:content-[''] mx-6 before:block before:h-full before:absolute before:left-[-25px] md:before:left-[-37px] before:border-l-2 before:border-gray-300 dark:before:border-gray-700 md:space-x-4 pb-5">
+        <div className="relative pb-6 md:col-span-2">
           <div className="sticky top-28">
             <svg
               className="absolute left-[-38px] md:left-[-50px] color-bg-default color-fg-muted bg-white dark:bg-dark rounded-full dark:text-gray-500"
@@ -31,21 +42,53 @@ export function TimelineItem({
                 fill="currentColor"
               ></path>
             </svg>
-            <h3 className="p-0 m-0">{title}</h3>
+            <h3 className="p-0 m-0 font-bold">{designation}</h3>
 
-            {link ? (
-              <a className="p-0 m-0" href={link}>
-                {meta}
-              </a>
-            ) : (
-              <p className="p-0 m-0">{meta}</p>
-            )}
-            <p className="p-0 m-0 text-sm text-gray-500">{meta_small}</p>
+            {company_image ? (
+              <div className="mt-2">
+                {company_url ? (
+                  <a className="p-0 m-0" href={company_url} target="_blank" rel="noreferrer">
+                    <Image
+                      src={company_image}
+                      className="rounded-full shadow filter"
+                      width={60}
+                      height={60}
+                      alt={company}
+                      quality={100}
+                      priority
+                    />
+                    <p className="p-0 m-0 mt-4">{company}</p>
+                  </a>
+                ) : (
+                  <div className="p-0 m-0">
+                    <Image
+                      src={company_image}
+                      className="rounded-full shadow filter"
+                      width={70}
+                      height={70}
+                      alt={company}
+                      quality={100}
+                      priority
+                    />
+                    <p className="p-0 m-0 mt-4">{company}</p>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            {address ? <p className="p-0 m-0 text-sm font-light text-gray-500">{address}</p> : null}
+
+            <p className="p-0 m-0 text-sm text-gray-500">
+              <span className="font-bold">{duration}</span>
+              <span className="ml-2 font-light">({duration_in_days})</span>
+            </p>
+
+            {job_type ? <p className="p-0 m-0 text-sm font-light text-gray-500 italic">[{job_type}]</p> : null}
           </div>
         </div>
         <div
-          className="relative md:border-b md:border-gray-300 md:dark:border-gray-400 md:col-span-3"
-          dangerouslySetInnerHTML={{ __html: content }}
+          className="relative md:border-gray-300 md:dark:border-gray-400 md:col-span-4 text-sm text-inherit font-light pt-6"
+          dangerouslySetInnerHTML={{ __html: description }}
         ></div>
       </article>
     </>

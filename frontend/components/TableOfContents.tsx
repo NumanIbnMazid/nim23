@@ -1,13 +1,12 @@
-import useScrollPercentage from "@hooks/useScrollPercentage";
-import { lockScroll, removeScrollLock } from "@utils/functions";
-import { useEffect, useState } from "react";
-import AnimatedHeading from "./FramerMotion/AnimatedHeading";
-import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants";
-import Link from "next/link";
-import { stringToSlug } from "@lib/toc";
-import useWindowSize from "@hooks/useWindowSize";
-import AnimatedDiv from "./FramerMotion/AnimatedDiv";
-import { CgSearch } from "react-icons/cg";
+import useScrollPercentage from "@hooks/useScrollPercentage"
+import { lockScroll, removeScrollLock } from "@utils/functions"
+import { useEffect, useState } from "react"
+import AnimatedHeading from "./FramerMotion/AnimatedHeading"
+import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants"
+import Link from "next/link"
+import useWindowSize from "@hooks/useWindowSize"
+import AnimatedDiv from "./FramerMotion/AnimatedDiv"
+import { CgSearch } from "react-icons/cg"
 
 export default function TableOfContents({
   tableOfContents,
@@ -15,32 +14,32 @@ export default function TableOfContents({
   isTOCActive,
 }: {
   tableOfContents: {
-    level: number;
-    heading: string;
-  }[];
-  setIsTOCActive: (val: boolean) => void;
-  isTOCActive: boolean;
+    level: number
+    heading: string
+  }[]
+  setIsTOCActive: (val: boolean) => void
+  isTOCActive: boolean
 }) {
-  const [searchValue, setSearchValue] = useState("");
-  const [toc, setToc] = useState(tableOfContents);
+  const [searchValue, setSearchValue] = useState("")
+  const [toc, setToc] = useState(tableOfContents)
 
-  const scrollPercentage = useScrollPercentage();
-  const size = useWindowSize();
+  const scrollPercentage = useScrollPercentage()
+  const size = useWindowSize()
 
   useEffect(() => {
     // In Case user exists from mobile to desktop then remove the scroll lock and TOC active to false
     if (size.width > 768) {
-      removeScrollLock();
-      setIsTOCActive(false);
+      removeScrollLock()
+      setIsTOCActive(false)
     }
-  }, [size, setIsTOCActive]);
+  }, [size, setIsTOCActive])
   useEffect(() => {
     setToc(
       tableOfContents.filter((table: any) =>
         table.heading.toLowerCase().includes(searchValue.trim().toLowerCase())
       )
-    );
-  }, [searchValue, tableOfContents, ]);
+    )
+  }, [searchValue, tableOfContents, ])
   return (
     <>
       {tableOfContents.length > 0 && (
@@ -81,21 +80,21 @@ export default function TableOfContents({
                 return (
                   <Link
                     key={content.heading}
-                    href={`#${stringToSlug(content.heading)}`}
+                    href={`#${content.id}`}
                     className="relative overflow-hidden hover:bg-darkSecondary px-2 py-0.5 md:py-1 rounded-tr-md rounded-br-md md:line-clamp-1 text-neutral-700 hover:text-white  dark:text-neutral-200 font-medium border-l-2 border-neutral-500 dark:hover:border-white"
                     style={{ marginLeft: `${content.level * 15}px` }}
                     onClick={() => {
                       if (size.width < 768) {
                         lockScroll();
-                        setIsTOCActive(false);
+                        setIsTOCActive(false)
                       }
-                      setIsTOCActive(false);
-                      removeScrollLock();
+                      setIsTOCActive(false)
+                      removeScrollLock()
                     }}
                   >
                     {content.heading}
                   </Link>
-                );
+                )
               })}
             </AnimatedDiv>
             {/* When you search but found nothing */}
@@ -106,7 +105,7 @@ export default function TableOfContents({
 
           <button
             onClick={() => {
-              setIsTOCActive(!isTOCActive);
+              setIsTOCActive(!isTOCActive)
               lockScroll();
             }}
             className="fixed bottom-0 z-50 w-full py-2 font-medium text-white bg-black outline-none md:hidden dark:bg-white dark:text-black"
@@ -116,5 +115,5 @@ export default function TableOfContents({
         </>
       )}
     </>
-  );
+  )
 }

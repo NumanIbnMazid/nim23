@@ -39,6 +39,8 @@
   - Test Rich Text Editor Image or File Upload and keeo only Tinymce, remove others.
   - Implement Tailwind Documentation Page's Background Color.
   - Implement Blog Comment, Reply, Like Features.
+  - Add PDF Reader or Modal on Project Details.
+  - Implemet Full Text Search.
 
 ## Bug Fix
 

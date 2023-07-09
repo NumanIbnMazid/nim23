@@ -1,5 +1,5 @@
 import { SocialPlatform } from "@lib/types"
-import { AiOutlineInstagram, AiOutlineTwitter } from "react-icons/ai"
+import { AiOutlineInstagram } from "react-icons/ai"
 import { BsFacebook, BsGithub, BsLinkedin, BsYoutube } from "react-icons/bs"
 import { HiMail } from "react-icons/hi"
 

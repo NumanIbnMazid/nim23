@@ -2,16 +2,12 @@ import React, { useState, useEffect, useRef } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   FadeContainer,
-  popUp,
   popUpFromBottomForText,
   searchBarSlideAnimation,
 } from "@content/FramerMotionVariants"
-import Link from "next/link"
 import Blog from "@components/Blog"
 import Metadata from "@components/MetaData"
-import { BiRss } from "react-icons/bi"
 import { RiCloseCircleLine } from "react-icons/ri"
-import { BsBookmark } from "react-icons/bs"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import PageTop from "@components/PageTop"
 import pageMeta from "@content/meta"

@@ -76,7 +76,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
 
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
-            {blog.author === 'Numan Ibn Mazid' && (
+            {blog.author === 'Numan Ibn Mazid' && profileInfo.image !== null && (
               <motion.div
                 variants={popUp}
                 className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-30 xs:h-30 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"

@@ -83,7 +83,7 @@ class Skill(models.Model):
     title = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to=get_skill_image_path, blank=True, null=True)
-    level = models.CharField(choices=Level.choices, default=None, blank=True, null=True)
+    level = models.CharField(max_length=2, choices=Level.choices, default=None, blank=True, null=True)
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

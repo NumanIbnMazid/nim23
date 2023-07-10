@@ -11,7 +11,6 @@ const withPWA = require("next-pwa")({
 });
 
 module.exports = withPWA({
-  output: 'standalone',
   // TODO: Uncomment for production
   // reactStrictMode: true,
   images: {
@@ -28,6 +27,7 @@ module.exports = withPWA({
       "m.media-amazon.com", // for imdb images
       "encrypted-tbn0.gstatic.com", // TEMP
     ],
+    // unoptimized: true,
   },
   typescript: {
     ignoreBuildErrors: false,

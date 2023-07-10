@@ -140,6 +140,13 @@ export default function ProjectDetailsSection() {
                               <PDFViewer base64String={media.file} />
                             )}
 
+                            {/* Fallback */}
+                            {media.file === null && (
+                              <div className="flex items-center justify-center">
+                                <p className="text-red-500">No file attached!</p>
+                              </div>
+                            )}
+
                             {/* media description */}
                             <p className="mt-4">{media.description}</p>
 

@@ -172,7 +172,8 @@ USE_TZ = True
 # ----------------------------------------------------
 # *** Static and Media Files Configuration ***
 # ----------------------------------------------------
-PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
+# PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
+PUBLIC_ROOT = os.path.join(BASE_DIR, "/home/nimcom/public_html/")
 # STATIC & MEDIA URL
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
@@ -180,15 +181,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
 STATIC_ROOT = os.path.join(PUBLIC_ROOT, "static/")
 # Static Files Directories
-STATICFILES_DIRS = [
+STATICFILES_DIRS = (
     os.path.join(PUBLIC_ROOT, "staticfiles"),
-]
-
-# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+)
 
 # ----------------------------------------------------
 # *** Logging ***
@@ -259,6 +254,7 @@ SWAGGER_SETTINGS = {
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',  # frontend URL here
+    'http://nim23.com'
 ]
 
 CORS_ALLOW_METHODS = [

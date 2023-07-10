@@ -41,6 +41,8 @@
   - Implement Blog Comment, Reply, Like Features.
   - Add PDF Reader or Modal on Project Details.
   - Implemet Full Text Search.
+  - Configure for MySQL Database.
+  - Generate normal requirements.txt
 
 ## Bug Fix
 

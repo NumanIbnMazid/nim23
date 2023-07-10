@@ -12,17 +12,10 @@
 
  $ poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-## Demo User Authentication Token for Development
+## Swagger Token
 
-```json
-{
-  "expiry": "2023-07-05T03:53:01.757821Z",
-  "token": "c012a83914869d906fc34e514d1c101e9175c652975f48372e731d72091c9bd3",
-  "user": {
-    "email": "admin@admin.com"
-  }
-}
-```
-
-Usage:
+Swagger Token Local:
 Token 9ae5f0396f6b504f493e51f5c9bc77b80812cddad973f0b27e7de50ae70f83fa
+
+Swagger Token Live:
+Token 67854c1fdc61a4646b300eb6a993536c0e24ed5d80c9161e962a1d49c83fc06e

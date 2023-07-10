@@ -56,7 +56,6 @@ class UserAdmin(BaseUserAdmin):
         "username",
         "is_portfolio_user",
         "slug",
-        "get_dynamic_username",
         "name",
         "is_staff",
         "is_superuser",

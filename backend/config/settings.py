@@ -172,17 +172,17 @@ USE_TZ = True
 # ----------------------------------------------------
 # *** Static and Media Files Configuration ***
 # ----------------------------------------------------
-# PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
-PUBLIC_ROOT = os.path.join(BASE_DIR, "/home/nimcom/public_html/")
 # STATIC & MEDIA URL
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
+# PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
+PUBLIC_ROOT = os.path.join(BASE_DIR, "/home/nimcom/public_html/")
 # STATIC & MEDIA ROOT
 MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
 STATIC_ROOT = os.path.join(PUBLIC_ROOT, "static/")
 # Static Files Directories
 STATICFILES_DIRS = (
-    os.path.join(PUBLIC_ROOT, "staticfiles"),
+    os.path.join(BASE_DIR, "public/", "staticfiles/"),
 )
 
 # ----------------------------------------------------

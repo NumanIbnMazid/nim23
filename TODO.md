@@ -43,8 +43,10 @@
   - Implemet Full Text Search.
   - Configure for MySQL Database.
   - Generate normal requirements.txt.
-  - Fix File Browser in cPanel.
+  - (DONE) Fix File Browser in cPanel.
   - Make Swagger, Redoc, Filebrowser is authenticated required.
+  - Implement if blog content contains code, then don't show reading time.
+  - Investigate about RSS and Newsletter.
 
 ## Bug Fix
 

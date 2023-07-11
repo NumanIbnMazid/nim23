@@ -19,7 +19,7 @@ export default class MDXContent {
     const paths = sync(`${this.POST_PATH}/*.mdx`);
     return paths.map((path) => {
       const parts = path.split("/");
-      const fileName = parts[parts.length - 1];
+      const fileName = parts[parts.length - 1]
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [slug, _ext] = fileName.split(".");
       return slug;
@@ -37,12 +37,12 @@ export default class MDXContent {
     return {
       slug,
       readingTime,
-      url: data.url ?? "",
       excerpt: data.excerpt ?? "",
       title: data.title ?? slug,
       date: (data.date ?? new Date()).toString(),
       keywords: data.keywords ?? "",
       image: data.image ?? "https://imgur.com/aNqa9cE.png",
+      url: data.url ?? ""
     };
   }
 

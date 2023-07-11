@@ -28,7 +28,7 @@ const pageMeta: PageMeta = {
     description:
       "I've been writing online since 2021, mostly about web development and tech careers. In total, I've written more than 50 articles till now.",
     image: "https://imgur.com/nbNLLZk.png",
-    keywords: "j471n blog, blog, webdev, react",
+    keywords: "numanibnmazid blog, nim23 blog, blog, webdev, react",
   },
 
   bookmark: {
@@ -61,7 +61,7 @@ const pageMeta: PageMeta = {
   privacy: {
     title: "Privacy Policy",
     description:
-      "Privacy is an important factor for everyone. Following is the privacy policies of j471n.in",
+      "Privacy is an important factor for everyone. Following is the privacy policies of nim23.com",
     image: "https://imgur.com/ghlRutT.png",
     keywords: "Privacy, Privacy Policies, ",
   },

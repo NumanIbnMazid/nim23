@@ -5,12 +5,12 @@ import { SupportMe } from "@lib/types";
 const supportOptions: SupportMe[] = [
   {
     name: "Buy Me a Coffee",
-    url: "https://buymeacoffee.com/j471n",
+    url: "https://buymeacoffee.com/numanibnmazid",
     Icon: SiBuymeacoffee,
   },
   {
     name: "PayPal",
-    url: "https://paypal.me/j47in",
+    url: "https://paypal.me/numanibnmazid",
     Icon: BsPaypal,
   },
 ];

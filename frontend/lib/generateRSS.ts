@@ -1,5 +1,6 @@
 import { writeFileSync } from "fs";
 import MDXContent from "./MDXContent";
+// @ts-ignore
 import RSS from "rss";
 
 export default async function getRSS() {

@@ -25,6 +25,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from filebrowser.sites import site
 from django.views import defaults as default_views
+from django.contrib.auth import views as auth_views
 
 
 # Yet Another Swagger Schema View
@@ -91,9 +92,10 @@ urlpatterns = [
     path('admin/filebrowser/', site.urls),
     path('grappelli/', include('grappelli.urls')),
     # ----------------------------------------------------
-    # *** Django Admin URLs ***
+    # *** Django & Django Admin URLs ***
     # ----------------------------------------------------
     path("admin/", admin.site.urls),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     # ----------------------------------------------------
     # *** Project URLs ***
     # ----------------------------------------------------

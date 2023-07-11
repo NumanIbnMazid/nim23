@@ -324,3 +324,5 @@ TINYMCE_DEFAULT_CONFIG = {
 # *** Configurable Values ***
 # ----------------------------------------------------
 BLOG_WORDS_PER_MINUTE = 200
+LOGIN_URL = "/admin/login/"
+LOGOUT_REDIRECT_URL = '/'

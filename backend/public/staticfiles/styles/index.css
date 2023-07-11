@@ -1,0 +1,201 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Dosis', sans-serif;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: url('/static/images/nim23-backend.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+/*  adding overflow hidden so animation does not make scroll bar appear  */
+  overflow: auto;
+/* making position relative so banner can be relative to the container   */
+  position: relative;
+}
+
+.banner {
+  width: 100%;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+/* adding the banner */
+
+.banner h1 {
+  font-size: 8rem;
+  color: #ddd;
+  margin-bottom: 3rem;
+/*  adding the banner h1 animation name  */
+  animation-name: moveToLeft;
+  /* animation-duration: 2s; */
+  text-shadow: 0 0 1rem pink, 0 0 2rem lightSkyBlue;
+}
+
+.banner span {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+}
+
+.banner p {
+  font-size: 5rem;
+  font-weight: 300;
+  color: #eee;
+  margin-bottom: 2rem;
+  /*  adding the banner p animation name  */
+  animation-name: moveToRight;
+  animation-duration: 2s;
+    text-shadow: 0 0 1rem pink, 0 0 2rem lightSkyBlue;
+}
+
+
+.banner button {
+  width: 18rem;
+  padding: 1.2rem;
+  margin: 2rem;
+  border: .2rem solid #eee;
+  border-radius: 5rem;
+  font-size: 1.8rem;
+  outline: none;
+  letter-spacing: .1rem;
+  cursor: pointer;
+}
+
+.a-btn {
+  width: 18rem;
+  padding: 1.2rem;
+  margin: 2rem;
+  border: .2rem solid #eee;
+  border-radius: 5rem;
+  font-size: 1.8rem;
+  outline: none;
+  letter-spacing: .1rem;
+  cursor: pointer;
+  background-color: #eee;
+  color: #444;
+  animation-name: animateBtn;
+  animation-fill-mode: backwards;
+  text-decoration: none;
+}
+
+.custom-btn {
+  background-color: #eee;
+  color: #444;
+  animation-name: animateBtn;
+  animation-duration: 1s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
+}
+
+.custom-btn:hover {
+   background-color: transparent;
+  color: #eee;
+}
+
+/* adding the keyframes for banner h1 */
+
+@keyframes moveToLeft {
+  0% {
+    transform: translateX(12rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+/* adding the keyframes for banner p */
+
+@keyframes moveToRight {
+  0% {
+    transform: translateX(-12rem);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* giving buttons the fading in animation */
+
+
+@keyframes animateBtn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.m-3 {
+  margin: 3rem;
+}
+
+.logout-btn {
+    background-color: #a83a3a;
+    color: azure;
+    font-weight: 700;
+}
+
+.logout-btn:hover {
+    background-color: #75240f;
+    color: #f1dddd;
+    font-weight: 700;
+}
+
+.font-1 {
+  font-size: 1.8rem;
+}
+
+.auth {
+    background-color: rgba(0, 255, 0, 0.2);
+    border-radius: 2rem;
+    padding: 1rem;
+    margin: 1rem;
+    padding-bottom: 6rem;
+    color: #68f8e5;
+    font-size: 2rem;
+}
+
+.btn-success {
+    background-color: #17d620;
+    color: #ecf7d6;
+    font-weight: 700;
+}
+
+.btn-success:hover {
+    background-color: #28630c;
+    color: #e7f5f3;
+    font-weight: 700;
+}
+
+.btn-danger {
+    background-color: #fa7575;
+    color: azure;
+    font-weight: 700;
+}
+
+.btn-danger:hover {
+    background-color: #75240f;
+    color: #f1dddd;
+    font-weight: 700;
+}

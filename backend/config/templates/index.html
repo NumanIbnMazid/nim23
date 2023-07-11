@@ -1,16 +1,97 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Numan Ibn Mazid's Portfolio</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'icons/favicon.ico' %}" type="image/x-icon">
+    <link href="{% static 'fonts/index.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/index.css' %}" rel="stylesheet">
+    <title>NIM23 BACKEND</title>
   </head>
   <body>
-    <h1>Welcome!</h1>
 
-    <script src="" async defer></script>
+    <div class="container">
+      <div class="banner">
+        <h1>
+          <span>NIM23</span>
+        </h1>
+        <p>Created By Numan Ibn Mazid</p>
+
+        <div>
+          <button class="custom-btn" onclick="window.open('{{ frontend_base_url }}', '_blank')">
+            SITE
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/admin/', '_blank')">
+            ADMIN SITE
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/swagger/', '_blank')">
+            SWAGGER
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/redoc/', '_blank')">
+            REDOC
+          </button>
+        </div>
+
+        <div>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/admin/filebrowser/browse/', '_blank')">
+          BROWSE FILES
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/admin/filebrowser/upload/', '_blank')">
+            UPLOAD FILE
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/admin/filebrowser/createdir/', '_blank')">
+            CREATE DIRECTORY
+          </button>
+          <button class="custom-btn" onclick="window.open('{{ backend_base_url }}/admin/filebrowser/delete_confirm/', '_blank')">
+            DELETE ALL FILES & DIRECTORIES
+          </button>
+
+          <div class="m-3 auth">
+            <div class="m-3">
+              <!-- check if user logged in -->
+              {% if user.is_authenticated %}
+                <h2 class="m-0">Logged in as {{ user.username }} ({{ user.email }})</h2>
+              {% else %}
+                <h2 class="m-0">Not logged in</h2>
+              {% endif %}
+            </div>
+
+            {% if user.is_authenticated %}
+            <div>
+              <form id="logoutForm" action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <a href="#" onclick="showConfirmationModal()" class="a-btn logout-btn">Logout</a>
+              </form>
+            </div>
+            <!-- Modal -->
+            <div id="confirmationModal" style="display: none;">
+              <h2 class="m-3">Are you sure you want to logout?</h2>
+              <a href="#" onclick="logout()" class="a-btn btn-success">Yes</a>
+              <a onclick="hideConfirmationModal()" class="a-btn btn-danger">No</a>
+            </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showConfirmationModal() {
+        document.getElementById('confirmationModal').style.display = 'block';
+      }
+
+      function hideConfirmationModal() {
+        document.getElementById('confirmationModal').style.display = 'none';
+      }
+
+      function logout() {
+        document.getElementById('logoutForm').submit();
+      }
+    </script>
+
   </body>
 </html>

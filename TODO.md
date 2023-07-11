@@ -42,7 +42,9 @@
   - Add PDF Reader or Modal on Project Details.
   - Implemet Full Text Search.
   - Configure for MySQL Database.
-  - Generate normal requirements.txt
+  - Generate normal requirements.txt.
+  - Fix File Browser in cPanel.
+  - Make Swagger, Redoc, Filebrowser is authenticated required.
 
 ## Bug Fix
 

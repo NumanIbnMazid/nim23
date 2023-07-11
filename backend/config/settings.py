@@ -289,7 +289,8 @@ CKEDITOR_CONFIGS = {
 }
 
 # Django Filebrowser Configuration
-FILEBROWSER_DIRECTORY = ""
+FILEBROWSER_DIRECTORY = ''
+DIRECTORY = ''
 FILEBROWSER_ADMIN_THUMBNAIL="admin_thumbnail"
 FILEBROWSER_ADMIN_VERSIONS=['thumbnail', 'small', 'medium', 'big', 'large']
 FILEBROWSER_VERSION_QUALITY=90

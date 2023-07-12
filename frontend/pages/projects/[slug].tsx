@@ -79,7 +79,7 @@ export default function ProjectDetailsSection() {
   return (
     <>
       {project && (
-        <div className="dark:bg-darkPrimary dark:text-gray-100">
+        <div className="dark:text-gray-100">
           <motion.section
             initial="hidden"
             whileInView="visible"
@@ -95,7 +95,7 @@ export default function ProjectDetailsSection() {
                 whileInView="visible"
                 variants={FadeContainer}
                 viewport={{ once: true }}
-                className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-white dark:bg-darkSecondary dark:border-neutral-700"
+                className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-darkWhitePrimary dark:bg-darkPrimary dark:border-neutral-700"
               >
                 <AnimatedDiv variants={opacityVariant} className="max-w-full prose dark:prose-invert">
                   {/* project cover image */}

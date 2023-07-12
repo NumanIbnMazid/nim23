@@ -14,11 +14,14 @@ module.exports = {
     },
     extend: {
       colors: {
-        darkPrimary: "#181A1B",
-        darkSecondary: "#25282A",
+        darkPrimary: "#111827",
+        darkSecondary: "#1F2937",
+        darkThird: "#10192D",
+        darkFourth: "#151e30",
+        darkFifth: "#0d1423",
         darkWhite: "#f2f5fa",
-        "dark-3": "#b8b8b8",
-        "orange-1": "#FFA500",
+        darkWhitePrimary: "#fafdff",
+        darkWhiteSecondary: "#e8ecf9",
       },
       listStyleType: {
         square: "square",

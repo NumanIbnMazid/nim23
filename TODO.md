@@ -49,6 +49,7 @@
   - Investigate about RSS and Newsletter.
   - Make frontend server.js Allowed Hosts come from env.
   - Auto remove unused files (media) from backend.
+  - Fix order non null violetion in Projects Section.
 
 ## Bug Fix
 

@@ -26,7 +26,7 @@ export default function ProjectDetailsSection() {
               className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-white dark:bg-darkSecondary dark:border-neutral-700"
             >
               <AnimatedDiv variants={opacityVariant} className="max-w-full prose dark:prose-invert">
-                <div id="contact" className="dark:bg-darkPrimary !relative">
+                <div id="contact" className="bg-darkWhitePrimary dark:bg-darkPrimary !relative">
                   {/* Get in touch top section */}
                   <section className="pt-6 text-center w-full-width dark:bg-darkPrimary dark:text-white">
                     <AnimatedHeading variants={popUpFromBottomForText} className="text-4xl font-bold">

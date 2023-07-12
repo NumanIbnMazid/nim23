@@ -24,7 +24,7 @@ export default function StaticPage({
         keywords={metadata.keywords}
       />
 
-      <section className="pageTop">
+      <section className="pageTop bg-darkWhitePrimary dark:bg-darkPrimary">
         <PageTop containerClass="mb-0" pageTitle={page.meta.title}>
           {showDescription && (metadata.description || page.meta.excerpt)}
         </PageTop>

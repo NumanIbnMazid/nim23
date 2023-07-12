@@ -31,7 +31,7 @@ export default function TopNavbar() {
           "shadow",
           "backdrop-blur-xl",
           "bg-white/70",
-          "dark:bg-darkSecondary",
+          "dark:bg-darkFourth",
         ]
       );
 
@@ -42,7 +42,7 @@ export default function TopNavbar() {
           "shadow",
           "backdrop-blur-xl",
           "bg-white/70",
-          "dark:bg-darkSecondary",
+          "dark:bg-darkFourth",
         ]
       );
       control.start("hidden");
@@ -70,7 +70,7 @@ export default function TopNavbar() {
 
   return (
     <div
-      className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden"
+      className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden backdrop-blur transition-colors duration-500 supports-backdrop-blur:bg-white/60"
       ref={navRef}
     >
       {/* Mobile Navigation Hamburger and MobileMenu */}

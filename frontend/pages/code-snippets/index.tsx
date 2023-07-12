@@ -56,7 +56,7 @@ export default function CodeSnippets() {
         keywords={pageMeta.snippets.keywords}
       />
 
-      <section className="pageTop flex flex-col gap-2">
+      <section className="pageTop flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
         <PageTop pageTitle={pageMeta.snippets.title}>
           {pageMeta.snippets.description}
         </PageTop>

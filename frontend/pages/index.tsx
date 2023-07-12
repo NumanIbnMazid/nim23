@@ -81,7 +81,7 @@ export default function Home() {
         previewImage={pageMeta.home.image}
         keywords={pageMeta.home.keywords}
       />
-      <div className="relative max-w-4xl mx-auto dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
+      <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"
           whileInView="visible"

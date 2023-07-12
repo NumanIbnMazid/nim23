@@ -77,8 +77,7 @@ export default function About({
   return (
     <>
       <StaticPage metadata={pageMeta.about} page={about} />
-
-      <div className="relative max-w-4xl mx-auto dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
+      <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"
           whileInView="visible"
@@ -112,33 +111,33 @@ export default function About({
             <InterestSection />
           </div>
         </motion.section>
+
+        {/* Movies */}
+        {movies.length > 0 ? (
+          <div className="-mt-5 pageTop print:hidden">
+            <motion.h3
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={opacityVariant}
+              className="w-full my-2 text-3xl font-bold font-inter flex justify-center items-center text-slate-500 dark:text-slate-100"
+            >
+              Recent watched Movies & TV Series
+            </motion.h3>
+
+            <AnimatedDiv
+              variants={FadeContainer}
+              className="flex items-center gap-2 pt-10 pb-5 overflow-x-scroll md:gap-4 horizontal-scrollbar"
+            >
+              {movies.map((movie: MovieType) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </AnimatedDiv>
+          </div>
+        ) :
+          <NoData topic="Movies" />
+        }
       </div>
-
-      {/* Movies */}
-      {movies.length > 0 ? (
-        <div className="-mt-5 pageTop print:hidden">
-          <motion.h3
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={opacityVariant}
-            className="my-2 text-xl font-bold text-left md:text-3xl"
-          >
-            Recent watched Movies & TV Series
-          </motion.h3>
-
-          <AnimatedDiv
-            variants={FadeContainer}
-            className="flex items-center gap-2 pt-10 pb-5 overflow-x-scroll md:gap-4 horizontal-scrollbar"
-          >
-            {movies.map((movie: MovieType) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </AnimatedDiv>
-        </div>
-      ) :
-        <NoData topic="Movies" />
-      }
 
     </>
   )

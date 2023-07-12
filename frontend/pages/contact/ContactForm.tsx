@@ -195,7 +195,7 @@ export default function Form() {
 
         <motion.div
           variants={mobileNavItemSideways}
-          className="w-full overflow-hidden rounded-lg shadow-lg sm:max-w-sm"
+          className="w-full overflow-hidden rounded-lg shadow-lg sm:max-w-sm hover:bg-slate-100"
         >
           <Ripples
             className="flex justify-center w-full"

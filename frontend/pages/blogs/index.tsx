@@ -37,22 +37,6 @@ export default function Blogs() {
     fetchData()
   }, [])
 
-  // ******* Loader Starts *******
-  if (isLoading === true) {
-    return (
-      <Loader />
-    )
-  }
-  // ******* Loader Ends *******
-
-  // ******* No Data Check *******
-  if (blogs.length < 1) {
-    return (
-      <NoData topic="Blogs" />
-    )
-  }
-  // ******* No Data Check *******
-
   const [searchValue, setSearchValue] = useState("")
   const [filteredBlogs, setFilteredBlogs] = useState([...blogs])
   const searchRef = useRef<HTMLInputElement>(null!)
@@ -77,6 +61,22 @@ export default function Blogs() {
     return () => document.removeEventListener("keydown", handleAutoSearch)
   }, [])
 
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (blogs.length < 1) {
+    return (
+      <NoData topic="Blogs" />
+    )
+  }
+  // ******* No Data Check *******
+
   return (
     <>
       <Metadata
@@ -86,7 +86,7 @@ export default function Blogs() {
         keywords={pageMeta.blogs.keywords}
       />
 
-      <section className="pageTop flex flex-col gap-2">
+      <section className="pageTop flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
         <PageTop pageTitle="Blogs">
           Welcome to my blog page!
           Here, you will find a collection of insightful and informative articles that I have written on various topics.

@@ -8,9 +8,11 @@ import SnippetCard from "@components/SnippetCard"
 import { useEffect, useState } from "react"
 import { getAllCodeSnippets } from "@lib/backendAPI"
 import { CodeSnippetType } from "@lib/types"
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 export default function CodeSnippets() {
-
+  const [isLoading, setIsLoading] = useState(true)
   const [code_snippets, setCodeSnippets] = useState<CodeSnippetType[]>([])
 
   const fetchCodeSnippets = async () => {
@@ -19,8 +21,30 @@ export default function CodeSnippets() {
   }
 
   useEffect(() => {
-    fetchCodeSnippets()
+    const fetchData = async () => {
+      await Promise.all([
+        fetchCodeSnippets()
+      ]);
+      setIsLoading(false)
+    }
+    fetchData()
   }, [])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (code_snippets.length < 1) {
+    return (
+      <NoData topic="Code Snippets" />
+    )
+  }
+  // ******* No Data Check *******
 
   return (
     <>

@@ -11,3 +11,16 @@ class ProfessionalExperienceViewset(GenericViewSet, ListModelMixin):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = ProfessionalExperience.objects.all()
     serializer_class = ProfessionalExperienceSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        limit = self.request.query_params.get('_limit')
+
+        if limit:
+            try:
+                limit = int(limit)
+                queryset = queryset[:limit]
+            except ValueError:
+                pass
+
+        return queryset

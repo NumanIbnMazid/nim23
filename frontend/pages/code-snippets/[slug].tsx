@@ -5,6 +5,8 @@ import SnippetLayout from "@layout/SnippetLayout"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getCodeSnippetDetails } from '@lib/backendAPI'
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 export default function SnippetPage({
   error,
@@ -13,12 +15,14 @@ export default function SnippetPage({
 }) {
   if (error) return <PageNotFound />
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const router = useRouter()
   const { slug } = router.query // Retrieve the slug parameter from the URL
 
   const [code_snippet, setCodeSnippet] = useState<CodeSnippetType>()
 
-  const fetchCodeSnippetDetail = async (slug: string) => {
+  const fetchCodeSnippetDetail = async (slug: any) => {
     try {
       const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails(slug)
       setCodeSnippet(codeSnippetData)
@@ -30,10 +34,31 @@ export default function SnippetPage({
 
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
-    if (typeof slug === 'string') {
-      fetchCodeSnippetDetail(slug)
+    const fetchData = async () => {
+      await Promise.all([
+        fetchCodeSnippetDetail(slug)
+      ]);
+      setIsLoading(false)
     }
+    fetchData()
   }, [slug])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (!code_snippet) {
+    return (
+      <NoData topic="Code Snippet" />
+    )
+  }
+  // ******* No Data Check *******
+
 
   return (
     <>

@@ -47,6 +47,8 @@
   - Make Swagger, Redoc, Filebrowser is authenticated required.
   - Implement if blog content contains code, then don't show reading time.
   - Investigate about RSS and Newsletter.
+  - Make frontend server.js Allowed Hosts come from env.
+  - Auto remove unused files (media) from backend.
 
 ## Bug Fix
 

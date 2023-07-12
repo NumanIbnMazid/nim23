@@ -325,7 +325,6 @@ export const getAllBlogs = async (length?: number | undefined) => {
   else {
     ENDPOINT = BLOGS_ENDPOINT
   }
-  console.log(ENDPOINT);
 
   const allBlogs = await fetch(
     ENDPOINT,

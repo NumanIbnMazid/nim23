@@ -13,14 +13,7 @@ export default function ExperienceSection({ experiences }: { experiences: Experi
   const router = useRouter()
   const isHomePage = router.pathname === '/'
   // limit experiences to 1 if on home page otherwise show all
-  const experiencesToDisplay = isHomePage ? experiences.slice(0, 1) : experiences
-
-  // ******* Loader Starts *******
-  if (experiences.length === 0) {
-    return <div>Loading...</div>
-  }
-  // ******* Loader Ends *******
-
+  // const experiencesToDisplay = isHomePage ? experiences.slice(0, 1) : experiences
   return (
     <section className="mx-5">
       <div>
@@ -46,9 +39,9 @@ export default function ExperienceSection({ experiences }: { experiences: Experi
             seeking opportunities to learn and expand my skill set. Here's a brief rundown of my professional
             experiences.
           </p>
-          {experiencesToDisplay ? (
+          {experiences ? (
             <TimelineList>
-              {experiencesToDisplay.map((experience: ExperienceType, index) => (
+              {experiences.map((experience: ExperienceType, index) => (
                 <motion.div
                   key={index}
                   variants={popUp}

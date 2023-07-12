@@ -14,17 +14,44 @@ import pageMeta from "@content/meta"
 import { BlogType } from "@lib/types"
 import { CgSearch } from "react-icons/cg"
 import { getAllBlogs } from "@lib/backendAPI"
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 
 export default function Blogs() {
+  const [isLoading, setIsLoading] = useState(true)
+
   const [blogs, setBlogs] = useState([])
   const fetchBlogs = async () => {
     const blogsData = await getAllBlogs()
     setBlogs(blogsData)
   }
+
   useEffect(() => {
-    fetchBlogs()
+    const fetchData = async () => {
+      await Promise.all([
+        fetchBlogs()
+      ]);
+      setIsLoading(false)
+    }
+    fetchData()
   }, [])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (blogs.length < 1) {
+    return (
+      <NoData topic="Blogs" />
+    )
+  }
+  // ******* No Data Check *******
 
   const [searchValue, setSearchValue] = useState("")
   const [filteredBlogs, setFilteredBlogs] = useState([...blogs])

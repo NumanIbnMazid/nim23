@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { getAllInterests } from '@lib/backendAPI'
 import { InterestType } from '@lib/types'
+import NoData from "@components/NoData"
 
 
 export default function InterestSection() {
@@ -21,8 +22,10 @@ export default function InterestSection() {
   }
 
   // ******* Loader Starts *******
-  if (interests.length === 0) {
-    return <div>Loading...</div>
+  if (interests.length < 1) {
+    return (
+      <NoData topic="Interests" />
+    )
   }
   // ******* Loader Ends *******
 

@@ -42,17 +42,19 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
   }, [hasCode])
 
   return (
-    <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
+    <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
       {/* TOC */}
-      <TableOfContents
-        isTOCActive={isTOCActive}
-        setIsTOCActive={setIsTOCActive}
-        tableOfContents={blog.table_of_contents}
-      />
+      {blog.table_of_contents.length > 0 && (
+        <TableOfContents
+          isTOCActive={isTOCActive}
+          setIsTOCActive={setIsTOCActive}
+          tableOfContents={blog.table_of_contents}
+        />
+      )}
 
       {/* Blog Content */}
       <section
-        className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[35%] lg:ml-[30%] print:!mx-auto"
+        className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[35%] lg:ml-[30%] print:!mx-auto bg-darkWhitePrimary dark:bg-darkPrimary"
         style={{
           maxWidth: '800px',
           opacity: `${isTOCActive} && "0.3"`,

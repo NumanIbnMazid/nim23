@@ -20,14 +20,18 @@ import { useEffect, useState } from 'react'
 import { getProfileInfo, getAllExperiences, getAllBlogs } from '@lib/backendAPI'
 import { ProfileType, ExperienceType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true)
+
   const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [blogs, setBlogs] = useState([])
 
   const fetchExperiences = async () => {
-    const experiencesData: ExperienceType[] = await getAllExperiences()
+    const experiencesData: ExperienceType[] = await getAllExperiences(1)
     setExperiences(experiencesData)
   }
 
@@ -47,7 +51,27 @@ export default function Home() {
     fetchBlogs()
   }, [])
 
-  const latest_experience = experiences[0]
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        fetchProfileInfo(),
+        fetchExperiences(),
+        fetchBlogs()
+      ]);
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  const latest_experience: ExperienceType = experiences[0]
 
   return (
     <>
@@ -57,7 +81,7 @@ export default function Home() {
         previewImage={pageMeta.home.image}
         keywords={pageMeta.home.keywords}
       />
-      <div className="relative max-w-4xl mx-auto dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
+      <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"
           whileInView="visible"
@@ -177,14 +201,22 @@ export default function Home() {
         </motion.section>
 
         <div>
-          {/* Experience Section */}
-          <ExperienceSection experiences={experiences} />
+          {/* Experiences Section */}
+          {experiences.length > 0 ? (
+            <ExperienceSection experiences={experiences} />
+          ):
+            <NoData topic="Experiences" />
+          }
 
           {/* Skills Section */}
           <SkillSection />
 
           {/* Blogs Section */}
-          <BlogsSection blogs={blogs} />
+          {blogs.length > 0 ? (
+            <BlogsSection blogs={blogs} />
+          ):
+            <NoData topic="Blogs" />
+          }
 
           {/* Contact Section */}
           <Contact />

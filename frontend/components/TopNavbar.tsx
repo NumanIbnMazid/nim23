@@ -18,9 +18,7 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 export default function TopNavbar() {
   const navRef = useRef<HTMLDivElement>(null);
 
-  /*  Using to control animation as I'll show the name to the mobile navbar when you scroll a bit
-   * demo: https://i.imgur.com/5LKI5DY.gif
-   */
+  // Using to control animation as I'll show the name to the mobile navbar when you scroll a bit
   const control = useAnimation();
   const [navOpen, setNavOpen] = useState(false);
   const { isDarkMode, changeDarkMode } = useDarkMode();
@@ -33,7 +31,7 @@ export default function TopNavbar() {
           "shadow",
           "backdrop-blur-xl",
           "bg-white/70",
-          "dark:bg-darkSecondary",
+          "dark:bg-darkFourth",
         ]
       );
 
@@ -44,7 +42,7 @@ export default function TopNavbar() {
           "shadow",
           "backdrop-blur-xl",
           "bg-white/70",
-          "dark:bg-darkSecondary",
+          "dark:bg-darkFourth",
         ]
       );
       control.start("hidden");
@@ -72,7 +70,7 @@ export default function TopNavbar() {
 
   return (
     <div
-      className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden"
+      className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden backdrop-blur transition-colors duration-500 supports-backdrop-blur:bg-white/60"
       ref={navRef}
     >
       {/* Mobile Navigation Hamburger and MobileMenu */}

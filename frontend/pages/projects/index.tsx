@@ -5,10 +5,13 @@ import { FadeContainer } from "@content/FramerMotionVariants"
 import { ProjectType } from "@lib/types"
 import { useEffect, useState } from "react"
 import { getAllProjects } from "@lib/backendAPI"
-
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 
 export default function Projects() {
+  const [isLoading, setIsLoading] = useState(true)
+
   const [projects, setProjects] = useState<ProjectType[]>([])
 
   const fetchProjects = async () => {
@@ -17,12 +20,34 @@ export default function Projects() {
   }
 
   useEffect(() => {
-    fetchProjects()
+    const fetchData = async () => {
+      await Promise.all([
+        fetchProjects()
+      ]);
+      setIsLoading(false)
+    }
+    fetchData()
   }, [])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (projects.length < 1) {
+    return (
+      <NoData topic="Projects" />
+    )
+  }
+  // ******* No Data Check *******
 
   return (
     <>
-      <div className="relative max-w-4xl mx-auto dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
+      <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"
           whileInView="visible"

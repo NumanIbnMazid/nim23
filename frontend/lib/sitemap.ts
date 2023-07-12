@@ -4,8 +4,6 @@ import { globby } from "globby";
 export default async function generate() {
   const pages = await globby([
     "pages/*.tsx",
-    "posts/*.mdx",
-    "snippets/*.mdx",
     "!pages/_*.tsx",
     "!pages/api",
     "!pages/404.tsx",
@@ -26,7 +24,7 @@ export default async function generate() {
 
             return `
               <url>
-                  <loc>${`https://j471n.in${route}`}</loc>
+                  <loc>${`https://nim23.com${route}`}</loc>
               </url>
             `;
           })

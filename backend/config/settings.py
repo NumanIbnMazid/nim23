@@ -289,7 +289,8 @@ CKEDITOR_CONFIGS = {
 }
 
 # Django Filebrowser Configuration
-FILEBROWSER_DIRECTORY = ""
+FILEBROWSER_DIRECTORY = ''
+DIRECTORY = ''
 FILEBROWSER_ADMIN_THUMBNAIL="admin_thumbnail"
 FILEBROWSER_ADMIN_VERSIONS=['thumbnail', 'small', 'medium', 'big', 'large']
 FILEBROWSER_VERSION_QUALITY=90
@@ -323,6 +324,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # ----------------------------------------------------
 # *** Configurable Values ***
 # ----------------------------------------------------
+BACKEND_SUBDOMAIN = "/backend"
 BLOG_WORDS_PER_MINUTE = 200
-LOGIN_URL = "/admin/login/"
+LOGIN_URL = BACKEND_SUBDOMAIN + "/admin/login/"
 LOGOUT_REDIRECT_URL = '/'

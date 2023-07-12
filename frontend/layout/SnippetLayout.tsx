@@ -41,8 +41,8 @@ export default function SnippetLayout({
   }, [hasCode])
 
   return (
-    <section className="mt-[44px] md:mt-[60px]  relative !overflow-hidden">
-      <section className="relative max-w-4xl p-5 mx-auto prose sm:pt-10 font-barlow dark:prose-invert">
+    <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
+      <section className="relative max-w-4xl p-5 mx-auto prose sm:pt-10 font-barlow dark:prose-invert bg-darkWhitePrimary dark:bg-darkPrimary">
         <div className="flex items-center justify-between">
           <h1 className="m-0 text-3xl font-bold tracking-tight text-black md:text-4xl dark:text-white">
             {code_snippet.title}

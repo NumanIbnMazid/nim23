@@ -42,7 +42,14 @@
   - Add PDF Reader or Modal on Project Details.
   - Implemet Full Text Search.
   - Configure for MySQL Database.
-  - Generate normal requirements.txt
+  - Generate normal requirements.txt.
+  - (DONE) Fix File Browser in cPanel.
+  - Make Swagger, Redoc, Filebrowser is authenticated required.
+  - Implement if blog content contains code, then don't show reading time.
+  - Investigate about RSS and Newsletter.
+  - Make frontend server.js Allowed Hosts come from env.
+  - Auto remove unused files (media) from backend.
+  - Fix order non null violetion in Projects Section.
 
 ## Bug Fix
 

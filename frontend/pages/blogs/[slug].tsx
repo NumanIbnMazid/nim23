@@ -4,6 +4,8 @@ import { ProfileType, BlogType } from "@lib/types"
 import { getBlogDetails, getProfileInfo } from "@lib/backendAPI"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 
 export default function Post({
@@ -12,6 +14,8 @@ export default function Post({
   error: boolean;
 }) {
   if (error) return <PageNotFound />
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const router = useRouter()
   const { slug } = router.query // Retrieve the slug parameter from the URL
@@ -25,7 +29,7 @@ export default function Post({
     setProfileInfo(profileData)
   }
 
-  const fetchBlogDetail = async (slug: string) => {
+  const fetchBlogDetail = async (slug: any) => {
     try {
       const blogData: BlogType = await getBlogDetails(slug)
       setBlog(blogData)
@@ -35,13 +39,32 @@ export default function Post({
     }
   }
 
-  // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
-    if (typeof slug === 'string') {
-      fetchProfileInfo()
-      fetchBlogDetail(slug)
+    const fetchData = async () => {
+      await Promise.all([
+        fetchProfileInfo(),
+        fetchBlogDetail(slug)
+      ]);
+      setIsLoading(false)
     }
+    fetchData()
   }, [slug])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (!blog) {
+    return (
+      <NoData topic="Blog" />
+    )
+  }
+  // ******* No Data Check *******
 
   return (
     <>

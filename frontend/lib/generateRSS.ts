@@ -1,9 +1,10 @@
 import { writeFileSync } from "fs";
 import MDXContent from "./MDXContent";
+// @ts-ignore
 import RSS from "rss";
 
 export default async function getRSS() {
-  const siteURL = "https://j471n.in";
+  const siteURL = "https://nim23.com";
   const allBlogs = new MDXContent("posts").getAllPosts();
 
   // Create a new RSS object

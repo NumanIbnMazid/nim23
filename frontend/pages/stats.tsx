@@ -78,7 +78,7 @@ export default function Stats() {
         keywords={pageMeta.stats.keywords}
       />
 
-      <section className="pageTop font-inter">
+      <section className="pageTop font-inter bg-darkWhitePrimary dark:bg-darkPrimary">
         <HomeHeading title="Statistics" />
 
         <p>Here are some statistics about my personal github.</p>

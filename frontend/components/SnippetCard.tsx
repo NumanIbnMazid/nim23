@@ -7,7 +7,7 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
     <Link
       href={`code-snippets/${code_snippet.slug}`}
       title="View Code Snippet Details"
-      className="w-full p-4 ring-1 ring-gray-300 hover:ring-gray-400 dark:ring-[#444] bg-white dark:bg-transparent dark:hover:bg-darkSecondary dark:hover:ring-[#555] flex flex-col gap-2 rounded"
+      className="w-full p-4 bg-darkWhiteSecondary dark:bg-darkFourth ring-1 ring-gray-300 hover:ring-gray-400 dark:ring-[#444] dark:hover:bg-darkSecondary dark:hover:ring-[#555] flex flex-col gap-2 rounded"
     >
       <div className="p-1 overflow-hidden w-fit">
         <Image src={code_snippet.image} alt={code_snippet.title} width={40} height={40}></Image>

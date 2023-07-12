@@ -13,15 +13,19 @@ import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { opacityVariant } from '@content/FramerMotionVariants'
 import Image from 'next/image'
 import PDFViewer from '@components/PDFViewer'
+import Loader from "@components/Loader"
+import NoData from "@components/NoData"
 
 
 export default function ProjectDetailsSection() {
+  const [isLoading, setIsLoading] = useState(true)
+
   const router = useRouter()
   const { slug } = router.query // Retrieve the slug parameter from the URL
 
   const [project, setProject] = useState<ProjectType>()
 
-  const fetchProjectDetails = async (slug: string) => {
+  const fetchProjectDetails = async (slug: any) => {
     try {
       const projectData: ProjectType = await getProjectDetails(slug)
       setProject(projectData)
@@ -30,13 +34,6 @@ export default function ProjectDetailsSection() {
       console.error(error)
     }
   }
-
-  // Add this useEffect to trigger the API request when slug is available
-  useEffect(() => {
-    if (typeof slug === 'string') {
-      fetchProjectDetails(slug)
-    }
-  }, [slug])
 
   function getFileExtensionFromBase64(base64String: string): string {
     const mimeType = base64String.match(/data:(.*?);/)?.[1]
@@ -53,10 +50,36 @@ export default function ProjectDetailsSection() {
     return false
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        fetchProjectDetails(slug)
+      ]);
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [slug])
+
+  // ******* Loader Starts *******
+  if (isLoading === true) {
+    return (
+      <Loader />
+    )
+  }
+  // ******* Loader Ends *******
+
+  // ******* No Data Check *******
+  if (!project) {
+    return (
+      <NoData topic="Project" />
+    )
+  }
+  // ******* No Data Check *******
+
   return (
     <>
       {project && (
-        <div className="dark:bg-darkPrimary dark:text-gray-100">
+        <div className="dark:text-gray-100">
           <motion.section
             initial="hidden"
             whileInView="visible"
@@ -72,7 +95,7 @@ export default function ProjectDetailsSection() {
                 whileInView="visible"
                 variants={FadeContainer}
                 viewport={{ once: true }}
-                className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-white dark:bg-darkSecondary dark:border-neutral-700"
+                className="mb-10 mt-4 px-7 py-4 transform rounded-lg border-gray-300 sm:justify-start bg-darkWhitePrimary dark:bg-darkPrimary dark:border-neutral-700"
               >
                 <AnimatedDiv variants={opacityVariant} className="max-w-full prose dark:prose-invert">
                   {/* project cover image */}

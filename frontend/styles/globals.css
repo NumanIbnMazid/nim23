@@ -79,7 +79,7 @@ pre::-webkit-scrollbar {
 }
 
 body.dark {
-  background-color: #181a1b;
+  background-color: #101b30;
 }
 
 ::-webkit-scrollbar {
@@ -107,7 +107,7 @@ body.dark {
 
 .horizontal-scrollbar::-webkit-scrollbar {
   height: 3px;
-  border-redius: 999px;
+  border-radius: 999px;
 }
 
 /* For preventing the blue highlight color box on tap(click) */

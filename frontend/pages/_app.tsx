@@ -2,6 +2,7 @@ import "@styles/globals.css"
 import Layout from "@layout/Layout"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
+// @ts-ignore
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 import { DarkModeProvider } from "@context/darkModeContext"

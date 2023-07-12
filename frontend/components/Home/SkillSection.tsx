@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { getAllSkills } from '@lib/backendAPI'
 import { SkillType } from '@lib/types'
+import NoData from "@components/NoData"
 
 export default function SkillSection() {
   const [skills, setSkills] = useState<SkillType[]>([])
@@ -20,8 +21,10 @@ export default function SkillSection() {
   }
 
   // ******* Loader Starts *******
-  if (skills.length === 0) {
-    return <div>Loading...</div>
+  if (skills.length < 1) {
+    return (
+      <NoData topic="Skills" />
+    )
   }
   // ******* Loader Ends *******
 

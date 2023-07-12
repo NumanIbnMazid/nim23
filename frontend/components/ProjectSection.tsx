@@ -13,12 +13,6 @@ import { headingFromLeft } from "@content/FramerMotionVariants"
 
 
 export default function ProjectSection({ projects }: { projects: ProjectType[] }) {
-  // ******* Loader Starts *******
-  if (projects.length === 0) {
-    return <div>Loading...</div>
-  }
-  // ******* Loader Ends *******
-
   return (
     <section className="mx-5">
       <div>

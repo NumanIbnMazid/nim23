@@ -5,8 +5,8 @@
   "scope": "/",
   "start_url": "/",
   "name": "Numan Ibn Mazid",
-  "short_name": "Numan Ibn Mazid",
-  "description": "I am currently perusing my Bachelor Degree in Computer Science. I can code in Python, C, C++, etc. I also work on React & Next.js. This is my portfolio which you can install as Progressive Web app.",
+  "short_name": "Numan",
+  "description": "This is my portfolio application which you can install as a Progressive Web app.",
   "icons": [
     {
       "src": "icons/maskable_icon_x192.png",

@@ -6,7 +6,7 @@ authors = ["Numan Ibn Mazid <numanibnmazid@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "3.9.13"
+python = "3.9.16"
 Django = "4.0.10"
 psycopg2-binary = "^2.9.6"
 pydantic = "^1.10.2"

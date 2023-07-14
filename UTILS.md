@@ -11,3 +11,14 @@
  Generate without hashes
 
  $ poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+## VSCODE Workspace Settings (.vscode)
+
+```json
+{
+    "eslint.options": {
+      "configFile": "/home/numan/Workspace/PERSONAL/PROJECTS/nim23/frontend/.eslintrc.json"
+    }
+}
+
+```

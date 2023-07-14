@@ -13,11 +13,13 @@
   <body>
 
     <div class="container">
-      <div class="banner">
-        <h1>
-          <span>NIM23</span>
-        </h1>
-        <p>Created By Numan Ibn Mazid</p>
+      <div id="banner" class="banner">
+        <div class="content">
+            <h1>
+            <span>NIM23</span>
+          </h1>
+          <p>Created By Numan Ibn Mazid</p>
+        </div>
 
         <div>
           <button class="custom-btn" onclick="window.open('{{ frontend_base_url }}', '_blank')">
@@ -91,6 +93,31 @@
       function logout() {
         document.getElementById('logoutForm').submit();
       }
+    </script>
+
+    <script>
+      function centerBannerVertically() {
+        var container = document.querySelector('.container');
+        var banner = document.getElementById('banner');
+        var content = banner.querySelector('.content');
+        var containerHeight = window.innerHeight;
+        var contentHeight = content.offsetHeight;
+        var marginTop;
+
+        if (window.innerWidth >= 1024) {
+          marginTop = (containerHeight - contentHeight) / 4;
+        } else {
+          marginTop = (containerHeight - contentHeight) / 2;
+        }
+
+        banner.style.marginTop = marginTop + 'px';
+      }
+
+      // Call the function on page load
+      window.addEventListener('load', centerBannerVertically);
+
+      // Call the function on window resize
+      window.addEventListener('resize', centerBannerVertically);
     </script>
 
   </body>

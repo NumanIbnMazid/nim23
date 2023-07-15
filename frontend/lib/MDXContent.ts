@@ -73,6 +73,7 @@ export default class MDXContent {
     };
     const mdxSource = await serialize(content, {
       mdxOptions: {
+        development: process.env.NODE_ENV !== 'production',
         rehypePlugins: [
           rehypeSlug,
           [rehypeAutolinkHeadings, { behaviour: "wrap" }],

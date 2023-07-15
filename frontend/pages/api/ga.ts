@@ -9,6 +9,7 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
     client_email: process.env.GA_CLIENT_EMAIL,
     private_key: process.env.GA_PRIVATE_KEY?.replace(/\n/gm, '\n'),
   },
+  projectId: process.env.GA_PROJECT_ID,
 });
 
 export default async function handler(

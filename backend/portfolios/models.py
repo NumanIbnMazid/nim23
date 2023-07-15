@@ -12,7 +12,6 @@ from utils.image_upload_helpers import (
     get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path, get_interest_image_path,
     get_movie_image_path
 )
-from ckeditor.fields import RichTextField
 
 
 """ *************** Professional Experience *************** """
@@ -40,7 +39,7 @@ class ProfessionalExperience(models.Model, DurationMixin):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     present = models.BooleanField(default=False)
-    description = RichTextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -274,7 +273,7 @@ class Project(models.Model, DurationMixin):
     present = models.BooleanField(default=False)
     preview_url = models.URLField(blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
-    description = RichTextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

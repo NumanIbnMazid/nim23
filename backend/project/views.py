@@ -10,10 +10,8 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Backend Base URL
-        backend_base_url = "http://localhost:8000" if settings.DEBUG else "https://nim23.com/backend"
-        context["backend_base_url"] = backend_base_url
+        context["backend_base_url"] = settings.BACKEND_BASE_URL
 
-        # Frontend Base URL
-        frontend_base_url = "http://localhost:3000" if settings.DEBUG else "https://nim23.com"
-        context["frontend_base_url"] = frontend_base_url
+        # Frontend Base URL=
+        context["frontend_base_url"] = settings.FRONTEND_BASE_URL
         return context

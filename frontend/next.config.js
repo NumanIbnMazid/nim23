@@ -22,6 +22,7 @@ module.exports = withPWA({
   images: {
     domains: [
       // Insert Allowed Domains Here
+      "https://postimg.cc",
     ],
     // unoptimized: true,
   },

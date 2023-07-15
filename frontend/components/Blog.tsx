@@ -5,9 +5,12 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BlogCardAnimation } from '@content/FramerMotionVariants'
+import readTime from "reading-time"
 
 export default function Blog({ blog, animate = false }: { blog: BlogType; animate?: boolean }) {
   const blogRef = useRef(null)
+  const readingTime = readTime(blog.content)
+
   return (
     <motion.article
       ref={blogRef}
@@ -71,7 +74,7 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
             </div>
           </div>
           <p className="flex items-center justify-between text-xs font-medium text-gray-500 dark:text-dark-3 md:text-sm">
-            <span className='px-2 py-1 text-xs rounded bg-gray-700 text-gray-50'>{blog.reading_time}</span>
+            <span className='px-2 py-1 text-xs rounded bg-gray-700 text-gray-50'>{readingTime.text}</span>
           </p>
         </div>
       </div>

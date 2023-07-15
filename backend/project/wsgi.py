@@ -11,6 +11,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+from config import config
+
+if config.MODE == "PRODUCTION":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.production")
+else:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.development")
 
 application = get_wsgi_application()

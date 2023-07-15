@@ -1,4 +1,4 @@
-from config.router import router
+from project.router import router
 from portfolios.api.movies.views import MovieViewset
 
 

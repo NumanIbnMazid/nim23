@@ -236,8 +236,6 @@ export type BlogType = {
   author: string
   tags?: string
   status: string
-  reading_time?: string
-  total_words?: number
   order: number
   table_of_contents: TableOfContents[]
   created_at: string
@@ -305,9 +303,7 @@ export type PageData = {
 export type PageMeta = {
   home: PageData
   stats: PageData
-  utilities: PageData
   blogs: PageData
-  bookmark: PageData
   certificates: PageData
   projects: PageData
   about: PageData

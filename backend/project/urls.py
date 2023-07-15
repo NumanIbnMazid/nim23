@@ -31,9 +31,9 @@ from django.contrib.auth import views as auth_views
 # Yet Another Swagger Schema View
 schema_view = get_schema_view(
     openapi.Info(
-        title="Numan Ibn Mazid's Portfolio API",
+        title="`nim23.com` Backend API",
         default_version="v1",
-        description="API Documentation for Numan Ibn Mazid's Portfolio Project's Backend",
+        description="API Documentation for `nim23.com`",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="numanibnmazid@gmail.com"),
         license=openapi.License(name="BSD License"),
@@ -47,7 +47,7 @@ THIRD_PARTY_URLS = [
     # ----------------------------------------------------
     # *** REST FRMAEWORK API URLs ***
     # ----------------------------------------------------
-    path("api/", include("config.api_router")),
+    path("api/", include("project.api_router")),
     # ----------------------------------------------------
     # *** Knox URLs ***
     # ----------------------------------------------------
@@ -75,10 +75,6 @@ THIRD_PARTY_URLS = [
     re_path(
         r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
-    # ----------------------------------------------------
-    # *** CKEDITOR URLs ***
-    # ----------------------------------------------------
-    path('ckeditor/', include('ckeditor_uploader.urls')),
     # ----------------------------------------------------
     # *** TinyMCE URLs ***
     # ----------------------------------------------------

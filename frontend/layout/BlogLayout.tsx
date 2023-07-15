@@ -13,11 +13,13 @@ import TableOfContents from '@components/TableOfContents'
 import cn from 'classnames'
 import Prism from '../prismSetup'
 import { motion } from 'framer-motion'
+import readTime from "reading-time"
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
+  const readingTime = readTime(blog.content)
 
   const injectStyle = () => {
     if (hasCode) {
@@ -118,19 +120,15 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
               </div>
             )}
 
-            {blog.reading_time && (
-              <div className="text-base text-gray-500">
-                <span>Reading Time: </span>
-                <span className="font-bold">{blog.reading_time}</span>
-              </div>
-            )}
+            <div className="text-base text-gray-500">
+              <span>Reading Time: </span>
+              <span className="font-bold">{readingTime.text}</span>
+            </div>
 
-            {blog.total_words && (
-              <div className="text-base text-gray-500 mb-3">
-                <span>Total Words: </span>
-                <span className="font-bold">{blog.total_words}</span>
-              </div>
-            )}
+            <div className="text-base text-gray-500 mb-3">
+              <span>Total Words: </span>
+              <span className="font-bold">{readingTime.words}</span>
+            </div>
 
             {blog.overview && (
               <div className="text-base text-gray-500 mb-3">

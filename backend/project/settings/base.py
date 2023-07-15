@@ -1,16 +1,15 @@
 # ----------------------------------------------------
-# *** Numan Ibn Mazid's Portfolio Project's Backend Settings ***
+# *** nim23.com - Numan Ibn Mazid's Portfolio Project's Backend Settings ***
 # ----------------------------------------------------
 from pathlib import Path
 import os
-from conf import config
-from datetime import timedelta
+from config import config
 from rest_framework.settings import api_settings
 
 # ----------------------------------------------------
 # *** Project's BASE DIRECTORY ***
 # ----------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # ----------------------------------------------------
 # *** SECRET KEY ***
@@ -21,11 +20,6 @@ SECRET_KEY = config.SECRET_KEY
 # *** Debug ***
 # ----------------------------------------------------
 DEBUG = config.MODE == "DEVELOPMENT"
-
-# ----------------------------------------------------
-# *** Allowed Hosts ***
-# ----------------------------------------------------
-ALLOWED_HOSTS = ["*"]
 
 # ----------------------------------------------------
 # *** Application Definition ***
@@ -39,9 +33,6 @@ THIRD_PARTY_APPS = [
     "drf_yasg",
     # Django CORS Headers
     "corsheaders",
-    # Django CKEditor
-    "ckeditor",
-    "ckeditor_uploader",
     # Django TinyMCE
     "tinymce",
 ]
@@ -87,7 +78,7 @@ MIDDLEWARE = [
 # ----------------------------------------------------
 # *** Root URL Config ***
 # ----------------------------------------------------
-ROOT_URLCONF = "config.urls"
+ROOT_URLCONF = "project.urls"
 
 # ----------------------------------------------------
 # *** Templates Definition ***
@@ -95,7 +86,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "config", "templates")],
+        "DIRS": [os.path.join(BASE_DIR, "project", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,7 +109,7 @@ AUTH_USER_MODEL = "users.User"
 # ----------------------------------------------------
 # *** WSGI Application ***
 # ----------------------------------------------------
-WSGI_APPLICATION = "config.wsgi.application"
+WSGI_APPLICATION = "project.wsgi.application"
 
 # ----------------------------------------------------
 # *** Database Configuration ***
@@ -168,22 +159,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-
-# ----------------------------------------------------
-# *** Static and Media Files Configuration ***
-# ----------------------------------------------------
-# STATIC & MEDIA URL
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
-# PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
-PUBLIC_ROOT = os.path.join(BASE_DIR, "/home/nimcom/public_html/")
-# STATIC & MEDIA ROOT
-MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
-STATIC_ROOT = os.path.join(PUBLIC_ROOT, "static/")
-# Static Files Directories
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "public/", "staticfiles/"),
-)
 
 # ----------------------------------------------------
 # *** Logging ***
@@ -248,44 +223,6 @@ SWAGGER_SETTINGS = {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
     },
     "JSON_EDITOR": True,
-}
-
-# Django CORS Headers Configuration
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # frontend URL here
-    'http://nim23.com'
-]
-
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'PATCH',
-    'DELETE',
-    'OPTIONS',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
-# Django CKEditor Configuration
-CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': "100%",
-    },
 }
 
 # Django Filebrowser Configuration

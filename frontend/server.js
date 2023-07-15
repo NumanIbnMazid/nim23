@@ -17,7 +17,9 @@ app
 
       // Add your allowed hosts here
       const allowedHosts = [
-        'https://nim23.com/',
+        'https://nim23.com',
+        'https://postimg.cc',
+        'https://drive.google.com'
       ];
 
       // Check if the origin is allowed

@@ -22,32 +22,32 @@
 
   - (DONE) Configure EmailJS (Contact Form). Better if mail would send via backend api.
   - (REMOVED) Fix Utilities Page.
-  - Fix Every page's meta option.
+  - (DONE) Fix Every page's meta option.
   - (DONE) Fix Snippets, (REMOVED) Newsletter, (REMOVED) RSS, (REMOVED) dev.to.
   - (DONE) Fix footer.
   - Fix Visitor Count.
-  - Fix Bar code Scanner.
-  - Fix Spotify.
+  - (DONE) Fix Bar code Scanner.
+  - (REMOVED) Fix Spotify.
   - Implement Youtube Stats.
   - Add YouTube Videos Page.
   - Implement `generate_order` pre_save signal as a decorator and use in all django models where order is used.
-  - Implement Loader in All pages.
-  - Create and Update Site Logo.
+  - (DONE) Implement Loader in All pages.
+  - (DONE) Create and Update Site Logo.
   - Remove all custom model manager as these are not needed in this project scope.
   - (DONE) Fix blog slug page.
   - (DONE) Generate auto token after expiration or make token to expire never.
-  - Test Rich Text Editor Image or File Upload and keeo only Tinymce, remove others.
-  - Implement Tailwind Documentation Page's Background Color.
+  - (DONE) Test Rich Text Editor Image or File Upload and keep only Tinymce, remove others.
+  - (DONE) Implement Tailwind Documentation Page's Background Color.
   - Implement Blog Comment, Reply, Like Features.
   - Add PDF Reader or Modal on Project Details.
   - Implemet Full Text Search.
-  - Configure for MySQL Database.
-  - Generate normal requirements.txt.
+  - (NOT NEEDED) Configure for MySQL Database.
+  - (DONE) Generate normal requirements.txt.
   - (DONE) Fix File Browser in cPanel.
   - Make Swagger, Redoc, Filebrowser is authenticated required.
   - Implement if blog content contains code, then don't show reading time.
   - Investigate about RSS and Newsletter.
-  - Make frontend server.js Allowed Hosts come from env.
+  - (NOT NEEDED) Make frontend server.js Allowed Hosts come from env.
   - Auto remove unused files (media) from backend.
   - Fix order non null violetion in Projects Section.
 

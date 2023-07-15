@@ -4,7 +4,7 @@ from project.settings.base import *
 # *** Allowed Hosts ***
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
-    "https://nim23.com"
+    "nim23.com"
 ]
 
 # ----------------------------------------------------

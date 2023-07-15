@@ -38,5 +38,9 @@ module.exports = withPWA({
     EMAIL_JS_SERVICE_ID : process.env.EMAIL_JS_SERVICE_ID,
     EMAIL_JS_TEMPLATE_ID : process.env.EMAIL_JS_TEMPLATE_ID,
     EMAIL_JS_PUBLIC_KEY : process.env.EMAIL_JS_PUBLIC_KEY,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID : process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    GA_PROPERTY_ID : process.env.GA_PROPERTY_ID,
+    GA_CLIENT_EMAIL : process.env.GA_CLIENT_EMAIL,
+    GA_PRIVATE_KEY : process.env.GA_PRIVATE_KEY,
   }
 })

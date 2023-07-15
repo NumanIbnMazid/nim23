@@ -24,18 +24,18 @@ STATICFILES_DIRS = (
 # *** Security ***
 # ----------------------------------------------------
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',  # frontend URL here
-)
-CORS_ALLOW_METHODS = (
+]
+CORS_ALLOW_METHODS = [
     'GET',
     'POST',
     'PUT',
     'PATCH',
     'DELETE',
     'OPTIONS',
-)
-CORS_ALLOW_HEADERS = (
+]
+CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
@@ -45,7 +45,7 @@ CORS_ALLOW_HEADERS = (
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-)
+]
 
 # ----------------------------------------------------
 # *** Site Info ***

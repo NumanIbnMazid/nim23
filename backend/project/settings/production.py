@@ -40,10 +40,10 @@ SECURE_HSTS_PRELOAD = True
 
 # Neededf for CorsHeader
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     "https://nim23.com"
-)
-CORS_ALLOW_HEADERS = (
+]
+CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
@@ -53,15 +53,15 @@ CORS_ALLOW_HEADERS = (
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-)
-CORS_ALLOW_METHODS = (
+]
+CORS_ALLOW_METHODS = [
     'GET',
     'POST',
     'PUT',
     'PATCH',
     'DELETE',
     'OPTIONS'
-)
+]
 
 # ----------------------------------------------------
 # *** Site Info ***

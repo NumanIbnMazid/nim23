@@ -50,6 +50,8 @@
   - (NOT NEEDED) Make frontend server.js Allowed Hosts come from env.
   - Auto remove unused files (media) from backend.
   - Fix order non null violetion in Projects Section.
+  - Fix Page Title (browser tab title).
+  - Fix Blog Details Page Content Width.
 
 ## Bug Fix
 

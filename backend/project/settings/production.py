@@ -4,7 +4,9 @@ from project.settings.base import *
 # *** Allowed Hosts ***
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
-    "nim23.com"
+    "nim23.com",
+    # TODO: REMOVE AFTER TESTING
+    "localhost",,
 ]
 
 # ----------------------------------------------------
@@ -41,7 +43,9 @@ SECURE_HSTS_PRELOAD = True
 # Neededf for CorsHeader
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    "https://nim23.com"
+    "https://nim23.com",
+    # TODO: REMOVE AFTER TESTING
+    "http://localhost:3000",
 ]
 CORS_ALLOW_HEADERS = [
     'accept',

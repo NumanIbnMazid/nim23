@@ -60,7 +60,7 @@ export default function SkillSection() {
             >
               <div className="flex items-center justify-center">
                 <div className="relative transition pointer-events-none select-none group-hover:scale-110 sm:group-hover:scale-100">
-                  <Image src={skill.image} width={50} height={50} alt={skill.title} />
+                  <Image src={skill.image} width={50} height={50} alt={skill.title} quality={50} />
                 </div>
 
                 <p className="text-sm font-semibold pointer-events-none select-none sm:inline-flex md:text-base ml-2">

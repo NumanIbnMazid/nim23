@@ -54,7 +54,7 @@ export function TimelineItem({
                       width={60}
                       height={60}
                       alt={company}
-                      quality={100}
+                      quality={50}
                       priority
                     />
                     <p className="p-0 m-0 mt-4">{company}</p>

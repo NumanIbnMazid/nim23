@@ -46,21 +46,15 @@ export default function Home() {
   }
 
   useEffect(() => {
-    fetchProfileInfo()
-    fetchExperiences()
-    fetchBlogs()
-  }, [])
-
-  useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
         fetchProfileInfo(),
-        fetchExperiences(),
-        fetchBlogs()
-      ]);
+      ])
       setIsLoading(false)
     }
     fetchData()
+    fetchExperiences()
+    fetchBlogs()
   }, [])
 
   // ******* Loader Starts *******
@@ -100,7 +94,7 @@ export default function Home() {
                 width={933}
                 height={933}
                 alt="cover Profile Image"
-                quality={100}
+                quality={60}
                 priority
               />
             </motion.div>

@@ -61,20 +61,36 @@
 
 - [ ] Fix pydantic env file discovery in config. Get rid of hardcoded relative path.
 
-Performance Analyzer: <https://pagespeed.web.dev/analysis>
+Performance Analyzer: <https://pagespeed.web.dev>
 
 ### 18-07-2023
 
-#### Mobile
+Mobile:
 
 Performance: 26
 Accessibility: 96
 Best Practices: 83
 SEO: 98
 
-#### Desktop
+Desktop:
 
 Performance: 66
+Accessibility: 96
+Best Practices: 83
+SEO: 100
+
+### 18-07-2023 (After Optimization)
+
+Mobile:
+
+Performance: 51
+Accessibility: 96
+Best Practices: 83
+SEO: 98
+
+Desktop:
+
+Performance: 71
 Accessibility: 96
 Best Practices: 83
 SEO: 100

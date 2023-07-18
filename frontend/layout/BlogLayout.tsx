@@ -56,9 +56,9 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
 
       {/* Blog Content */}
       <section
-        className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[35%] lg:ml-[30%] print:!mx-auto bg-darkWhitePrimary dark:bg-darkPrimary"
+        className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[30%] lg:ml-[30%] print:!mx-auto bg-darkWhitePrimary dark:bg-darkPrimary"
         style={{
-          maxWidth: '800px',
+          maxWidth: '900px',
           opacity: `${isTOCActive} && "0.3"`,
           margin: `${blog.table_of_contents.length <= 0} && "auto"`,
         }}
@@ -74,6 +74,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             style={{ width: 'auto', height: 'auto' }}
             src={blog.image}
             className="rounded-xl shadow filter !m-0"
+            priority
           />
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">{blog.title}</h1>

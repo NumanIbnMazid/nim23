@@ -8,10 +8,10 @@ export const cvURL: string = "https://drive.google.com/file/d/1mOH_uleS7qqAitmpZ
 export const navigationRoutes: string[] = [
   "home",
   "about",
-  "stats",
-  "blogs",
   "projects",
   "code-snippets",
+  "blogs",
+  "stats",
   "contact",
   "privacy",
 ]

@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import { getAllProjects } from "@lib/backendAPI"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
 
 
 export default function Projects() {
@@ -47,6 +49,12 @@ export default function Projects() {
 
   return (
     <>
+      <Metadata
+        title="Projects"
+        description={pageMeta.projects.description}
+        previewImage={pageMeta.projects.image}
+        keywords={pageMeta.projects.keywords}
+      />
       <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"

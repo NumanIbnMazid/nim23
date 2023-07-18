@@ -1,12 +1,13 @@
 import PageNotFound from "pages/404"
 import { CodeSnippetType } from "@lib/types"
 import SnippetLayout from "@layout/SnippetLayout"
-// import pageMeta from "@content/meta"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getCodeSnippetDetails } from '@lib/backendAPI'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
 
 export default function SnippetPage({
   error,
@@ -62,13 +63,12 @@ export default function SnippetPage({
 
   return (
     <>
-      {/* <Metadata
-        title={snippet.meta.title}
-        suffix="Numan Ibn Mazid"
-        description={snippet.meta.excerpt}
-        previewImage={pageMeta.snippets.image}
-        keywords={pageMeta.snippets.keywords}
-      /> */}
+      <Metadata
+        title={code_snippet.title}
+        description={code_snippet.overview || pageMeta.snippets.description}
+        previewImage={code_snippet.image || pageMeta.snippets.image}
+        keywords={`${code_snippet.language || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
+      />
 
       {code_snippet ? (
 

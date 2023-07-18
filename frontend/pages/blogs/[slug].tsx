@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
 
 
 export default function Post({
@@ -68,34 +70,18 @@ export default function Post({
 
   return (
     <>
-      {/* <Metadata
-        title={post.meta.title}
-        suffix="Numan Ibn Mazid"
-        description={post.meta.excerpt}
-        previewImage={post.meta.image}
-        keywords={post.meta.keywords}
-      /> */}
+      <Metadata
+        title={blog.title}
+        description={blog.overview || pageMeta.projects.description}
+        previewImage={blog.image || pageMeta.projects.image}
+        keywords={blog.tags || pageMeta.projects.keywords}
+      />
 
       {blog && profileInfo ? (
         <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout>
       ) : (
         <p>Loading...</p>
       )}
-
-
-        {/* <MDXRemote
-          {...post.source}
-          frontmatter={{
-            slug: post.meta.slug,
-            excerpt: post.meta.excerpt,
-            title: post.meta.title,
-            date: post.meta.date,
-            keywords: post.meta.keywords,
-            image: post.meta.image,
-          }}
-          components={MDXComponents}
-        /> */}
-
     </>
   )
 }

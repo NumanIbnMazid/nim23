@@ -15,6 +15,8 @@ import Image from 'next/image'
 import PDFViewer from '@components/PDFViewer'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
 
 
 export default function ProjectDetailsSection() {
@@ -78,6 +80,12 @@ export default function ProjectDetailsSection() {
 
   return (
     <>
+      <Metadata
+        title={project.title}
+        description={project.short_description || pageMeta.projects.description}
+        previewImage={project.image || pageMeta.projects.image}
+        keywords={`${project.technology || "python project"}, ${pageMeta.projects.keywords}`}
+      />
       {project && (
         <div className="dark:text-gray-100">
           <motion.section
@@ -103,10 +111,11 @@ export default function ProjectDetailsSection() {
                     <Image
                       src={project?.image as string}
                       className="shadow filter"
-                      width={300}
-                      height={300}
+                      width={1000}
+                      height={1000}
                       alt={project.title}
-                      quality={100}
+                      quality={50}
+                      style={{ width: 'auto', height: 'auto' }}
                       priority
                     />
                   </div>

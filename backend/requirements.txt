@@ -6,6 +6,7 @@ beautifulsoup4==4.12.2
 cffi==1.15.1
 cryptography==41.0.1
 Django==4.0.10
+django-cleanup==8.0.0
 django-cors-headers==4.2.0
 django-filebrowser==4.0.2
 django-grappelli==3.0.6

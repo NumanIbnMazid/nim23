@@ -57,7 +57,10 @@ INSTALLED_APPS = (
         "django.contrib.staticfiles",
     ]
     + THIRD_PARTY_APPS
-    + LOCAL_APPS
+    + LOCAL_APPS + [
+        # Django Cleanup Needs to place after all apps
+        "django_cleanup.apps.CleanupConfig"
+    ]
 )
 
 # ----------------------------------------------------

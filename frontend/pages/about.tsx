@@ -28,7 +28,6 @@ export default function About({
 
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
-  const [projects, setProjects] = useState<ProjectType[]>([])
   const [movies, setMovies] = useState([])
 
   const fetchExperiences = async () => {
@@ -41,11 +40,6 @@ export default function About({
     setEducations(educationsData)
   }
 
-  const fetchProjects = async () => {
-    const projectsData: ProjectType[] = await getAllProjects()
-    setProjects(projectsData)
-  }
-
   const fetchMovies = async () => {
     const moviesData = await getAllMovies()
     setMovies(moviesData)
@@ -56,7 +50,6 @@ export default function About({
       await Promise.all([
         fetchExperiences(),
         fetchEducations(),
-        fetchProjects(),
         fetchMovies(),
       ]);
 
@@ -101,12 +94,6 @@ export default function About({
             }
             {/* Certificates */}
             <Certificates />
-            {/* Projects */}
-            {projects.length > 0 ? (
-              <ProjectSection projects={projects} />
-            ):
-              <NoData topic="Projects" />
-            }
             {/* Interests */}
             <InterestSection />
           </div>

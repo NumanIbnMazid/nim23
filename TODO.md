@@ -83,14 +83,14 @@ SEO: 100
 
 Mobile:
 
-Performance: 51
+Performance: 50
 Accessibility: 96
 Best Practices: 83
-SEO: 98
+SEO: 99
 
 Desktop:
 
-Performance: 71
+Performance: 70
 Accessibility: 96
 Best Practices: 83
 SEO: 100

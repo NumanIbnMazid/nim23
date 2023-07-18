@@ -5,7 +5,6 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
-    "ep-restless-sun-494011.ap-southeast-1.aws.neon.tech",  # Database Host
 ]
 
 # ----------------------------------------------------

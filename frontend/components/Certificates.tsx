@@ -2,8 +2,6 @@ import { FadeContainer } from '../content/FramerMotionVariants'
 import { HomeHeading } from '../pages'
 import { motion } from 'framer-motion'
 import React from 'react'
-import { useEffect, useState } from 'react'
-import { getAllCertificates } from '@lib/backendAPI'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import Image from 'next/image'
 import { popUpFromBottomForText } from '@content/FramerMotionVariants'
@@ -12,18 +10,7 @@ import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
 import NoData from "@components/NoData"
 
-export default function CertificateSection() {
-  const [certificates, setCertificates] = useState([])
-
-  useEffect(() => {
-    fetchCertificates()
-  }, [])
-
-  const fetchCertificates = async () => {
-    const certificatesData = await getAllCertificates()
-    setCertificates(certificatesData)
-  }
-
+export default function CertificateSection({ certificates }: { certificates: CertificateType[] }) {
   // ******* Loader Starts *******
   if (certificates.length < 1) {
     return (

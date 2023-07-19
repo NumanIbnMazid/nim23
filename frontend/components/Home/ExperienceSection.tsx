@@ -22,7 +22,9 @@ export default function ExperienceSection({ experiences }: { experiences: Experi
           variants={headingFromLeft}
         >
           <span className="mr-2">Work Experiences</span>
-          <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">{experiences.length}</span>
+          {!isHomePage && (
+            <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">{experiences.length}</span>
+          )}
         </AnimatedHeading>
       </div>
 

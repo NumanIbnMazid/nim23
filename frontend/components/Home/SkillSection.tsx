@@ -2,24 +2,11 @@ import { FadeContainer, popUp } from '../../content/FramerMotionVariants'
 import { HomeHeading } from '../../pages'
 import { motion } from 'framer-motion'
 import React from 'react'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getAllSkills } from '@lib/backendAPI'
 import { SkillType } from '@lib/types'
 import NoData from "@components/NoData"
 
-export default function SkillSection() {
-  const [skills, setSkills] = useState<SkillType[]>([])
-
-  useEffect(() => {
-    fetchSkills()
-  }, [])
-
-  const fetchSkills = async () => {
-    const skillsData = await getAllSkills()
-    setSkills(skillsData)
-  }
-
+export default function SkillSection({ skills }: { skills: SkillType[] }) {
   // ******* Loader Starts *******
   if (skills.length < 1) {
     return (

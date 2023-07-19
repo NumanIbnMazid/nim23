@@ -1,8 +1,8 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType, ExperienceType, EducationType } from "@lib/types"
+import { MovieType, PostType, ExperienceType, EducationType, SkillType, CertificateType } from "@lib/types"
 import StaticPage from "@components/StaticPage"
-import { getAllExperiences, getAllEducations, getAllMovies } from "@lib/backendAPI"
+import { getAllExperiences, getAllEducations, getAllMovies, getAllSkills, getAllCertificates } from "@lib/backendAPI"
 import { useEffect, useState } from 'react'
 import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
@@ -13,25 +13,32 @@ import ExperienceSection from "@components/Home/ExperienceSection"
 import Education from "@components/Education"
 import Certificates from "@components/Certificates"
 import InterestSection from "@components/Interest"
-import Loader from "@components/Loader"
 import NoData from "@components/NoData"
-
 
 export default function About({
   about
 }: {
   about: PostType
-  movies: MovieType[]
 }) {
-  const [isLoading, setIsLoading] = useState(true)
-
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
+  const [skills, setSkills] = useState<SkillType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
+  const [certificates, setCertificates] = useState<CertificateType[]>([])
   const [movies, setMovies] = useState([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences()
     setExperiences(experiencesData)
+  }
+
+  const fetchSkills = async () => {
+    const skillsData = await getAllSkills()
+    setSkills(skillsData)
+  }
+
+  const fetchCertificates = async () => {
+    const certificatesData = await getAllCertificates()
+    setCertificates(certificatesData)
   }
 
   const fetchEducations = async () => {
@@ -45,26 +52,12 @@ export default function About({
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        fetchExperiences(),
-        fetchEducations(),
-        fetchMovies(),
-      ]);
-
-      setIsLoading(false)
-    }
-
-    fetchData()
+    fetchExperiences()
+    fetchEducations()
+    fetchSkills()
+    fetchCertificates()
+    fetchMovies()
   }, [])
-
-  // ******* Loader Starts *******
-  if (isLoading === true) {
-    return (
-      <Loader />
-    )
-  }
-  // ******* Loader Ends *******
 
   return (
     <>
@@ -82,17 +75,17 @@ export default function About({
             {experiences.length > 0 ? (
               <ExperienceSection experiences={experiences} />
             ):
-              <NoData topic="Experiences" />
+              <NoData topic="Work Experiences" />
             }
             {/* Skills */}
-            <SkillSection />
+            <SkillSection skills={skills} />
             {educations.length > 0 ? (
               <Education educations={educations} />
             ):
               <NoData topic="Educations" />
             }
             {/* Certificates */}
-            <Certificates />
+            <Certificates certificates={certificates} />
             {/* Interests */}
             <InterestSection />
           </div>
@@ -121,7 +114,7 @@ export default function About({
             </AnimatedDiv>
           </div>
         ) :
-          <NoData topic="Movies" />
+          <NoData topic="Recent watched Movies & TV Series" />
         }
       </div>
 

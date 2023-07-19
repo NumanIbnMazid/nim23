@@ -8,8 +8,9 @@ import { ReadTimeResults } from "reading-time"
 /* Static Data Types */
 export type PersonalStaticData = {
   name: string,
-  profession: string,
-  current_position: string,
+  nickname: string,
+  current_designation: string,
+  current_company: string,
   about: string
 }
 

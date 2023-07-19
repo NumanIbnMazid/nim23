@@ -2,21 +2,21 @@
 
 - (DONE) Refine Project
 
-  - Remove all templates and static files
-  - Remove django unicorn dependency
-  - Remove all unnecessary dependencies from requirements
+  - (DONE) Remove all templates and static files
+  - (DONE) Remove django unicorn dependency
+  - (DONE) Remove all unnecessary dependencies from requirements
 
 - (DONE) Update Master and Dev Branch with refined project
 
 - (DONE) Design Starter Template
 
-  - Design starter template using tailwind CSS official documentation
+  - (DONE) Design starter template using tailwind CSS official documentation
   - Minimum Requirements
-    - Sticky Navbar (hamburger menu support)
-    - Dark/Light Switch
-    - TailwindCSS official documentation like background (or like flowbite)
-    - A demo body element
-    - Footer
+    - (DONE) Sticky Navbar (hamburger menu support)
+    - (DONE) Dark/Light Switch
+    - (DONE) TailwindCSS official documentation like background (or like flowbite)
+    - (DONE) A demo body element
+    - (DONE) Footer
 
 - Utilities
 
@@ -48,10 +48,12 @@
   - Implement if blog content contains code, then don't show reading time.
   - Investigate about RSS and Newsletter.
   - (NOT NEEDED) Make frontend server.js Allowed Hosts come from env.
-  - Auto remove unused files (media) from backend.
+  - (DONE) Auto remove unused files (media) from backend.
   - Fix order non null violetion in Projects Section.
-  - Fix Page Title (browser tab title).
-  - Fix Blog Details Page Content Width.
+  - (DONE) Fix Page Title (browser tab title).
+  - (DONE) Fix Blog Details Page Content Width.
+  - Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
+  - FIx Newsletter subscription message.
 
 ## Bug Fix
 

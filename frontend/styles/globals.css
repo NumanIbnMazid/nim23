@@ -235,7 +235,7 @@ code > .line::before {
     @apply relative overflow-hidden before:absolute before:h-full before:w-40 before:bg-stone-900 dark:before:bg-gray-50 before:opacity-10 dark:before:opacity-5 before:-right-10 before:-z-10 before:rotate-[20deg] before:scale-y-150 before:top-4 hover:before:scale-[7] before:duration-700;
   }
   .pageTop {
-    @apply mt-[44px] md:mt-[60px] max-w-4xl 2xl:max-w-5xl 3xl:max-w-7xl relative mx-auto p-4 mb-10 text-neutral-900 dark:text-neutral-200;
+    @apply mt-[44px] md:mt-[60px] max-w-4xl 2xl:max-w-5xl 3xl:max-w-7xl relative mx-auto p-4 text-neutral-900 dark:text-neutral-200;
   }
   .utilities-svg {
     @apply !pointer-events-none mb-4 w-8 h-8;
@@ -328,4 +328,46 @@ code > .line::before {
   max-width: 100%;
   max-height: 80vh;
   overflow-y: auto;
+}
+
+.footer-with-rays::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Adjust the opacity value to your liking (0.5 means 50% opacity) */
+  background: url('/images/footer_rays.png') center/cover no-repeat;
+  /* Adjust the blur value to make the image slightly blurry */
+  filter: blur(10px);
+  /* Adjust the opacity value to control the image opacity */
+  opacity: 0.5;
+  /* Add a subtle shadow to the corners */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  /* Pointer events set to none to allow clicking through the pseudo-element */
+  pointer-events: none;
+  /* Adjust the z-index to be below the footer content */
+  z-index: -1;
+}
+
+.footer-with-rays-dark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Adjust the opacity value to your liking (0.5 means 50% opacity) */
+  background: url('/images/footer_rays_dark.png') center/cover no-repeat;
+  /* Adjust the blur value to make the image slightly blurry */
+  filter: blur(10px);
+  /* Adjust the opacity value to control the image opacity */
+  opacity: 0.5;
+  /* Add a subtle shadow to the corners */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  /* Pointer events set to none to allow clicking through the pseudo-element */
+  pointer-events: none;
+  /* Adjust the z-index to be below the footer content */
+  z-index: -1;
 }

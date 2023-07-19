@@ -178,7 +178,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
         {/* Social Media */}
         <div className="flex flex-col items-center w-full gap-4 my-10 print:hidden">
           <h3 style={{ margin: '0' }} className="text-xl font-semibold dark:text-white">
-            Share on Social Media:
+            Share
           </h3>
           <ShareOnSocialMedia
             className="flex flex-wrap items-center gap-2 w-fit"

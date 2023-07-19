@@ -42,7 +42,7 @@ export default function MetaData({
       />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="description" content={description || "Numan Ibn Mazid's Portfolio Web Application"} />
-      <title>{title + (suffix ? ` - ${suffix}` : "") + "| nim23.com"}</title>
+      <title>{title + (suffix ? ` - ${suffix}` : "") + " || nim23.com"}</title>
       <meta name="theme-color" content="#000" />
       <link rel="shortcut icon" href={faviconHref} sizes="any" />
       <link rel="manifest" href="/manifest.json" />
@@ -56,7 +56,7 @@ export default function MetaData({
       />
 
       {/* Og */}
-      <meta property="og:title" content={`${title || ""} + "| nim23.com"`} />
+      <meta property="og:title" content={`${title || ""} + " || nim23.com"`} />
       <meta property="og:description" content={description || "Numan Ibn Mazid's Portfolio Application"} />
       <meta property="og:site_name" content="Numan Ibn Mazid's Portfolio" />
       <meta property="og:url" content={currentURL} key="ogurl" />
@@ -65,7 +65,7 @@ export default function MetaData({
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content="@NumanIbnMazid" />
-      <meta name="twitter:title" content={`${title || "" + "| nim23.com"}`} />
+      <meta name="twitter:title" content={`${title || "" + " || nim23.com"}`} />
       <meta name="twitter:description" content={description || "Numan Ibn Mazid's Portfolio Application"} />
       <meta name="twitter:image" content={previewImage || ""} />
       <meta name="twitter:image:alt" content={title || "nim23.com"}></meta>

@@ -70,7 +70,7 @@ export default function TopNavbar() {
 
   return (
     <div
-      className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden backdrop-blur transition-colors duration-500 supports-backdrop-blur:bg-white/60"
+      className="fixed w-full dark:text-white top-0 flex items-center justify-between bg-opacity-50 dark:bg-opacity-50 px-4 py-[10px] sm:px-6 z-50 print:hidden backdrop-filter backdrop-blur-lg transition-colors duration-500 supports-backdrop-blur:bg-white/60"
       ref={navRef}
     >
       {/* Mobile Navigation Hamburger and MobileMenu */}
@@ -139,7 +139,7 @@ function NavItem({ href, text }: { href: string; text: string }) {
     <Link
       className={`${
         isActive
-          ? "font-bold text-gray-800 dark:text-green-100"
+          ? "font-bold text-teal-700 dark:text-teal-400"
           : " text-gray-600 dark:text-gray-300"
       } sm:inline-block transition-all text-[17px] hidden px-2 md:px-3 py-[3px] hover:bg-black/10  dark:hover:bg-neutral-700/50 rounded-md`}
       href={href === "/home" ? "/" : href}

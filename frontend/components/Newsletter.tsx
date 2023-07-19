@@ -24,12 +24,10 @@ export default function Newsletter() {
   return (
     <>
       <div className="flex flex-col w-full gap-4 p-4 my-10 bg-white rounded-lg font-barlow ring-2 ring-gray-400 dark:bg-black dark:border-neutral-600 print:hidden">
-        <h2 className="text-2xl font-bold dark:text-white !my-0">
-          Numan Ibn Mazid's Newsletter
-        </h2>
+        <h2 className="text-2xl font-bold dark:text-white !my-0">Numan Ibn Mazid's Newsletter</h2>
         <p className="text-gray-600 dark:text-gray-300 font-medium !my-0">
-          Subscribe to my Personal Blog Newsletter for professional insights, industry trends, and valuable tips.
-          Stay updated and take your personal and professional growth to new heights. Join now (Spam Free)!
+          Subscribe to my Personal Blog Newsletter for professional insights, industry trends, and valuable tips. Stay
+          updated and take your personal and professional growth to new heights. Join now (Spam Free)!
         </p>
 
         <form className="relative w-full" onSubmit={subscribeNewsLetter}>
@@ -39,7 +37,7 @@ export default function Newsletter() {
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="example@email.com"
+            placeholder="john.doe@email.com"
             required={true}
           />
 
@@ -55,11 +53,7 @@ export default function Newsletter() {
         </form>
       </div>
 
-      <ToastContainer
-        theme={isDarkMode ? "dark" : "light"}
-        style={{ zIndex: 1000 }}
-        autoClose={3000}
-      />
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={3000} />
     </>
-  );
+  )
 }

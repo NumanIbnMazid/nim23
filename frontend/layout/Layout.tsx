@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 width={933}
                 height={933}
                 alt="Background Image"
-                quality={40}
+                quality={50}
                 priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 width={933}
                 height={933}
                 alt="Dark Background Image"
-                quality={40}
+                quality={50}
                 priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}

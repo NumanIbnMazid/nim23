@@ -17,7 +17,7 @@ export default function Newsletter() {
     } catch (error) {
       console.error(error);
     }
-    toast.success("You have been added to my mailing list.");
+    toast.success("You have been added to nim23's mailing list.");
     setEmail("");
   }
 

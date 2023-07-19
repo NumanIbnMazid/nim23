@@ -53,7 +53,7 @@
   - (DONE) Fix Page Title (browser tab title).
   - (DONE) Fix Blog Details Page Content Width.
   - Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
-  - FIx Newsletter subscription message.
+  - (DONE) FIx Newsletter subscription message.
 
 ## Bug Fix
 

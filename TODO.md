@@ -96,3 +96,19 @@ Performance: 70
 Accessibility: 96
 Best Practices: 83
 SEO: 100
+
+### 19-07-2023
+
+Mobile:
+
+Performance: 54
+Accessibility: 98
+Best Practices: 83
+SEO: 99
+
+Desktop:
+
+Performance: 95
+Accessibility: 98
+Best Practices: 83
+SEO: 100

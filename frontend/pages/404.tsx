@@ -17,7 +17,7 @@ export default function PageNotFound() {
         <p className="text-gray-500 font-inter dark:text-gray-400/70">
           Looks like you've found the doorway to the great nothing. You didn't
           break the internet, but I can't find what you are looking for. Please
-          visit my <b>Homepage</b> to get where you need to go.
+          visit <b>Homepage</b> to get where you need to go.
         </p>
 
         <Link

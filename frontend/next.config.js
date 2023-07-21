@@ -7,12 +7,17 @@ const dotenv = require('dotenv')
 
 dotenv.config({path: '../.env'})
 
+const runtimeCaching = require("next-pwa/cache");
+
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
   publicExcludes: ["!resume.pdf"],
+  runtimeCaching,
+  buildExcludes: [/middleware-manifest.json$/],
+  publicExcludes: ['!robots.txt']
 })
 
 module.exports = withPWA({

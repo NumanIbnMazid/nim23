@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import { AiOutlineSend } from 'react-icons/ai'
 import { useDarkMode } from '@context/darkModeContext'
+import { subscribeToNewsletter } from '@lib/backendAPI'
 
 export default function Newsletter() {
   const { isDarkMode } = useDarkMode()
@@ -11,13 +12,22 @@ export default function Newsletter() {
     e.preventDefault()
 
     try {
-      fetch(process.env.NEXT_PUBLIC_EMAIL_LIST + email, {
-        mode: 'no-cors',
-      })
+      toast.info('Please wait ...')
+
+      const newsLetterSubscriptionResponse = await subscribeToNewsletter(email)
+
+      // Dismiss the previous toast
+      toast.dismiss()
+
+      if (newsLetterSubscriptionResponse.success === false) {
+        toast.error(newsLetterSubscriptionResponse.error.error_details)
+      } else if (newsLetterSubscriptionResponse.success === true) {
+        toast.success(newsLetterSubscriptionResponse.message)
+      } else {
+        toast.error('Something went wrong. Please try again later.')
+      }
     } catch (error) {
-      console.error(error)
     }
-    toast.success("You have been added to nim23's mailing list.")
     setEmail('')
   }
 
@@ -53,7 +63,7 @@ export default function Newsletter() {
         </form>
       </div>
 
-      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={3000} />
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={6000} />
     </>
   )
 }

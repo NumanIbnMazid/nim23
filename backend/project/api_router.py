@@ -13,7 +13,10 @@ from portfolios.api.movies.routers import *
 from code_snippets.api.routers import *
 # Blogs
 from blogs.api.routers import *
+# Others
+# Newsletter
+from others.api.routers import *
 
 
-app_name = "numanibnmazid_portfolio_backend_api"
+app_name = "nim23_backend_api"
 urlpatterns = router.urls

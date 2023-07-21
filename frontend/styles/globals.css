@@ -371,3 +371,7 @@ code > .line::before {
   /* Adjust the z-index to be below the footer content */
   z-index: -1;
 }
+
+.Toastify__toast-container--top-right {
+    top: 3.3em !important;
+}

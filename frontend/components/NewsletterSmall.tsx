@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { AiOutlineSend } from 'react-icons/ai'
 import { useDarkMode } from '@context/darkModeContext'
 import { subscribeToNewsletter } from '@lib/backendAPI'
@@ -36,7 +37,9 @@ export default function Newsletter() {
     <>
       <div>
         <h3 className="my-0 text-sm tracking-wider uppercase font-bold">Newsletter</h3>
-        <p className="mt-4 text-base ">Get new articles delivered to your inbox (Spam Free)!</p>
+        <p className="mt-4 text-base ">
+          Subscribe to nim23's Newsletter for professional insights, industry trends, and valuable tips. Join now (Spam Free)!
+        </p>
         <form className="relative flex my-4 space-y-0" onSubmit={subscribeNewsLetter}>
           <label htmlFor="email-address" className="sr-only">
             Email address
@@ -64,7 +67,7 @@ export default function Newsletter() {
         </form>
       </div>
 
-      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={6000} />
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={false} />
     </>
   )
 }

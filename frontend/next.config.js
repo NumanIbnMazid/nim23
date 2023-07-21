@@ -23,7 +23,7 @@ const withPWA = require("next-pwa")({
 module.exports = withPWA({
   swcMinify: true,
   // TODO: Uncomment for production
-  // reactStrictMode: true,
+  reactStrictMode: true,
   images: {
     domains: [
       // Insert Allowed Domains Here

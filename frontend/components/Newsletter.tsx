@@ -1,39 +1,36 @@
 import { useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
 import { AiOutlineSend } from "react-icons/ai"
 import { useDarkMode } from "@context/darkModeContext"
 import { subscribeToNewsletter } from "@lib/backendAPI"
-import Loader from '@components/Loader'
 
 export default function Newsletter() {
   const { isDarkMode } = useDarkMode()
   const [email, setEmail] = useState("")
 
-  const [newsletterLoading, setNewsletterLoading] = useState(false)
-
   async function subscribeNewsLetter(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     try {
-      setNewsletterLoading(true)
+      toast.info('Please wait ...')
+
       const newsLetterSubscriptionResponse = await subscribeToNewsletter(email)
+
+      // Dismiss the previous toast
+      toast.dismiss()
 
       if (newsLetterSubscriptionResponse.success === false) {
         toast.error(newsLetterSubscriptionResponse.error.error_details)
-      }
-      else if (newsLetterSubscriptionResponse.success === true) {
+      } else if (newsLetterSubscriptionResponse.success === true) {
         toast.success(newsLetterSubscriptionResponse.message)
-      }
-      else{
+      } else {
         toast.error('Something went wrong. Please try again later.')
       }
     } catch (error) {
-      // console.error(error)
+      toast.error('Something went wrong. Please try again later.')
     }
-    finally {
-      setNewsletterLoading(false) // Set loading state to false when the request is complete.
-    }
-    setEmail("")
+    setEmail('')
   }
 
   return (
@@ -67,8 +64,6 @@ export default function Newsletter() {
           </button>
         </form>
       </div>
-
-      <div>{newsletterLoading && <Loader />}</div>
 
       <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={false} />
     </>

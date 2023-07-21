@@ -1,7 +1,6 @@
 import PageNotFound from "pages/404"
 import { CodeSnippetType } from "@lib/types"
 import SnippetLayout from "@layout/SnippetLayout"
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getCodeSnippetDetails } from '@lib/backendAPI'
 import Loader from "@components/Loader"
@@ -11,16 +10,14 @@ import pageMeta from '@content/meta'
 
 export default function SnippetPage({
   error,
+  slug
 }: {
-  error: boolean;
+  error: boolean
+  slug: string
 }) {
   if (error) return <PageNotFound />
 
   const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
-  const { slug } = router.query // Retrieve the slug parameter from the URL
-
   const [code_snippet, setCodeSnippet] = useState<CodeSnippetType>()
 
   const fetchCodeSnippetDetail = async (slug: any) => {
@@ -79,4 +76,14 @@ export default function SnippetPage({
       )}
     </>
   )
+}
+
+
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params
+  return {
+    props: {
+      slug,
+    },
+  }
 }

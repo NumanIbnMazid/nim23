@@ -2,7 +2,6 @@ import BlogLayout from "@layout/BlogLayout"
 import PageNotFound from "pages/404"
 import { ProfileType, BlogType } from "@lib/types"
 import { getBlogDetails, getProfileInfo } from "@lib/backendAPI"
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
@@ -10,17 +9,10 @@ import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 
 
-export default function Post({
-  error,
-}: {
-  error: boolean;
-}) {
+export default function BlogDetails({ error, slug }: { error: boolean, slug: string }) {
   if (error) return <PageNotFound />
 
   const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
-  const { slug } = router.query // Retrieve the slug parameter from the URL
 
   const [blog, setBlog] = useState<BlogType>()
 
@@ -43,10 +35,7 @@ export default function Post({
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([
-        fetchProfileInfo(),
-        fetchBlogDetail(slug)
-      ]);
+      await Promise.all([fetchProfileInfo(), fetchBlogDetail(slug)])
       setIsLoading(false)
     }
     fetchData()
@@ -54,17 +43,13 @@ export default function Post({
 
   // ******* Loader Starts *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader />
   }
   // ******* Loader Ends *******
 
   // ******* No Data Check *******
   if (!blog) {
-    return (
-      <NoData topic="Blog" />
-    )
+    return <NoData topic="Blog" />
   }
   // ******* No Data Check *******
 
@@ -77,11 +62,16 @@ export default function Post({
         keywords={blog.tags || pageMeta.projects.keywords}
       />
 
-      {blog && profileInfo ? (
-        <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout>
-      ) : (
-        <p>Loading...</p>
-      )}
+      {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : <p>Loading...</p>}
     </>
   )
+}
+
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params
+  return {
+    props: {
+      slug,
+    },
+  }
 }

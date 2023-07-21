@@ -8,7 +8,6 @@ import { HomeHeading } from '..'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { getProjectDetails } from '@lib/backendAPI'
-import { useRouter } from 'next/router'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { opacityVariant } from '@content/FramerMotionVariants'
 import Image from 'next/image'
@@ -19,12 +18,8 @@ import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 
 
-export default function ProjectDetailsSection() {
+export default function ProjectDetailsSection({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
-  const { slug } = router.query // Retrieve the slug parameter from the URL
-
   const [project, setProject] = useState<ProjectType>()
 
   const fetchProjectDetails = async (slug: any) => {
@@ -246,4 +241,14 @@ export default function ProjectDetailsSection() {
       )}
     </>
   )
+}
+
+
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params
+  return {
+    props: {
+      slug,
+    },
+  }
 }

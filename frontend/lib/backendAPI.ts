@@ -362,3 +362,29 @@ export const getBlogDetails = async (slug: string) => {
     console.log(errorMessage)
   }
 }
+
+
+// *** NEWSLETTER-SUBSCRIPTION ***
+
+// Blogs URL
+const NEWSLETTER_SUBSCRIPTION_PATH = "newsletter-subscription/"
+const NEWSLETTER_SUBSCRIPTION_ENDPOINT = BACKEND_API_BASE_URL + NEWSLETTER_SUBSCRIPTION_PATH
+
+/**
+ * Makes a POST request to the BACKEND API to subscribe to the newsletter.
+ * @param {string} email - The email address to subscribe to the newsletter.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const subscribeToNewsletter = async (email: string) => {
+  const response = await fetch(NEWSLETTER_SUBSCRIPTION_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: JSON.stringify({ email }),
+  })
+
+  const responseData = await response.json()
+  return responseData
+}

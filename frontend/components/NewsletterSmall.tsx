@@ -27,6 +27,7 @@ export default function Newsletter() {
         toast.error('Something went wrong. Please try again later.')
       }
     } catch (error) {
+      toast.error('Something went wrong. Please try again later.')
     }
     setEmail('')
   }

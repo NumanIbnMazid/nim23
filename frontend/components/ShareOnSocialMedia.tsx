@@ -61,15 +61,15 @@ export default function ShareOnSocialMedia({
     }
     navigator.clipboard.writeText(text).then(
       function () {
-        toast.success("Link Copied Successfully 🙌");
+        toast.success("Link Copied Successfully 🙌")
       },
       function (err) {
-        console.error(err);
-        toast.success(
+        console.error(err)
+        toast.error(
           "Something Went wrong I don't know what 🤔 use other methods"
-        );
+        )
       }
-    );
+    )
   }
 
   return (

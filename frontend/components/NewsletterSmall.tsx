@@ -67,7 +67,7 @@ export default function Newsletter() {
         </form>
       </div>
 
-      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={false} />
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={5000} />
     </>
   )
 }

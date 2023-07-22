@@ -4,6 +4,9 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png"></link>
+        <meta name="theme-color" content="#000" />
         {/* Barlow */}
         <link
           rel="preload"
@@ -42,13 +45,7 @@ export default function Document() {
         />
 
         {/* Inter */}
-        <link
-          rel="preload"
-          href="/fonts/Inter-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        <link rel="preload" href="/fonts/Inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* Sarina */}
         <link
           rel="preload"
@@ -63,5 +60,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }

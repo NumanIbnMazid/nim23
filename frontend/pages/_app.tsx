@@ -21,10 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const start = () => {
       NProgress.start()
-    };
+    }
     const end = () => {
       NProgress.done()
-    };
+    }
     router.events.on("routeChangeStart", start)
     router.events.on("routeChangeComplete", end)
     router.events.on("routeChangeError", end)
@@ -34,21 +34,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeError", end)
     }
   }, [router.events])
-
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/sw.js')
-          .then((registration) => {
-            console.log('Service Worker registered:', registration)
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error)
-          })
-      })
-    }
-  }, [])
 
   return (
     <DarkModeProvider>

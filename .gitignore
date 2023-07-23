@@ -152,6 +152,7 @@ coverage
 
 # next.js
 .next/
+.next.zip
 out/
 
 # production

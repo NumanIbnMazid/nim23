@@ -54,6 +54,7 @@
   - (DONE) Fix Blog Details Page Content Width.
   - (DONE) Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
   - (DONE) FIx Newsletter subscription message.
+  - Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
 
 ## Bug Fix
 

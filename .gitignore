@@ -176,9 +176,9 @@ meta.md
 
 
 # rss
-frontend/public/rss
-frontend/public/feed.xml
-frontend/public/sitemap.xml
+# frontend/public/rss
+# frontend/public/feed.xml
+# frontend/public/sitemap.xml
 
 
 # # pwa

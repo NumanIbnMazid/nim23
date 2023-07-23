@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Numan Ibn Mazid]]></title>
+        <description><![CDATA[I've been writing online since 2021, mostly about web development
+            and tech careers. In total, I've written 0 articles
+            till now.]]></description>
+        <link>https://nim23.com</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Sun, 23 Jul 2023 17:38:19 GMT</lastBuildDate>
+        <atom:link href="https://nim23.com/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Sun, 23 Jul 2023 17:38:19 GMT</pubDate>
+        <copyright><![CDATA[All rights reserved 2023, Numan Ibn Mazid]]></copyright>
+        <language><![CDATA[en]]></language>
+    </channel>
+</rss>

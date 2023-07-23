@@ -15,11 +15,13 @@ const withPWA = require('next-pwa')({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-  publicExcludes: ["!resume.pdf", "!robots.txt"],
-  buildExcludes: [/middleware-manifest.json$/]
+  publicExcludes: ["!resume.pdf", "!robots.txt"]
 })
 
 module.exports = withPWA({
+  generateBuildId: async () => {
+    return 'nim23-build'
+  },
   swcMinify: true,
   reactStrictMode: true,
   images: {

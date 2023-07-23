@@ -53,7 +53,7 @@ class Blog(models.Model):
     author = models.CharField(max_length=100, default="Numan Ibn Mazid", blank=True)
     tags = models.CharField(max_length=255, blank=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PUBLISHED)
-    order = models.PositiveIntegerField(blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

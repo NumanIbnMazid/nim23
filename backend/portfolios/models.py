@@ -79,7 +79,7 @@ class Skill(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to=get_skill_image_path, blank=True, null=True)
     level = models.CharField(max_length=2, choices=Level.choices, default=None, blank=True, null=True)
-    order = models.PositiveIntegerField(blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -261,7 +261,7 @@ class Project(models.Model, DurationMixin):
     preview_url = models.URLField(blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    order = models.PositiveIntegerField(blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -334,7 +334,7 @@ class Interest(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     icon = models.ImageField(upload_to=get_interest_image_path, blank=True, null=True)
-    order = models.PositiveIntegerField(blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

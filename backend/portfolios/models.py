@@ -254,7 +254,7 @@ class Project(models.Model, DurationMixin):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to=get_project_image_path, blank=True, null=True)
     short_description = models.CharField(max_length=254)
-    technology = models.TextField(blank=True, null=True)
+    technology = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     present = models.BooleanField(default=False)

@@ -55,6 +55,8 @@
   - (DONE) Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
   - (DONE) FIx Newsletter subscription message.
   - Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
+  - Fix Order Null Violation. Interests section is working on Server.
+  - Add Job Location Type in Professional Experience section like: Hybrid, Remote, Onsite.
 
 ## Bug Fix
 

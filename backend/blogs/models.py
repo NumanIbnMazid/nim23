@@ -4,8 +4,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
-from utils.helpers import CustomModelManager
-from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
+from utils.snippets import autoslugFromField, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
 from utils.image_upload_helpers import (
     get_blog_image_path,
 )
@@ -13,18 +12,16 @@ import math
 from bs4 import BeautifulSoup
 import re
 
+
 """ *************** Blog Category *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="name")
+@autoslugFromField(fieldname="name")
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'blog_category'
@@ -40,7 +37,7 @@ class BlogCategory(models.Model):
 """ *************** Blog *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Blog(models.Model):
     class Status(models.TextChoices):
         PUBLISHED = 'Published', _('Published')
@@ -59,9 +56,6 @@ class Blog(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'blog'
@@ -181,9 +175,6 @@ class BlogViewIP(models.Model):
     last_visited_at = models.DateTimeField(auto_now=True)
     liked = models.BooleanField(default=False)
 
-    # custom model manager
-    objects = CustomModelManager()
-
     class Meta:
         db_table = 'blog_view_ip'
         verbose_name = _('Blog View IP')
@@ -208,9 +199,6 @@ class BlogComment(models.Model):
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'blog_comment'

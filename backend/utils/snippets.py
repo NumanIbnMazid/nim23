@@ -181,56 +181,55 @@ def autoSlugWithFieldAndUUID(fieldname):
         def generate_slug(sender, instance, *args, raw=False, **kwargs):
             if not raw and not instance.slug:
                 source = getattr(instance, fieldname)
+                if source:
+                    try:
+                        slug = slugify(source)[:123] + "-" + str(uuid.uuid4())
+                        Klass = instance.__class__
+                        qs_exists = Klass.objects.filter(slug=slug).exists()
+                        if qs_exists:
+                            new_slug = "{slug}-{randstr}".format(
+                                slug=slug,
+                                randstr=random_string_generator(size=4)
+                            )
+                            instance.slug = new_slug
+                        else:
+                            instance.slug = slug
+                    except Exception as e:
+                        instance.slug = simple_random_string()
+                else:
+                    instance.slug = str(uuid.uuid4())
+        return model
+    return decorator
+
+
+def autoslugFromField(fieldname):
+    """[Generates auto slug from model's field value]
+
+    Args:
+        fieldname ([str]): [Model field name to use to generate slug]
+    """
+
+    def decorator(model):
+        # some sanity checks first
+        assert hasattr(model, fieldname), f"Model has no field {fieldname!r}"
+        assert hasattr(model, "slug"), "Model is missing a slug field"
+
+        @receiver(models.signals.pre_save, sender=model, weak=False)
+        def generate_slug(sender, instance, *args, raw=False, **kwargs):
+            if not raw and not instance.slug:
+                source = getattr(instance, fieldname)
                 try:
-                    slug = slugify(source)[:123] + "-" + str(uuid.uuid4())
+                    slug = slugify(source)
                     Klass = instance.__class__
                     qs_exists = Klass.objects.filter(slug=slug).exists()
                     if qs_exists:
-                        new_slug = "{slug}-{randstr}".format(
-                            slug=slug,
-                            randstr=random_string_generator(size=4)
-                        )
-                        instance.slug = new_slug
+                        instance.slug = slugify(source)[:123] + "-" + str(uuid.uuid4())
                     else:
                         instance.slug = slug
                 except Exception as e:
                     instance.slug = simple_random_string()
         return model
     return decorator
-
-
-# def autoslugFromField(fieldname):
-#     """[Generates auto slug from model's field value]
-
-#     Args:
-#         fieldname ([str]): [Model field name to use to generate slug]
-#     """
-
-#     def decorator(model):
-#         # some sanity checks first
-#         assert hasattr(model, fieldname), f"Model has no field {fieldname!r}"
-#         assert hasattr(model, "slug"), "Model is missing a slug field"
-
-#         @receiver(models.signals.pre_save, sender=model, weak=False)
-#         def generate_slug(sender, instance, *args, raw=False, **kwargs):
-#             if not raw and not instance.slug:
-#                 source = getattr(instance, fieldname)
-#                 try:
-#                     slug = slugify(source)
-#                     Klass = instance.__class__
-#                     qs_exists = Klass.objects.filter(slug=slug).exists()
-#                     if qs_exists:
-#                         new_slug = "{slug}-{randstr}".format(
-#                             slug=slug,
-#                             randstr=random_string_generator(size=4)
-#                         )
-#                         instance.slug = new_slug
-#                     else:
-#                         instance.slug = slug
-#                 except Exception as e:
-#                     instance.slug = simple_random_string()
-#         return model
-#     return decorator
 
 
 def autoSlugFromUUID():
@@ -260,7 +259,7 @@ def autoSlugFromUUID():
     return decorator
 
 
-def generate_unique_username_from_email(instance):
+def generate_unique_username_from_email(instance, exists=False):
     """[Generates unique username from email]
 
     Args:
@@ -280,11 +279,11 @@ def generate_unique_username_from_email(instance):
         raise ValueError("Invalid email!")
 
     def generate_username(email):
-        return (
-            email.split("@")[0][:15]
-            + "__"
-            + simple_random_string_with_timestamp(size=5)
-        )
+        if exists:
+            username = slugify(email.split("@")[0][:96]) + "-" + random_string_generator(size=4)
+        else:
+            username = slugify(email.split("@")[0][:100])
+        return username
 
     generated_username = generate_username(email=email)
 
@@ -293,7 +292,7 @@ def generate_unique_username_from_email(instance):
 
     if qs_exists:
         # recursive call
-        generate_unique_username_from_email(instance=instance)
+        generate_unique_username_from_email(instance=instance, exists=True)
 
     return generated_username
 

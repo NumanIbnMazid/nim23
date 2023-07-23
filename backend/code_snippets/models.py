@@ -4,8 +4,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
-from utils.helpers import CustomModelManager
-from utils.snippets import autoSlugWithFieldAndUUID, get_static_file_path, image_as_base64
+from utils.snippets import autoslugFromField, get_static_file_path, image_as_base64
 from utils.image_upload_helpers import (
     get_code_snippet_image_path,
 )
@@ -14,7 +13,7 @@ from utils.image_upload_helpers import (
 """ *************** Code Snippet *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class CodeSnippet(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -25,9 +24,6 @@ class CodeSnippet(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'code_snippet'

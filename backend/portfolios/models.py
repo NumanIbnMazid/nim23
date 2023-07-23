@@ -4,9 +4,8 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
-from utils.helpers import CustomModelManager
 from utils.mixins import ModelMediaMixin, DurationMixin
-from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, image_as_base64, get_static_file_path
+from utils.snippets import autoslugFromField, autoSlugFromUUID, image_as_base64, get_static_file_path
 from utils.image_upload_helpers import (
     get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path,
     get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path, get_interest_image_path,
@@ -17,7 +16,7 @@ from utils.image_upload_helpers import (
 """ *************** Professional Experience *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="company")
+@autoslugFromField(fieldname="company")
 class ProfessionalExperience(models.Model, DurationMixin):
     """
     Professional Experience model.
@@ -43,9 +42,6 @@ class ProfessionalExperience(models.Model, DurationMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # custom model manager
-    objects = CustomModelManager()
-
     class Meta:
         db_table = 'professional_experience'
         verbose_name = _('Professional Experience')
@@ -67,7 +63,7 @@ class ProfessionalExperience(models.Model, DurationMixin):
 """ *************** Skill *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Skill(models.Model):
     """
     Skill model.
@@ -86,9 +82,6 @@ class Skill(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'skill'
@@ -138,7 +131,7 @@ def generate_order(sender, instance, **kwargs):
 """ *************** Education *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="school")
+@autoslugFromField(fieldname="school")
 class Education(models.Model, DurationMixin):
     school = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -154,9 +147,6 @@ class Education(models.Model, DurationMixin):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'education'
@@ -195,7 +185,7 @@ class EducationMedia(ModelMediaMixin):
 """ *************** Certification *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Certification(models.Model):
     title = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -210,9 +200,6 @@ class Certification(models.Model):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'certification'
@@ -261,7 +248,7 @@ class CertificationMedia(ModelMediaMixin):
 """ *************** Project *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Project(models.Model, DurationMixin):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -277,9 +264,6 @@ class Project(models.Model, DurationMixin):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'project'
@@ -345,7 +329,7 @@ def generate_order(sender, instance, **kwargs):
 """ *************** Interest *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Interest(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -353,9 +337,6 @@ class Interest(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'interest'
@@ -406,7 +387,7 @@ def generate_order(sender, instance, **kwargs):
 """ *************** Movie *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="name")
+@autoslugFromField(fieldname="name")
 class Movie(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -417,9 +398,6 @@ class Movie(models.Model):
     rating = models.PositiveIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'movie'

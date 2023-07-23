@@ -191,7 +191,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                             return (
                               <span
                                 key={`${technology}-${index}`}
-                                className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-darkPrimary"
+                                className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-gray-800"
                               >
                                 {technology}
                               </span>

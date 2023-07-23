@@ -57,6 +57,8 @@
   - Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
   - Fix Order Null Violation. Interests section is working on Server.
   - Add Job Location Type in Professional Experience section like: Hybrid, Remote, Onsite.
+  - Fix Project Details page's Technology background color. Use project index page.
+  - Fix unnecessary loading time if api fetch finished.
 
 ## Bug Fix
 

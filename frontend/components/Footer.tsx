@@ -92,11 +92,11 @@ export default function Footer({
         </motion.div>
 
         {/* Copyright & Developed By */}
-        <motion.div variants={opacityVariant} className="grid grid-cols-2 gap-4 mt-5">
+        <motion.div variants={opacityVariant} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
           <div>
             <p className="order-1 text-base">&copy; {new Date().getFullYear()} Numan Ibn Mazid</p>
           </div>
-          <div className="text-right">
+          <div className="text-start md:text-right">
             <span>Developed by </span>
             <Link
               target="_blank"

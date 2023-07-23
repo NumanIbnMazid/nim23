@@ -41,7 +41,8 @@ SECURE_HSTS_PRELOAD = True
 # Neededf for CorsHeader
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
-    "https://nim23.com"
+    "https://nim23.com",
+    "https://www.nim23.com",
 ]
 CORS_ALLOW_HEADERS = [
     'accept',

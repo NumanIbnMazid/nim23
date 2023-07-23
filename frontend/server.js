@@ -17,6 +17,7 @@ app
 
       // Add your allowed hosts here
       const allowedHosts = [
+        'https://www.nim23.com',
         'https://nim23.com',
         'https://postimg.cc',
         'https://drive.google.com'

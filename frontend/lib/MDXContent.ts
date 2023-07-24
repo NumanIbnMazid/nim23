@@ -40,7 +40,7 @@ export default class MDXContent {
       title: data.title ?? slug,
       date: (data.date ?? new Date()).toString(),
       keywords: data.keywords ?? "",
-      image: data.image ?? "https://postimg.cc/w3vGqqzM",
+      image: data.image ?? "https://i.postimg.cc/pV6bX2rY/numan.jpg",
       url: data.url ?? ""
     }
   }

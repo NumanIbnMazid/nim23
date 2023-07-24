@@ -57,9 +57,9 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
     <>
       <Metadata
         title={blog.title}
-        description={blog.overview || pageMeta.projects.description}
-        previewImage={pageMeta.projects.image}
-        keywords={blog.tags || pageMeta.projects.keywords}
+        description={blog.overview || pageMeta.blogs.description}
+        previewImage={pageMeta.blogs.image}
+        keywords={blog.tags || pageMeta.blogs.keywords}
       />
 
       {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : null}

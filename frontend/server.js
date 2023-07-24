@@ -20,6 +20,7 @@ app
         'https://www.nim23.com',
         'https://nim23.com',
         'https://postimg.cc',
+        'https://i.postimg.cc',
         'https://drive.google.com'
       ];
 

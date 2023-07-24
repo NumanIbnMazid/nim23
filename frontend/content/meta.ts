@@ -1,6 +1,7 @@
 import { PageMeta } from "@lib/types"
 
-const myImage = "https://postimg.cc/w3vGqqzM"
+const myImage = "https://i.postimg.cc/pV6bX2rY/numan.jpg"
+const blogImage = "https://i.postimg.cc/dVQkjgxp/blog.png"
 
 
 const pageMeta: PageMeta = {
@@ -20,7 +21,7 @@ const pageMeta: PageMeta = {
   blogs: {
     title: "Blogs",
     description: "Here, you will find a collection of insightful and informative articles that I have written on various topics. As a passionate writer and avid learner, I believe in the power of sharing knowledge and experiences through the written word.",
-    image: myImage,
+    image: blogImage,
     keywords: "numanibnmazid blog, nim23 blog, blog, webdev, react, react blog application, django blog applicaiton, programming blogs, top 10 programming blogs, top programming blogs",
   },
   certificates: {

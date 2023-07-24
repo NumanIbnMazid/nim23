@@ -1,7 +1,7 @@
 import { PageMeta } from "@lib/types"
 
+const myImage = "https://postimg.cc/w3vGqqzM"
 
-const myImage = "/public/images/numan.png"
 
 const pageMeta: PageMeta = {
   home: {

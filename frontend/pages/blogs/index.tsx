@@ -31,7 +31,7 @@ export default function Blogs() {
     const fetchData = async () => {
       await Promise.all([
         fetchBlogs()
-      ]);
+      ])
       setIsLoading(false)
     }
     fetchData()
@@ -61,21 +61,17 @@ export default function Blogs() {
     return () => document.removeEventListener("keydown", handleAutoSearch)
   }, [])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader topic="Blogs" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (blogs.length < 1) {
-    return (
-      <NoData topic="Blogs" />
-    )
+    return <NoData topic="Blogs" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
   return (
     <>

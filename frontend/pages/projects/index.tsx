@@ -31,21 +31,17 @@ export default function Projects() {
     fetchData()
   }, [])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader topic="Projects" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (projects.length < 1) {
-    return (
-      <NoData topic="Projects" />
-    )
+    return <NoData topic="Projects" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
   return (
     <>

@@ -41,21 +41,17 @@ export default function SnippetPage({
     fetchData()
   }, [slug])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader topic="Code Snippet" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (!code_snippet) {
-    return (
-      <NoData topic="Code Snippet" />
-    )
+    return <NoData topic="Code Snippet" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
 
   return (

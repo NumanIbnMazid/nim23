@@ -20,9 +20,15 @@ import { useEffect, useState } from 'react'
 import { getProfileInfo, getAllExperiences, getAllBlogs, getAllSkills } from '@lib/backendAPI'
 import { ProfileType, ExperienceType, SkillType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
+import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 
 export default function Home() {
+  // Loaders
+  const [experiencesLoading, setExperiencesLoading] = useState(true)
+  const [skillsLoading, setSkillsLoading] = useState(true)
+  const [blogsLoading, setBlogsLoading] = useState(true)
+
   const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [skills, setSkills] = useState<SkillType[]>([])
@@ -31,21 +37,24 @@ export default function Home() {
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences(1)
     setExperiences(experiencesData)
+    setExperiencesLoading(false)
   }
 
   const fetchSkills = async () => {
     const skillsData = await getAllSkills()
     setSkills(skillsData)
-  }
-
-  const fetchProfileInfo = async () => {
-    const profileData: ProfileType = await getProfileInfo()
-    setProfileInfo(profileData)
+    setSkillsLoading(false)
   }
 
   const fetchBlogs = async () => {
     const blogsData = await getAllBlogs(2)
     setBlogs(blogsData)
+    setBlogsLoading(false)
+  }
+
+  const fetchProfileInfo = async () => {
+    const profileData: ProfileType = await getProfileInfo()
+    setProfileInfo(profileData)
   }
 
   useEffect(() => {
@@ -93,7 +102,9 @@ export default function Home() {
               <div className="flex flex-col gap-1">
                 <motion.h1 variants={opacityVariant} className="text-5xl font-bold lg:text-6xl font-arial">
                   {profileInfo?.name || staticData.personal.name}
-                  <span className="ml-4 text-5xl font-light">({profileInfo?.nickname || staticData.personal.nickname})</span>
+                  <span className="ml-4 text-5xl font-light">
+                    ({profileInfo?.nickname || staticData.personal.nickname})
+                  </span>
                 </motion.h1>
                 <motion.p
                   variants={opacityVariant}
@@ -185,22 +196,32 @@ export default function Home() {
         </motion.section>
 
         <div>
-          {/* Experiences Section */}
-          {experiences.length > 0 ? (
+          {/* Experiences */}
+          {experiencesLoading ? (
+            <Loader topic="Work Experiences" />
+          ) : experiences.length > 0 ? (
             <ExperienceSection experiences={experiences} />
-          ):
+          ) : (
             <NoData topic="Work Experiences" />
-          }
+          )}
 
-          {/* Skills Section */}
-          <SkillSection skills={skills} />
+          {/* Skills */}
+          {skillsLoading ? (
+            <Loader topic="Skills" />
+          ) : skills.length > 0 ? (
+            <SkillSection skills={skills} />
+          ) : (
+            <NoData topic="Skills" />
+          )}
 
-          {/* Blogs Section */}
-          {blogs.length > 0 ? (
+          {/* Blogs */}
+          {blogsLoading ? (
+            <Loader topic="Blogs" />
+          ) : blogs.length > 0 ? (
             <BlogsSection blogs={blogs} />
-          ):
+          ) : (
             <NoData topic="Blogs" />
-          }
+          )}
 
           {/* Contact Section */}
           <Contact />

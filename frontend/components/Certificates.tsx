@@ -8,17 +8,8 @@ import { popUpFromBottomForText } from '@content/FramerMotionVariants'
 import Link from 'next/link'
 import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
-import NoData from "@components/NoData"
 
 export default function CertificateSection({ certificates }: { certificates: CertificateType[] }) {
-  // ******* Loader Starts *******
-  if (certificates.length < 1) {
-    return (
-      <NoData topic="Certificates" />
-    )
-  }
-  // ******* Loader Ends *******
-
   return (
     <section className="mx-5">
       <HomeHeading title="Certificates" />

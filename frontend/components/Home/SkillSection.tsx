@@ -4,17 +4,8 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import Image from 'next/image'
 import { SkillType } from '@lib/types'
-import NoData from "@components/NoData"
 
 export default function SkillSection({ skills }: { skills: SkillType[] }) {
-  // ******* Loader Starts *******
-  if (skills.length < 1) {
-    return (
-      <NoData topic="Skills" />
-    )
-  }
-  // ******* Loader Ends *******
-
   return (
     <section className="mx-5">
       <HomeHeading title="Skills" />

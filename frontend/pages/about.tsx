@@ -1,18 +1,33 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType, ExperienceType, EducationType, SkillType, CertificateType } from "@lib/types"
+import {
+  MovieType,
+  PostType,
+  ExperienceType,
+  EducationType,
+  SkillType,
+  CertificateType,
+  InterestType,
+} from '@lib/types'
 import StaticPage from "@components/StaticPage"
-import { getAllExperiences, getAllEducations, getAllMovies, getAllSkills, getAllCertificates } from "@lib/backendAPI"
+import {
+  getAllExperiences,
+  getAllEducations,
+  getAllMovies,
+  getAllSkills,
+  getAllCertificates,
+  getAllInterests,
+} from '@lib/backendAPI'
 import { useEffect, useState } from 'react'
-import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
-import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants"
-import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
+import { FadeContainer } from "@content/FramerMotionVariants"
 import SkillSection from "@components/Home/SkillSection"
 import ExperienceSection from "@components/Home/ExperienceSection"
 import Education from "@components/Education"
 import Certificates from "@components/Certificates"
 import InterestSection from "@components/Interest"
+import MovieSection from "@components/Movies"
+import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 
 export default function About({
@@ -20,35 +35,56 @@ export default function About({
 }: {
   about: PostType
 }) {
+
+  // Loaders
+  const [experiencesLoading, setExperiencesLoading] = useState(true)
+  const [skillsLoading, setSkillsLoading] = useState(true)
+  const [educationsLoading, setEducationsLoading] = useState(true)
+  const [certificatesLoading, setCertificatesLoading] = useState(true)
+  const [interestsLoading, setInterestsLoading] = useState(true)
+  const [moviesLoading, setMoviesLoading] = useState(true)
+
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [skills, setSkills] = useState<SkillType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
   const [certificates, setCertificates] = useState<CertificateType[]>([])
-  const [movies, setMovies] = useState([])
+  const [interests, setInterests] = useState<InterestType[]>([])
+  const [movies, setMovies] = useState<MovieType[]>([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences()
     setExperiences(experiencesData)
+    setExperiencesLoading(false)
   }
 
   const fetchSkills = async () => {
-    const skillsData = await getAllSkills()
+    const skillsData: SkillType[] = await getAllSkills()
     setSkills(skillsData)
+    setSkillsLoading(false)
   }
 
   const fetchCertificates = async () => {
-    const certificatesData = await getAllCertificates()
+    const certificatesData: CertificateType[] = await getAllCertificates()
     setCertificates(certificatesData)
+    setCertificatesLoading(false)
+  }
+
+  const fetchInterests = async () => {
+    const interestsData = await getAllInterests()
+    setInterests(interestsData)
+    setInterestsLoading(false)
   }
 
   const fetchEducations = async () => {
     const educationsData: EducationType[] = await getAllEducations()
     setEducations(educationsData)
+    setEducationsLoading(false)
   }
 
   const fetchMovies = async () => {
-    const moviesData = await getAllMovies()
+    const moviesData: MovieType[] = await getAllMovies()
     setMovies(moviesData)
+    setMoviesLoading(false)
   }
 
   useEffect(() => {
@@ -56,6 +92,7 @@ export default function About({
     fetchEducations()
     fetchSkills()
     fetchCertificates()
+    fetchInterests()
     fetchMovies()
   }, [])
 
@@ -72,52 +109,61 @@ export default function About({
         >
           <div>
             {/* Experiences */}
-            {experiences.length > 0 ? (
+            {experiencesLoading ? (
+              <Loader topic="Work Experiences" />
+            ) : experiences.length > 0 ? (
               <ExperienceSection experiences={experiences} />
-            ):
+            ) : (
               <NoData topic="Work Experiences" />
-            }
+            )}
+
             {/* Skills */}
-            <SkillSection skills={skills} />
-            {educations.length > 0 ? (
+            {skillsLoading ? (
+              <Loader topic="Skills" />
+            ) : skills.length > 0 ? (
+              <SkillSection skills={skills} />
+            ) : (
+              <NoData topic="Skills" />
+            )}
+
+            {/* Educations */}
+            {educationsLoading ? (
+              <Loader topic="Educations" />
+            ) : educations.length > 0 ? (
               <Education educations={educations} />
-            ):
+            ) : (
               <NoData topic="Educations" />
-            }
+            )}
+
             {/* Certificates */}
-            <Certificates certificates={certificates} />
+            {certificatesLoading ? (
+              <Loader topic="Certificates" />
+            ) : certificates.length > 0 ? (
+              <Certificates certificates={certificates} />
+            ) : (
+              <NoData topic="Certificates" />
+            )}
+
             {/* Interests */}
-            <InterestSection />
+            {interestsLoading ? (
+              <Loader topic="Interests" />
+            ) : interests.length > 0 ? (
+              <InterestSection interests={interests} />
+            ) : (
+              <NoData topic="Interests" />
+            )}
           </div>
         </motion.section>
 
         {/* Movies */}
-        {movies.length > 0 ? (
-          <div className="-mt-5 pageTop print:hidden">
-            <motion.h3
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={opacityVariant}
-              className="w-full my-2 text-3xl font-bold font-inter flex justify-center items-center text-slate-500 dark:text-slate-100"
-            >
-              Recent watched Movies & TV Series
-            </motion.h3>
-
-            <AnimatedDiv
-              variants={FadeContainer}
-              className="flex items-center gap-2 pt-10 pb-5 overflow-x-scroll md:gap-4 horizontal-scrollbar"
-            >
-              {movies.map((movie: MovieType) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </AnimatedDiv>
-          </div>
-        ) :
-          <NoData topic="Recent watched Movies & TV Series" />
-        }
+        {moviesLoading ? (
+          <Loader topic="Recent Watched Movies & TV Series" />
+        ) : movies.length > 0 ? (
+          <MovieSection movies={movies} />
+        ) : (
+          <NoData topic="Recent Watched Movies & TV Series" />
+        )}
       </div>
-
     </>
   )
 }

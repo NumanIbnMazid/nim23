@@ -1,20 +1,17 @@
-export default function Loader() {
+import { HomeHeading } from '../pages'
+
+export default function Loader({ topic }: { topic?: string }) {
   return (
     <div className="flex items-center justify-center mt-12 p-12 relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
       <div className="flex flex-col items-center">
+        {topic && <HomeHeading title={topic} />}
+
         <svg
-          className="animate-spin h-16 w-16 text-gray-600"
+          className={`animate-spin h-16 w-16 text-gray-600 ${topic !== null ? 'mt-7' : ''}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
         >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
           <path
             className="opacity-75"
             fill="currentColor"
@@ -26,4 +23,3 @@ export default function Loader() {
     </div>
   )
 }
-

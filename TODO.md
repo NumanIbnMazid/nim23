@@ -54,10 +54,10 @@
   - (DONE) Fix Blog Details Page Content Width.
   - (DONE) Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
   - (DONE) FIx Newsletter subscription message.
-  - Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
+  - (DONE) Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
   - Fix Order Null Violation. Interests section is working on Server.
   - Add Job Location Type in Professional Experience section like: Hybrid, Remote, Onsite.
-  - Fix Project Details page's Technology background color. Use project index page.
+  - (DONE) Fix Project Details page's Technology background color. Use project index page.
   - Fix unnecessary loading time if api fetch finished.
 
 ## Bug Fix

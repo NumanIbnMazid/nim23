@@ -57,21 +57,17 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
     fetchData()
   }, [slug])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader topic="Project" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (!project) {
-    return (
-      <NoData topic="Project" />
-    )
+    return <NoData topic="Project" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
   return (
     <>

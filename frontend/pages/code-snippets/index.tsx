@@ -30,21 +30,17 @@ export default function CodeSnippets() {
     fetchData()
   }, [])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return (
-      <Loader />
-    )
+    return <Loader topic="Code Snippets" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (code_snippets.length < 1) {
-    return (
-      <NoData topic="Code Snippets" />
-    )
+    return <NoData topic="Code Snippets" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
   return (
     <>

@@ -41,17 +41,17 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
     fetchData()
   }, [slug])
 
-  // ******* Loader Starts *******
+  // ******* Loader *******
   if (isLoading === true) {
-    return <Loader />
+    return <Loader topic="Blog" />
   }
-  // ******* Loader Ends *******
+  // ******* Loader *******
 
-  // ******* No Data Check *******
+  // ******* No Data *******
   if (!blog) {
     return <NoData topic="Blog" />
   }
-  // ******* No Data Check *******
+  // ******* No Data *******
 
   return (
     <>

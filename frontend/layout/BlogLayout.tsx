@@ -184,7 +184,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             className="flex flex-wrap items-center gap-2 w-fit"
             title={blog.title}
             url={currentURL}
-            summary={blog.content}
+            summary={blog.overview || blog.title}
             cover_image={blog.image}
           >
             <div className="p-2 text-white bg-gray-700 rounded-full cursor-pointer hover:bg-cyan-700">

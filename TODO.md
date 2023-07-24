@@ -59,6 +59,8 @@
   - (DONE) Add Job Location Type in Professional Experience section like: Hybrid, Remote, Onsite.
   - (DONE) Fix Project Details page's Technology background color. Use project index page.
   - (DONE) Fix unnecessary loading time if api fetch finished.
+  - Fix Social Media Share Page Title and Description.
+  - Add submit issue page.
 
 ## Bug Fix
 

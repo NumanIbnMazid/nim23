@@ -62,7 +62,7 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
         keywords={blog.tags || pageMeta.projects.keywords}
       />
 
-      {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : <p>Loading...</p>}
+      {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : null}
     </>
   )
 }

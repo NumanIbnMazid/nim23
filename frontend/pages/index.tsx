@@ -197,30 +197,33 @@ export default function Home() {
 
         <div>
           {/* Experiences */}
+          <HomeHeading title="Work Experiences" />
           {experiencesLoading ? (
-            <Loader topic="Work Experiences" />
+            <Loader />
           ) : experiences.length > 0 ? (
-            <ExperienceSection experiences={experiences} />
+            <ExperienceSection experiences={experiences} showHomeHeading={false} />
           ) : (
-            <NoData topic="Work Experiences" />
+            <NoData />
           )}
 
           {/* Skills */}
+          <HomeHeading title="Skills" />
           {skillsLoading ? (
-            <Loader topic="Skills" />
+            <Loader />
           ) : skills.length > 0 ? (
-            <SkillSection skills={skills} />
+            <SkillSection skills={skills} showHomeHeading={false} />
           ) : (
-            <NoData topic="Skills" />
+            <NoData />
           )}
 
           {/* Blogs */}
+          <HomeHeading title="Blogs" />
           {blogsLoading ? (
-            <Loader topic="Blogs" />
+            <Loader />
           ) : blogs.length > 0 ? (
-            <BlogsSection blogs={blogs} />
+            <BlogsSection blogs={blogs} showHomeHeading={false} />
           ) : (
-            <NoData topic="Blogs" />
+            <NoData />
           )}
 
           {/* Contact Section */}

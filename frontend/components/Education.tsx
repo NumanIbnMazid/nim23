@@ -8,16 +8,16 @@ import { EducationType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
 
 
-export default function EducationSection({ educations }: { educations: EducationType[] }) {
-  // ******* Loader Starts *******
-  if (educations.length === 0) {
-    return <div>Loading...</div>
-  }
-  // ******* Loader Ends *******
-
+export default function EducationSection({
+  educations,
+  showHomeHeading = true
+}: {
+  educations: EducationType[]
+  showHomeHeading?: boolean
+}) {
   return (
     <section className="mx-5">
-      <HomeHeading title="Educations" />
+      {showHomeHeading && <HomeHeading title="Educations" />}
 
       <motion.div
         initial="hidden"
@@ -28,9 +28,9 @@ export default function EducationSection({ educations }: { educations: Education
       >
         <div className="mt-12 space-y-6">
           <p className="mb-12">
-            I believe that education plays a crucial role in personal and professional growth. Throughout my academic journey,
-            I have pursued knowledge and embraced learning opportunities that have shaped my skills and perspectives.
-            Here is an overview of my educational background and academic achievements.
+            I believe that education plays a crucial role in personal and professional growth. Throughout my academic
+            journey, I have pursued knowledge and embraced learning opportunities that have shaped my skills and
+            perspectives. Here is an overview of my educational background and academic achievements.
           </p>
           {educations ? (
             <TimelineList>
@@ -108,7 +108,7 @@ export default function EducationSection({ educations }: { educations: Education
                             <h2 className="font-bold">Attachments</h2>
                             {education.education_media.map((media: MediaType, mediaIndex) => (
                               <div key={mediaIndex} className="my-4">
-                                  <MediaModal
+                                <MediaModal
                                   key={mediaIndex}
                                   title={media.title}
                                   file={media.file}

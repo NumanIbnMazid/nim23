@@ -63,13 +63,13 @@ export default function Blogs() {
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Blogs" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (blogs.length < 1) {
-    return <NoData topic="Blogs" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

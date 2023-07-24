@@ -29,6 +29,9 @@ import InterestSection from "@components/Interest"
 import MovieSection from "@components/Movies"
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
+import { HomeHeading } from '../pages'
+import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
+import { headingFromLeft } from '@content/FramerMotionVariants'
 
 export default function About({
   about
@@ -109,59 +112,73 @@ export default function About({
         >
           <div>
             {/* Experiences */}
+            <AnimatedHeading
+              className="w-full my-2 text-3xl font-bold text-left font-inter flex justify-center items-center"
+              variants={headingFromLeft}
+            >
+              <span className="mr-2">Work Experiences</span>
+              <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">
+                {experiences.length}
+              </span>
+            </AnimatedHeading>
             {experiencesLoading ? (
-              <Loader topic="Work Experiences" />
+              <Loader />
             ) : experiences.length > 0 ? (
-              <ExperienceSection experiences={experiences} />
+              <ExperienceSection experiences={experiences} showHomeHeading={false} />
             ) : (
-              <NoData topic="Work Experiences" />
+              <NoData />
             )}
 
             {/* Skills */}
+            <HomeHeading title="Skills" />
             {skillsLoading ? (
-              <Loader topic="Skills" />
+              <Loader />
             ) : skills.length > 0 ? (
-              <SkillSection skills={skills} />
+              <SkillSection skills={skills} showHomeHeading={false} />
             ) : (
-              <NoData topic="Skills" />
+              <NoData />
             )}
 
             {/* Educations */}
+            <HomeHeading title="Educations" />
             {educationsLoading ? (
-              <Loader topic="Educations" />
+              <Loader />
             ) : educations.length > 0 ? (
-              <Education educations={educations} />
+              <Education educations={educations} showHomeHeading={false} />
             ) : (
-              <NoData topic="Educations" />
+              <NoData />
             )}
 
             {/* Certificates */}
+            <HomeHeading title="Certificates" />
             {certificatesLoading ? (
-              <Loader topic="Certificates" />
+              <Loader />
             ) : certificates.length > 0 ? (
-              <Certificates certificates={certificates} />
+              <Certificates certificates={certificates} showHomeHeading={false} />
             ) : (
-              <NoData topic="Certificates" />
+              <NoData />
             )}
 
             {/* Interests */}
+            <HomeHeading title="Interests" />
             {interestsLoading ? (
-              <Loader topic="Interests" />
+              <Loader />
             ) : interests.length > 0 ? (
-              <InterestSection interests={interests} />
+              <InterestSection interests={interests} showHomeHeading={false} />
             ) : (
-              <NoData topic="Interests" />
+              <NoData />
             )}
           </div>
         </motion.section>
 
         {/* Movies */}
+        <HomeHeading title="Recent Watched Movies & TV Series" />
         {moviesLoading ? (
-          <Loader topic="Recent Watched Movies & TV Series" />
+          <Loader />
         ) : movies.length > 0 ? (
-          <MovieSection movies={movies} />
+          <MovieSection movies={movies} showHomeHeading={false} />
         ) : (
-          <NoData topic="Recent Watched Movies & TV Series" />
+          <NoData />
         )}
       </div>
     </>

@@ -6,10 +6,16 @@ import Image from 'next/image'
 import { InterestType } from '@lib/types'
 
 
-export default function InterestSection({ interests }: { interests: InterestType[] }) {
+export default function InterestSection({
+  interests,
+  showHomeHeading = true
+}: {
+  interests: InterestType[]
+  showHomeHeading?: boolean
+}) {
   return (
     <section className="mx-5">
-      <HomeHeading title="Interests" />
+      {showHomeHeading && <HomeHeading title="Interests" />}
 
       <motion.div
         initial="hidden"

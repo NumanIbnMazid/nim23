@@ -33,13 +33,13 @@ export default function Projects() {
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Projects" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (projects.length < 1) {
-    return <NoData topic="Projects" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

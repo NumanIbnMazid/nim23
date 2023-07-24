@@ -59,13 +59,13 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Project" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (!project) {
-    return <NoData topic="Project" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

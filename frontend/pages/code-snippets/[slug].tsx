@@ -43,13 +43,13 @@ export default function SnippetPage({
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Code Snippet" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (!code_snippet) {
-    return <NoData topic="Code Snippet" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

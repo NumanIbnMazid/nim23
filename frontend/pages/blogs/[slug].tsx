@@ -43,13 +43,13 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Blog" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (!blog) {
-    return <NoData topic="Blog" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

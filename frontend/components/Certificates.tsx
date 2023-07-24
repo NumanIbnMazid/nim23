@@ -9,10 +9,16 @@ import Link from 'next/link'
 import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
 
-export default function CertificateSection({ certificates }: { certificates: CertificateType[] }) {
+export default function CertificateSection({
+  certificates,
+  showHomeHeading = true
+}: {
+  certificates: CertificateType[]
+  showHomeHeading?: boolean
+}) {
   return (
     <section className="mx-5">
-      <HomeHeading title="Certificates" />
+      {showHomeHeading && <HomeHeading title="Certificates" />}
 
       <motion.div
         initial="hidden"
@@ -24,7 +30,8 @@ export default function CertificateSection({ certificates }: { certificates: Cer
         <div className="mt-12 space-y-6">
           <p className="mb-12">
             Here, I will showcase the certifications and professional achievements I have earned throughout my career.
-            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to excellence.
+            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to
+            excellence.
           </p>
           {certificates.map((certificate: CertificateType) => {
             return (
@@ -47,7 +54,7 @@ export default function CertificateSection({ certificates }: { certificates: Cer
                     }}
                   />
                 </div>
-                <div className='md:col-span-11 p-4'>
+                <div className="md:col-span-11 p-4">
                   <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-4">
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
@@ -60,7 +67,7 @@ export default function CertificateSection({ certificates }: { certificates: Cer
                             {certificate.title}
                           </Link>
                         ) : (
-                          <p className='text-sm font-semibold sm:text-base md:text-lg text-neutral-900 dark:text-neutral-200'>
+                          <p className="text-sm font-semibold sm:text-base md:text-lg text-neutral-900 dark:text-neutral-200">
                             {certificate.title}
                           </p>
                         )}
@@ -79,7 +86,7 @@ export default function CertificateSection({ certificates }: { certificates: Cer
                       <span>&#x2022; Expiration Date: {certificate.expiration_date}</span>
                       {certificate.credential_id ? (
                         <span>&#x2022; Credential ID: {certificate.credential_id}</span>
-                      ): null}
+                      ) : null}
 
                       {/* Certification Media */}
                       {certificate.certification_media?.length ? (
@@ -90,7 +97,7 @@ export default function CertificateSection({ certificates }: { certificates: Cer
 
                             {certificate.certification_media.map((media: MediaType, mediaIndex) => (
                               <div key={mediaIndex} className="my-4">
-                                  <MediaModal
+                                <MediaModal
                                   key={mediaIndex}
                                   title={media.title}
                                   file={media.file}

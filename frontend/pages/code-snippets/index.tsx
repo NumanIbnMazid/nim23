@@ -32,13 +32,13 @@ export default function CodeSnippets() {
 
   // ******* Loader *******
   if (isLoading === true) {
-    return <Loader topic="Code Snippets" />
+    return <Loader />
   }
   // ******* Loader *******
 
   // ******* No Data *******
   if (code_snippets.length < 1) {
-    return <NoData topic="Code Snippets" />
+    return <NoData allowSpacing={true} />
   }
   // ******* No Data *******
 

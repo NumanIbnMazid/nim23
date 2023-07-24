@@ -108,16 +108,17 @@ export type ExperienceType = {
   slug: string
   company: string
   company_image: string
-  company_url: string
-  address: string
+  company_url?: string
+  address?: string
   designation: string
   job_type: string
+  job_location_type?: string
   start_date: string
-  end_date: string
+  end_date?: string
   duration: string
   duration_in_days: string
-  currently_working: string
-  description: string
+  currently_working?: string
+  description?: string
   created_at: string
   updated_at: string
 }
@@ -127,7 +128,7 @@ export type SkillType = {
   slug: string
   title: string
   image: string
-  level: string
+  level?: string
   order: number
   created_at: string
   updated_at: string
@@ -137,7 +138,7 @@ export type EducationType = {
   id: number
   slug: string
   school: string
-  image?: string
+  image: string
   degree: string
   address?: string
   field_of_study?: string
@@ -318,10 +319,10 @@ export type MovieType = {
   slug: string
   name: string
   image: string
-  url: string
-  year: number
+  url?: string
+  year?: number
   watched: boolean
-  rating: number
+  rating?: number
   created_at: string
   updated_at: string
 }

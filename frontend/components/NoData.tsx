@@ -1,6 +1,6 @@
 import { HomeHeading } from '../pages'
 
-export default function NoData({ topic, allowSpacing = false }: { topic?: string; allowSpacing?: boolean }) {
+export default function NoData({ topic = undefined, allowSpacing = false }: { topic?: string; allowSpacing?: boolean }) {
   return (
     <div
       className={`flex items-center justify-center ${

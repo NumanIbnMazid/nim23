@@ -26,7 +26,11 @@ class ProfessionalExperience(models.Model, DurationMixin):
         FULL_TIME = 'Full Time', _('Full Time')
         PART_TIME = 'Part Time', _('Part Time')
         CONTRACTUAL = 'Contractual', _('Contractual')
+
+    class JobLocationType(models.TextChoices):
+        ONSITE = 'Onsite', _('Onsite')
         REMOTE = 'Remote', _('Remote')
+        HYBRID = 'Hybrid', _('Hybrid')
 
     company = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -35,6 +39,7 @@ class ProfessionalExperience(models.Model, DurationMixin):
     address = models.CharField(max_length=254, blank=True, null=True)
     designation = models.CharField(max_length=150)
     job_type = models.CharField(max_length=20, choices=JobType.choices, default=JobType.FULL_TIME)
+    job_location_type = models.CharField(max_length=20, choices=JobLocationType.choices, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     present = models.BooleanField(default=False)

@@ -60,6 +60,7 @@ export default function ExperienceSection({ experiences, showHomeHeading = true 
                     company_url={experience.company_url}
                     address={experience.address}
                     job_type={experience.job_type}
+                    job_location_type={experience.job_location_type}
                     duration={experience.duration}
                     duration_in_days={experience.duration_in_days}
                     description={experience.description}

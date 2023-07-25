@@ -6129,6 +6129,11 @@ react-share@^4.4.1:
     classnames "^2.3.2"
     jsonp "^0.2.1"
 
+react-simple-image-viewer@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-simple-image-viewer/-/react-simple-image-viewer-1.2.2.tgz#2a93413512b76ce8d336dd5fa19660a970d05be4"
+  integrity sha512-Vk9p6Glm7uE4cSEBGkqZPGC3qoZcAwd48nq5/JN13NKd9rUrUIWZWFEmRzO+FVwl6c0UdjSDkthGoaoiYeWVjg==
+
 react-spring@^9.0.0-rc.3:
   version "9.7.2"
   resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-9.7.2.tgz#218360d0ca53d04d8faac984f0d8683819b967b4"

@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 from filebrowser.sites import site
 from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
+from utils.decorators import authenticated_user_required
 
 
 # Yet Another Swagger Schema View
@@ -64,16 +65,18 @@ THIRD_PARTY_URLS = [
     # ----------------------------------------------------
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
-        schema_view.without_ui(cache_timeout=0),
+        authenticated_user_required(schema_view.without_ui(cache_timeout=0)),
         name="schema-json",
     ),
     re_path(
         r"^swagger/$",
-        schema_view.with_ui("swagger", cache_timeout=0),
+        authenticated_user_required(schema_view.with_ui("swagger", cache_timeout=0)),
         name="schema-swagger-ui",
     ),
     re_path(
-        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
+        r"^redoc/$",
+        authenticated_user_required(schema_view.with_ui("redoc", cache_timeout=0)),
+        name="schema-redoc"
     ),
     # ----------------------------------------------------
     # *** TinyMCE URLs ***

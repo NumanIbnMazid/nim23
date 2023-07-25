@@ -25,7 +25,7 @@
   - (DONE) Fix Every page's meta option.
   - (DONE) Fix Snippets, (REMOVED) Newsletter, (REMOVED) RSS, (REMOVED) dev.to.
   - (DONE) Fix footer.
-  - Fix Visitor Count.
+  - (DONE) Fix Visitor Count.
   - (DONE) Fix Bar code Scanner.
   - (REMOVED) Fix Spotify.
   - Implement Youtube Stats.
@@ -44,12 +44,11 @@
   - (NOT NEEDED) Configure for MySQL Database.
   - (DONE) Generate normal requirements.txt.
   - (DONE) Fix File Browser in cPanel.
-  - Make Swagger, Redoc, Filebrowser is authenticated required.
+  - (DONE) Make Swagger, Redoc, Filebrowser is authenticated required.
   - Implement if blog content contains code, then don't show reading time.
   - Investigate about RSS and Newsletter.
   - (NOT NEEDED) Make frontend server.js Allowed Hosts come from env.
   - (DONE) Auto remove unused files (media) from backend.
-  - Fix order non null violetion in Projects Section.
   - (DONE) Fix Page Title (browser tab title).
   - (DONE) Fix Blog Details Page Content Width.
   - (DONE) Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
@@ -60,7 +59,10 @@
   - (DONE) Fix Project Details page's Technology background color. Use project index page.
   - (DONE) Fix unnecessary loading time if api fetch finished.
   - Fix Social Media Share Page Title and Description.
-  - Add submit issue page.
+  - (DONE) Add submit issue page.
+  - (DONE) Enlarge Certificate Image Size and add Modal (Image Viewer) on image click.
+  - (DONE) Bring blog title center in blog details page.
+  - (DONE) Add some padding in Recent watched movies section's heading (Mobile View).
 
 ## Bug Fix
 

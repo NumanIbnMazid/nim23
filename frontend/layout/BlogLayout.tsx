@@ -77,7 +77,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             priority
           />
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white">{blog.title}</h1>
+        <h1 className="text-center text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white mt-10">{blog.title}</h1>
 
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">

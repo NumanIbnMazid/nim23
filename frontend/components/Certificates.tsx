@@ -1,13 +1,14 @@
 import { FadeContainer } from '../content/FramerMotionVariants'
 import { HomeHeading } from '../pages'
 import { motion } from 'framer-motion'
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import Image from 'next/image'
 import { popUpFromBottomForText } from '@content/FramerMotionVariants'
 import Link from 'next/link'
 import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
+import ImageViewer from 'react-simple-image-viewer'
 
 export default function CertificateSection({
   certificates,
@@ -16,6 +17,19 @@ export default function CertificateSection({
   certificates: CertificateType[]
   showHomeHeading?: boolean
 }) {
+  const [currentImage, setCurrentImage] = useState(0)
+  const [isViewerOpen, setIsViewerOpen] = useState(false)
+
+  const openImageViewer = useCallback((index: any) => {
+    setCurrentImage(index)
+    setIsViewerOpen(true)
+  }, [])
+
+  const closeImageViewer = () => {
+    setCurrentImage(0)
+    setIsViewerOpen(false)
+  }
+
   return (
     <section className="mx-5">
       {showHomeHeading && <HomeHeading title="Certificates" />}
@@ -30,31 +44,42 @@ export default function CertificateSection({
         <div className="mt-12 space-y-6">
           <p className="mb-12">
             Here, I will showcase the certifications and professional achievements I have earned throughout my career.
-            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to
-            excellence.
+            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to excellence.
           </p>
-          {certificates.map((certificate: CertificateType) => {
+          {certificates.map((certificate: CertificateType, index: number) => {
             return (
               <AnimatedDiv
                 className="bg-white rounded-lg shadow dark:bg-darkSecondary/50 grid md:grid-cols-12"
                 variants={popUpFromBottomForText}
                 key={certificate.id}
               >
-                <div className="relative flex items-center justify-center md:col-span-1 px-4">
+                <div className="relative flex items-center justify-center md:col-span-2 px-4 py-4 cursor-pointer">
                   <Image
-                    width={50}
-                    height={50}
+                    width={400}
+                    height={400}
                     src={certificate.image}
                     alt={certificate.organization}
                     quality={50}
                     placeholder="blur"
                     blurDataURL={certificate.image}
-                    style={{
-                      objectFit: 'contain',
-                    }}
+                    onClick={() => openImageViewer(index)}
                   />
+
+                  {/* The Image Viewer */}
+                  {isViewerOpen && (
+                    <ImageViewer
+                      src={certificates.map((certificate) => certificate.image)}
+                      currentIndex={currentImage}
+                      disableScroll={true}
+                      closeOnClickOutside={true}
+                      onClose={closeImageViewer}
+                      backgroundStyle={{
+                        backgroundColor: '#0d1423',
+                      }}
+                    />
+                  )}
                 </div>
-                <div className="md:col-span-11 p-4">
+                <div className="md:col-span-10 p-4">
                   <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-4">
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">

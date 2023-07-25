@@ -51,6 +51,12 @@ export default function Footer({
               if (route === 'rss') text = 'RSS'
               return <FooterLink key={index} route={route} text={text} />
             })}
+            {/* Submit Issue in Github */}
+            <Link href="https://github.com/NumanIbnMazid/nim23-issues/issues" target="_blank" rel="noopener noreferrer">
+              <motion.p className="hover:text-black dark:hover:text-white w-fit" variants={popUp}>
+                Report an issue
+              </motion.p>
+            </Link>
           </div>
           {/* Social Media */}
           <div className="flex flex-col gap-4 capitalize">

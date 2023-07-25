@@ -70,7 +70,7 @@ export default function EducationSection({
                               width={70}
                               height={70}
                               alt={education.school}
-                              quality={100}
+                              quality={50}
                               priority
                             />
                             <p className="p-0 m-0 mt-4">{education.degree}</p>

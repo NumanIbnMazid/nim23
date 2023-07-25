@@ -400,7 +400,7 @@ class Movie(models.Model):
     url = models.URLField(blank=True, null=True)
     year = models.PositiveIntegerField(blank=True, null=True)
     watched = models.BooleanField(default=True)
-    rating = models.PositiveIntegerField(blank=True, null=True)
+    rating = models.FloatField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

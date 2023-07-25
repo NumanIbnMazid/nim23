@@ -63,6 +63,7 @@
   - (DONE) Enlarge Certificate Image Size and add Modal (Image Viewer) on image click.
   - (DONE) Bring blog title center in blog details page.
   - (DONE) Add some padding in Recent watched movies section's heading (Mobile View).
+  - Rename Code-Snippets to Snippets.
 
 ## Bug Fix
 

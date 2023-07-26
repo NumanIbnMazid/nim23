@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { FadeContainer } from '../../content/FramerMotionVariants'
 import { HomeHeading } from '..'
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { getProjectDetails } from '@lib/backendAPI'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { opacityVariant } from '@content/FramerMotionVariants'
@@ -16,11 +16,19 @@ import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
-
+import * as LB from "@utils/yetAnotherlightboxImports"
 
 export default function ProjectDetailsSection({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [project, setProject] = useState<ProjectType>()
+  const [bannerLightBoxOpen, setBannerLightBoxOpen] = React.useState(false)
+  const [mediaLightBoxOpen, setMediaLightBoxOpen] = React.useState(false)
+  const [selectedMedia, setSelectedMedia] = useState<MediaType>()
+
+  const openMediaLightBoxViewer = useCallback((media: MediaType) => {
+    setSelectedMedia(media)
+    setMediaLightBoxOpen(true)
+  }, [])
 
   const fetchProjectDetails = async (slug: any) => {
     try {
@@ -40,7 +48,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
   const isImageFile = (file: string): boolean => {
     if (file !== null) {
-      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']
+      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'tiff', 'avif']
       const fileExtension = getFileExtensionFromBase64(file)
       return imageExtensions.includes(fileExtension.toLowerCase())
     }
@@ -49,9 +57,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([
-        fetchProjectDetails(slug)
-      ]);
+      await Promise.all([fetchProjectDetails(slug)])
       setIsLoading(false)
     }
     fetchData()
@@ -75,7 +81,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
         title={project.title}
         description={project.short_description || pageMeta.projects.description}
         previewImage={project.image || pageMeta.projects.image}
-        keywords={`${project.technology || "python project"}, ${pageMeta.projects.keywords}`}
+        keywords={`${project.technology || 'python project'}, ${pageMeta.projects.keywords}`}
       />
       {project && (
         <div className="dark:text-gray-100">
@@ -101,13 +107,14 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                   <div className="flex items-center justify-center">
                     <Image
                       src={project?.image as string}
-                      className="shadow filter"
+                      className="shadow filter hover:cursor-pointer"
                       width={1000}
                       height={1000}
                       alt={project.title}
                       quality={50}
                       style={{ width: 'auto', height: 'auto' }}
                       priority
+                      onClick={() => setBannerLightBoxOpen(true)}
                     />
                   </div>
 
@@ -138,24 +145,26 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                         <h4 className="font-bold">Attachments</h4>
                         {project.project_media.map((media: MediaType, mediaIndex) => (
                           <div key={mediaIndex} className="my-4">
-
                             {/* serial number */}
-                            <h2 className='italic text-gray-400 dark:text-neutral-400'>#{mediaIndex + 1}</h2>
+                            <h2 className="italic text-gray-400 dark:text-neutral-400">#{mediaIndex + 1}</h2>
 
                             {/* media title */}
                             <h3>{media.title}</h3>
 
                             {/* Image file */}
                             {media.file !== null && isImageFile(media.file) && (
-                              <Image
-                                src={media.file}
-                                className=""
-                                alt={media.title}
-                                width={1000}
-                                height={1000}
-                                quality={75}
-                                style={{ width: "auto", height: "auto" }}
-                              />
+                              <div>
+                                <Image
+                                  src={media.file}
+                                  className="hover:cursor-pointer"
+                                  alt={media.title}
+                                  width={1000}
+                                  height={1000}
+                                  quality={75}
+                                  style={{ width: 'auto', height: 'auto' }}
+                                  onClick={() => openMediaLightBoxViewer(media)}
+                                />
+                              </div>
                             )}
 
                             {/* pdf file */}
@@ -171,8 +180,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                             )}
 
                             {/* media description */}
-                            <p className="mt-4">{media.description}</p>
-
+                            <div dangerouslySetInnerHTML={{ __html: media.description }} className="mt-4"></div>
                           </div>
                         ))}
                       </div>
@@ -235,6 +243,47 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
           </motion.section>
         </div>
       )}
+
+      {/* Banner Lightbox Start */}
+      <LB.Lightbox
+        plugins={[LB.Zoom, LB.Thumbnails, LB.Share, LB.Fullscreen, LB.Download, LB.Counter]}
+        open={bannerLightBoxOpen}
+        close={() => setBannerLightBoxOpen(false)}
+        slides={[
+          {
+            src: project?.image as string,
+          },
+        ]}
+        render={{ slide: LB.NextJsImage }}
+      />
+      {/* Banner Lightbox End */}
+
+      {/* Media LightBox Start */}
+      {project.project_media?.length && (
+        <LB.Lightbox
+          plugins={[
+            LB.Zoom,
+            LB.Thumbnails,
+            LB.Slideshow,
+            LB.Share,
+            LB.Fullscreen,
+            LB.Download,
+            LB.Counter,
+            LB.Captions,
+          ]}
+          counter={{ container: { style: { top: '3%' } } }}
+          open={mediaLightBoxOpen}
+          close={() => setMediaLightBoxOpen(false)}
+          slides={[
+            {
+              src: selectedMedia?.file as string,
+              alt: selectedMedia?.title,
+              title: selectedMedia?.title,
+            },
+          ]}
+        />
+      )}
+      {/* Media LightBox End */}
     </>
   )
 }

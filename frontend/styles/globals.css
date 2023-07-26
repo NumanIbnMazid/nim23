@@ -379,7 +379,3 @@ code > .line::before {
 .p-539 {
     padding: 5.39rem;
 }
-
-.react-simple-image-viewer__modal {
-    z-index: 50 !important;
-}

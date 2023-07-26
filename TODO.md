@@ -64,6 +64,12 @@
   - (DONE) Bring blog title center in blog details page.
   - (DONE) Add some padding in Recent watched movies section's heading (Mobile View).
   - Rename Code-Snippets to Snippets.
+  - Make movies section horizontal scrollbar larger.
+  - Fix skill order violation in server (urgent).
+  - Provide fixed height width (style) to skill images.
+  - Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
+  - (DONE) Add Image viewer for Media Pages like Project Details.
+  - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
 
 ## Bug Fix
 
@@ -73,7 +79,9 @@
 
 - [ ] Fix pydantic env file discovery in config. Get rid of hardcoded relative path.
 
-Performance Analyzer: <https://pagespeed.web.dev>
+## Performance Analyzer
+
+<https://pagespeed.web.dev>
 
 ### 18-07-2023
 

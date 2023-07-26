@@ -8,7 +8,7 @@ import { popUpFromBottomForText } from '@content/FramerMotionVariants'
 import Link from 'next/link'
 import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
-import ImageViewer from 'react-simple-image-viewer'
+import * as LB from '@utils/yetAnotherlightboxImports'
 
 export default function CertificateSection({
   certificates,
@@ -17,18 +17,13 @@ export default function CertificateSection({
   certificates: CertificateType[]
   showHomeHeading?: boolean
 }) {
-  const [currentImage, setCurrentImage] = useState(0)
-  const [isViewerOpen, setIsViewerOpen] = useState(false)
+  const [lightBoxOpen, seLightBoxOpen] = React.useState(false)
+  const [selectedImage, setSelectedImage] = useState<string>()
 
-  const openImageViewer = useCallback((index: any) => {
-    setCurrentImage(index)
-    setIsViewerOpen(true)
+  const openMediaLightBoxViewer = useCallback((file: any) => {
+    setSelectedImage(file)
+    seLightBoxOpen(true)
   }, [])
-
-  const closeImageViewer = () => {
-    setCurrentImage(0)
-    setIsViewerOpen(false)
-  }
 
   return (
     <section className="mx-5">
@@ -44,9 +39,10 @@ export default function CertificateSection({
         <div className="mt-12 space-y-6">
           <p className="mb-12">
             Here, I will showcase the certifications and professional achievements I have earned throughout my career.
-            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to excellence.
+            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to
+            excellence.
           </p>
-          {certificates.map((certificate: CertificateType, index: number) => {
+          {certificates.map((certificate: CertificateType) => {
             return (
               <AnimatedDiv
                 className="bg-white rounded-lg shadow dark:bg-darkSecondary/50 grid md:grid-cols-12"
@@ -62,22 +58,8 @@ export default function CertificateSection({
                     quality={50}
                     placeholder="blur"
                     blurDataURL={certificate.image}
-                    onClick={() => openImageViewer(index)}
+                    onClick={() => openMediaLightBoxViewer(certificate.image)}
                   />
-
-                  {/* The Image Viewer */}
-                  {isViewerOpen && (
-                    <ImageViewer
-                      src={certificates.map((certificate) => certificate.image)}
-                      currentIndex={currentImage}
-                      disableScroll={true}
-                      closeOnClickOutside={true}
-                      onClose={closeImageViewer}
-                      backgroundStyle={{
-                        backgroundColor: '#0d1423',
-                      }}
-                    />
-                  )}
                 </div>
                 <div className="md:col-span-10 p-4">
                   <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-4">
@@ -141,6 +123,29 @@ export default function CertificateSection({
           })}
         </div>
       </motion.div>
+
+      {/* LightBox Start */}
+      <LB.Lightbox
+        plugins={[
+          LB.Zoom,
+          LB.Thumbnails,
+          LB.Slideshow,
+          LB.Share,
+          LB.Fullscreen,
+          LB.Download,
+          LB.Counter,
+          LB.Captions,
+        ]}
+        counter={{ container: { style: { top: '3%' } } }}
+        open={lightBoxOpen}
+        close={() => seLightBoxOpen(false)}
+        slides={[
+          {
+            src: selectedImage || '',
+          },
+        ]}
+      />
+      {/* LightBox End */}
     </section>
   )
 }

@@ -4476,6 +4476,11 @@ jws@^4.0.0:
     jwa "^2.0.0"
     safe-buffer "^5.0.1"
 
+keen-slider@^6.8.6:
+  version "6.8.6"
+  resolved "https://registry.yarnpkg.com/keen-slider/-/keen-slider-6.8.6.tgz#17bb7b219860f291a5ea5fde4496b737bf407a83"
+  integrity sha512-dcEQ7GDBpCjUQA8XZeWh3oBBLLmyn8aoeIQFGL/NTVkoEOsmlnXqA4QykUm/SncolAZYGsEk/PfUhLZ7mwMM2w==
+
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
@@ -6128,11 +6133,6 @@ react-share@^4.4.1:
   dependencies:
     classnames "^2.3.2"
     jsonp "^0.2.1"
-
-react-simple-image-viewer@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-simple-image-viewer/-/react-simple-image-viewer-1.2.2.tgz#2a93413512b76ce8d336dd5fa19660a970d05be4"
-  integrity sha512-Vk9p6Glm7uE4cSEBGkqZPGC3qoZcAwd48nq5/JN13NKd9rUrUIWZWFEmRzO+FVwl6c0UdjSDkthGoaoiYeWVjg==
 
 react-spring@^9.0.0-rc.3:
   version "9.7.2"
@@ -7801,6 +7801,11 @@ yargs@^17.7.2:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
+
+yet-another-react-lightbox@^3.11.4:
+  version "3.11.4"
+  resolved "https://registry.yarnpkg.com/yet-another-react-lightbox/-/yet-another-react-lightbox-3.11.4.tgz#74266d37a025fa25af2daeb431a421b6ed199120"
+  integrity sha512-h7JFRKnjlmsPEsBgdUyzFDZCLdPG6jv2YDAGoIxCOr3qVttzyPU2T9AgtMwUZv+soLrneeQOTJ+F89Rm6TPQrQ==
 
 yocto-queue@^0.1.0:
   version "0.1.0"

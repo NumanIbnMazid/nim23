@@ -70,6 +70,8 @@
   - Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
   - (DONE) Add Image viewer for Media Pages like Project Details.
   - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
+  - Remove Slideshow plugin from certificate image viewer.
+  - Provide srcSet in Project Details media image viewer so that all images can slideshow.
 
 ## Bug Fix
 

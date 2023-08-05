@@ -45,11 +45,11 @@ LOCAL_APPS = [
 ]
 INSTALLED_APPS = (
     [
-        # Django Filebrowser Needs to be placed before Django Admin
-        # Start Django Filebrowser
-        'grappelli',
-        'filebrowser',
-        # End Django Filebrowser
+        # Django Admin Interface: Needs to be placed before django.contrib.admin
+        # Django Admin Interface: Starts
+        "admin_interface",
+        "colorfield",
+        # Django Admin Interface: Ends
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
@@ -204,13 +204,6 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
-# Django Filebrowser Configuration
-FILEBROWSER_DIRECTORY = ''
-DIRECTORY = ''
-FILEBROWSER_ADMIN_THUMBNAIL="admin_thumbnail"
-FILEBROWSER_ADMIN_VERSIONS=['thumbnail', 'small', 'medium', 'big', 'large']
-FILEBROWSER_VERSION_QUALITY=90
-
 # Django Tinymce Configuration
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
@@ -235,6 +228,10 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+
+# Django Admin Interface Configuration
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # ----------------------------------------------------
 # *** Configurable Values ***

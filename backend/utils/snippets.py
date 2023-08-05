@@ -206,7 +206,7 @@ def autoslugFromField(fieldname):
     """[Generates auto slug from model's field value]
 
     Args:
-        fieldname ([str]): [Model field name to use to generate slug]
+        fieldname ([str]): [Model's field name which would be used to generate slug]
     """
 
     def decorator(model):

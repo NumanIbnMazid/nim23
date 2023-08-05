@@ -23,7 +23,6 @@ from drf_yasg import openapi
 from knox import views as knox_views
 from django.conf import settings
 from django.conf.urls.static import static
-from filebrowser.sites import site
 from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
 from utils.decorators import authenticated_user_required
@@ -85,11 +84,6 @@ THIRD_PARTY_URLS = [
 ]
 
 urlpatterns = [
-    # ----------------------------------------------------
-    # *** Django Filebrowser URLs (Needs to be placed before Django Admin Urls) ***
-    # ----------------------------------------------------
-    path('admin/filebrowser/', site.urls),
-    path('grappelli/', include('grappelli.urls')),
     # ----------------------------------------------------
     # *** Django & Django Admin URLs ***
     # ----------------------------------------------------

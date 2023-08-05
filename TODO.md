@@ -72,6 +72,12 @@
   - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
   - Remove Slideshow plugin from certificate image viewer.
   - Provide srcSet in Project Details media image viewer so that all images can slideshow.
+  - Identify from where the text "0" is coming in project details page (i-Host).
+  - Make blogs and snippets code block horizontal scrollable.
+  - Add tags to snippets.
+  - Try to add dark mode in Django Admin.
+  - Add some margin in project detail's page's description.
+  - Place the project links top of the project details page instead of bottom.
 
 ## Bug Fix
 

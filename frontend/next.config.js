@@ -50,5 +50,6 @@ module.exports = withPWA({
     GA_PROJECT_ID : process.env.GA_PROJECT_ID,
     GA_CLIENT_EMAIL : process.env.GA_CLIENT_EMAIL,
     GA_PRIVATE_KEY : process.env.GA_PRIVATE_KEY,
+    DARKSTAR_GOOGLE_API_KEY : process.env.DARKSTAR_GOOGLE_API_KEY,
   }
 })

@@ -126,16 +126,7 @@ export default function CertificateSection({
 
       {/* LightBox Start */}
       <LB.Lightbox
-        plugins={[
-          LB.Zoom,
-          LB.Thumbnails,
-          LB.Slideshow,
-          LB.Share,
-          LB.Fullscreen,
-          LB.Download,
-          LB.Counter,
-          LB.Captions,
-        ]}
+        plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
         counter={{ container: { style: { top: '3%' } } }}
         open={lightBoxOpen}
         close={() => seLightBoxOpen(false)}

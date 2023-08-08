@@ -42,6 +42,12 @@ const pageMeta: PageMeta = {
     image: myImage,
     keywords: "about, about me, about numan, who is numan, mazid, about mazid, portfolio about page",
   },
+  media: {
+    title: "Media",
+    description: "Here you will find a collection of my uploaded videos, watched movies and other captivating media content.",
+    image: myImage,
+    keywords: "media, media page, numan media, mazid media, portfolio media page, media page template, youtube videos, youtube videos page, portfolio videos",
+  },
   privacy: {
     title: "Privacy Policy",
     description: "At nim23.com, we value and respect your privacy. This Privacy Policy outlines how we collect, use, and protect your personal information when you visit our website.",

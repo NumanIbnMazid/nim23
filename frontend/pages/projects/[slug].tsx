@@ -251,7 +251,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
       {/* Banner Lightbox Start */}
       <LB.Lightbox
-        plugins={[LB.Zoom, LB.Thumbnails, LB.Share, LB.Fullscreen, LB.Download, LB.Counter]}
+        plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
         open={bannerLightBoxOpen}
         close={() => setBannerLightBoxOpen(false)}
         slides={[
@@ -266,16 +266,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
       {/* Media LightBox Start */}
       {project.project_media?.length ? (
         <LB.Lightbox
-          plugins={[
-            LB.Zoom,
-            LB.Thumbnails,
-            LB.Slideshow,
-            LB.Share,
-            LB.Fullscreen,
-            LB.Download,
-            LB.Counter,
-            LB.Captions,
-          ]}
+          plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
           counter={{ container: { style: { top: '3%' } } }}
           open={mediaLightBoxOpen}
           close={() => setMediaLightBoxOpen(false)}

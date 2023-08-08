@@ -310,6 +310,7 @@ export type PageMeta = {
   certificates: PageData
   projects: PageData
   about: PageData
+  media: PageData
   privacy: PageData
   contact: PageData
   snippets: PageData
@@ -326,4 +327,32 @@ export type MovieType = {
   rating?: number
   created_at: string
   updated_at: string
+}
+
+export type YoutubeVideoType = {
+  id: {
+    videoId: string
+  }
+  snippet: {
+    title: string
+    description: string
+    thumbnails: {
+      default: {
+        url: string
+        width: number
+        height: number
+      }
+      medium: {
+        url: string
+        width: number
+        height: number
+      }
+      high: {
+        url: string
+        width: number
+        height: number
+      }
+    }
+    publishedAt: string
+  }
 }

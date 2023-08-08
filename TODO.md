@@ -66,12 +66,12 @@
   - (DONE) Rename Code-Snippets to Snippets.
   - Make movies section horizontal scrollbar larger.
   - Fix skill order violation in server (urgent).
-  - Provide fixed height width (style) to skill images.
+  - (DONE) Provide fixed height width (style) to skill images.
   - Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
   - (DONE) Add Image viewer for Media Pages like Project Details.
   - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
-  - Remove Slideshow plugin from certificate image viewer.
-  - Provide srcSet in Project Details media image viewer so that all images can slideshow.
+  - (DONE) Remove Slideshow plugin from certificate image viewer.
+  - (NOT NEEDED) Provide srcSet in Project Details media image viewer so that all images can slideshow.
   - (DONE) Identify from where the text "0" is coming in project details page (i-Host) and fix it.
   - (DONE) Make blogs and snippets code block horizontal scrollable.
   - (DONE) Add tags to snippets.

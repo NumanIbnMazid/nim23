@@ -55,10 +55,10 @@ const pageMeta: PageMeta = {
     keywords: "contact, contact page, nim23 contact, contact numan",
   },
   snippets: {
-    title: "Code Snippets",
-    description: "These are a collection of code snippets I've used in the past and saved. These could be useful to you as well.",
+    title: "Snippets",
+    description: "These are a collection of snippets I've used in the past and saved. These could be useful to you as well.",
     image: myImage,
-    keywords: "Code, Code Snippets, Snippets, nim23 code snippets, numan code snippets",
+    keywords: "Code, Code Snippets, Snippets, nim23 code snippets, numan code snippets, snippets code, numan snippets, nim23 snippets",
   },
 }
 

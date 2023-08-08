@@ -63,7 +63,7 @@
   - (DONE) Enlarge Certificate Image Size and add Modal (Image Viewer) on image click.
   - (DONE) Bring blog title center in blog details page.
   - (DONE) Add some padding in Recent watched movies section's heading (Mobile View).
-  - Rename Code-Snippets to Snippets.
+  - (DONE) Rename Code-Snippets to Snippets.
   - Make movies section horizontal scrollbar larger.
   - Fix skill order violation in server (urgent).
   - Provide fixed height width (style) to skill images.
@@ -72,12 +72,13 @@
   - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
   - Remove Slideshow plugin from certificate image viewer.
   - Provide srcSet in Project Details media image viewer so that all images can slideshow.
-  - Identify from where the text "0" is coming in project details page (i-Host).
-  - Make blogs and snippets code block horizontal scrollable.
-  - Add tags to snippets.
+  - (DONE) Identify from where the text "0" is coming in project details page (i-Host) and fix it.
+  - (DONE) Make blogs and snippets code block horizontal scrollable.
+  - (DONE) Add tags to snippets.
   - Try to add dark mode in Django Admin.
-  - Add some margin in project detail's page's description.
-  - Place the project links top of the project details page instead of bottom.
+  - (DONE) Add some margin in project detail's page's description.
+  - (DONE) Place the project links top of the project details page instead of bottom.
+  - (DONE) Bring Technology and Link center in project details page.
 
 ## Bug Fix
 

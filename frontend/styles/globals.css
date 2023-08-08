@@ -379,3 +379,41 @@ code > .line::before {
 .p-539 {
     padding: 5.39rem;
 }
+
+/* This style will make the code blocks scrollable when they overflow */
+code[class*="language-"],
+pre[class*="language-"] {
+  overflow-x: auto; /* Enable horizontal scrollbar when width overflows */
+  overflow-y: auto; /* Hide vertical scrollbar */
+  display: block;
+  max-height: 70vh; /* Set the max height to 70% of viewport height */
+}
+
+/* Customize scrollbar appearance for Webkit-based browsers (Chrome, Safari) */
+code[class*="language-"]::-webkit-scrollbar,
+pre[class*="language-"]::-webkit-scrollbar {
+  height: 6px; /* Adjust the scrollbar height */
+}
+
+code[class*="language-"]::-webkit-scrollbar-thumb,
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background-color: #919191;
+  border-radius: 3px; /* Adjust the border radius for rounding */
+}
+
+code[class*="language-"]::-webkit-scrollbar-thumb:hover,
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+  background-color: #919191;
+}
+
+code[class*="language-"]::-webkit-scrollbar-track,
+pre[class*="language-"]::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 3px; /* Adjust the border radius for rounding */
+  box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+code[class*="language-"]::-webkit-scrollbar-corner,
+pre[class*="language-"]::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

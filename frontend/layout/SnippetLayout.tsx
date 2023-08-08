@@ -48,29 +48,31 @@ export default function SnippetLayout({
             {code_snippet.title}
           </h1>
           <div className="relative flex items-center justify-center w-20 h-12 p-1 overflow-hidden">
-            <Image
-              className="m-0"
-              src={code_snippet.image}
-              alt={code_snippet.title}
-              width={100}
-              height={100}
-            ></Image>
+            <Image className="m-0" src={code_snippet.image} alt={code_snippet.title} width={100} height={100}></Image>
           </div>
         </div>
 
-        {code_snippet.overview && (
-          <p className="text-xl">{code_snippet.overview}</p>
-        )}
+        {code_snippet.overview && <p className="text-xl">{code_snippet.overview}</p>}
 
         {code_snippet.language && (
           <div className="flex flex-wrap items-center gap-1">
+            <span className="text-base text-gray-500">Language: </span>
             {code_snippet.language.split(',').map((code_snippet, index) => {
               return (
-                <span
-                  key={`${code_snippet}-${index}`}
-                  className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50"
-                >
+                <span key={`${code_snippet}-${index}`} className="px-2 py-1 text-xs rounded bg-sky-800 text-gray-50">
                   {code_snippet.toLowerCase()}
+                </span>
+              )
+            })}
+          </div>
+        )}
+        {code_snippet.tags && (
+          <div className="flex flex-wrap items-center gap-1 mb-2 mt-2">
+            <span className="text-base text-gray-500">Tags: </span>
+            {code_snippet.tags.split(',').map((tag, index) => {
+              return (
+                <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+                  {tag.toLowerCase()}
                 </span>
               )
             })}
@@ -82,11 +84,12 @@ export default function SnippetLayout({
           {getFormattedDate(new Date(code_snippet.created_at))}
         </div>
 
-        {getFormattedDate(new Date(code_snippet.created_at)) !== getFormattedDate(new Date(code_snippet.updated_at)) && (
-        <div className="text-base text-gray-500">
-          <span>Last Update: </span>
-          {getFormattedDate(new Date(code_snippet.updated_at))}
-        </div>
+        {getFormattedDate(new Date(code_snippet.created_at)) !==
+          getFormattedDate(new Date(code_snippet.updated_at)) && (
+          <div className="text-base text-gray-500">
+            <span>Last Update: </span>
+            {getFormattedDate(new Date(code_snippet.updated_at))}
+          </div>
         )}
 
         {/* Content */}

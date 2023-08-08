@@ -44,7 +44,6 @@ export default function CodeSnippets() {
 
   return (
     <>
-      {/* TODO: Fix Meta */}
       <Metadata
         title={pageMeta.snippets.title}
         description={pageMeta.snippets.description}

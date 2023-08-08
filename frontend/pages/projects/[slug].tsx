@@ -130,10 +130,66 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                       </p>
                     </div>
 
+                    <div className="justify-center text-center">
+                      {/* project technology */}
+                      {project.technology && (
+                        <div>
+                          <h4 className="font-bold mb-4">Technology</h4>
+                          <div className="flex flex-wrap items-center gap-1">
+                            {project.technology.split(',').map((technology, index) => {
+                              return (
+                                <span
+                                  key={`${technology}-${index}`}
+                                  className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-gray-800"
+                                >
+                                  {technology}
+                                </span>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* project links */}
+                      {project.github_url || project.preview_url ? (
+                        <div>
+                          <h4 className="font-bold mb-4">Links</h4>
+                          <div className="flex items-center justify-center">
+                            {/* Centered Container */}
+                            <div className="flex items-center gap-4 p-2 w-fit">
+                              {project.github_url && (
+                                <Link
+                                  href={project.github_url}
+                                  title="Source Code on GitHub"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                >
+                                  <BsGithub className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                                </Link>
+                              )}
+
+                              {project.preview_url && (
+                                <Link
+                                  href={project.preview_url}
+                                  title="Live Preview"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                >
+                                  <MdOutlineLink className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+
                     {/* project description */}
                     {project.description && (
                       <div
-                        className="text-base text-gray-600 dark:text-neutral-300"
+                        className="text-base text-gray-600 dark:text-neutral-300 mt-10"
                         dangerouslySetInnerHTML={{ __html: project.description || '' }}
                       ></div>
                     )}
@@ -185,57 +241,6 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                         ))}
                       </div>
                     ) : null}
-
-                    {/* project technology */}
-                    {project.technology && (
-                      <div>
-                        <h4 className="font-bold mb-4">Technology</h4>
-                        <div className="flex flex-wrap items-center gap-1">
-                          {project.technology.split(',').map((technology, index) => {
-                            return (
-                              <span
-                                key={`${technology}-${index}`}
-                                className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-gray-800"
-                              >
-                                {technology}
-                              </span>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* project links */}
-                    {project.github_url || project.preview_url ? (
-                      <div>
-                        <h4 className="font-bold mb-4">Links</h4>
-                        <div className="flex items-center gap-4 p-2 mt-4 w-fit">
-                          {project.github_url && (
-                            <Link
-                              href={project.github_url}
-                              title="Source Code on GitHub"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                            >
-                              <BsGithub className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
-                            </Link>
-                          )}
-
-                          {project.preview_url && (
-                            <Link
-                              href={project.preview_url}
-                              title="Live Preview"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                            >
-                              <MdOutlineLink className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    ) : null}
                   </div>
                 </AnimatedDiv>
               </motion.div>
@@ -259,7 +264,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
       {/* Banner Lightbox End */}
 
       {/* Media LightBox Start */}
-      {project.project_media?.length && (
+      {project.project_media?.length ? (
         <LB.Lightbox
           plugins={[
             LB.Zoom,
@@ -282,7 +287,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
             },
           ]}
         />
-      )}
+      ) : null}
       {/* Media LightBox End */}
     </>
   )

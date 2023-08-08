@@ -39,7 +39,7 @@ export default function MetaData({
       <meta name="viewport" content="width=device-width,initial-scale=1.0" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="description" content={description || "Numan Ibn Mazid's Portfolio Web Application"} />
-      <title>{title + (suffix ? ` - ${suffix}` : '') + ' || nim23.com'}</title>
+      <title>{title + (suffix ? ` - ${suffix}` : '') + ' | NIM23'}</title>
       <meta name="theme-color" content="#000" />
       <link rel="shortcut icon" href={faviconHref} sizes="any" />
       <link rel="manifest" href="/manifest.json" />
@@ -54,7 +54,7 @@ export default function MetaData({
         }, Numan, Numan Ibn Mazid, numanibnmazid, nmn, nim23, nim23.com, numan blog, blog application, portfolio application, portfolio template, programming blog, web development blog, web development, web development portfolio, web development portfolio template, portfolio application, portfolio website, portfolio website template, Noman, Noman Ibne Mojid, Noman Blog, Numan Ibne Mojid, Noman Ibne Mazid, Numan Ibne Mazid, Numan Ibn Majid, Mazid Blog, Mazid Portfolio`}
       />
       {/* Og */}
-      <meta property="og:title" content={`${title}${suffix ? ` - ${suffix}` : ''} || nim23.com`} />
+      <meta property="og:title" content={`${title}${suffix ? ` - ${suffix}` : ''} | NIM23`} />
       <meta property="og:description" content={description || "Numan Ibn Mazid's Portfolio Application"} />
       <meta property="og:site_name" content="Numan Ibn Mazid's Portfolio" />
       <meta property="og:url" content={currentURL} key="ogurl" />
@@ -62,7 +62,7 @@ export default function MetaData({
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content="@NumanIbnMazid" />
-      <meta name="twitter:title" content={`${title}${suffix ? ` - ${suffix}` : ''} || nim23.com`} />
+      <meta name="twitter:title" content={`${title}${suffix ? ` - ${suffix}` : ''} | NIM23`} />
       <meta name="twitter:description" content={description || "Numan Ibn Mazid's Portfolio Application"} />
       <meta name="twitter:image" content={previewImage || '/images/numan.png'} />
       <meta name="twitter:image:alt" content={title || 'nim23.com'}></meta>

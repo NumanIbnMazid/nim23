@@ -20,6 +20,7 @@ class CodeSnippet(models.Model):
     overview = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to=get_code_snippet_image_path, blank=True, null=True)
     language = models.CharField(max_length=50, blank=True)
+    tags = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField()
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

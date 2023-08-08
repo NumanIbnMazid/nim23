@@ -207,6 +207,7 @@ export type CodeSnippetType = {
   overview?: string
   image: string
   language?: string
+  tags?: string
   content: string
   order: number
   created_at: string

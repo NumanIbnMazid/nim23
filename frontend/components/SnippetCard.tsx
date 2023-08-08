@@ -5,7 +5,7 @@ import Link from 'next/link'
 export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippetType }) {
   return (
     <Link
-      href={`code-snippets/${code_snippet.slug}`}
+      href={`snippets/${code_snippet.slug}`}
       title="View Code Snippet Details"
       className="w-full p-4 bg-white dark:bg-darkSecondary ring-1 hover:bg-darkWhite dark:hover:bg-darkFourth dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] flex flex-col gap-2 rounded"
     >
@@ -18,8 +18,19 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
         <div className="flex flex-wrap items-center gap-1">
           {code_snippet.language.split(',').map((code_snippet, index) => {
             return (
-              <span key={`${code_snippet}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+              <span key={`${code_snippet}-${index}`} className="px-2 py-1 text-xs rounded bg-sky-800 text-gray-50">
                 {code_snippet.toLowerCase()}
+              </span>
+            )
+          })}
+        </div>
+      )}
+      {code_snippet.tags && (
+        <div className="flex flex-wrap items-center gap-1 mb-2">
+          {code_snippet.tags.split(',').map((tag, index) => {
+            return (
+              <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+                {tag.toLowerCase()}
               </span>
             )
           })}

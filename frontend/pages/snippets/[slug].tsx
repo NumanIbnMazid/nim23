@@ -60,7 +60,7 @@ export default function SnippetPage({
         title={code_snippet.title}
         description={code_snippet.overview || pageMeta.snippets.description}
         previewImage={code_snippet.image || pageMeta.snippets.image}
-        keywords={`${code_snippet.language || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
+        keywords={`${code_snippet.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
       />
 
       {code_snippet ? (

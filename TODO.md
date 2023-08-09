@@ -79,6 +79,9 @@
   - (DONE) Add some margin in project detail's page's description.
   - (DONE) Place the project links top of the project details page instead of bottom.
   - (DONE) Bring Technology and Link center in project details page.
+  - Load all videos from youtube instead of 10 and add pagination.
+  - Move Recent Watched Movies to Media page from About.
+  - Donot show Youtube Videos section even not page title if youtube videos are not available.
 
 ## Bug Fix
 

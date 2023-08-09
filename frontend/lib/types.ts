@@ -354,5 +354,11 @@ export type YoutubeVideoType = {
       }
     }
     publishedAt: string
+  },
+  nextPageToken: string,
+  prevPageToken: string,
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
   }
 }

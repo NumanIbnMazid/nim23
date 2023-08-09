@@ -1,7 +1,6 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
 import {
-  MovieType,
   PostType,
   ExperienceType,
   EducationType,
@@ -13,7 +12,6 @@ import StaticPage from "@components/StaticPage"
 import {
   getAllExperiences,
   getAllEducations,
-  getAllMovies,
   getAllSkills,
   getAllCertificates,
   getAllInterests,
@@ -26,7 +24,6 @@ import ExperienceSection from "@components/Home/ExperienceSection"
 import Education from "@components/Education"
 import Certificates from "@components/Certificates"
 import InterestSection from "@components/Interest"
-import MovieSection from "@components/Movies"
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 import { HomeHeading } from '../pages'
@@ -45,14 +42,12 @@ export default function About({
   const [educationsLoading, setEducationsLoading] = useState(true)
   const [certificatesLoading, setCertificatesLoading] = useState(true)
   const [interestsLoading, setInterestsLoading] = useState(true)
-  const [moviesLoading, setMoviesLoading] = useState(true)
 
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [skills, setSkills] = useState<SkillType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
   const [certificates, setCertificates] = useState<CertificateType[]>([])
   const [interests, setInterests] = useState<InterestType[]>([])
-  const [movies, setMovies] = useState<MovieType[]>([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences()
@@ -84,19 +79,12 @@ export default function About({
     setEducationsLoading(false)
   }
 
-  const fetchMovies = async () => {
-    const moviesData: MovieType[] = await getAllMovies()
-    setMovies(moviesData)
-    setMoviesLoading(false)
-  }
-
   useEffect(() => {
     fetchExperiences()
     fetchEducations()
     fetchSkills()
     fetchCertificates()
     fetchInterests()
-    fetchMovies()
   }, [])
 
   return (
@@ -170,16 +158,6 @@ export default function About({
             )}
           </div>
         </motion.section>
-
-        {/* Movies */}
-        <HomeHeading title="Recent Watched Movies & TV Series" />
-        {moviesLoading ? (
-          <Loader />
-        ) : movies.length > 0 ? (
-          <MovieSection movies={movies} showHomeHeading={false} />
-        ) : (
-          <NoData />
-        )}
       </div>
     </>
   )

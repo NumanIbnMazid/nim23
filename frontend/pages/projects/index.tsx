@@ -1,5 +1,4 @@
 import React from "react"
-import ProjectSection from "@components/ProjectSection"
 import { motion } from "framer-motion"
 import { FadeContainer } from "@content/FramerMotionVariants"
 import { ProjectType } from "@lib/types"
@@ -9,6 +8,11 @@ import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
+import dynamic from 'next/dynamic'
+
+const ProjectSection = dynamic(() => import('@components/ProjectSection'), {
+  loading: () => <Loader />,
+})
 
 
 export default function Projects() {

@@ -57,7 +57,6 @@ export function TimelineItem({
                       height={60}
                       alt={company}
                       quality={50}
-                      priority
                     />
                     <p className="p-0 m-0 mt-4">{company}</p>
                   </a>
@@ -70,7 +69,6 @@ export function TimelineItem({
                       height={70}
                       alt={company}
                       quality={100}
-                      priority
                     />
                     <p className="p-0 m-0 mt-4">{company}</p>
                   </div>

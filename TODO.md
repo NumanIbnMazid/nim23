@@ -29,7 +29,7 @@
   - (DONE) Fix Bar code Scanner.
   - (REMOVED) Fix Spotify.
   - Implement Youtube Stats.
-  - Add YouTube Videos Page.
+  - (DONE) Add YouTube Videos Page.
   - Implement `generate_order` pre_save signal as a decorator and use in all django models where order is used.
   - (DONE) Implement Loader in All pages.
   - (DONE) Create and Update Site Logo.
@@ -67,7 +67,7 @@
   - Make movies section horizontal scrollbar larger.
   - Fix skill order violation in server (urgent).
   - (DONE) Provide fixed height width (style) to skill images.
-  - Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
+  - (DONE) Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
   - (DONE) Add Image viewer for Media Pages like Project Details.
   - (DONE) Fix Project List Click Event. It includes link of project but navigating to project details.
   - (DONE) Remove Slideshow plugin from certificate image viewer.

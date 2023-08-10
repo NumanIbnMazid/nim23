@@ -1,12 +1,16 @@
 import PageNotFound from "pages/404"
 import { CodeSnippetType } from "@lib/types"
-import SnippetLayout from "@layout/SnippetLayout"
 import { useEffect, useState } from 'react'
 import { getCodeSnippetDetails } from '@lib/backendAPI'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
+import dynamic from 'next/dynamic'
+
+const SnippetLayout = dynamic(() => import('@layout/SnippetLayout'), {
+  loading: () => <Loader />,
+})
 
 export default function SnippetPage({
   error,

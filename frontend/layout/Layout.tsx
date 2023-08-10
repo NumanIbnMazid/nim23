@@ -23,11 +23,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Image
                 src={BackgroundImage}
                 className="w-[71.75rem] flex-none max-w-none dark:hidden"
-                width={933}
-                height={933}
+                width={1080}
+                height={314}
                 alt="Background Image"
                 quality={50}
-                priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}
               />
@@ -37,11 +36,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Image
                 src={DarkBackgroundImage}
                 className="w-[90rem] flex-none max-w-none hidden dark:block"
-                width={933}
-                height={933}
+                width={1080}
+                height={314}
                 alt="Dark Background Image"
                 quality={50}
-                priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}
               />

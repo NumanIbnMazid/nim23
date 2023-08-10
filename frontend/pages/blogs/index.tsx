@@ -5,7 +5,6 @@ import {
   popUpFromBottomForText,
   searchBarSlideAnimation,
 } from "@content/FramerMotionVariants"
-import Blog from "@components/Blog"
 import Metadata from "@components/MetaData"
 import { RiCloseCircleLine } from "react-icons/ri"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
@@ -16,7 +15,11 @@ import { CgSearch } from "react-icons/cg"
 import { getAllBlogs } from "@lib/backendAPI"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import dynamic from 'next/dynamic'
 
+const Blog = dynamic(() => import('@components/Blog'), {
+  loading: () => <Loader />,
+})
 
 export default function Blogs() {
   const [isLoading, setIsLoading] = useState(true)

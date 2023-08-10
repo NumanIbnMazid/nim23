@@ -71,7 +71,6 @@ export default function EducationSection({
                               height={70}
                               alt={education.school}
                               quality={50}
-                              priority
                             />
                             <p className="p-0 m-0 mt-4">{education.degree}</p>
                           </div>

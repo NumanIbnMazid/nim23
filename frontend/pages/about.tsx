@@ -19,16 +19,33 @@ import {
 import { useEffect, useState } from 'react'
 import { motion } from "framer-motion"
 import { FadeContainer } from "@content/FramerMotionVariants"
-import SkillSection from "@components/Home/SkillSection"
-import ExperienceSection from "@components/Home/ExperienceSection"
-import Education from "@components/Education"
-import Certificates from "@components/Certificates"
-import InterestSection from "@components/Interest"
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 import { HomeHeading } from '../pages'
 import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
 import { headingFromLeft } from '@content/FramerMotionVariants'
+import dynamic from 'next/dynamic'
+
+const SkillSection = dynamic(() => import('@components/Home/SkillSection'), {
+  loading: () => <Loader />,
+})
+
+const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
+  loading: () => <Loader />,
+})
+
+const Education = dynamic(() => import('@components/Education'), {
+  loading: () => <Loader />,
+})
+
+const Certificates = dynamic(() => import('@components/Certificates'), {
+  loading: () => <Loader />,
+})
+
+const InterestSection = dynamic(() => import('@components/Interest'), {
+  loading: () => <Loader />,
+})
+
 
 export default function About({
   about

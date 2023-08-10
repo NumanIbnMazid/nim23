@@ -74,7 +74,6 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             style={{ width: 'auto', height: 'auto' }}
             src={blog.image}
             className="rounded-xl shadow filter !m-0"
-            priority
           />
         </div>
         <h1 className="text-center text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white mt-10">{blog.title}</h1>
@@ -93,7 +92,6 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
                   height={933}
                   alt="cover Profile Image"
                   quality={100}
-                  priority
                 />
               </motion.div>
             )}

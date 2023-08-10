@@ -1,4 +1,3 @@
-import BlogLayout from "@layout/BlogLayout"
 import PageNotFound from "pages/404"
 import { ProfileType, BlogType } from "@lib/types"
 import { getBlogDetails, getProfileInfo } from "@lib/backendAPI"
@@ -7,7 +6,11 @@ import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
+import dynamic from 'next/dynamic'
 
+const BlogLayout = dynamic(() => import('@layout/BlogLayout'), {
+  loading: () => <Loader />,
+})
 
 export default function BlogDetails({ error, slug }: { error: boolean, slug: string }) {
   if (error) return <PageNotFound />

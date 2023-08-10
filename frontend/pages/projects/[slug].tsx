@@ -113,7 +113,6 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
                       alt={project.title}
                       quality={50}
                       style={{ width: 'auto', height: 'auto' }}
-                      priority
                       onClick={() => setBannerLightBoxOpen(true)}
                     />
                   </div>

@@ -4,12 +4,16 @@ import Metadata from "@components/MetaData"
 import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
 import PageTop from "@components/PageTop"
 import pageMeta from "@content/meta"
-import SnippetCard from "@components/SnippetCard"
 import { useEffect, useState } from "react"
 import { getAllCodeSnippets } from "@lib/backendAPI"
 import { CodeSnippetType } from "@lib/types"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import dynamic from 'next/dynamic'
+
+const SnippetCard = dynamic(() => import('@components/SnippetCard'), {
+  loading: () => <Loader />,
+})
 
 export default function CodeSnippets() {
   const [isLoading, setIsLoading] = useState(true)

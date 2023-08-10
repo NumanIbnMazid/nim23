@@ -10,7 +10,6 @@ export default function Logo({ className }: { className: string }) {
         height={933}
         alt="Dark Background Image"
         quality={100}
-        priority
       />
   )
 }

@@ -1,7 +1,4 @@
-// Page Components START----------
-import BlogsSection from '@components/Home/BlogsSection'
-import SkillSection from '@components/Home/SkillSection'
-import ExperienceSection from '@components/Home/ExperienceSection'
+// Page Components START
 import Image from 'next/image'
 import Metadata from '@components/MetaData'
 import Contact from '@components/Contact'
@@ -22,6 +19,19 @@ import { ProfileType, ExperienceType, SkillType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
+import dynamic from 'next/dynamic'
+
+const SkillSection = dynamic(() => import('@components/Home/SkillSection'), {
+  loading: () => <Loader />,
+})
+
+const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
+  loading: () => <Loader />,
+})
+
+const BlogsSection = dynamic(() => import('@components/Home/BlogsSection'), {
+  loading: () => <Loader />,
+})
 
 export default function Home() {
   // Loaders
@@ -92,9 +102,9 @@ export default function Home() {
                 className="rounded-full shadow filter"
                 width={933}
                 height={933}
-                alt="cover Profile Image"
+                alt="Numan Ibn Mazid's Profile Image"
                 quality={60}
-                priority
+                // priority
               />
             </motion.div>
 

@@ -4,17 +4,23 @@ import React from 'react'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import YoutubeVideoFrame from '@components/YoutubeVideo'
 import { YoutubeVideoType, MovieType } from '@lib/types'
 import pageMeta from '@content/meta'
 import Metadata from '@components/MetaData'
 import PageTop from '@components/PageTop'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
-import MovieSection from '@components/Movies'
 import { getAllMovies } from '@lib/backendAPI'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
+const YoutubeVideoFrame = dynamic(() => import('@components/YoutubeVideo'), {
+  loading: () => <Loader />,
+})
+
+const MovieSection = dynamic(() => import('@components/Movies'), {
+  loading: () => <Loader />,
+})
 
 export default function MediaSection() {
   const [youtubeVideos, setYoutubeVideos] = useState([])
@@ -66,12 +72,13 @@ export default function MediaSection() {
 
         {/* YouTube Videos */}
         {youtubeFetchLoading ? (
-          <Loader />
+          // <Loader />
+          null
         ) : youtubeVideos.length > 0 ? (
           <section className="flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
             <HomeHeading title="YouTube Videos" />
 
-            <section className="relative flex flex-col gap-2 min-h-[50vh]">
+            <section className="relative flex flex-col gap-2 min-h-[50vh] mt-5 print:hidden">
               <AnimatedDiv variants={FadeContainer} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <AnimatePresence>
                   {youtubeVideos.map((video: YoutubeVideoType, index: number) => (

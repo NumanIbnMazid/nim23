@@ -37,14 +37,16 @@ export default function SkillSection({ skills, showHomeHeading = true }: { skill
                 className="p-2 origin-center transform border border-gray-300 rounded-sm sm:justify-start bg-gray-50 hover:bg-white dark:bg-darkPrimary hover:dark:bg-darkSecondary dark:border-neutral-700 md:origin-top group"
               >
                 <div className="flex items-center justify-center">
-                  <div className="relative transition pointer-events-none select-none group-hover:scale-110 sm:group-hover:scale-100">
+                  <div
+                    className="relative transition pointer-events-none select-none group-hover:scale-110 sm:group-hover:scale-100"
+                    style={{ width: '24px', height: '24px', overflow: 'hidden' }}
+                  >
                     <Image
                       src={skill.image}
-                      width={24}
-                      height={24}
                       alt={skill.title}
                       quality={50}
-                      style={{ height: 24, width: 24 }}
+                      layout="fill"
+                      objectFit="contain"
                     />
                   </div>
 

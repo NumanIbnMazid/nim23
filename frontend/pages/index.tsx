@@ -14,16 +14,12 @@ import staticData from '@content/StaticData'
 import React from 'react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getProfileInfo, getAllExperiences, getAllBlogs, getAllSkills } from '@lib/backendAPI'
-import { ProfileType, ExperienceType, SkillType } from '@lib/types'
+import { getProfileInfo, getAllExperiences, getAllBlogs } from '@lib/backendAPI'
+import { ProfileType, ExperienceType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 import dynamic from 'next/dynamic'
-
-const SkillSection = dynamic(() => import('@components/Home/SkillSection'), {
-  loading: () => <Loader />,
-})
 
 const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
   loading: () => <Loader />,
@@ -36,24 +32,16 @@ const BlogsSection = dynamic(() => import('@components/Home/BlogsSection'), {
 export default function Home() {
   // Loaders
   const [experiencesLoading, setExperiencesLoading] = useState(true)
-  const [skillsLoading, setSkillsLoading] = useState(true)
   const [blogsLoading, setBlogsLoading] = useState(true)
 
   const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
-  const [skills, setSkills] = useState<SkillType[]>([])
   const [blogs, setBlogs] = useState([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences(1)
     setExperiences(experiencesData)
     setExperiencesLoading(false)
-  }
-
-  const fetchSkills = async () => {
-    const skillsData = await getAllSkills()
-    setSkills(skillsData)
-    setSkillsLoading(false)
   }
 
   const fetchBlogs = async () => {
@@ -70,7 +58,6 @@ export default function Home() {
   useEffect(() => {
     fetchProfileInfo()
     fetchExperiences()
-    fetchSkills()
     fetchBlogs()
   }, [])
 
@@ -212,16 +199,6 @@ export default function Home() {
             <Loader />
           ) : experiences.length > 0 ? (
             <ExperienceSection experiences={experiences} showHomeHeading={false} />
-          ) : (
-            <NoData />
-          )}
-
-          {/* Skills */}
-          <HomeHeading title="Skills" />
-          {skillsLoading ? (
-            <Loader />
-          ) : skills.length > 0 ? (
-            <SkillSection skills={skills} showHomeHeading={false} />
           ) : (
             <NoData />
           )}

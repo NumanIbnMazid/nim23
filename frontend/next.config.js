@@ -19,6 +19,102 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA({
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload '
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          }
+        ]
+      },
+      {
+        source: '/fonts/Barlow/Barlow-400.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Barlow/Barlow-500.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Barlow/Barlow-600.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Barlow/Barlow-700.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Barlow/Barlow-800.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Inter-var.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/fonts/Sarina/Sarina-400.woff2',
+        headers: [
+          {
+            key: 'Cache-control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+    ]
+  },
   generateBuildId: async () => {
     return 'nim23-build'
   },

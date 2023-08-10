@@ -7,7 +7,7 @@ const staticData: StaticData = {
     nickname: "Numan",
     current_designation: "Software Engineer",
     current_company: "SELISE Digital Platforms",
-    about: "Experienced professional Software Engineer who enjoys developing innovative software solutions that are tailored to customer desirability and usability."
+    about: "Experienced professional Software Engineer specialized in Python who enjoys developing innovative software solutions that are tailored to customer desirability and usability."
   }
 }
 

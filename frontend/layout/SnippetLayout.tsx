@@ -52,7 +52,9 @@ export default function SnippetLayout({
           </div>
         </div>
 
-        {code_snippet.overview && <p className="text-xl">{code_snippet.overview}</p>}
+        {code_snippet.overview && (
+          <div className="text-lg" dangerouslySetInnerHTML={{ __html: code_snippet.overview || '' }}></div>
+        )}
 
         {code_snippet.language && (
           <div className="flex flex-wrap items-center gap-1">

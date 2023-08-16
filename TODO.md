@@ -87,6 +87,7 @@
   - (DONE) Blog PDF is not respecting the scrollable content.
   - (DONE) Fix commands color in blog in light mode.
   - (DONE) Remove Clickable link in code blocks.
+  - Remove or Fix Table of Contents in Blog Print mode.
 
 ## Bug Fix
 

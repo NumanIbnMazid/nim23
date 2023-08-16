@@ -13,7 +13,12 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
         <Image src={code_snippet.image} alt={code_snippet.title} width={40} height={40}></Image>
       </div>
       <h2 className="text-lg font-bold text-black dark:text-white">{code_snippet.title}</h2>
-      {code_snippet.overview && <p className="-mt-1 text-base text-neutral-500">{code_snippet.overview}</p>}
+      {code_snippet.overview && (
+        <div
+          className="-mt-1 text-sm sm:text-xs md:text-sm text-neutral-500 line-clamp-3 sm:line-clamp-2 md:line-clamp-4"
+          dangerouslySetInnerHTML={{ __html: code_snippet.overview || '' }}
+        ></div>
+      )}
       {code_snippet.language && (
         <div className="flex flex-wrap items-center gap-1">
           {code_snippet.language.split(',').map((code_snippet, index) => {

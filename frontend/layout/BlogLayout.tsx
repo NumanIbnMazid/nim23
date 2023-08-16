@@ -181,10 +181,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             )}
 
             {blog.overview && (
-              <div className="text-base text-gray-500 mb-3">
-                <span>Overview: </span>
-                <span className="font-bold">{blog.overview}</span>
-              </div>
+              <div className="text-lg my-4" dangerouslySetInnerHTML={{ __html: blog.overview || '' }}></div>
             )}
 
             {blog.tags && (
@@ -203,17 +200,17 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
         </div>
 
         {/* Horizontal Line */}
-        <div className="relative flex mt-5 items-center">
+        {/* <div className="relative flex mt-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
           <span className="flex-shrink mx-4 text-gray-700 dark:text-gray-400">Content</span>
           <div className="flex-grow border-t border-gray-400"></div>
-        </div>
+        </div> */}
 
         {/* Blog Content */}
 
         <AnimatedDiv
           variants={opacityVariant}
-          className="max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
+          className="my-16 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
           <div
             dangerouslySetInnerHTML={{ __html: blog.content }}

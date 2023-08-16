@@ -48,7 +48,7 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='blogs', blank=True, null=True)
     image = models.ImageField(upload_to=get_blog_image_path, blank=True, null=True)
-    overview = models.CharField(max_length=255, blank=True, null=True)
+    overview = models.TextField(max_length=500, blank=True, null=True)
     content = models.TextField()
     author = models.CharField(max_length=100, default="Numan Ibn Mazid", blank=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
@@ -61,7 +61,7 @@ class Blog(models.Model):
         db_table = 'blog'
         verbose_name = _('Blog')
         verbose_name_plural = _('Blogs')
-        ordering = ('order', '-created_at')
+        ordering = ('-order', '-created_at')
         get_latest_by = "created_at"
 
     def __str__(self):

@@ -72,7 +72,7 @@ export default function SnippetPage({
         <SnippetLayout code_snippet={code_snippet}>
         </SnippetLayout>
       ) : (
-        <p>Loading...</p>
+        <Loader />
       )}
     </>
   )

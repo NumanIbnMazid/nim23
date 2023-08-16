@@ -19,14 +19,59 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
-  const readingTime = readTime(blog.content)
+
+  let readingTime = null
+  if (!hasCode) {
+    readingTime = readTime(blog.content)
+  }
+
+  function adjustContentForPrint() {
+    const style = document.createElement('style')
+    style.textContent = `
+    @media print {
+      code[class*="language-"],
+      pre[class*="language-"] {
+        overflow: visible !important;
+        white-space: pre-wrap;
+      }
+    }
+  `
+    document.head.appendChild(style)
+
+    // Find all code and pre elements that need adjustments
+    const codeElements = document.querySelectorAll('code[class*="language-"]')
+    const preElements = document.querySelectorAll('pre[class*="language-"]')
+
+    // Apply the CSS class for printing adjustments
+    codeElements.forEach((codeElement) => {
+      codeElement.classList.add('print-adjusted')
+    })
+
+    preElements.forEach((preElement) => {
+      preElement.classList.add('print-adjusted')
+    })
+
+    // Call the print function
+    window.print()
+
+    // Remove the CSS class and clean up the added style tag
+    codeElements.forEach((codeElement) => {
+      codeElement.classList.remove('print-adjusted')
+    })
+
+    preElements.forEach((preElement) => {
+      preElement.classList.remove('print-adjusted')
+    })
+
+    document.head.removeChild(style)
+  }
 
   const injectStyle = () => {
     if (hasCode) {
       const style = document.createElement('style')
       style.innerHTML = `
         .text-code code {
-          color: #5292a1
+          color: #78a5b3
         }
       `
       document.head.appendChild(style)
@@ -39,7 +84,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
     // Prism JS
     if (typeof window !== 'undefined') {
       Prism.highlightAll()
-      Prism.plugins.lineNumbers = true
+      // Prism.plugins.lineNumbers = true
     }
   }, [hasCode])
 
@@ -76,7 +121,9 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             className="rounded-xl shadow filter !m-0"
           />
         </div>
-        <h1 className="text-center text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white mt-10">{blog.title}</h1>
+        <h1 className="text-center text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white mt-10">
+          {blog.title}
+        </h1>
 
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
@@ -119,15 +166,19 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
               </div>
             )}
 
-            <div className="text-base text-gray-500">
-              <span>Reading Time: </span>
-              <span className="font-bold">{readingTime.text}</span>
-            </div>
+            {!hasCode && readingTime && (
+              <div>
+                <div className="text-base text-gray-500">
+                  <span>Reading Time: </span>
+                  <span className="font-bold">{readingTime.text}</span>
+                </div>
 
-            <div className="text-base text-gray-500 mb-3">
-              <span>Total Words: </span>
-              <span className="font-bold">{readingTime.words}</span>
-            </div>
+                <div className="text-base text-gray-500 mb-3">
+                  <span>Total Words: </span>
+                  <span className="font-bold">{readingTime.words}</span>
+                </div>
+              </div>
+            )}
 
             {blog.overview && (
               <div className="text-base text-gray-500 mb-3">
@@ -186,7 +237,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             cover_image={blog.image}
           >
             <div className="p-2 text-white bg-gray-700 rounded-full cursor-pointer hover:bg-cyan-700">
-              <FiPrinter className="w-4 h-4" onClick={() => window.print()} />
+              <FiPrinter className="w-4 h-4" onClick={() => adjustContentForPrint()} />
             </div>
           </ShareOnSocialMedia>
         </div>

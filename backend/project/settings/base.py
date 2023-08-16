@@ -206,8 +206,9 @@ REST_FRAMEWORK = {
 
 # Django Tinymce Configuration
 TINYMCE_DEFAULT_CONFIG = {
-    'height': 360,
+    'height': "70vh",
     'width': "100%",
+    # 'theme': "advanced",
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 10,
     'selector': 'textarea',
@@ -218,6 +219,44 @@ TINYMCE_DEFAULT_CONFIG = {
         visualchars code fullscreen autolink lists charmap print  hr
         anchor pagebreak
         ''',
+    'codesample_languages': [
+        {'text': 'Python', 'value': 'python'},
+        {'text': 'Markdown', 'value': 'markdown'},
+        {'text': 'Bash', 'value': 'bash'},
+        {'text': 'JSON', 'value': 'json'},
+        {'text': 'JavaScript', 'value': 'javascript'},
+        {'text': 'TypeScript', 'value': 'typescript'},
+        {'text': 'HTML/XML', 'value': 'markup'},
+        {'text': 'CSS', 'value': 'css'},
+        {'text': 'SCSS', 'value': 'scss'},
+        {'text': 'Sass', 'value': 'sass'},
+        {'text': 'Less', 'value': 'less'},
+        {'text': 'JSX', 'value': 'jsx'},
+        {'text': 'TSX', 'value': 'tsx'},
+        {'text': 'C', 'value': 'c'},
+        {'text': 'C++', 'value': 'cpp'},
+        {'text': 'C#', 'value': 'csharp'},
+        {'text': 'Go', 'value': 'go'},
+        {'text': 'Ruby', 'value': 'ruby'},
+        {'text': 'Rust', 'value': 'rust'},
+        {'text': 'CSV', 'value': 'csv'},
+        {'text': 'Docker', 'value': 'docker'},
+        {'text': 'nginx', 'value': 'nginx'},
+        {'text': 'MongoDB', 'value': 'mongodb'},
+        {'text': 'Makefile', 'value': 'makefile'},
+        {'text': 'Lua', 'value': 'lua'},
+        {'text': 'LaTeX', 'value': 'latex'},
+        {'text': '.ignore', 'value': 'ignore'},
+        {'text': 'GraphQL', 'value': 'graphql'},
+        {'text': 'PowerShell', 'value': 'powershell'},
+        {'text': 'React JSX', 'value': 'jsx'},
+        {'text': 'React TSX', 'value': 'tsx'},
+        {'text': 'Regex', 'value': 'regex'},
+        {'text': 'SQL', 'value': 'sql'},
+        {'text': 'TOML', 'value': 'toml'},
+        {'text': 'vim', 'value': 'vim'},
+        {'text': 'YAML', 'value': 'yaml'},
+    ],
     'toolbar': '''
         undo redo | formatselect | bold italic backcolor |
         alignleft aligncenter alignright alignjustify |
@@ -228,6 +267,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+TINYMCE_SPELLCHECKER = False  # Need to install libenchant package on linux
+TINYMCE_COMPRESSOR = False
 
 # Django Admin Interface Configuration
 X_FRAME_OPTIONS = "SAMEORIGIN"

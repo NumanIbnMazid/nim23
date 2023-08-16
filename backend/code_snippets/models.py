@@ -17,7 +17,7 @@ from utils.image_upload_helpers import (
 class CodeSnippet(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    overview = models.CharField(max_length=255, blank=True, null=True)
+    overview = models.TextField(max_length=500, blank=True, null=True)
     image = models.ImageField(upload_to=get_code_snippet_image_path, blank=True, null=True)
     language = models.CharField(max_length=50, blank=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
@@ -30,7 +30,7 @@ class CodeSnippet(models.Model):
         db_table = 'code_snippet'
         verbose_name = _('Code Snippet')
         verbose_name_plural = _('Code Snippets')
-        ordering = ('order', '-created_at')
+        ordering = ('-order', '-created_at')
         get_latest_by = "created_at"
 
     def __str__(self):

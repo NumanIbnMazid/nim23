@@ -9,7 +9,12 @@ import readTime from 'reading-time'
 
 export default function Blog({ blog, animate = false }: { blog: BlogType; animate?: boolean }) {
   const blogRef = useRef(null)
-  const readingTime = readTime(blog.content)
+  const hasCode = blog && blog.content.includes('<code>')
+
+  let readingTime = null
+  if (!hasCode) {
+    readingTime = readTime(blog.content)
+  }
 
   return (
     <div>
@@ -71,9 +76,11 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
                   <span className="text-xs">{getFormattedDate(new Date(blog.created_at))}</span>
                 </div>
               </div>
-              <p className="flex items-center justify-between text-xs font-medium text-gray-500 dark:text-dark-3 md:text-sm">
-                <span className="px-2 py-1 text-xs rounded bg-gray-700 text-gray-50">{readingTime.text}</span>
-              </p>
+              {!hasCode && readingTime && (
+                <p className="flex items-center justify-between text-xs font-medium text-gray-500 dark:text-dark-3 md:text-sm">
+                  <span className="px-2 py-1 text-xs rounded bg-gray-700 text-gray-50">{readingTime.text}</span>
+                </p>
+              )}
             </div>
           </div>
         </motion.article>

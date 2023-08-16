@@ -386,7 +386,7 @@ pre[class*="language-"] {
   overflow-x: auto; /* Enable horizontal scrollbar when width overflows */
   overflow-y: auto; /* Hide vertical scrollbar */
   display: block;
-  max-height: 70vh; /* Set the max height to 70% of viewport height */
+  /* max-height: 70vh; /* Set the max height to 70% of viewport height */
 }
 
 /* Customize scrollbar appearance for Webkit-based browsers (Chrome, Safari) */
@@ -416,4 +416,11 @@ pre[class*="language-"]::-webkit-scrollbar-track {
 code[class*="language-"]::-webkit-scrollbar-corner,
 pre[class*="language-"]::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+
+/* Custom CSS */
+@media print {
+  .print-adjusted {
+    white-space: pre-wrap;
+  }
 }

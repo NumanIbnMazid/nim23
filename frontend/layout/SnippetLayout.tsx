@@ -23,7 +23,7 @@ export default function SnippetLayout({
       const style = document.createElement('style');
       style.innerHTML = `
         .text-code code {
-          color: #5292a1
+          color: #78a5b3
         }
       `
       document.head.appendChild(style)
@@ -36,7 +36,7 @@ export default function SnippetLayout({
     // Prism JS
     if (typeof window !== 'undefined') {
       Prism.highlightAll()
-      Prism.plugins.lineNumbers = true
+      // Prism.plugins.lineNumbers = true
     }
   }, [hasCode])
 
@@ -95,7 +95,7 @@ export default function SnippetLayout({
         {/* Content */}
         <AnimatedDiv
           variants={opacityVariant}
-          className="text-orange-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
+          className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
           <div
             dangerouslySetInnerHTML={{ __html: code_snippet.content }}

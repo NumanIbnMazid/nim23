@@ -45,7 +45,7 @@
   - (DONE) Generate normal requirements.txt.
   - (DONE) Fix File Browser in cPanel.
   - (DONE) Make Swagger, Redoc, Filebrowser is authenticated required.
-  - Implement if blog content contains code, then don't show reading time.
+  - (DONE) Implement if blog content contains code, then don't show reading time.
   - Investigate about RSS and Newsletter.
   - (NOT NEEDED) Make frontend server.js Allowed Hosts come from env.
   - (DONE) Auto remove unused files (media) from backend.
@@ -79,9 +79,14 @@
   - (DONE) Add some margin in project detail's page's description.
   - (DONE) Place the project links top of the project details page instead of bottom.
   - (DONE) Bring Technology and Link center in project details page.
-  - Load all videos from youtube instead of 10 and add pagination.
-  - Move Recent Watched Movies to Media page from About.
-  - Donot show Youtube Videos section even not page title if youtube videos are not available.
+  - (NOT NEEDED) Load all videos from youtube instead of 10 and add pagination.
+  - (DONE) Move Recent Watched Movies to Media page from About.
+  - (DONE) Donot show Youtube Videos section even not page title if youtube videos are not available.
+  - (DONE) Remove Maximum height from code section (snippets/blogs).
+  - (DONE) Sort blogs by latest and order.
+  - (DONE) Blog PDF is not respecting the scrollable content.
+  - (DONE) Fix commands color in blog in light mode.
+  - (DONE) Remove Clickable link in code blocks.
 
 ## Bug Fix
 

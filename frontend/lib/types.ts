@@ -286,6 +286,12 @@ export type FormInput = {
   message: string
 }
 
+export type CommentInput = {
+  name: string
+  email: string
+  comment: string
+}
+
 export type SpotifyAccessToken = {
   access_token: string
 }

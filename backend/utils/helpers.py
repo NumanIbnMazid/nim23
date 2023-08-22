@@ -64,12 +64,12 @@ class ResponseWrapper(Response, JSONRenderer):
                     if response_success
                     else "Failed to retrieve the object!"
                 )
-            else:
-                message = (
-                    "SUCCESS!"
-                    if response_success
-                    else "FAILED!"
-                )
+        else:
+            message = (
+                "SUCCESS!"
+                if response_success
+                else "FAILED!"
+            )
 
         output_data = {
             "success": response_success,

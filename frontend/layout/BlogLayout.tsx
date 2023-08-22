@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
 import { FiPrinter } from 'react-icons/fi'
-// import Newsletter from '../components/Newsletter'
 import useWindowLocation from '@hooks/useWindowLocation'
 import ScrollProgressBar from '@components/ScrollProgressBar'
 import { useState, useEffect } from 'react'
@@ -14,6 +13,8 @@ import cn from 'classnames'
 import Prism from '../prismSetup'
 import { motion } from 'framer-motion'
 import readTime from "reading-time"
+import CommentSection from '@components/Comment/CommentSection'
+import CommentList from '@components/Comment/CommentList'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
   const { currentURL } = useWindowLocation()
@@ -26,6 +27,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
   }
 
   function adjustContentForPrint() {
+    // Table of Contents
+    const tocComponent = document.querySelector('.hide-on-print')
+    // Hide the TOC
+    tocComponent!.classList.add('hide-on-print')
+
     const style = document.createElement('style')
     style.textContent = `
     @media print {
@@ -53,6 +59,9 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
 
     // Call the print function
     window.print()
+
+    // Show the TOC
+    tocComponent!.classList.remove('hide-on-print')
 
     // Remove the CSS class and clean up the added style tag
     codeElements.forEach((codeElement) => {
@@ -92,11 +101,13 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
       {/* TOC */}
       {blog.table_of_contents.length > 0 && (
-        <TableOfContents
-          isTOCActive={isTOCActive}
-          setIsTOCActive={setIsTOCActive}
-          tableOfContents={blog.table_of_contents}
-        />
+        <div className="hide-on-print">
+          <TableOfContents
+            isTOCActive={isTOCActive}
+            setIsTOCActive={setIsTOCActive}
+            tableOfContents={blog.table_of_contents}
+          />
+        </div>
       )}
 
       {/* Blog Content */}
@@ -218,9 +229,6 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
           />
         </AnimatedDiv>
 
-        {/* NewsLetter */}
-        {/* <Newsletter /> */}
-
         {/* Social Media */}
         <div className="flex flex-col items-center w-full gap-4 my-10 print:hidden">
           <h3 style={{ margin: '0' }} className="text-xl font-semibold dark:text-white">
@@ -237,6 +245,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
               <FiPrinter className="w-4 h-4" onClick={() => adjustContentForPrint()} />
             </div>
           </ShareOnSocialMedia>
+        </div>
+
+        <div className="hide-on-print">
+          <CommentSection />
+          <CommentList />
         </div>
       </section>
     </section>

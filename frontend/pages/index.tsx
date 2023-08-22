@@ -1,7 +1,6 @@
 // Page Components START
 import Image from 'next/image'
 import Metadata from '@components/MetaData'
-import Contact from '@components/Contact'
 import { FadeContainer, headingFromLeft, opacityVariant, popUp } from '@content/FramerMotionVariants'
 import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
 import { homeProfileImage } from '@utils/utils'
@@ -26,6 +25,10 @@ const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSecti
 })
 
 const BlogsSection = dynamic(() => import('@components/Home/BlogsSection'), {
+  loading: () => <Loader />,
+})
+
+const Contact = dynamic(() => import('@components/Contact'), {
   loading: () => <Loader />,
 })
 

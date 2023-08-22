@@ -4,6 +4,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
+from django.utils import timezone
 from utils.snippets import autoslugFromField, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
 from utils.image_upload_helpers import (
     get_blog_image_path,
@@ -11,6 +12,7 @@ from utils.image_upload_helpers import (
 import math
 from bs4 import BeautifulSoup
 import re
+from datetime import timedelta
 
 
 """ *************** Blog Category *************** """
@@ -209,3 +211,33 @@ class BlogComment(models.Model):
 
     def __str__(self):
         return f"{self.name} :- {self.blog.title}"
+
+    def get_timestamp(self):
+        now = timezone.now()
+        time_difference = now - self.created_at
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            seconds_ago = int(time_difference.total_seconds())
+            return f"{seconds_ago} second{'s' if seconds_ago > 1 else ''} ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes_ago = int(time_difference.total_seconds() // 60)
+            return f"{minutes_ago} minute{'s' if minutes_ago > 1 else ''} ago"
+        elif time_difference < timedelta(days=1):  # Less than a day
+            hours_ago = time_difference.seconds // 3600
+            return f"{hours_ago} hour{'s' if hours_ago > 1 else ''} ago"
+        elif time_difference < timedelta(days=30):
+            days_ago = time_difference.days
+            return f"{days_ago} days ago"
+        elif time_difference < timedelta(days=365):
+            months_ago = time_difference.days // 30
+            return f"{months_ago} months ago"
+        else:
+            years_ago = time_difference.days // 365
+            months_remaining = (time_difference.days % 365) // 30
+            days_remaining = (time_difference.days % 365) % 30
+            if months_remaining == 0:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} ago"
+            elif days_remaining == 0:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} month{'s' if months_remaining > 1 else ''} ago"
+            else:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} month{'s' if months_remaining > 1 else ''} and {days_remaining} day{'s' if days_remaining > 1 else ''} ago"

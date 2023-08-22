@@ -423,4 +423,7 @@ pre[class*="language-"]::-webkit-scrollbar-corner {
   .print-adjusted {
     white-space: pre-wrap;
   }
+  .hide-on-print {
+    display: none;
+  }
 }

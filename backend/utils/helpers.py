@@ -39,7 +39,7 @@ class ResponseWrapper(Response, JSONRenderer):
             response_success = False
 
         # manipulate dynamic message
-        if message is not None and not message == "" and message in ["list", "create", "update", "partial_update", "destroy", "retrieve"]:
+        if message is not None and not message == "":
             if message.lower() == "list":
                 message = (
                     "List retrieved successfully!"
@@ -64,6 +64,8 @@ class ResponseWrapper(Response, JSONRenderer):
                     if response_success
                     else "Failed to retrieve the object!"
                 )
+            else:
+                message = message
         else:
             message = (
                 "SUCCESS!"

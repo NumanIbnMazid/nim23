@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BlogCardAnimation } from '@content/FramerMotionVariants'
 import readTime from 'reading-time'
+import { AiFillEye, AiFillLike } from 'react-icons/ai'
 
 export default function Blog({ blog, animate = false }: { blog: BlogType; animate?: boolean }) {
   const blogRef = useRef(null)
@@ -82,6 +83,18 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
                   <span className="px-2 py-1 text-xs rounded bg-gray-700 text-gray-50">{readingTime.text}</span>
                 </p>
               )}
+            </div>
+
+            {/* Total Views and Likes */}
+            <div className="flex flex-wrap items-center gap-4 w-fit pt-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <AiFillEye className="w-4 h-4" />
+                <span className="text-sm text-gray-500">{blog.total_views}</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <AiFillLike className="w-4 h-4" />
+                <span className="text-sm text-gray-500">{blog.total_likes}</span>
+              </div>
             </div>
           </div>
         </motion.article>

@@ -63,6 +63,8 @@ class Blog(models.Model):
         db_table = 'blog'
         verbose_name = _('Blog')
         verbose_name_plural = _('Blogs')
+        # NOTE: Ordering explicitly defined in `get_queryset` method of `BlogViewset` class
+        # This won't have any effect
         ordering = ('-order', '-created_at')
         get_latest_by = "created_at"
 
@@ -170,7 +172,7 @@ def add_unique_ids_to_content_headings(sender, instance, **kwargs):
 
 @autoSlugFromUUID()
 class BlogViewIP(models.Model):
-    ip_address = models.CharField(max_length=255, unique=True)
+    ip_address = models.CharField(max_length=255)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='view_ips')
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     first_visited_at = models.DateTimeField(auto_now_add=True)
@@ -183,6 +185,7 @@ class BlogViewIP(models.Model):
         verbose_name_plural = _('Blog View IPs')
         ordering = ('-last_visited_at',)
         get_latest_by = "created_at"
+        unique_together = [["ip_address", "blog"]]
 
     def __str__(self):
         return self.ip_address

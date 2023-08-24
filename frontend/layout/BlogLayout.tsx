@@ -7,19 +7,44 @@ import { useState, useEffect } from 'react'
 import { opacityVariant, popUp } from '@content/FramerMotionVariants'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { getFormattedDate } from '@utils/date'
-import { BlogType, ProfileType } from '@lib/types'
+import { BlogType, ProfileType, LikeStatusType, BlogViewsType } from '@lib/types'
 import TableOfContents from '@components/TableOfContents'
 import cn from 'classnames'
 import Prism from '../prismSetup'
 import { motion } from 'framer-motion'
-import readTime from "reading-time"
+import readTime from 'reading-time'
 import CommentSection from '@components/Comment/CommentSection'
 import CommentList from '@components/Comment/CommentList'
+import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
+import useWindowSize from '@hooks/useWindowSize'
+import { addBlogLike, addBlogViews } from '@lib/backendAPI'
 
-export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, profileInfo: ProfileType}) {
+export default function BlogLayout({
+  blog,
+  profileInfo
+}: {
+  blog: BlogType
+  profileInfo: ProfileType
+}) {
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
+  const size = useWindowSize()
+  const [blogInfoFull, setBlogInfoFull] = useState(false)
+  const [_likeStatus, setLikeStatus] = useState<LikeStatusType>()
+  const [fakeTotalLikes, setFakeTotalLikes] = useState<number>(blog.total_likes)
+  const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(blog.user_liked)
+  const [totalViews, setTotalViews] = useState<number>(blog.total_views)
+
+  const addLike = async (slug: string) => {
+    const likeStatusData: LikeStatusType = await addBlogLike(slug)
+    setLikeStatus(likeStatusData)
+  }
+
+  const fetchTotalViews = async (slug: string) => {
+    const totalViewsData: BlogViewsType = await addBlogViews(slug)
+    setTotalViews(totalViewsData.total_views)
+  }
 
   let readingTime = null
   if (!hasCode) {
@@ -95,7 +120,18 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
       Prism.highlightAll()
       // Prism.plugins.lineNumbers = true
     }
-  }, [hasCode])
+    if (size.width > 1600) {
+      setBlogInfoFull(true)
+    } else {
+      setBlogInfoFull(false)
+    }
+  }, [size, hasCode])
+
+  useEffect(() => {
+    if (blog.slug) {
+      fetchTotalViews(blog.slug)
+    }
+  }, [])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
@@ -138,58 +174,72 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
 
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
-            {blog.author === 'Numan Ibn Mazid' && profileInfo.image !== null && (
-              <motion.div
-                variants={popUp}
-                className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-30 xs:h-30 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
-              >
-                <Image
-                  src={profileInfo.image}
-                  className="rounded-full shadow filter"
-                  width={933}
-                  height={933}
-                  alt="cover Profile Image"
-                  quality={100}
-                />
-              </motion.div>
-            )}
-            <div className="mt-2">
-              <span className="text-base text-gray-500">Author: </span>
-              <span className="font-bold text-base text-gray-600 dark:text-gray-400">{blog.author}</span>
-            </div>
-
-            <div className="mt-2 text-base text-gray-500">
-              <span>Created at: </span>
-              <span className="font-bold">{getFormattedDate(new Date(blog.created_at))}</span>
-            </div>
-
-            {getFormattedDate(new Date(blog.created_at)) !== getFormattedDate(new Date(blog.updated_at)) && (
-              <div className="text-base text-gray-500 mb-2">
-                <span>Last Update: </span>
-                <span className="font-bold">{getFormattedDate(new Date(blog.updated_at))}</span>
+            <div className={`${blogInfoFull ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px]' : ''}`}>
+              {blog.author === 'Numan Ibn Mazid' && profileInfo.image !== null && (
+                <motion.div
+                  variants={popUp}
+                  className="relative flex items-center justify-center p-3 rounded-full overflow-hidden w-44 h-44 xs:w-30 xs:h-30 before:absolute before:inset-0 before:border-t-4 before:border-b-4 before:border-black before:dark:border-white before:rounded-full before:animate-photo-spin"
+                >
+                  <Image
+                    src={profileInfo.image}
+                    className="rounded-full shadow filter"
+                    width={933}
+                    height={933}
+                    alt="cover Profile Image"
+                    quality={100}
+                  />
+                </motion.div>
+              )}
+              <div className="mt-2">
+                <span className="text-base text-gray-500">Author: </span>
+                <span className="font-bold text-base text-gray-600 dark:text-gray-400">{blog.author}</span>
               </div>
-            )}
 
-            {blog.category && (
-              <div className="text-base text-gray-500 mb-2">
-                <span>Category: </span>
-                <span className="font-bold">{blog.category.name}</span>
+              <div className="mt-2 text-base text-gray-500">
+                <span>Created at: </span>
+                <span className="font-bold">{getFormattedDate(new Date(blog.created_at))}</span>
               </div>
-            )}
 
-            {!hasCode && readingTime && (
-              <div>
-                <div className="text-base text-gray-500">
-                  <span>Reading Time: </span>
-                  <span className="font-bold">{readingTime.text}</span>
+              {getFormattedDate(new Date(blog.created_at)) !== getFormattedDate(new Date(blog.updated_at)) && (
+                <div className="text-base text-gray-500 mb-2">
+                  <span>Last Update: </span>
+                  <span className="font-bold">{getFormattedDate(new Date(blog.updated_at))}</span>
                 </div>
+              )}
 
-                <div className="text-base text-gray-500 mb-3">
-                  <span>Total Words: </span>
-                  <span className="font-bold">{readingTime.words}</span>
+              {blog.category && (
+                <div className="text-base text-gray-500 mb-2">
+                  <span>Category: </span>
+                  <span className="font-bold">{blog.category.name}</span>
+                </div>
+              )}
+
+              {!hasCode && readingTime && (
+                <div>
+                  <div className="text-base text-gray-500">
+                    <span>Reading Time: </span>
+                    <span className="font-bold">{readingTime.text}</span>
+                  </div>
+
+                  <div className="text-base text-gray-500 mb-3">
+                    <span>Total Words: </span>
+                    <span className="font-bold">{readingTime.words}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Total Views and Likes */}
+              <div className="flex flex-wrap items-center gap-4 w-fit">
+                <div className='flex flex-wrap items-center gap-2'>
+                  <AiFillEye className="w-4 h-4" />
+                  <span className="text-base text-gray-500">{totalViews}</span>
+                </div>
+                <div className='flex flex-wrap items-center gap-2'>
+                  <AiFillLike className="w-4 h-4" />
+                  <span className="text-base text-gray-500">{fakeTotalLikes}</span>
                 </div>
               </div>
-            )}
+            </div>
 
             {blog.overview && (
               <div className="text-lg my-4" dangerouslySetInnerHTML={{ __html: blog.overview || '' }}></div>
@@ -228,6 +278,34 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType, prof
             className={cn('my-4', { 'text-code': hasCode, 'line-numbers': hasCode })}
           />
         </AnimatedDiv>
+
+        {/* Like Button */}
+        <div>
+          <div className="flex items-center w-full mt-10 mb-5">
+            <div className="cursor-pointer">
+              {fakeLikeStatus === true ? (
+                <AiFillLike
+                  className="w-10 h-10"
+                  onClick={() => {
+                    addLike(blog.slug)
+                    setFakeTotalLikes(fakeTotalLikes - 1)
+                    setFakeLikeStatus(false)
+                  }}
+                />
+              ) : fakeLikeStatus === false ? (
+                <AiOutlineLike
+                  className="w-10 h-10"
+                  onClick={() => {
+                    addLike(blog.slug)
+                    setFakeTotalLikes(fakeTotalLikes + 1)
+                    setFakeLikeStatus(true)
+                  }}
+                />
+              ) : null}
+            </div>
+            <div className="mx-2 font-bold">{fakeTotalLikes}</div>
+          </div>
+        </div>
 
         {/* Social Media */}
         <div className="flex flex-col items-center w-full gap-4 my-10 print:hidden">

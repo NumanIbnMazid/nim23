@@ -5,7 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.db.models import Count, Sum, Case, When, IntegerField
 from utils.helpers import custom_response_wrapper, ResponseWrapper, handle_invalid_serializer
+from utils.snippets import get_client_ip
 from blogs.models import Blog, BlogComment, BlogViewIP
 from blogs.api.serializers import BlogSerializer, BlogCommentSerializer, BlogViewIPSerializer
 from drf_yasg import openapi
@@ -19,8 +21,29 @@ class BlogViewset(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     serializer_class = BlogSerializer
     lookup_field = 'slug'
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.annotate(
+            view_ips_count=Count('view_ips'),
+            view_ips_likes_sum=Sum(
+                Case(
+                    When(view_ips__liked=True, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        )
+
+        # NOTE: When use the `annotate` method to add extra fields to queryset,
+        # it might override the existing ordering specified in the model's `Meta` class.
+        # So explicitly Chain the `order_by` method to maintain ordering
+        queryset = queryset.order_by('-order', '-created_at')
+
         limit = self.request.query_params.get('_limit')
 
         if limit:
@@ -87,15 +110,24 @@ class BlogViewIPViewset(GenericViewSet, CreateModelMixin):
     def create(self, request, *args, **kwargs):
         slug = request.query_params.get('slug')
         blog = get_object_or_404(Blog, slug=slug)
+        ip_address = get_client_ip(request)
 
-        ip_address = request.data.get('ip_address')
-        existing_record = BlogViewIP.objects.filter(blog=blog, ip_address=ip_address).first()
-
-        if existing_record:
+        existing_record_qs = BlogViewIP.objects.filter(blog=blog, ip_address__iexact=ip_address)
+        if existing_record_qs.exists():
+            existing_record = existing_record_qs.first()
             existing_record.last_visited_at = timezone.now()
             existing_record.save()
+
+            total_qs = BlogViewIP.objects.filter(blog__slug=slug)
+
             return ResponseWrapper(
-                data={"Last Visited at": existing_record.last_visited_at}, message="Existing record updated", status=200
+                data={
+                    "total_views": total_qs.count(),
+                    "total_likes": total_qs.filter(liked=True).count(),
+                    "liked": existing_record.liked,
+                    "last_visit": existing_record.last_visited_at.strftime("%Y-%m-%d %H:%M:%S")
+                },
+                message="Existing record updated!", status=200
             )
 
         serializer = self.get_serializer(data=request.data)
@@ -103,12 +135,28 @@ class BlogViewIPViewset(GenericViewSet, CreateModelMixin):
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:
-            return handle_invalid_serializer(e, message="Failed to place comment! Please try again letter.")
+            return handle_invalid_serializer(e, message="Failed to add ip.")
 
-        # Add the blog to the validated data
+        # Add the blog and ip address to the validated data
         serializer.validated_data['blog'] = blog
-        self.perform_create(serializer)
-        return ResponseWrapper(data=serializer.data, status=200, message="New record created")
+        serializer.validated_data['ip_address'] = ip_address
+
+        try:
+            self.perform_create(serializer)
+        except Exception as e:
+            return ResponseWrapper(data=serializer.data, message="Failed to add ip.", error_message=str(e), status=400)
+
+        total_qs = BlogViewIP.objects.filter(blog__slug=slug)
+
+        return ResponseWrapper(
+            data={
+                "total_views": total_qs.count(),
+                "total_likes": total_qs.filter(liked=True).count(),
+                "liked": False,
+                "last_visit": timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+            },
+            message="New record created!", status=200
+        )
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -128,7 +176,7 @@ class BlogViewIPViewset(GenericViewSet, CreateModelMixin):
     )
     @action(detail=False, methods=['post'])
     def like(self, request):
-        ip_address = request.data.get('ip_address')
+        ip_address = get_client_ip(request)
         slug = request.query_params.get('slug')
         blog_view = get_object_or_404(BlogViewIP, ip_address=ip_address, blog__slug=slug)
         blog_view.liked = not blog_view.liked  # Toggle the liked field

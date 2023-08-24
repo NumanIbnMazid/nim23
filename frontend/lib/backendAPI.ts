@@ -388,3 +388,55 @@ export const subscribeToNewsletter = async (email: string) => {
   const responseData = await response.json()
   return responseData
 }
+
+
+// *** BLOG-VIEWS ***
+
+// Blogs URL
+const BLOG_VIEWS_PATH = "blog-views/"
+const BLOG_VIEWS_ENDPOINT = BACKEND_API_BASE_URL + BLOG_VIEWS_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} slug - The slug of the blog.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addBlogViews = async (slug: string) => {
+  const response = await fetch(BLOG_VIEWS_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: null,
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}
+
+
+// *** BLOG-LIKE ***
+
+// Blogs URL
+const BLOG_LIKE_PATH = "blog-views/like/"
+const BLOG_LIKE_ENDPOINT = BACKEND_API_BASE_URL + BLOG_LIKE_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} slug - The slug of the blog.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addBlogLike = async (slug: string) => {
+  const response = await fetch(BLOG_LIKE_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: null,
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}

@@ -241,6 +241,9 @@ export type BlogType = {
   status: string
   order: number
   table_of_contents: TableOfContents[]
+  total_views: number
+  total_likes: number
+  user_liked: boolean
   created_at: string
   updated_at: string
 }
@@ -367,4 +370,15 @@ export type YoutubeVideoType = {
     totalResults: number
     resultsPerPage: number
   }
+}
+
+
+export type BlogViewsType = {
+  total_views: number
+  total_likes: number
+  liked: boolean
+}
+
+export type LikeStatusType = {
+  liked : boolean
 }

@@ -1,6 +1,6 @@
 import PageNotFound from "pages/404"
-import { ProfileType, BlogType } from "@lib/types"
-import { getBlogDetails, getProfileInfo } from "@lib/backendAPI"
+import { ProfileType, BlogType } from '@lib/types'
+import { getBlogDetails, getProfileInfo } from '@lib/backendAPI'
 import { useEffect, useState } from 'react'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
@@ -32,7 +32,6 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
       setBlog(blogData)
     } catch (error) {
       // Handle error case
-      console.error(error)
     }
   }
 
@@ -65,7 +64,9 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
         keywords={blog.tags || pageMeta.blogs.keywords}
       />
 
-      {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : null}
+      {blog && profileInfo ? (
+        <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout>
+      ) : null}
     </>
   )
 }

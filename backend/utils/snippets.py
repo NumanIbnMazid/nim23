@@ -360,3 +360,16 @@ def file_as_base64(file_path):
         encoded_string = base64.b64encode(file.read()).decode("utf-8")
 
     return f"data:application/{extension};base64,{encoded_string}"
+
+
+def get_client_ip(request):
+    """
+    Get the client's IP address from the request.
+    """
+    # Get the client's IP address from the X-Forwarded-For header
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip_address = x_forwarded_for.split(',')[0]
+    else:
+        ip_address = request.META.get('REMOTE_ADDR')
+    return ip_address

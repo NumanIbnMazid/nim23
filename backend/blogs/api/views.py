@@ -92,7 +92,10 @@ class BlogCommentViewset(GenericViewSet, CreateModelMixin, ListModelMixin):
         # Add the blog to the validated data
         serializer.validated_data['blog'] = blog
 
-        self.perform_create(serializer)
+        try:
+            self.perform_create(serializer)
+        except Exception as e:
+            return ResponseWrapper(data=serializer.data, message="Failed to add comment!", error_message=str(e), status=400)
 
         return Response(data=serializer.data, status=200)
 

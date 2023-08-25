@@ -339,7 +339,7 @@ export const getAllBlogs = async (length?: number | undefined) => {
     const responseData = await allBlogs.json()
     return responseData.data
   } else {
-    const errorMessage = `Error fetching Code Blogs: ${allBlogs.status} ${allBlogs.statusText}`
+    const errorMessage = `Error fetching Blogs: ${allBlogs.status} ${allBlogs.statusText}`
     console.log(errorMessage)
   }
 }
@@ -386,7 +386,7 @@ export const subscribeToNewsletter = async (email: string) => {
   })
 
   const responseData = await response.json()
-  return responseData
+  return responseData.data
 }
 
 
@@ -439,4 +439,62 @@ export const addBlogLike = async (slug: string) => {
 
   const responseData = await response.json()
   return responseData.data
+}
+
+
+// *** BLOG-COMMENT ***
+
+// Blogs URL
+const BLOG_COMMENT_PATH = "blog-comments/"
+const BLOG_COMMENT_ENDPOINT = BACKEND_API_BASE_URL + BLOG_COMMENT_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} name - Name of user.
+ * @param {string} email - Email address of user.
+ * @param {string} comment - Content of the comment.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addBlogComment = async (name: string, email: string, comment: string, slug: string) => {
+  const response = await fetch(BLOG_COMMENT_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: JSON.stringify({ name, email, comment }),
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}
+
+
+// *** BLOG-COMMENT-LIST ***
+
+// Blog Comments URL
+const BLOG_COMMENT_LIST_PATH = "blog-comments/"
+const BLOG_COMMENT_LIST_ENDPOINT = BACKEND_API_BASE_URL + BLOG_COMMENT_LIST_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Blog Comments Data.
+ */
+export const getAllBlogComments = async (slug: string) => {
+  const allBlogComments = await fetch(
+    BLOG_COMMENT_LIST_ENDPOINT + `?slug=${slug}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allBlogComments.ok) {
+    const responseData = await allBlogComments.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Blog Comments: ${allBlogComments.status} ${allBlogComments.statusText}`
+    console.log(errorMessage)
+  }
 }

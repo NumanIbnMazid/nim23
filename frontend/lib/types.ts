@@ -382,3 +382,11 @@ export type BlogViewsType = {
 export type LikeStatusType = {
   liked : boolean
 }
+
+
+export type BlogCommentType = {
+  name: string
+  email: string
+  comment: string
+  timestamp: string
+}

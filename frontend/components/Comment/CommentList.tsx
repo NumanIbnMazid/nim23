@@ -1,26 +1,47 @@
 import React from 'react'
+import { getAllBlogComments } from '@lib/backendAPI'
+import { BlogCommentType } from '@lib/types'
+import { useEffect, useState } from 'react'
+import Loader from '@components/Loader'
+import NoData from '@components/NoData'
 
-const CommentList = () => {
-  const comments = [
-    {
-      id: 1,
-      user: 'Jane Doe',
-      content: 'Great article! I found the insights about the topic really helpful.',
-      timestamp: '2 hours ago',
-    },
-    {
-      id: 2,
-      user: 'John Smith',
-      content: 'I have a different perspective on this. I think...',
-      timestamp: '1 day ago',
-    },
-    // Add more comments as needed
-  ]
+const CommentList = ({ slug }: { slug: string }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [comments, setComments] = useState<BlogCommentType[]>([])
+
+  const fetchBlogCommentList = async (slug: any) => {
+    try {
+      const blogCommentData: BlogCommentType[] = await getAllBlogComments(slug)
+      setComments(blogCommentData)
+    } catch (error) {
+      // Handle error case
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([fetchBlogCommentList(slug)])
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [slug])
+
+  // ******* Loader *******
+  if (isLoading === true) {
+    return <Loader />
+  }
+  // ******* Loader *******
+
+  // ******* No Data *******
+  if (comments.length < 1) {
+    return <NoData allowSpacing={false} message='No comments available!' />
+  }
+  // ******* No Data *******
 
   return (
-    <div className="space-y-4 py-10">
-      {comments.map((comment) => (
-        <div key={comment.id} className="flex space-x-4">
+    <div className="space-y-4 py-10 px-5">
+      {comments.map((comment: BlogCommentType, index: number) => (
+        <div key={index} className="flex space-x-4">
           <div className="w-10 h-10">
             <svg
               width="24"
@@ -37,9 +58,9 @@ const CommentList = () => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold">{comment.user}</span>
-            <p className="text-sm text-gray-800 dark:text-gray-400">{comment.content}</p>
-            <span className="text-xs text-gray-500">{comment.timestamp}</span>
+            <span className="font-semibold">{comment.name}</span>
+            <p className="text-base font-normal text-gray-800 dark:text-gray-400">{comment.comment}</p>
+            <span className="text-sm text-gray-500">{comment.timestamp}</span>
           </div>
         </div>
       ))}

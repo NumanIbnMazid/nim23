@@ -1,6 +1,6 @@
 import { HomeHeading } from '../pages'
 
-export default function NoData({ topic = undefined, allowSpacing = false }: { topic?: string; allowSpacing?: boolean }) {
+export default function NoData({ topic = undefined, allowSpacing = false, message=undefined }: { topic?: string; allowSpacing?: boolean; message?: string }) {
   return (
     <div
       className={`flex items-center justify-center ${
@@ -9,7 +9,9 @@ export default function NoData({ topic = undefined, allowSpacing = false }: { to
     >
       <div className="flex flex-col items-center">
         {topic && <HomeHeading title={topic} />}
-        <div className="font-bold text-amber-600 mt-7 text-lg">Data not available!</div>
+        <div className="font-bold text-amber-600 mt-7 text-lg">
+          {message ? message : 'No data available!'}
+        </div>
       </div>
     </div>
   )

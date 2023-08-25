@@ -5,9 +5,9 @@ import AnimatedText from '../FramerMotion/AnimatedText'
 import AnimatedHeading from '../FramerMotion/AnimatedHeading'
 import CommentForm from './CommentForm'
 
-export default function Contact() {
+export default function Comment({ slug }: { slug: string }) {
   return (
-    <div id="contact" className="dark:bg-darkPrimary !relative">
+    <div id="comment" className="dark:bg-darkPrimary !relative">
       {/* Get in touch top section */}
       <section className="pt-6 text-center w-full-width dark:bg-darkPrimary dark:text-white">
         <AnimatedHeading variants={popUpFromBottomForText} className="text-4xl font-bold">
@@ -19,19 +19,19 @@ export default function Contact() {
           We value your input and look forward to reading what you have to say. So go ahead, express yourself, and
           let's create an insightful and engaging discussion together!. 🗣️
           <br />
-          <span className='text-sky-600'>[N:B: Your email won't be published]</span>
+          <span className="text-sky-600">[N:B: Your email won't be published or shared]</span>
         </AnimatedText>
       </section>
 
       {/* Wrapper Container */}
       <section className="flex flex-col w-full px-5 mx-auto lg:flex-row dark:bg-darkPrimary dark:text-white lg:pb-10">
-        {/* Left Contact form section */}
+        {/* Left Comment form section */}
         <div className="w-full mx-auto">
           {/* <AnimatedHeading variants={popUpFromBottomForText} className="w-full my-2 text-2xl font-bold text-center">
             Add Comment
           </AnimatedHeading> */}
 
-          <CommentForm />
+          <CommentForm slug={slug} />
         </div>
       </section>
     </div>

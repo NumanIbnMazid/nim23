@@ -7,15 +7,16 @@ import { FadeContainer, mobileNavItemSideways } from '@content/FramerMotionVaria
 import Ripples from 'react-ripples'
 import { useRef } from 'react'
 import { CommentInput } from '@lib/types'
+import { addBlogComment } from '@lib/backendAPI'
 
-export default function Form() {
+export default function CommentForm({ slug }: { slug: string }) {
   const { isDarkMode } = useDarkMode()
   const sendButtonRef = useRef<HTMLButtonElement>(null!)
   const formRef = useRef<HTMLFormElement>(null!)
 
   const FailToastId = 'failed'
 
-  function sendEmail(e: React.SyntheticEvent) {
+  async function addComment(e: React.SyntheticEvent) {
     e.preventDefault()
 
     const target = e.target as typeof e.target & {
@@ -24,14 +25,17 @@ export default function Form() {
       comment: { value: string }
     }
 
+    const BLOG_ENDPOINT = 'https://nim23.com' + '/blogs/' + slug
+
     const commentData = {
       name: target.name.value.trim(),
       email: target.email.value.trim(),
       comment: target.comment.value.trim(),
+      blogURL: BLOG_ENDPOINT,
     }
 
     if (!validateForm(commentData) && !toast.isActive(FailToastId))
-      return toast.error('Looks like you have not filled the form', {
+      return toast.error('Looks like you have not filled the form properly!', {
         toastId: FailToastId,
       })
 
@@ -41,29 +45,32 @@ export default function Form() {
     // Creating a loading toast
     const toastId = toast.loading('Processing ⌛')
 
-    emailjs
-      .send(
-        process.env.EMAIL_JS_SERVICE_ID!,
-        process.env.EMAIL_JS_TEMPLATE_ID!,
-        commentData!,
-        process.env.EMAIL_JS_PUBLIC_KEY
-      )
+    await addBlogComment(commentData.name, commentData.email, commentData.comment, slug)
       .then(() => {
         formRef.current.reset()
         toast.update(toastId, {
-          render: 'Message Sent ✌',
+          render: 'Thanks for your valuable comment! Your comment will be visible after admin approval.',
           type: 'success',
           isLoading: false,
-          autoClose: 3000,
+          autoClose: false,
         })
         sendButtonRef.current.removeAttribute('disabled')
+
+        // Send email to admin
+        emailjs
+          .send(
+            process.env.EMAIL_JS_SERVICE_ID!,
+            process.env.EMAIL_JS_BLOG_COMMENT_TEMPLATE_ID!,
+            commentData!,
+            process.env.EMAIL_JS_PUBLIC_KEY
+          )
       })
       .catch((err) => {
         toast.update(toastId, {
           render: '😢 ' + err.text,
           type: 'error',
           isLoading: false,
-          autoClose: 3000,
+          autoClose: false,
         })
         sendButtonRef.current.removeAttribute('disabled')
       })
@@ -85,7 +92,7 @@ export default function Form() {
         variants={FadeContainer}
         viewport={{ once: true }}
         className="flex flex-col items-center w-full max-w-xl mx-auto dark:text-gray-300"
-        onSubmit={sendEmail}
+        onSubmit={addComment}
       >
         <motion.div variants={mobileNavItemSideways} className="relative z-0 w-full mb-6 group">
           <input
@@ -152,7 +159,7 @@ export default function Form() {
           </Ripples>
         </motion.div>
       </motion.form>
-      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} />
+      <ToastContainer closeButton={true} theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} />
     </>
   )
 }

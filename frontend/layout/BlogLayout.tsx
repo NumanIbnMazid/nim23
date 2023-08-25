@@ -230,11 +230,11 @@ export default function BlogLayout({
 
               {/* Total Views and Likes */}
               <div className="flex flex-wrap items-center gap-4 w-fit">
-                <div className='flex flex-wrap items-center gap-2'>
+                <div className="flex flex-wrap items-center gap-2">
                   <AiFillEye className="w-4 h-4" />
                   <span className="text-base text-gray-500">{totalViews}</span>
                 </div>
-                <div className='flex flex-wrap items-center gap-2'>
+                <div className="flex flex-wrap items-center gap-2">
                   <AiFillLike className="w-4 h-4" />
                   <span className="text-base text-gray-500">{fakeTotalLikes}</span>
                 </div>
@@ -326,8 +326,8 @@ export default function BlogLayout({
         </div>
 
         <div className="hide-on-print">
-          <CommentSection />
-          <CommentList />
+          <CommentSection slug={blog.slug} />
+          <CommentList slug={blog.slug} />
         </div>
       </section>
     </section>

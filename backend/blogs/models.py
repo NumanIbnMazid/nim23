@@ -5,7 +5,9 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
 from django.utils import timezone
-from utils.snippets import autoslugFromField, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
+from utils.snippets import (
+    autoslugFromField, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
+)
 from utils.image_upload_helpers import (
     get_blog_image_path,
 )
@@ -100,7 +102,8 @@ class Blog(models.Model):
             if remaining_minutes == 0:
                 reading_time = f"{hours} hour{'s' if hours > 1 else ''}"
             else:
-                reading_time = f"{hours} hour{'s' if hours > 1 else ''} {remaining_minutes} minute{'s' if remaining_minutes > 1 else ''}"
+                reading_time = f"{hours} hour{'s' if hours > 1 else ''} {remaining_minutes} \
+                minute{'s' if remaining_minutes > 1 else ''}"
 
         return reading_time
 
@@ -126,12 +129,14 @@ class Blog(models.Model):
 
 # Signals
 
+
 @receiver(pre_save, sender=Blog)
-def generate_order(sender, instance, **kwargs):
+def generate_blog_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -241,6 +246,8 @@ class BlogComment(models.Model):
             if months_remaining == 0:
                 return f"{years_ago} year{'s' if years_ago > 1 else ''} ago"
             elif days_remaining == 0:
-                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} month{'s' if months_remaining > 1 else ''} ago"
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} \
+            month{'s' if months_remaining > 1 else ''} ago"
             else:
-                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} month{'s' if months_remaining > 1 else ''} and {days_remaining} day{'s' if days_remaining > 1 else ''} ago"
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} \
+            month{'s' if months_remaining > 1 else ''} and {days_remaining} day{'s' if days_remaining > 1 else ''} ago"

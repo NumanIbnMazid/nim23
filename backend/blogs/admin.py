@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from django import forms
-from blogs.models import BlogCategory,Blog, BlogViewIP, BlogComment
+from blogs.models import BlogCategory, Blog, BlogViewIP, BlogComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
 
@@ -13,6 +12,7 @@ from tinymce.widgets import TinyMCE
 class BlogCategoryAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = BlogCategory
+
 
 admin.site.register(BlogCategory, BlogCategoryAdmin)
 
@@ -38,6 +38,7 @@ class BlogAdmin(admin.ModelAdmin):
     class Meta:
         model = Blog
 
+
 admin.site.register(Blog, BlogAdmin)
 
 
@@ -49,6 +50,7 @@ class BlogViewIPAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = BlogViewIP
 
+
 admin.site.register(BlogViewIP, BlogViewIPAdmin)
 
 
@@ -59,5 +61,6 @@ admin.site.register(BlogViewIP, BlogViewIPAdmin)
 class BlogCommentAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = BlogComment
+
 
 admin.site.register(BlogComment, BlogCommentAdmin)

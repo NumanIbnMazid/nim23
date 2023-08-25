@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 """ *************** Newsletter Subscription *************** """
 
+
 @autoSlugFromUUID()
 class NewsletterSubscription(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)

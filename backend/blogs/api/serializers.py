@@ -38,6 +38,7 @@ class BlogSerializer(serializers.ModelSerializer):
 
 class BlogCommentSerializer(serializers.ModelSerializer):
     timestamp = serializers.SerializerMethodField()
+
     class Meta:
         model = BlogComment
         fields = ("name", "email", "comment", "timestamp")

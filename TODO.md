@@ -38,7 +38,7 @@
   - (DONE) Generate auto token after expiration or make token to expire never.
   - (DONE) Test Rich Text Editor Image or File Upload and keep only Tinymce, remove others.
   - (DONE) Implement Tailwind Documentation Page's Background Color.
-  - Implement Blog Comment, Reply, Like Features.
+  - (DONE) Implement Blog Comment, Reply (NOT NEEDED), Like Features.
   - Add PDF Reader or Modal on Project Details.
   - Implemet Full Text Search.
   - (NOT NEEDED) Configure for MySQL Database.
@@ -54,7 +54,7 @@
   - (DONE) Fix Contact Page's Mail Sending. Mail sending not working in live and change the mail to nim23.official.
   - (DONE) FIx Newsletter subscription message.
   - (DONE) Replace `autoSlugWithFieldAndUUID` to `autoslugFromField` in backend models like blog, project etc.
-  - Fix Order Null Violation. Interests section is working on Server.
+  - (DONE) Fix Order Null Violation. Interests section is working on Server.
   - (DONE) Add Job Location Type in Professional Experience section like: Hybrid, Remote, Onsite.
   - (DONE) Fix Project Details page's Technology background color. Use project index page.
   - (DONE) Fix unnecessary loading time if api fetch finished.
@@ -65,7 +65,7 @@
   - (DONE) Add some padding in Recent watched movies section's heading (Mobile View).
   - (DONE) Rename Code-Snippets to Snippets.
   - Make movies section horizontal scrollbar larger.
-  - Fix skill order violation in server (urgent).
+  - (DONE) Fix skill order violation in server (urgent).
   - (DONE) Provide fixed height width (style) to skill images.
   - (DONE) Use Lazyloading on images: <https://web.dev/codelab-use-lazysizes-to-lazyload-images/>.
   - (DONE) Add Image viewer for Media Pages like Project Details.
@@ -89,6 +89,7 @@
   - (DONE) Remove Clickable link in code blocks.
   - (DONE) Remove or Fix Table of Contents in Blog Print mode.
   - (DONE) Fix timezone (BD).
+  - Add comment like and total view features in Snippets.
 
 ## Bug Fix
 

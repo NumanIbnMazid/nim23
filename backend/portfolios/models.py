@@ -7,9 +7,10 @@ from django.utils.translation import gettext_lazy as _
 from utils.mixins import ModelMediaMixin, DurationMixin
 from utils.snippets import autoslugFromField, autoSlugFromUUID, image_as_base64, get_static_file_path
 from utils.image_upload_helpers import (
-    get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path,
-    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path, get_interest_image_path,
-    get_movie_image_path
+    get_professional_experience_company_image_path, get_skill_image_path,
+    get_education_school_image_path, get_education_media_path,
+    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path,
+    get_interest_image_path, get_movie_image_path
 )
 
 
@@ -109,11 +110,12 @@ class Skill(models.Model):
 # Signals
 
 @receiver(pre_save, sender=Skill)
-def generate_order(sender, instance, **kwargs):
+def generate_skill_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -306,12 +308,14 @@ class ProjectMedia(ModelMediaMixin):
 
 # Signals
 
+
 @receiver(pre_save, sender=Project)
-def generate_order(sender, instance, **kwargs):
+def generate_project_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -364,11 +368,12 @@ class Interest(models.Model):
 # Signals
 
 @receiver(pre_save, sender=Interest)
-def generate_order(sender, instance, **kwargs):
+def generate_interest_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -386,7 +391,6 @@ def generate_order(sender, instance, **kwargs):
                     instance.order = reused_order
             else:
                 instance.order = max_order + 1 if max_order is not None else 1
-
 
 
 """ *************** Movie *************** """

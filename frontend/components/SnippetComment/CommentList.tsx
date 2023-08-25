@@ -1,18 +1,18 @@
 import React from 'react'
-import { getAllBlogComments } from '@lib/backendAPI'
-import { BlogCommentType } from '@lib/types'
+import { getAllSnippetComments } from '@lib/backendAPI'
+import { CommentType } from '@lib/types'
 import { useEffect, useState } from 'react'
 import Loader from '@components/Loader'
 import NoData from '@components/NoData'
 
 const CommentList = ({ slug }: { slug: string }) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [comments, setComments] = useState<BlogCommentType[]>([])
+  const [comments, setComments] = useState<CommentType[]>([])
 
-  const fetchBlogCommentList = async (slug: any) => {
+  const fetchSnippetCommentList = async (slug: any) => {
     try {
-      const blogCommentData: BlogCommentType[] = await getAllBlogComments(slug)
-      setComments(blogCommentData)
+      const snippetCommentData: CommentType[] = await getAllSnippetComments(slug)
+      setComments(snippetCommentData)
     } catch (error) {
       // Handle error case
     }
@@ -20,7 +20,7 @@ const CommentList = ({ slug }: { slug: string }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBlogCommentList(slug)])
+      await Promise.all([fetchSnippetCommentList(slug)])
       setIsLoading(false)
     }
     fetchData()
@@ -40,7 +40,7 @@ const CommentList = ({ slug }: { slug: string }) => {
 
   return (
     <div className="space-y-4 py-10 px-5">
-      {comments.map((comment: BlogCommentType, index: number) => (
+      {comments.map((comment: CommentType, index: number) => (
         <div key={index} className="flex space-x-4">
           <div className="w-10 h-10">
             <svg

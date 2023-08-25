@@ -7,14 +7,14 @@ import { useState, useEffect } from 'react'
 import { opacityVariant, popUp } from '@content/FramerMotionVariants'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { getFormattedDate } from '@utils/date'
-import { BlogType, ProfileType, LikeStatusType, BlogViewsType } from '@lib/types'
+import { BlogType, ProfileType, LikeStatusType, ViewsType } from '@lib/types'
 import TableOfContents from '@components/TableOfContents'
 import cn from 'classnames'
 import Prism from '../prismSetup'
 import { motion } from 'framer-motion'
 import readTime from 'reading-time'
-import CommentSection from '@components/Comment/CommentSection'
-import CommentList from '@components/Comment/CommentList'
+import CommentSection from '@components/BlogComment/CommentSection'
+import CommentList from '@components/BlogComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import useWindowSize from '@hooks/useWindowSize'
 import { addBlogLike, addBlogViews } from '@lib/backendAPI'
@@ -35,6 +35,7 @@ export default function BlogLayout({
   const [fakeTotalLikes, setFakeTotalLikes] = useState<number>(blog.total_likes)
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(blog.user_liked)
   const [totalViews, setTotalViews] = useState<number>(blog.total_views)
+  const BLOG_ENDPOINT = 'https://nim23.com' + '/blogs/' + blog.slug
 
   const addLike = async (slug: string) => {
     const likeStatusData: LikeStatusType = await addBlogLike(slug)
@@ -42,7 +43,7 @@ export default function BlogLayout({
   }
 
   const fetchTotalViews = async (slug: string) => {
-    const totalViewsData: BlogViewsType = await addBlogViews(slug)
+    const totalViewsData: ViewsType = await addBlogViews(slug)
     setTotalViews(totalViewsData.total_views)
   }
 
@@ -326,7 +327,7 @@ export default function BlogLayout({
         </div>
 
         <div className="hide-on-print">
-          <CommentSection slug={blog.slug} />
+          <CommentSection slug={blog.slug} contentURL={BLOG_ENDPOINT} />
           <CommentList slug={blog.slug} />
         </div>
       </section>

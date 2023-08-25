@@ -5,7 +5,7 @@ import AnimatedText from '../FramerMotion/AnimatedText'
 import AnimatedHeading from '../FramerMotion/AnimatedHeading'
 import CommentForm from './CommentForm'
 
-export default function Comment({ slug }: { slug: string }) {
+export default function Comment({ slug, contentURL }: { slug: string; contentURL: string }) {
   return (
     <div id="comment" className="dark:bg-darkPrimary !relative">
       {/* Get in touch top section */}
@@ -31,7 +31,7 @@ export default function Comment({ slug }: { slug: string }) {
             Add Comment
           </AnimatedHeading> */}
 
-          <CommentForm slug={slug} />
+          <CommentForm slug={slug} contentURL={contentURL} />
         </div>
       </section>
     </div>

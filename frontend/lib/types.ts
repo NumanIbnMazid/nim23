@@ -210,6 +210,9 @@ export type CodeSnippetType = {
   tags?: string
   content: string
   order: number
+  total_views: number
+  total_likes: number
+  user_liked: boolean
   created_at: string
   updated_at: string
 }
@@ -373,7 +376,7 @@ export type YoutubeVideoType = {
 }
 
 
-export type BlogViewsType = {
+export type ViewsType = {
   total_views: number
   total_likes: number
   liked: boolean
@@ -384,7 +387,7 @@ export type LikeStatusType = {
 }
 
 
-export type BlogCommentType = {
+export type CommentType = {
   name: string
   email: string
   comment: string

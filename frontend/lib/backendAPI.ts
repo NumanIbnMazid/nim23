@@ -498,3 +498,112 @@ export const getAllBlogComments = async (slug: string) => {
     console.log(errorMessage)
   }
 }
+
+// *** SNIPPET-VIEWS ***
+
+// Snippets URL
+const SNIPPET_VIEWS_PATH = "code-snippet-views/"
+const SNIPPET_VIEWS_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_VIEWS_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} slug - The slug of the snippet.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addSnippetViews = async (slug: string) => {
+  const response = await fetch(SNIPPET_VIEWS_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: null,
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}
+
+
+// *** SNIPPET-LIKE ***
+
+// Snippets URL
+const SNIPPET_LIKE_PATH = "code-snippet-views/like/"
+const SNIPPET_LIKE_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_LIKE_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} slug - The slug of the snippet.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addSnippetLike = async (slug: string) => {
+  const response = await fetch(SNIPPET_LIKE_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: null,
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}
+
+
+// *** SNIPPET-COMMENT ***
+
+// Snippets URL
+const SNIPPET_COMMENT_PATH = "code-snippet-comments/"
+const SNIPPET_COMMENT_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_COMMENT_PATH
+
+/**
+ * Makes a POST request to the BACKEND API.
+ * @param {string} name - Name of user.
+ * @param {string} email - Email address of user.
+ * @param {string} comment - Content of the comment.
+ * @returns {Promise} A promise that resolves to the response data or an error message.
+*/
+export const addSnippetComment = async (name: string, email: string, comment: string, slug: string) => {
+  const response = await fetch(SNIPPET_COMMENT_ENDPOINT + `?slug=${slug}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${BACKEND_API_TOKEN}`,
+    },
+    body: JSON.stringify({ name, email, comment }),
+  })
+
+  const responseData = await response.json()
+  return responseData.data
+}
+
+
+// *** SNIPPET-COMMENT-LIST ***
+
+// Cnippet Comments URL
+const SNIPPET_COMMENT_LIST_PATH = "code-snippet-comments/"
+const SNIPPET_COMMENT_LIST_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_COMMENT_LIST_PATH
+
+/**
+ * Makes a request to the BACKEND API to retrieve all Snippet Comments Data.
+ */
+export const getAllSnippetComments = async (slug: string) => {
+  const allSnippetComments = await fetch(
+    SNIPPET_COMMENT_LIST_ENDPOINT + `?slug=${slug}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${BACKEND_API_TOKEN}`
+      }
+    }
+  )
+
+  if (allSnippetComments.ok) {
+    const responseData = await allSnippetComments.json()
+    return responseData.data
+  } else {
+    const errorMessage = `Error fetching Snippet Comments: ${allSnippetComments.status} ${allSnippetComments.statusText}`
+    console.log(errorMessage)
+  }
+}

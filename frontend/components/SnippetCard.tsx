@@ -1,6 +1,7 @@
 import { CodeSnippetType } from '@lib/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AiFillEye, AiFillLike } from 'react-icons/ai'
 
 export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippetType }) {
   return (
@@ -41,6 +42,18 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
           })}
         </div>
       )}
+
+      {/* Total Views and Likes */}
+      <div className="flex flex-wrap items-center gap-4 w-fit pt-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <AiFillEye className="w-4 h-4" />
+          <span className="text-sm text-gray-500">{code_snippet.total_views}</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <AiFillLike className="w-4 h-4" />
+          <span className="text-sm text-gray-500">{code_snippet.total_likes}</span>
+        </div>
+      </div>
     </Link>
   )
 }

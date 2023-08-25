@@ -89,7 +89,7 @@
   - (DONE) Remove Clickable link in code blocks.
   - (DONE) Remove or Fix Table of Contents in Blog Print mode.
   - (DONE) Fix timezone (BD).
-  - Add comment like and total view features in Snippets.
+  - (DONE) Add comment like and total view features in Snippets.
 
 ## Bug Fix
 

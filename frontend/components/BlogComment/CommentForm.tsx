@@ -9,7 +9,7 @@ import { useRef } from 'react'
 import { CommentInput } from '@lib/types'
 import { addBlogComment } from '@lib/backendAPI'
 
-export default function CommentForm({ slug }: { slug: string }) {
+export default function CommentForm({ slug, contentURL }: { slug: string; contentURL: string }) {
   const { isDarkMode } = useDarkMode()
   const sendButtonRef = useRef<HTMLButtonElement>(null!)
   const formRef = useRef<HTMLFormElement>(null!)
@@ -25,13 +25,11 @@ export default function CommentForm({ slug }: { slug: string }) {
       comment: { value: string }
     }
 
-    const BLOG_ENDPOINT = 'https://nim23.com' + '/blogs/' + slug
-
     const commentData = {
       name: target.name.value.trim(),
       email: target.email.value.trim(),
       comment: target.comment.value.trim(),
-      blogURL: BLOG_ENDPOINT,
+      contentURL: contentURL,
     }
 
     if (!validateForm(commentData) && !toast.isActive(FailToastId))
@@ -57,13 +55,12 @@ export default function CommentForm({ slug }: { slug: string }) {
         sendButtonRef.current.removeAttribute('disabled')
 
         // Send email to admin
-        emailjs
-          .send(
-            process.env.EMAIL_JS_SERVICE_ID!,
-            process.env.EMAIL_JS_BLOG_COMMENT_TEMPLATE_ID!,
-            commentData!,
-            process.env.EMAIL_JS_PUBLIC_KEY
-          )
+        emailjs.send(
+          process.env.EMAIL_JS_SERVICE_ID!,
+          process.env.EMAIL_JS_COMMENT_TEMPLATE_ID!,
+          commentData!,
+          process.env.EMAIL_JS_PUBLIC_KEY
+        )
       })
       .catch((err) => {
         toast.update(toastId, {

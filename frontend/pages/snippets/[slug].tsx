@@ -7,6 +7,7 @@ import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
 
 const SnippetLayout = dynamic(() => import('@layout/SnippetLayout'), {
   loading: () => <Loader />,
@@ -23,10 +24,12 @@ export default function SnippetPage({
 
   const [isLoading, setIsLoading] = useState(true)
   const [code_snippet, setCodeSnippet] = useState<CodeSnippetType>()
+  const { clientID } = useClientID()
 
   const fetchCodeSnippetDetail = async (slug: any) => {
     try {
-      const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails(slug)
+      if (!clientID) return
+      const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails(clientID, slug)
       setCodeSnippet(codeSnippetData)
     } catch (error) {
       // Handle error case

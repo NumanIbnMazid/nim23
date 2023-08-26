@@ -90,6 +90,7 @@
   - (DONE) Remove or Fix Table of Contents in Blog Print mode.
   - (DONE) Fix timezone (BD).
   - (DONE) Add comment like and total view features in Snippets.
+  - (DONE) Fix Like Bug.
 
 ## Bug Fix
 

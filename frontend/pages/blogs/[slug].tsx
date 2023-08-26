@@ -7,6 +7,7 @@ import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
 
 const BlogLayout = dynamic(() => import('@layout/BlogLayout'), {
   loading: () => <Loader />,
@@ -16,6 +17,7 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
   if (error) return <PageNotFound />
 
   const [isLoading, setIsLoading] = useState(true)
+  const { clientID } = useClientID()
 
   const [blog, setBlog] = useState<BlogType>()
 
@@ -28,7 +30,8 @@ export default function BlogDetails({ error, slug }: { error: boolean, slug: str
 
   const fetchBlogDetail = async (slug: any) => {
     try {
-      const blogData: BlogType = await getBlogDetails(slug)
+      if (!clientID) return
+      const blogData: BlogType = await getBlogDetails(clientID, slug)
       setBlog(blogData)
     } catch (error) {
       // Handle error case

@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 import { DarkModeProvider } from "@context/darkModeContext"
-import { ClientIDProvider } from '@context/ClientIdContext'
+import { ClientIDProvider } from '@context/clientIdContext'
 import { GoogleAnalytics } from "nextjs-google-analytics"
 import { AppProps } from "next/app"
 

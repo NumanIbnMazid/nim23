@@ -16,6 +16,7 @@ import { getAllBlogs } from "@lib/backendAPI"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
 
 const Blog = dynamic(() => import('@components/Blog'), {
   loading: () => <Loader />,
@@ -23,10 +24,13 @@ const Blog = dynamic(() => import('@components/Blog'), {
 
 export default function Blogs() {
   const [isLoading, setIsLoading] = useState(true)
+  const { clientID } = useClientID()
 
   const [blogs, setBlogs] = useState([])
+
   const fetchBlogs = async () => {
-    const blogsData = await getAllBlogs()
+    if (!clientID) return
+    const blogsData = await getAllBlogs(clientID)
     setBlogs(blogsData)
   }
 

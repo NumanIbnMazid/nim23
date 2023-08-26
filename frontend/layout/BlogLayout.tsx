@@ -18,6 +18,7 @@ import CommentList from '@components/BlogComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import useWindowSize from '@hooks/useWindowSize'
 import { addBlogLike, addBlogViews } from '@lib/backendAPI'
+import { useClientID } from '@context/clientIdContext'
 
 export default function BlogLayout({
   blog,
@@ -36,14 +37,17 @@ export default function BlogLayout({
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(blog.user_liked)
   const [totalViews, setTotalViews] = useState<number>(blog.total_views)
   const BLOG_ENDPOINT = 'https://nim23.com' + '/blogs/' + blog.slug
-  const clientID = localStorage.getItem('clientID') || ''
+
+  const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
+    if (!clientID) return
     const likeStatusData: LikeStatusType = await addBlogLike(clientID, slug)
     setLikeStatus(likeStatusData)
   }
 
   const fetchTotalViews = async (slug: string) => {
+    if (!clientID) return
     const totalViewsData: ViewsType = await addBlogViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }

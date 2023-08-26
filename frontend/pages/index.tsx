@@ -19,6 +19,7 @@ import { BsGithub, BsLinkedin } from 'react-icons/bs'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
 
 const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
   loading: () => <Loader />,
@@ -41,6 +42,8 @@ export default function Home() {
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [blogs, setBlogs] = useState([])
 
+  const { clientID } = useClientID()
+
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences(1)
     setExperiences(experiencesData)
@@ -48,7 +51,8 @@ export default function Home() {
   }
 
   const fetchBlogs = async () => {
-    const blogsData = await getAllBlogs(2)
+    if (!clientID) return
+    const blogsData = await getAllBlogs(clientID, 2)
     setBlogs(blogsData)
     setBlogsLoading(false)
   }

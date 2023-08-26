@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from blogs.models import Blog, BlogCategory, BlogComment, BlogView
-from utils.snippets import get_client_ip
 
 
 class BlogCategorySerializer(serializers.ModelSerializer):
@@ -29,10 +28,11 @@ class BlogSerializer(serializers.ModelSerializer):
         return obj.get_table_of_contents()
 
     def get_user_liked(self, obj):
-        user_ip = get_client_ip(self.context['request'])
-        blog_view = obj.views.filter(clientID=user_ip).first()
-        if blog_view:
-            return blog_view.liked
+        clientID = self.context['request'].headers.get('ClientID', None)
+        if clientID:
+            blog_view = obj.views.filter(clientID__iexact=clientID).first()
+            if blog_view:
+                return blog_view.liked
         return False
 
 

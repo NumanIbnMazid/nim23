@@ -2,7 +2,6 @@
 const BACKEND_API_BASE_URL = process.env.BACKEND_API_BASE_URL
 const BACKEND_API_TOKEN = process.env.BACKEND_API_TOKEN
 
-
 // *** PROFILE ***
 // Profile URL
 const PROFILE_PATH = "users/get_portfolio_user/"
@@ -269,12 +268,13 @@ const CODE_SNIPPETS_ENDPOINT = BACKEND_API_BASE_URL + CODE_SNIPPETS_PATH
 /**
  * Makes a request to the BACKEND API to retrieve all Code Snippets Data.
  */
-export const getAllCodeSnippets = async () => {
+export const getAllCodeSnippets = async (clientID: string) => {
   const allCodeSnippets = await fetch(
     CODE_SNIPPETS_ENDPOINT,
     {
       headers: {
-        Authorization: `Token ${BACKEND_API_TOKEN}`
+        Authorization: `Token ${BACKEND_API_TOKEN}`,
+        ClientID: clientID
       }
     }
   )
@@ -288,12 +288,13 @@ export const getAllCodeSnippets = async () => {
   }
 }
 
-export const getCodeSnippetDetails = async (slug: string) => {
+export const getCodeSnippetDetails = async (clientID: string, slug: string) => {
   const codeSnippetDetails = await fetch(
     CODE_SNIPPETS_ENDPOINT + slug,
     {
       headers: {
-        Authorization: `Token ${BACKEND_API_TOKEN}`
+        Authorization: `Token ${BACKEND_API_TOKEN}`,
+        ClientID: clientID
       }
     }
   )
@@ -316,7 +317,7 @@ const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.
  */
-export const getAllBlogs = async (length?: number | undefined) => {
+export const getAllBlogs = async (clientID: string, length?: number | undefined) => {
   let ENDPOINT = null
   // Set limit if length is not undefined
   if (length !== undefined) {
@@ -330,7 +331,8 @@ export const getAllBlogs = async (length?: number | undefined) => {
     ENDPOINT,
     {
       headers: {
-        Authorization: `Token ${BACKEND_API_TOKEN}`
+        Authorization: `Token ${BACKEND_API_TOKEN}`,
+        ClientID: clientID
       }
     }
   )
@@ -344,12 +346,13 @@ export const getAllBlogs = async (length?: number | undefined) => {
   }
 }
 
-export const getBlogDetails = async (slug: string) => {
+export const getBlogDetails = async (clientID: string, slug: string) => {
   const blogDetails = await fetch(
     BLOGS_ENDPOINT + slug,
     {
       headers: {
-        Authorization: `Token ${BACKEND_API_TOKEN}`
+        Authorization: `Token ${BACKEND_API_TOKEN}`,
+        ClientID: clientID
       }
     }
   )

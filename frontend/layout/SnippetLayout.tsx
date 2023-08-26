@@ -13,8 +13,7 @@ import CommentSection from '@components/SnippetComment/CommentSection'
 import CommentList from '@components/SnippetComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import { addSnippetLike, addSnippetViews } from '@lib/backendAPI'
-
-
+import { useClientID } from '@context/clientIdContext'
 
 export default function SnippetLayout({
   code_snippet,
@@ -30,14 +29,17 @@ export default function SnippetLayout({
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(code_snippet.user_liked)
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
   const SNIPPET_ENDPOINT = 'https://nim23.com' + '/snippets/' + code_snippet.slug
-  const clientID = localStorage.getItem('clientID') || ''
+
+  const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
+    if (!clientID) return
     const likeStatusData: LikeStatusType = await addSnippetLike(clientID, slug)
     setLikeStatus(likeStatusData)
   }
 
   const fetchTotalViews = async (slug: string) => {
+    if (!clientID) return
     const totalViewsData: ViewsType = await addSnippetViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }

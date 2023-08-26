@@ -10,6 +10,7 @@ import { CodeSnippetType } from "@lib/types"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
 
 const SnippetCard = dynamic(() => import('@components/SnippetCard'), {
   loading: () => <Loader />,
@@ -18,9 +19,11 @@ const SnippetCard = dynamic(() => import('@components/SnippetCard'), {
 export default function CodeSnippets() {
   const [isLoading, setIsLoading] = useState(true)
   const [code_snippets, setCodeSnippets] = useState<CodeSnippetType[]>([])
+  const { clientID } = useClientID()
 
   const fetchCodeSnippets = async () => {
-    const code_snippetsData: CodeSnippetType[] = await getAllCodeSnippets()
+    if (!clientID) return
+    const code_snippetsData: CodeSnippetType[] = await getAllCodeSnippets(clientID)
     setCodeSnippets(code_snippetsData)
   }
 

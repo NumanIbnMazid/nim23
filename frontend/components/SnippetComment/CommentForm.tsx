@@ -50,7 +50,7 @@ export default function CommentForm({ slug, contentURL }: { slug: string; conten
           render: 'Thanks for your valuable comment! Your comment will be visible after admin approval.',
           type: 'success',
           isLoading: false,
-          autoClose: false,
+          autoClose: 7000,
         })
         sendButtonRef.current.removeAttribute('disabled')
 

@@ -30,14 +30,14 @@ export default function SnippetLayout({
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(code_snippet.user_liked)
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
   const SNIPPET_ENDPOINT = 'https://nim23.com' + '/snippets/' + code_snippet.slug
+  const clientID = localStorage.getItem('clientID') || ''
 
   const addLike = async (slug: string) => {
-    const likeStatusData: LikeStatusType = await addSnippetLike(slug)
+    const likeStatusData: LikeStatusType = await addSnippetLike(clientID, slug)
     setLikeStatus(likeStatusData)
   }
 
   const fetchTotalViews = async (slug: string) => {
-    const clientID = localStorage.getItem('clientID') || ''
     const totalViewsData: ViewsType = await addSnippetViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }

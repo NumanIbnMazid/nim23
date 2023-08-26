@@ -427,14 +427,14 @@ const BLOG_LIKE_ENDPOINT = BACKEND_API_BASE_URL + BLOG_LIKE_PATH
  * @param {string} slug - The slug of the blog.
  * @returns {Promise} A promise that resolves to the response data or an error message.
 */
-export const addBlogLike = async (slug: string) => {
+export const addBlogLike = async (clientID: string, slug: string) => {
   const response = await fetch(BLOG_LIKE_ENDPOINT + `?slug=${slug}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${BACKEND_API_TOKEN}`,
     },
-    body: null,
+    body: JSON.stringify({ clientID }),
   })
 
   const responseData = await response.json()
@@ -536,14 +536,14 @@ const SNIPPET_LIKE_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_LIKE_PATH
  * @param {string} slug - The slug of the snippet.
  * @returns {Promise} A promise that resolves to the response data or an error message.
 */
-export const addSnippetLike = async (slug: string) => {
+export const addSnippetLike = async (clientID: string, slug: string) => {
   const response = await fetch(SNIPPET_LIKE_ENDPOINT + `?slug=${slug}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${BACKEND_API_TOKEN}`,
     },
-    body: null,
+    body: JSON.stringify({ clientID }),
   })
 
   const responseData = await response.json()

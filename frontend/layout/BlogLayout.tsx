@@ -36,14 +36,14 @@ export default function BlogLayout({
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(blog.user_liked)
   const [totalViews, setTotalViews] = useState<number>(blog.total_views)
   const BLOG_ENDPOINT = 'https://nim23.com' + '/blogs/' + blog.slug
+  const clientID = localStorage.getItem('clientID') || ''
 
   const addLike = async (slug: string) => {
-    const likeStatusData: LikeStatusType = await addBlogLike(slug)
+    const likeStatusData: LikeStatusType = await addBlogLike(clientID, slug)
     setLikeStatus(likeStatusData)
   }
 
   const fetchTotalViews = async (slug: string) => {
-    const clientID = localStorage.getItem('clientID') || ''
     const totalViewsData: ViewsType = await addBlogViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }

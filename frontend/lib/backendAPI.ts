@@ -401,14 +401,14 @@ const BLOG_VIEWS_ENDPOINT = BACKEND_API_BASE_URL + BLOG_VIEWS_PATH
  * @param {string} slug - The slug of the blog.
  * @returns {Promise} A promise that resolves to the response data or an error message.
 */
-export const addBlogViews = async (slug: string) => {
+export const addBlogViews = async (clientID: string, slug: string) => {
   const response = await fetch(BLOG_VIEWS_ENDPOINT + `?slug=${slug}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${BACKEND_API_TOKEN}`,
     },
-    body: null,
+    body: JSON.stringify({ clientID }),
   })
 
   const responseData = await response.json()
@@ -510,14 +510,14 @@ const SNIPPET_VIEWS_ENDPOINT = BACKEND_API_BASE_URL + SNIPPET_VIEWS_PATH
  * @param {string} slug - The slug of the snippet.
  * @returns {Promise} A promise that resolves to the response data or an error message.
 */
-export const addSnippetViews = async (slug: string) => {
+export const addSnippetViews = async (clientID: string, slug: string) => {
   const response = await fetch(SNIPPET_VIEWS_ENDPOINT + `?slug=${slug}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Token ${BACKEND_API_TOKEN}`,
     },
-    body: null,
+    body: JSON.stringify({ clientID }),
   })
 
   const responseData = await response.json()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from blogs.models import BlogCategory, Blog, BlogViewIP, BlogComment
+from blogs.models import BlogCategory, Blog, BlogView, BlogComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
 
@@ -43,15 +43,15 @@ admin.site.register(Blog, BlogAdmin)
 
 
 # ----------------------------------------------------
-# *** BlogViewIP ***
+# *** BlogView ***
 # ----------------------------------------------------
 
-class BlogViewIPAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+class BlogViewAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
-        model = BlogViewIP
+        model = BlogView
 
 
-admin.site.register(BlogViewIP, BlogViewIPAdmin)
+admin.site.register(BlogView, BlogViewAdmin)
 
 
 # ----------------------------------------------------

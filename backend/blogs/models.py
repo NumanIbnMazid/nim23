@@ -172,28 +172,28 @@ def add_unique_ids_to_content_headings(sender, instance, **kwargs):
     instance.content = str(soup)
 
 
-""" *************** Blog View IP *************** """
+""" *************** Blog View *************** """
 
 
 @autoSlugFromUUID()
-class BlogViewIP(models.Model):
-    ip_address = models.CharField(max_length=255)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='view_ips')
+class BlogView(models.Model):
+    clientID = models.CharField(max_length=255)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='views')
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     first_visited_at = models.DateTimeField(auto_now_add=True)
     last_visited_at = models.DateTimeField(auto_now=True)
     liked = models.BooleanField(default=False)
 
     class Meta:
-        db_table = 'blog_view_ip'
-        verbose_name = _('Blog View IP')
-        verbose_name_plural = _('Blog View IPs')
+        db_table = 'blog_view'
+        verbose_name = _('Blog View')
+        verbose_name_plural = _('Blog Views')
         ordering = ('-last_visited_at',)
         get_latest_by = "created_at"
-        unique_together = [["ip_address", "blog"]]
+        unique_together = [["clientID", "blog"]]
 
     def __str__(self):
-        return self.ip_address
+        return self.clientID
 
 
 """ *************** Blog Comment *************** """

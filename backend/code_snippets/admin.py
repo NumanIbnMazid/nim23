@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from code_snippets.models import CodeSnippet, CodeSnippetViewIP, CodeSnippetComment
+from code_snippets.models import CodeSnippet, CodeSnippetView, CodeSnippetComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
 
@@ -22,15 +22,15 @@ admin.site.register(CodeSnippet, CodeSnippetAdmin)
 
 
 # ----------------------------------------------------
-# *** CodeSnippetViewIP ***
+# *** CodeSnippetView ***
 # ----------------------------------------------------
 
-class CodeSnippetViewIPAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+class CodeSnippetViewAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
-        model = CodeSnippetViewIP
+        model = CodeSnippetView
 
 
-admin.site.register(CodeSnippetViewIP, CodeSnippetViewIPAdmin)
+admin.site.register(CodeSnippetView, CodeSnippetViewAdmin)
 
 
 # ----------------------------------------------------

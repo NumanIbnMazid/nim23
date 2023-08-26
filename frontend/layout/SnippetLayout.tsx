@@ -37,7 +37,8 @@ export default function SnippetLayout({
   }
 
   const fetchTotalViews = async (slug: string) => {
-    const totalViewsData: ViewsType = await addSnippetViews(slug)
+    const clientID = localStorage.getItem('clientID') || ''
+    const totalViewsData: ViewsType = await addSnippetViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }
 

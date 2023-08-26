@@ -84,28 +84,28 @@ def generate_order(sender, instance, **kwargs):
                 instance.order = max_order + 1 if max_order is not None else 1
 
 
-""" *************** Code Snippet View IP *************** """
+""" *************** Code Snippet View *************** """
 
 
 @autoSlugFromUUID()
-class CodeSnippetViewIP(models.Model):
-    ip_address = models.CharField(max_length=255)
-    code_snippet = models.ForeignKey(CodeSnippet, on_delete=models.CASCADE, related_name='view_ips')
+class CodeSnippetView(models.Model):
+    clientID = models.CharField(max_length=255)
+    code_snippet = models.ForeignKey(CodeSnippet, on_delete=models.CASCADE, related_name='views')
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     first_visited_at = models.DateTimeField(auto_now_add=True)
     last_visited_at = models.DateTimeField(auto_now=True)
     liked = models.BooleanField(default=False)
 
     class Meta:
-        db_table = 'code_snippet_view_ip'
-        verbose_name = _('Code Snippet View IP')
-        verbose_name_plural = _('Code Snippet View IPs')
+        db_table = 'code_snippet_view'
+        verbose_name = _('Code Snippet View')
+        verbose_name_plural = _('Code Snippet Views')
         ordering = ('-last_visited_at',)
         get_latest_by = "created_at"
-        unique_together = [["ip_address", "code_snippet"]]
+        unique_together = [["clientID", "code_snippet"]]
 
     def __str__(self):
-        return self.ip_address
+        return self.clientID
 
 
 """ *************** Code Snippet Comment *************** """

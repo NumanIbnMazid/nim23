@@ -43,7 +43,8 @@ export default function BlogLayout({
   }
 
   const fetchTotalViews = async (slug: string) => {
-    const totalViewsData: ViewsType = await addBlogViews(slug)
+    const clientID = localStorage.getItem('clientID') || ''
+    const totalViewsData: ViewsType = await addBlogViews(clientID, slug)
     setTotalViews(totalViewsData.total_views)
   }
 

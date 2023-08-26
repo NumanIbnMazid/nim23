@@ -8,9 +8,9 @@ from django.utils import timezone
 from django.db.models import Count, Sum, Case, When, IntegerField
 from utils.helpers import custom_response_wrapper, ResponseWrapper, handle_invalid_serializer
 from utils.snippets import get_client_ip
-from code_snippets.models import CodeSnippet, CodeSnippetComment, CodeSnippetViewIP
+from code_snippets.models import CodeSnippet, CodeSnippetComment, CodeSnippetView
 from code_snippets.api.serializers import (
-    CodeSnippetSerializer, CodeSnippetCommentSerializer, CodeSnippetViewIPSerializer
+    CodeSnippetSerializer, CodeSnippetCommentSerializer, CodeSnippetViewSerializer
 )
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -31,10 +31,10 @@ class CodeSnippetViewset(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.annotate(
-            view_ips_count=Count('view_ips'),
-            view_ips_likes_sum=Sum(
+            views_count=Count('views'),
+            views_likes_sum=Sum(
                 Case(
-                    When(view_ips__liked=True, then=1),
+                    When(views__liked=True, then=1),
                     default=0,
                     output_field=IntegerField()
                 )
@@ -108,9 +108,9 @@ class CodeSnippetCommentViewset(GenericViewSet, CreateModelMixin, ListModelMixin
         return Response(data=serializer.data, status=200)
 
 
-class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
+class CodeSnippetViewViewset(GenericViewSet, CreateModelMixin):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = CodeSnippetViewIPSerializer
+    serializer_class = CodeSnippetViewSerializer
     lookup_field = 'slug'
 
     @swagger_auto_schema(
@@ -123,15 +123,15 @@ class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
     def create(self, request, *args, **kwargs):
         slug = request.query_params.get('slug')
         code_snippet = get_object_or_404(CodeSnippet, slug=slug)
-        ip_address = get_client_ip(request)
+        clientID = request.data.get('clientID')
 
-        existing_record_qs = CodeSnippetViewIP.objects.filter(code_snippet=code_snippet, ip_address__iexact=ip_address)
+        existing_record_qs = CodeSnippetView.objects.filter(code_snippet=code_snippet, clientID__iexact=clientID)
         if existing_record_qs.exists():
             existing_record = existing_record_qs.first()
             existing_record.last_visited_at = timezone.now()
             existing_record.save()
 
-            total_qs = CodeSnippetViewIP.objects.filter(code_snippet__slug=slug)
+            total_qs = CodeSnippetView.objects.filter(code_snippet__slug=slug)
 
             return ResponseWrapper(
                 data={
@@ -152,14 +152,13 @@ class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
 
         # Add the code_snippet and ip address to the validated data
         serializer.validated_data['code_snippet'] = code_snippet
-        serializer.validated_data['ip_address'] = ip_address
 
         try:
             self.perform_create(serializer)
         except Exception as e:
             return ResponseWrapper(data=serializer.data, message="Failed to add ip.", error_message=str(e), status=400)
 
-        total_qs = CodeSnippetViewIP.objects.filter(code_snippet__slug=slug)
+        total_qs = CodeSnippetView.objects.filter(code_snippet__slug=slug)
 
         return ResponseWrapper(
             data={
@@ -181,7 +180,7 @@ class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
     @action(detail=False, methods=['get'], url_path='total-views')
     def total_views(self, request):
         slug = request.query_params.get('slug')
-        total_views = CodeSnippetViewIP.objects.filter(code_snippet__slug=slug).count()
+        total_views = CodeSnippetView.objects.filter(code_snippet__slug=slug).count()
         return ResponseWrapper(data={"total_views": total_views})
 
     @swagger_auto_schema(
@@ -193,9 +192,9 @@ class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
     )
     @action(detail=False, methods=['post'])
     def like(self, request):
-        ip_address = get_client_ip(request)
+        clientID = request.data.get('clientID')
         slug = request.query_params.get('slug')
-        code_snippet_view = get_object_or_404(CodeSnippetViewIP, ip_address=ip_address, code_snippet__slug=slug)
+        code_snippet_view = get_object_or_404(CodeSnippetView, clientID=clientID, code_snippet__slug=slug)
         code_snippet_view.liked = not code_snippet_view.liked  # Toggle the liked field
         code_snippet_view.save()
 
@@ -215,5 +214,5 @@ class CodeSnippetViewIPViewset(GenericViewSet, CreateModelMixin):
     @action(detail=False, methods=['get'], url_path='total-likes')
     def total_likes(self, request):
         slug = request.query_params.get('slug')
-        total_likes = CodeSnippetViewIP.objects.filter(code_snippet__slug=slug, liked=True).count()
+        total_likes = CodeSnippetView.objects.filter(code_snippet__slug=slug, liked=True).count()
         return ResponseWrapper(data={"total_likes": total_likes})

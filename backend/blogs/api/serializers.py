@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from blogs.models import Blog, BlogCategory, BlogComment, BlogViewIP
+from blogs.models import Blog, BlogCategory, BlogComment, BlogView
 from utils.snippets import get_client_ip
 
 
@@ -13,8 +13,8 @@ class BlogSerializer(serializers.ModelSerializer):
     category = BlogCategorySerializer()
     image = serializers.SerializerMethodField()
     table_of_contents = serializers.SerializerMethodField()
-    total_views = serializers.IntegerField(read_only=True, source='view_ips_count')
-    total_likes = serializers.IntegerField(read_only=True, source='view_ips_likes_sum')
+    total_views = serializers.IntegerField(read_only=True, source='views_count')
+    total_likes = serializers.IntegerField(read_only=True, source='views_likes_sum')
     user_liked = serializers.SerializerMethodField()
 
     class Meta:
@@ -30,9 +30,9 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def get_user_liked(self, obj):
         user_ip = get_client_ip(self.context['request'])
-        blog_view_ip = obj.view_ips.filter(ip_address=user_ip).first()
-        if blog_view_ip:
-            return blog_view_ip.liked
+        blog_view = obj.views.filter(clientID=user_ip).first()
+        if blog_view:
+            return blog_view.liked
         return False
 
 
@@ -48,8 +48,8 @@ class BlogCommentSerializer(serializers.ModelSerializer):
         return obj.get_timestamp()
 
 
-class BlogViewIPSerializer(serializers.ModelSerializer):
+class BlogViewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BlogViewIP
-        fields = []
+        model = BlogView
+        fields = ["clientID"]
         read_only_fields = ("id", "slug", "created_at", "updated_at")

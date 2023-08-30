@@ -91,6 +91,7 @@
   - (DONE) Fix timezone (BD).
   - (DONE) Add comment like and total view features in Snippets.
   - (DONE) Fix Like Bug.
+  - (DONE) Fix newsletter subscription bug.
 
 ## Bug Fix
 

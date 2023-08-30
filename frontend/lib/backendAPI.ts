@@ -389,7 +389,7 @@ export const subscribeToNewsletter = async (email: string) => {
   })
 
   const responseData = await response.json()
-  return responseData.data
+  return responseData
 }
 
 

@@ -56,7 +56,7 @@ export default function MetaData({
       {/* Og */}
       <meta property="og:title" content={`${title}${suffix ? ` - ${suffix}` : ''} | NIM23`} />
       <meta property="og:description" content={description || "Numan Ibn Mazid's Portfolio Application"} />
-      <meta property="og:site_name" content="Numan Ibn Mazid's Portfolio" />
+      <meta property="og:site_name" content="Portfolio application of Numan Ibn Mazid" />
       <meta property="og:url" content={currentURL} key="ogurl" />
       <meta property="og:image" content={previewImage || '/images/numan.png'} />
       {/* Twitter */}

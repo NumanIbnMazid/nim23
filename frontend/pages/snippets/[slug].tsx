@@ -37,6 +37,13 @@ export default function SnippetPage({
     }
   }
 
+  function stripHtml(html: string) {
+    const strippedText = html.replace(/<[^>]*>/g, '') // Removes all HTML tags
+    return strippedText
+  }
+
+  const snippetOverview = code_snippet?.overview ? stripHtml(code_snippet.overview) : undefined
+
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +72,7 @@ export default function SnippetPage({
     <>
       <Metadata
         title={code_snippet.title}
-        description={code_snippet.overview || pageMeta.snippets.description}
+        description={snippetOverview || pageMeta.snippets.description}
         previewImage={code_snippet.image || pageMeta.snippets.image}
         keywords={`${code_snippet.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
       />

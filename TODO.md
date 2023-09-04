@@ -92,6 +92,9 @@
   - (DONE) Add comment like and total view features in Snippets.
   - (DONE) Fix Like Bug.
   - (DONE) Fix newsletter subscription bug.
+  - Fix Blog and Snippet Details page's Dynamic Meta loading issue. Meta is loading is there is no initial loader.
+  - Use SWR for Data Fetching.
+  - Investigate on app routes and get the differences between app and pages routes.
 
 ## Bug Fix
 

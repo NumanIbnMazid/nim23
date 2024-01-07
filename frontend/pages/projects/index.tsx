@@ -35,17 +35,17 @@ export default function Projects() {
     fetchData()
   }, [])
 
-  // ******* Loader *******
-  if (isLoading === true) {
-    return <Loader />
-  }
-  // ******* Loader *******
+  // // ******* Loader *******
+  // if (isLoading === true) {
+  //   return <Loader />
+  // }
+  // // ******* Loader *******
 
-  // ******* No Data *******
-  if (projects.length < 1) {
-    return <NoData allowSpacing={true} />
-  }
-  // ******* No Data *******
+  // // ******* No Data *******
+  // if (projects.length < 1) {
+  //   return <NoData allowSpacing={true} />
+  // }
+  // // ******* No Data *******
 
   return (
     <>
@@ -64,7 +64,13 @@ export default function Projects() {
           className="grid min-h-screen py-20 place-content-center"
         >
           <div>
-            <ProjectSection projects={projects} />
+            {isLoading ? (
+              <Loader />
+            ) : projects.length > 0 ? (
+              <ProjectSection projects={projects} />
+            ) : (
+              <NoData />
+            )}
           </div>
         </motion.section>
       </div>

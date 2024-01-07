@@ -68,17 +68,17 @@ export default function Blogs() {
     return () => document.removeEventListener("keydown", handleAutoSearch)
   }, [])
 
-  // ******* Loader *******
-  if (isLoading === true) {
-    return <Loader />
-  }
-  // ******* Loader *******
+  // // ******* Loader *******
+  // if (isLoading === true) {
+  //   return <Loader />
+  // }
+  // // ******* Loader *******
 
-  // ******* No Data *******
-  if (blogs.length < 1) {
-    return <NoData allowSpacing={true} />
-  }
-  // ******* No Data *******
+  // // ******* No Data *******
+  // if (blogs.length < 1) {
+  //   return <NoData allowSpacing={true} />
+  // }
+  // // ******* No Data *******
 
   return (
     <>
@@ -119,7 +119,10 @@ export default function Blogs() {
           </button>
         </AnimatedDiv>
 
-        <section className="relative py-5  flex flex-col gap-2 min-h-[50vh]">
+        {isLoading ? (
+          <Loader />
+        ) : blogs.length > 0 ? (
+          <section className="relative py-5  flex flex-col gap-2 min-h-[50vh]">
           <AnimatePresence>
             {filteredBlogs.length != 0 ? (
               <>
@@ -152,6 +155,10 @@ export default function Blogs() {
             )}
           </AnimatePresence>
         </section>
+        ) : (
+          <NoData />
+        )}
+        
       </section>
     </>
   )

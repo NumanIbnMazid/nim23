@@ -243,17 +243,6 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
-[[package]]
-name = "django-ckeditor"
-version = "6.6.1"
-description = "Django admin CKEditor integration."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "django-ckeditor-6.6.1.tar.gz", hash = "sha256:a804a98137058c00fc092aafc475e9491b2ca7c68c84d6ca12c4fa2453696017"},
-    {file = "django_ckeditor-6.6.1-py3-none-any.whl", hash = "sha256:44894c2a1050f58edcab6f9e631dbb63fa5532e7432a5650cfd878b6f33b0d46"},
-]
-
 [package.dependencies]
 Django = ">=3.2"
 django-js-asset = ">=2.0"

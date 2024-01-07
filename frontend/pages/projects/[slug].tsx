@@ -6,24 +6,29 @@ import { motion } from 'framer-motion'
 import { FadeContainer } from '../../content/FramerMotionVariants'
 import { HomeHeading } from '..'
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { getProjectDetails } from '@lib/backendAPI'
-import { useRouter } from 'next/router'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { opacityVariant } from '@content/FramerMotionVariants'
 import Image from 'next/image'
 import PDFViewer from '@components/PDFViewer'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
+import * as LB from "@utils/yetAnotherlightboxImports"
 
-
-export default function ProjectDetailsSection() {
+export default function ProjectDetailsSection({ slug, projectData }: { slug: string, projectData: ProjectType }) {
   const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
-  const { slug } = router.query // Retrieve the slug parameter from the URL
-
   const [project, setProject] = useState<ProjectType>()
+  const [bannerLightBoxOpen, setBannerLightBoxOpen] = React.useState(false)
+  const [mediaLightBoxOpen, setMediaLightBoxOpen] = React.useState(false)
+  const [selectedMedia, setSelectedMedia] = useState<MediaType>()
+
+  const openMediaLightBoxViewer = useCallback((media: MediaType) => {
+    setSelectedMedia(media)
+    setMediaLightBoxOpen(true)
+  }, [])
 
   const fetchProjectDetails = async (slug: any) => {
     try {
@@ -43,7 +48,7 @@ export default function ProjectDetailsSection() {
 
   const isImageFile = (file: string): boolean => {
     if (file !== null) {
-      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']
+      const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp', 'ico', 'tiff', 'avif']
       const fileExtension = getFileExtensionFromBase64(file)
       return imageExtensions.includes(fileExtension.toLowerCase())
     }
@@ -52,33 +57,24 @@ export default function ProjectDetailsSection() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([
-        fetchProjectDetails(slug)
-      ]);
+      await Promise.all([fetchProjectDetails(slug)])
       setIsLoading(false)
     }
     fetchData()
   }, [slug])
 
-  // ******* Loader Starts *******
-  if (isLoading === true) {
-    return (
-      <Loader />
-    )
-  }
-  // ******* Loader Ends *******
-
-  // ******* No Data Check *******
-  if (!project) {
-    return (
-      <NoData topic="Project" />
-    )
-  }
-  // ******* No Data Check *******
-
   return (
     <>
-      {project && (
+      <Metadata
+        title={projectData.title || pageMeta.projects.title}
+        description={projectData.short_description || pageMeta.projects.description}
+        previewImage={projectData.image || pageMeta.projects.image}
+        keywords={`${projectData.technology || 'python project'}, ${pageMeta.projects.keywords}`}
+      />
+
+      {isLoading ? (
+        <Loader />
+      ) : project ? (
         <div className="dark:text-gray-100">
           <motion.section
             initial="hidden"
@@ -102,12 +98,13 @@ export default function ProjectDetailsSection() {
                   <div className="flex items-center justify-center">
                     <Image
                       src={project?.image as string}
-                      className="shadow filter"
-                      width={300}
-                      height={300}
+                      className="shadow filter hover:cursor-pointer"
+                      width={1000}
+                      height={1000}
                       alt={project.title}
-                      quality={100}
-                      priority
+                      quality={50}
+                      style={{ width: 'auto', height: 'auto' }}
+                      onClick={() => setBannerLightBoxOpen(true)}
                     />
                   </div>
 
@@ -123,10 +120,66 @@ export default function ProjectDetailsSection() {
                       </p>
                     </div>
 
+                    <div className="justify-center text-center">
+                      {/* project technology */}
+                      {project.technology && (
+                        <div>
+                          <h4 className="font-bold mb-4">Technology</h4>
+                          <div className="flex flex-wrap items-center gap-1">
+                            {project.technology.split(',').map((technology, index) => {
+                              return (
+                                <span
+                                  key={`${technology}-${index}`}
+                                  className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-gray-800"
+                                >
+                                  {technology}
+                                </span>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* project links */}
+                      {project.github_url || project.preview_url ? (
+                        <div>
+                          <h4 className="font-bold mb-4">Links</h4>
+                          <div className="flex items-center justify-center">
+                            {/* Centered Container */}
+                            <div className="flex items-center gap-4 p-2 w-fit">
+                              {project.github_url && (
+                                <Link
+                                  href={project.github_url}
+                                  title="Source Code on GitHub"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                >
+                                  <BsGithub className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                                </Link>
+                              )}
+
+                              {project.preview_url && (
+                                <Link
+                                  href={project.preview_url}
+                                  title="Live Preview"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                >
+                                  <MdOutlineLink className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+
                     {/* project description */}
                     {project.description && (
                       <div
-                        className="text-base text-gray-600 dark:text-neutral-300"
+                        className="text-base text-gray-600 dark:text-neutral-300 mt-10"
                         dangerouslySetInnerHTML={{ __html: project.description || '' }}
                       ></div>
                     )}
@@ -138,24 +191,26 @@ export default function ProjectDetailsSection() {
                         <h4 className="font-bold">Attachments</h4>
                         {project.project_media.map((media: MediaType, mediaIndex) => (
                           <div key={mediaIndex} className="my-4">
-
                             {/* serial number */}
-                            <h2 className='italic text-gray-400 dark:text-neutral-400'>#{mediaIndex + 1}</h2>
+                            <h2 className="italic text-gray-400 dark:text-neutral-400">#{mediaIndex + 1}</h2>
 
                             {/* media title */}
                             <h3>{media.title}</h3>
 
                             {/* Image file */}
                             {media.file !== null && isImageFile(media.file) && (
-                              <Image
-                                src={media.file}
-                                className=""
-                                alt={media.title}
-                                width={1000}
-                                height={1000}
-                                quality={75}
-                                style={{ width: "auto", height: "auto" }}
-                              />
+                              <div>
+                                <Image
+                                  src={media.file}
+                                  className="hover:cursor-pointer"
+                                  alt={media.title}
+                                  width={1000}
+                                  height={1000}
+                                  quality={75}
+                                  style={{ width: 'auto', height: 'auto' }}
+                                  onClick={() => openMediaLightBoxViewer(media)}
+                                />
+                              </div>
                             )}
 
                             {/* pdf file */}
@@ -171,61 +226,9 @@ export default function ProjectDetailsSection() {
                             )}
 
                             {/* media description */}
-                            <p className="mt-4">{media.description}</p>
-
+                            <div dangerouslySetInnerHTML={{ __html: media.description }} className="mt-4"></div>
                           </div>
                         ))}
-                      </div>
-                    ) : null}
-
-                    {/* project technology */}
-                    {project.technology && (
-                      <div>
-                        <h4 className="font-bold mb-4">Technology</h4>
-                        <div className="flex flex-wrap items-center gap-1">
-                          {project.technology.split(',').map((technology, index) => {
-                            return (
-                              <span
-                                key={`${technology}-${index}`}
-                                className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded dark:bg-darkPrimary"
-                              >
-                                {technology}
-                              </span>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* project links */}
-                    {project.github_url || project.preview_url ? (
-                      <div>
-                        <h4 className="font-bold mb-4">Links</h4>
-                        <div className="flex items-center gap-4 p-2 mt-4 w-fit">
-                          {project.github_url && (
-                            <Link
-                              href={project.github_url}
-                              title="Source Code on GitHub"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                            >
-                              <BsGithub className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
-                            </Link>
-                          )}
-
-                          {project.preview_url && (
-                            <Link
-                              href={project.preview_url}
-                              title="Live Preview"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                            >
-                              <MdOutlineLink className="w-6 h-6 transition-all hover:scale-110 active:scale-90" />
-                            </Link>
-                          )}
-                        </div>
                       </div>
                     ) : null}
                   </div>
@@ -234,7 +237,54 @@ export default function ProjectDetailsSection() {
             </section>
           </motion.section>
         </div>
+      ) : (
+        <NoData allowSpacing={true} />
       )}
+
+
+      {/* Banner Lightbox Start */}
+      <LB.Lightbox
+        plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
+        open={bannerLightBoxOpen}
+        close={() => setBannerLightBoxOpen(false)}
+        slides={[
+          {
+            src: project?.image as string,
+          },
+        ]}
+        render={{ slide: LB.NextJsImage }}
+      />
+      {/* Banner Lightbox End */}
+
+      {/* Media LightBox Start */}
+      {project?.project_media?.length ? (
+        <LB.Lightbox
+          plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
+          counter={{ container: { style: { top: '3%' } } }}
+          open={mediaLightBoxOpen}
+          close={() => setMediaLightBoxOpen(false)}
+          slides={[
+            {
+              src: selectedMedia?.file as string,
+              alt: selectedMedia?.title,
+              title: selectedMedia?.title,
+            },
+          ]}
+        />
+      ) : null}
+      {/* Media LightBox End */}
     </>
   )
+}
+
+
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params
+  const projectData: ProjectType = await getProjectDetails(slug)
+  return {
+    props: {
+      slug,
+      projectData
+    },
+  }
 }

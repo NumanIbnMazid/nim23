@@ -4,27 +4,28 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
-from utils.helpers import CustomModelManager
-from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
+from django.utils import timezone
+from utils.snippets import (
+    autoslugFromField, autoSlugFromUUID, get_static_file_path, image_as_base64, random_number_generator
+)
 from utils.image_upload_helpers import (
     get_blog_image_path,
 )
 import math
 from bs4 import BeautifulSoup
 import re
+from datetime import timedelta
+
 
 """ *************** Blog Category *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="name")
+@autoslugFromField(fieldname="name")
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'blog_category'
@@ -40,7 +41,7 @@ class BlogCategory(models.Model):
 """ *************** Blog *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Blog(models.Model):
     class Status(models.TextChoices):
         PUBLISHED = 'Published', _('Published')
@@ -51,23 +52,22 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='blogs', blank=True, null=True)
     image = models.ImageField(upload_to=get_blog_image_path, blank=True, null=True)
-    overview = models.CharField(max_length=255, blank=True, null=True)
+    overview = models.TextField(max_length=500, blank=True, null=True)
     content = models.TextField()
     author = models.CharField(max_length=100, default="Numan Ibn Mazid", blank=True)
-    tags = models.CharField(max_length=255, blank=True)
+    tags = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PUBLISHED)
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # custom model manager
-    objects = CustomModelManager()
-
     class Meta:
         db_table = 'blog'
         verbose_name = _('Blog')
         verbose_name_plural = _('Blogs')
-        ordering = ('order', '-created_at')
+        # NOTE: Ordering explicitly defined in `get_queryset` method of `BlogViewset` class
+        # This won't have any effect
+        ordering = ('-order', '-created_at')
         get_latest_by = "created_at"
 
     def __str__(self):
@@ -102,7 +102,8 @@ class Blog(models.Model):
             if remaining_minutes == 0:
                 reading_time = f"{hours} hour{'s' if hours > 1 else ''}"
             else:
-                reading_time = f"{hours} hour{'s' if hours > 1 else ''} {remaining_minutes} minute{'s' if remaining_minutes > 1 else ''}"
+                reading_time = f"{hours} hour{'s' if hours > 1 else ''} {remaining_minutes} \
+                minute{'s' if remaining_minutes > 1 else ''}"
 
         return reading_time
 
@@ -128,12 +129,14 @@ class Blog(models.Model):
 
 # Signals
 
+
 @receiver(pre_save, sender=Blog)
-def generate_order(sender, instance, **kwargs):
+def generate_blog_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -169,30 +172,28 @@ def add_unique_ids_to_content_headings(sender, instance, **kwargs):
     instance.content = str(soup)
 
 
-""" *************** Blog View IP *************** """
+""" *************** Blog View *************** """
 
 
 @autoSlugFromUUID()
-class BlogViewIP(models.Model):
-    ip_address = models.CharField(max_length=255, unique=True)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='view_ips')
+class BlogView(models.Model):
+    clientID = models.CharField(max_length=255)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='views')
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     first_visited_at = models.DateTimeField(auto_now_add=True)
     last_visited_at = models.DateTimeField(auto_now=True)
     liked = models.BooleanField(default=False)
 
-    # custom model manager
-    objects = CustomModelManager()
-
     class Meta:
-        db_table = 'blog_view_ip'
-        verbose_name = _('Blog View IP')
-        verbose_name_plural = _('Blog View IPs')
+        db_table = 'blog_view'
+        verbose_name = _('Blog View')
+        verbose_name_plural = _('Blog Views')
         ordering = ('-last_visited_at',)
         get_latest_by = "created_at"
+        unique_together = [["clientID", "blog"]]
 
     def __str__(self):
-        return self.ip_address
+        return self.clientID
 
 
 """ *************** Blog Comment *************** """
@@ -209,9 +210,6 @@ class BlogComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # custom model manager
-    objects = CustomModelManager()
-
     class Meta:
         db_table = 'blog_comment'
         verbose_name = _('Blog Comment')
@@ -221,3 +219,35 @@ class BlogComment(models.Model):
 
     def __str__(self):
         return f"{self.name} :- {self.blog.title}"
+
+    def get_timestamp(self):
+        now = timezone.now()
+        time_difference = now - self.created_at
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            seconds_ago = int(time_difference.total_seconds())
+            return f"{seconds_ago} second{'s' if seconds_ago > 1 else ''} ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes_ago = int(time_difference.total_seconds() // 60)
+            return f"{minutes_ago} minute{'s' if minutes_ago > 1 else ''} ago"
+        elif time_difference < timedelta(days=1):  # Less than a day
+            hours_ago = time_difference.seconds // 3600
+            return f"{hours_ago} hour{'s' if hours_ago > 1 else ''} ago"
+        elif time_difference < timedelta(days=30):
+            days_ago = time_difference.days
+            return f"{days_ago} days ago"
+        elif time_difference < timedelta(days=365):
+            months_ago = time_difference.days // 30
+            return f"{months_ago} months ago"
+        else:
+            years_ago = time_difference.days // 365
+            months_remaining = (time_difference.days % 365) // 30
+            days_remaining = (time_difference.days % 365) % 30
+            if months_remaining == 0:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} ago"
+            elif days_remaining == 0:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} \
+            month{'s' if months_remaining > 1 else ''} ago"
+            else:
+                return f"{years_ago} year{'s' if years_ago > 1 else ''} {months_remaining} \
+            month{'s' if months_remaining > 1 else ''} and {days_remaining} day{'s' if days_remaining > 1 else ''} ago"

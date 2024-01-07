@@ -1,40 +1,33 @@
 import { FadeContainer } from '../content/FramerMotionVariants'
 import { HomeHeading } from '../pages'
 import { motion } from 'framer-motion'
-import React from 'react'
-import { useEffect, useState } from 'react'
-import { getAllCertificates } from '@lib/backendAPI'
+import React, { useState, useCallback } from 'react'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import Image from 'next/image'
 import { popUpFromBottomForText } from '@content/FramerMotionVariants'
 import Link from 'next/link'
 import { CertificateType, MediaType } from '@lib/types'
 import MediaModal from '@components/Modals/MediaModal'
-import NoData from "@components/NoData"
+import * as LB from '@utils/yetAnotherlightboxImports'
 
-export default function CertificateSection() {
-  const [certificates, setCertificates] = useState([])
+export default function CertificateSection({
+  certificates,
+  showHomeHeading = true
+}: {
+  certificates: CertificateType[]
+  showHomeHeading?: boolean
+}) {
+  const [lightBoxOpen, seLightBoxOpen] = React.useState(false)
+  const [selectedImage, setSelectedImage] = useState<string>()
 
-  useEffect(() => {
-    fetchCertificates()
+  const openMediaLightBoxViewer = useCallback((file: any) => {
+    setSelectedImage(file)
+    seLightBoxOpen(true)
   }, [])
-
-  const fetchCertificates = async () => {
-    const certificatesData = await getAllCertificates()
-    setCertificates(certificatesData)
-  }
-
-  // ******* Loader Starts *******
-  if (certificates.length < 1) {
-    return (
-      <NoData topic="Certificates" />
-    )
-  }
-  // ******* Loader Ends *******
 
   return (
     <section className="mx-5">
-      <HomeHeading title="Certificates" />
+      {showHomeHeading && <HomeHeading title="Certificates" />}
 
       <motion.div
         initial="hidden"
@@ -46,7 +39,8 @@ export default function CertificateSection() {
         <div className="mt-12 space-y-6">
           <p className="mb-12">
             Here, I will showcase the certifications and professional achievements I have earned throughout my career.
-            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to excellence.
+            Each certificate I have obtained represents a milestone in my journey and demonstrates my commitment to
+            excellence.
           </p>
           {certificates.map((certificate: CertificateType) => {
             return (
@@ -55,21 +49,19 @@ export default function CertificateSection() {
                 variants={popUpFromBottomForText}
                 key={certificate.id}
               >
-                <div className="relative flex items-center justify-center md:col-span-1 px-4">
+                <div className="relative flex items-center justify-center md:col-span-2 px-4 py-4 cursor-pointer">
                   <Image
-                    width={50}
-                    height={50}
+                    width={400}
+                    height={400}
                     src={certificate.image}
                     alt={certificate.organization}
                     quality={50}
                     placeholder="blur"
                     blurDataURL={certificate.image}
-                    style={{
-                      objectFit: 'contain',
-                    }}
+                    onClick={() => openMediaLightBoxViewer(certificate.image)}
                   />
                 </div>
-                <div className='md:col-span-11 p-4'>
+                <div className="md:col-span-10 p-4">
                   <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-4">
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
@@ -82,7 +74,7 @@ export default function CertificateSection() {
                             {certificate.title}
                           </Link>
                         ) : (
-                          <p className='text-sm font-semibold sm:text-base md:text-lg text-neutral-900 dark:text-neutral-200'>
+                          <p className="text-sm font-semibold sm:text-base md:text-lg text-neutral-900 dark:text-neutral-200">
                             {certificate.title}
                           </p>
                         )}
@@ -101,7 +93,7 @@ export default function CertificateSection() {
                       <span>&#x2022; Expiration Date: {certificate.expiration_date}</span>
                       {certificate.credential_id ? (
                         <span>&#x2022; Credential ID: {certificate.credential_id}</span>
-                      ): null}
+                      ) : null}
 
                       {/* Certification Media */}
                       {certificate.certification_media?.length ? (
@@ -112,7 +104,7 @@ export default function CertificateSection() {
 
                             {certificate.certification_media.map((media: MediaType, mediaIndex) => (
                               <div key={mediaIndex} className="my-4">
-                                  <MediaModal
+                                <MediaModal
                                   key={mediaIndex}
                                   title={media.title}
                                   file={media.file}
@@ -131,6 +123,20 @@ export default function CertificateSection() {
           })}
         </div>
       </motion.div>
+
+      {/* LightBox Start */}
+      <LB.Lightbox
+        plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
+        counter={{ container: { style: { top: '3%' } } }}
+        open={lightBoxOpen}
+        close={() => seLightBoxOpen(false)}
+        slides={[
+          {
+            src: selectedImage || '',
+          },
+        ]}
+      />
+      {/* LightBox End */}
     </section>
   )
 }

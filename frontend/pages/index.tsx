@@ -1,10 +1,6 @@
-// Page Components START----------
-import BlogsSection from '@components/Home/BlogsSection'
-import SkillSection from '@components/Home/SkillSection'
-import ExperienceSection from '@components/Home/ExperienceSection'
+// Page Components START
 import Image from 'next/image'
 import Metadata from '@components/MetaData'
-import Contact from '@components/Contact'
 import { FadeContainer, headingFromLeft, opacityVariant, popUp } from '@content/FramerMotionVariants'
 import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
 import { homeProfileImage } from '@utils/utils'
@@ -20,19 +16,45 @@ import { useEffect, useState } from 'react'
 import { getProfileInfo, getAllExperiences, getAllBlogs } from '@lib/backendAPI'
 import { ProfileType, ExperienceType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
-import Loader from "@components/Loader"
+import Loader from '@components/Loader'
 import NoData from "@components/NoData"
+import dynamic from 'next/dynamic'
+import { useClientID } from '@context/clientIdContext'
+
+const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
+  loading: () => <Loader />,
+})
+
+const BlogsSection = dynamic(() => import('@components/Home/BlogsSection'), {
+  loading: () => <Loader />,
+})
+
+const Contact = dynamic(() => import('@components/Contact'), {
+  loading: () => <Loader />,
+})
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true)
+  // Loaders
+  const [experiencesLoading, setExperiencesLoading] = useState(true)
+  const [blogsLoading, setBlogsLoading] = useState(true)
 
   const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
   const [blogs, setBlogs] = useState([])
 
+  const { clientID } = useClientID()
+
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences(1)
     setExperiences(experiencesData)
+    setExperiencesLoading(false)
+  }
+
+  const fetchBlogs = async () => {
+    if (!clientID) return
+    const blogsData = await getAllBlogs(clientID, 2)
+    setBlogs(blogsData)
+    setBlogsLoading(false)
   }
 
   const fetchProfileInfo = async () => {
@@ -40,36 +62,11 @@ export default function Home() {
     setProfileInfo(profileData)
   }
 
-  const fetchBlogs = async () => {
-    const blogsData = await getAllBlogs(2)
-    setBlogs(blogsData)
-  }
-
   useEffect(() => {
     fetchProfileInfo()
     fetchExperiences()
     fetchBlogs()
   }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        fetchProfileInfo(),
-        fetchExperiences(),
-        fetchBlogs()
-      ]);
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [])
-
-  // ******* Loader Starts *******
-  if (isLoading === true) {
-    return (
-      <Loader />
-    )
-  }
-  // ******* Loader Ends *******
 
   const latest_experience: ExperienceType = experiences[0]
 
@@ -99,25 +96,27 @@ export default function Home() {
                 className="rounded-full shadow filter"
                 width={933}
                 height={933}
-                alt="cover Profile Image"
-                quality={100}
-                priority
+                alt="Numan Ibn Mazid's Profile Image"
+                quality={60}
+                // priority
               />
             </motion.div>
 
             <div className="flex flex-col w-full gap-3 p-5 text-center select-none">
               <div className="flex flex-col gap-1">
                 <motion.h1 variants={opacityVariant} className="text-5xl font-bold lg:text-6xl font-arial">
-                  {profileInfo?.name}
-                  {profileInfo?.nickname && <span className="ml-4 text-5xl font-light">({profileInfo.nickname})</span>}
+                  {profileInfo?.name || staticData.personal.name}
+                  <span className="ml-4 text-5xl font-light">
+                    ({profileInfo?.nickname || staticData.personal.nickname})
+                  </span>
                 </motion.h1>
                 <motion.p
                   variants={opacityVariant}
                   className="font-medium text-xs md:text-sm lg:text-2xl text-[#383838] dark:text-gray-200 mt-4"
                 >
-                  <span>{latest_experience?.designation}</span>
+                  <span>{latest_experience?.designation || staticData.personal.current_designation}</span>
                   <span className="text-xs md:text-sm lg:text-xl mx-2 italic">at</span>
-                  <span>{latest_experience?.company}</span>
+                  <span>{latest_experience?.company || staticData.personal.current_company}</span>
                 </motion.p>
               </div>
 
@@ -201,22 +200,25 @@ export default function Home() {
         </motion.section>
 
         <div>
-          {/* Experiences Section */}
-          {experiences.length > 0 ? (
-            <ExperienceSection experiences={experiences} />
-          ):
-            <NoData topic="Experiences" />
-          }
+          {/* Experiences */}
+          <HomeHeading title="Work Experiences" />
+          {experiencesLoading ? (
+            <Loader />
+          ) : experiences.length > 0 ? (
+            <ExperienceSection experiences={experiences} showHomeHeading={false} />
+          ) : (
+            <NoData />
+          )}
 
-          {/* Skills Section */}
-          <SkillSection />
-
-          {/* Blogs Section */}
-          {blogs.length > 0 ? (
-            <BlogsSection blogs={blogs} />
-          ):
-            <NoData topic="Blogs" />
-          }
+          {/* Blogs */}
+          <HomeHeading title="Blogs" />
+          {blogsLoading ? (
+            <Loader />
+          ) : blogs.length > 0 ? (
+            <BlogsSection blogs={blogs} showHomeHeading={false} />
+          ) : (
+            <NoData />
+          )}
 
           {/* Contact Section */}
           <Contact />
@@ -229,7 +231,7 @@ export default function Home() {
 export function HomeHeading({ title }: { title: React.ReactNode | string }) {
   return (
     <AnimatedHeading
-      className="w-full my-2 text-3xl font-bold text-left font-inter flex justify-center items-center"
+      className="w-full my-2 px-4 text-3xl font-bold text-left font-inter flex justify-center items-center"
       variants={headingFromLeft}
     >
       {title}

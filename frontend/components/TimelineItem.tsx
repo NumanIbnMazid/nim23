@@ -8,6 +8,7 @@ type Props = {
   company_url?: string | null
   address?: string | null
   job_type: string
+  job_location_type?: string
   duration: string
   duration_in_days: string
   description?: any | null
@@ -20,9 +21,10 @@ export function TimelineItem({
   company_url = null,
   address = null,
   job_type,
+  job_location_type,
   duration,
   duration_in_days,
-  description = null
+  description = null,
 }: Props) {
   return (
     <>
@@ -54,8 +56,7 @@ export function TimelineItem({
                       width={60}
                       height={60}
                       alt={company}
-                      quality={100}
-                      priority
+                      quality={50}
                     />
                     <p className="p-0 m-0 mt-4">{company}</p>
                   </a>
@@ -68,7 +69,6 @@ export function TimelineItem({
                       height={70}
                       alt={company}
                       quality={100}
-                      priority
                     />
                     <p className="p-0 m-0 mt-4">{company}</p>
                   </div>
@@ -83,7 +83,10 @@ export function TimelineItem({
               <span className="ml-2 font-light">({duration_in_days})</span>
             </p>
 
-            {job_type ? <p className="p-0 m-0 text-sm font-light text-gray-500 italic">[{job_type}]</p> : null}
+            {job_type ? <span className="p-0 m-0 text-sm font-light text-gray-500 italic">[{job_type}]</span> : null}
+            {job_location_type ? (
+              <span className="p-0 m-0 ps-2 text-sm font-light text-gray-500 italic">[{job_location_type}]</span>
+            ) : null}
           </div>
         </div>
         <div

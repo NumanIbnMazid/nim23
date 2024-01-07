@@ -4,6 +4,10 @@ import ScrollToTopButton from "../components/ScrollToTopButton"
 import Footer from "../components/Footer"
 import QRCodeContainer from "@components/QRCodeContainer"
 import Image from 'next/image'
+import BackgroundImage from "/public/images/background-image.png"
+import BackgroundAVIF from "/public/images/background.avif"
+import DarkBackgroundImage from "/public/images/dark-background-image.png"
+import DarkBackgroundAVIF from "/public/images/dark-background.avif"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [showQR, setShowQR] = useState(false)
@@ -15,28 +19,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
           <div className="w-[108rem] flex-none flex justify-end">
             <picture>
-              <source srcSet="/public/images/background.avif" type="image/avif" />
+              <source srcSet={BackgroundAVIF.toString()} type="image/avif" />
               <Image
-                src="/public/images/background-image.png"
+                src={BackgroundImage}
                 className="w-[71.75rem] flex-none max-w-none dark:hidden"
-                width={933}
-                height={933}
+                width={900}
+                height={261}
                 alt="Background Image"
-                quality={100}
+                quality={50}
                 priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}
               />
             </picture>
             <picture>
-              <source srcSet="/public/images/dark-background.avif" type="image/avif" />
+              <source srcSet={DarkBackgroundAVIF.toString()} type="image/avif" />
               <Image
-                src="/public/images/dark-background-image.png"
+                src={DarkBackgroundImage}
                 className="w-[90rem] flex-none max-w-none hidden dark:block"
-                width={933}
-                height={933}
+                width={900}
+                height={385}
                 alt="Dark Background Image"
-                quality={100}
+                quality={50}
                 priority
                 decoding="async"
                 style={{ width: "auto", height: "auto" }}

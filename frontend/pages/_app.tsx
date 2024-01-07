@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 import { DarkModeProvider } from "@context/darkModeContext"
+import { ClientIDProvider } from '@context/clientIdContext'
 import { GoogleAnalytics } from "nextjs-google-analytics"
 import { AppProps } from "next/app"
 
@@ -21,10 +22,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const start = () => {
       NProgress.start()
-    };
+    }
     const end = () => {
       NProgress.done()
-    };
+    }
     router.events.on("routeChangeStart", start)
     router.events.on("routeChangeComplete", end)
     router.events.on("routeChangeError", end)
@@ -37,12 +38,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <DarkModeProvider>
-      <Layout>
-        {process.env.NODE_ENV === "production" && (
-          <GoogleAnalytics strategy="lazyOnload" />
-        )}
-        <Component {...pageProps} />
-      </Layout>
+      <ClientIDProvider>
+        <Layout>
+          {process.env.NODE_ENV === 'production' && <GoogleAnalytics strategy="lazyOnload" />}
+          <Component {...pageProps} />
+        </Layout>
+      </ClientIDProvider>
     </DarkModeProvider>
   )
 }

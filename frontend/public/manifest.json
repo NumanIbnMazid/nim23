@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "Numan Ibn Mazid",
-  "short_name": "Numan",
+  "name": "NIM23",
+  "short_name": "NIM23",
   "description": "This is my portfolio application which you can install as a Progressive Web app.",
   "icons": [
     {
@@ -73,11 +73,6 @@
     },
     {
       "src": "screenshots/stats.png",
-      "sizes": "411x821",
-      "type": "image/gif"
-    },
-    {
-      "src": "screenshots/utilities.png",
       "sizes": "411x821",
       "type": "image/gif"
     },

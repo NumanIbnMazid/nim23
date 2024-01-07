@@ -4,21 +4,20 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
-from utils.helpers import CustomModelManager
 from utils.mixins import ModelMediaMixin, DurationMixin
-from utils.snippets import autoSlugWithFieldAndUUID, autoSlugFromUUID, image_as_base64, get_static_file_path
+from utils.snippets import autoslugFromField, autoSlugFromUUID, image_as_base64, get_static_file_path
 from utils.image_upload_helpers import (
-    get_professional_experience_company_image_path, get_skill_image_path, get_education_school_image_path, get_education_media_path,
-    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path, get_interest_image_path,
-    get_movie_image_path
+    get_professional_experience_company_image_path, get_skill_image_path,
+    get_education_school_image_path, get_education_media_path,
+    get_certification_image_path, get_certification_media_path, get_project_image_path, get_project_media_path,
+    get_interest_image_path, get_movie_image_path
 )
-from ckeditor.fields import RichTextField
 
 
 """ *************** Professional Experience *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="company")
+@autoslugFromField(fieldname="company")
 class ProfessionalExperience(models.Model, DurationMixin):
     """
     Professional Experience model.
@@ -28,7 +27,11 @@ class ProfessionalExperience(models.Model, DurationMixin):
         FULL_TIME = 'Full Time', _('Full Time')
         PART_TIME = 'Part Time', _('Part Time')
         CONTRACTUAL = 'Contractual', _('Contractual')
+
+    class JobLocationType(models.TextChoices):
+        ONSITE = 'Onsite', _('Onsite')
         REMOTE = 'Remote', _('Remote')
+        HYBRID = 'Hybrid', _('Hybrid')
 
     company = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -37,15 +40,13 @@ class ProfessionalExperience(models.Model, DurationMixin):
     address = models.CharField(max_length=254, blank=True, null=True)
     designation = models.CharField(max_length=150)
     job_type = models.CharField(max_length=20, choices=JobType.choices, default=JobType.FULL_TIME)
+    job_location_type = models.CharField(max_length=20, choices=JobLocationType.choices, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     present = models.BooleanField(default=False)
-    description = RichTextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'professional_experience'
@@ -68,7 +69,7 @@ class ProfessionalExperience(models.Model, DurationMixin):
 """ *************** Skill *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Skill(models.Model):
     """
     Skill model.
@@ -87,9 +88,6 @@ class Skill(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'skill'
@@ -112,11 +110,12 @@ class Skill(models.Model):
 # Signals
 
 @receiver(pre_save, sender=Skill)
-def generate_order(sender, instance, **kwargs):
+def generate_skill_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -139,7 +138,7 @@ def generate_order(sender, instance, **kwargs):
 """ *************** Education *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="school")
+@autoslugFromField(fieldname="school")
 class Education(models.Model, DurationMixin):
     school = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -155,9 +154,6 @@ class Education(models.Model, DurationMixin):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'education'
@@ -196,7 +192,7 @@ class EducationMedia(ModelMediaMixin):
 """ *************** Certification *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Certification(models.Model):
     title = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -211,9 +207,6 @@ class Certification(models.Model):
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'certification'
@@ -262,25 +255,22 @@ class CertificationMedia(ModelMediaMixin):
 """ *************** Project *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Project(models.Model, DurationMixin):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to=get_project_image_path, blank=True, null=True)
     short_description = models.CharField(max_length=254)
-    technology = models.TextField(blank=True, null=True)
+    technology = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     present = models.BooleanField(default=False)
     preview_url = models.URLField(blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
-    description = RichTextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'project'
@@ -318,12 +308,14 @@ class ProjectMedia(ModelMediaMixin):
 
 # Signals
 
+
 @receiver(pre_save, sender=Project)
-def generate_order(sender, instance, **kwargs):
+def generate_project_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -346,7 +338,7 @@ def generate_order(sender, instance, **kwargs):
 """ *************** Interest *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="title")
+@autoslugFromField(fieldname="title")
 class Interest(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -354,9 +346,6 @@ class Interest(models.Model):
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'interest'
@@ -379,11 +368,12 @@ class Interest(models.Model):
 # Signals
 
 @receiver(pre_save, sender=Interest)
-def generate_order(sender, instance, **kwargs):
+def generate_interest_order(sender, instance, **kwargs):
     """
     This method will generate order for new instances only.
     Order will be generated automatically like 1, 2, 3, 4 and so on.
-    If any order is deleted then it will be reused. Like if 3 is deleted then next created order will be 3 instead of 5.
+    If any order is deleted then it will be reused. Like if 3 is deleted then next created order
+    will be 3 instead of 5.
     """
     if not instance.pk:  # Only generate order for new instances
         if instance.order is None:
@@ -403,11 +393,10 @@ def generate_order(sender, instance, **kwargs):
                 instance.order = max_order + 1 if max_order is not None else 1
 
 
-
 """ *************** Movie *************** """
 
 
-@autoSlugWithFieldAndUUID(fieldname="name")
+@autoslugFromField(fieldname="name")
 class Movie(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
@@ -415,12 +404,9 @@ class Movie(models.Model):
     url = models.URLField(blank=True, null=True)
     year = models.PositiveIntegerField(blank=True, null=True)
     watched = models.BooleanField(default=True)
-    rating = models.PositiveIntegerField(blank=True, null=True)
+    rating = models.FloatField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # custom model manager
-    objects = CustomModelManager()
 
     class Meta:
         db_table = 'movie'

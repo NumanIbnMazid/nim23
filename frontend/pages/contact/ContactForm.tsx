@@ -1,33 +1,34 @@
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useDarkMode } from "@context/darkModeContext";
-import emailjs from "@emailjs/browser";
-import { motion } from "framer-motion";
+import React from "react"
+import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.min.css'
+import { useDarkMode } from "@context/darkModeContext"
+import emailjs from "@emailjs/browser"
+import { motion } from "framer-motion"
 import {
   FadeContainer,
   mobileNavItemSideways,
-} from "@content/FramerMotionVariants";
-import Ripples from "react-ripples";
-import { useRef } from "react";
-import { FormInput } from "@lib/types";
+} from "@content/FramerMotionVariants"
+import Ripples from "react-ripples"
+import { useRef } from "react"
+import { FormInput } from "@lib/types"
 
 export default function Form() {
-  const { isDarkMode } = useDarkMode();
-  const sendButtonRef = useRef<HTMLButtonElement>(null!);
-  const formRef = useRef<HTMLFormElement>(null!);
+  const { isDarkMode } = useDarkMode()
+  const sendButtonRef = useRef<HTMLButtonElement>(null!)
+  const formRef = useRef<HTMLFormElement>(null!)
 
-  const FailToastId = "failed";
+  const FailToastId = "failed"
 
   function sendEmail(e: React.SyntheticEvent) {
-    e.preventDefault();
+    e.preventDefault()
 
     const target = e.target as typeof e.target & {
-      first_name: { value: string };
-      last_name: { value: string };
-      email: { value: string };
-      subject: { value: string };
-      message: { value: string };
-    };
+      first_name: { value: string }
+      last_name: { value: string }
+      email: { value: string }
+      subject: { value: string }
+      message: { value: string }
+    }
 
     const emailData = {
       to_name: "Numan Ibn Mazid",
@@ -36,18 +37,18 @@ export default function Form() {
       email: target.email.value.trim(),
       subject: target.subject.value.trim(),
       message: target.message.value.trim(),
-    };
+    }
 
     if (!validateForm(emailData) && !toast.isActive(FailToastId))
       return toast.error("Looks like you have not filled the form", {
         toastId: FailToastId,
-      });
+      })
 
     // Making submit button disable
-    sendButtonRef.current.setAttribute("disabled", "true");
+    sendButtonRef.current.setAttribute("disabled", "true")
 
     // Creating a loading toast
-    const toastId = toast.loading("Processing ⌛");
+    const toastId = toast.loading("Processing ⌛")
 
     emailjs
       .send(
@@ -63,8 +64,8 @@ export default function Form() {
           type: "success",
           isLoading: false,
           autoClose: 3000,
-        });
-        sendButtonRef.current.removeAttribute("disabled");
+        })
+        sendButtonRef.current.removeAttribute("disabled")
       })
       .catch((err) => {
         toast.update(toastId, {
@@ -72,16 +73,16 @@ export default function Form() {
           type: "error",
           isLoading: false,
           autoClose: 3000,
-        });
-        sendButtonRef.current.removeAttribute("disabled");
-      });
+        })
+        sendButtonRef.current.removeAttribute("disabled")
+      })
   }
 
   function validateForm(data: FormInput): boolean {
     for (const key in data) {
-      if (data[key as keyof FormInput] === "") return false;
+      if (data[key as keyof FormInput] === "") return false
     }
-    return true;
+    return true
   }
 
   return (
@@ -213,8 +214,7 @@ export default function Form() {
       </motion.form>
       <ToastContainer
         theme={isDarkMode ? "dark" : "light"}
-        style={{ zIndex: 1000 }}
       />
     </>
-  );
+  )
 }

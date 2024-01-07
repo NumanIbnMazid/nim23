@@ -152,6 +152,7 @@ coverage
 
 # next.js
 .next/
+.next.zip
 out/
 
 # production
@@ -175,18 +176,18 @@ meta.md
 
 
 # rss
-frontend/public/rss
-frontend/public/feed.xml
-frontend/public/sitemap.xml
+# frontend/public/rss
+# frontend/public/feed.xml
+# frontend/public/sitemap.xml
 
 
-# pwa
-frontend/public/sw.js
-frontend/public/workbox-*.js
-frontend/public/worker-*.js
-frontend/public/sw.js.map
-frontend/public/workbox-*.js.map
-frontend/public/worker-*.js.map
+# # pwa
+# frontend/public/sw.js
+# frontend/public/workbox-*.js
+# frontend/public/worker-*.js
+# frontend/public/sw.js.map
+# frontend/public/workbox-*.js.map
+# frontend/public/worker-*.js.map
 
 
 store

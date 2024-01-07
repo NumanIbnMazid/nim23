@@ -1,10 +1,15 @@
 import os
 from importlib import reload
 from django.db import IntegrityError
-from config import wsgi
+from project import wsgi
+from config import config
 
 # Load django application
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+if config.MODE == "PRODUCTION":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.production")
+else:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.development")
+
 application = reload(wsgi)
 
 # Create Django Super User

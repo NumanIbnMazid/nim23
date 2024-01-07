@@ -4,7 +4,7 @@ from utils.mixins import CustomModelAdminMixin
 from portfolios.models import (
     ProfessionalExperience, Skill, Education, EducationMedia, Certification, CertificationMedia, Project, ProjectMedia, Interest, Movie
 )
-from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
 
 
 # ----------------------------------------------------
@@ -13,7 +13,7 @@ from ckeditor.widgets import CKEditorWidget
 
 class ProfessionalExperienceAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': CKEditorWidget},
+        models.TextField: {'widget': TinyMCE()},
     }
     class Meta:
         model = ProfessionalExperience
@@ -76,6 +76,9 @@ class ProjectMediaAdmin(admin.StackedInline):
 
 class ProjectAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     inlines = [ProjectMediaAdmin]
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
+    }
 
     class Meta:
         model = Project

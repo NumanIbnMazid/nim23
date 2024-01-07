@@ -2,13 +2,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 
 const propertyId = process.env.GA_PROPERTY_ID;
-const DAYS = 7;
+const DAYS = 28;
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {
     client_email: process.env.GA_CLIENT_EMAIL,
     private_key: process.env.GA_PRIVATE_KEY?.replace(/\n/gm, '\n'),
   },
+  projectId: process.env.GA_PROJECT_ID,
 });
 
 export default async function handler(
@@ -48,6 +49,6 @@ export default async function handler(
 
   return res.status(200).json({
     totalVisitors,
-    days: 7,
+    days: DAYS,
   });
 }

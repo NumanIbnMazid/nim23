@@ -42,13 +42,7 @@ export default function Document() {
         />
 
         {/* Inter */}
-        <link
-          rel="preload"
-          href="/fonts/Inter-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        <link rel="preload" href="/fonts/Inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* Sarina */}
         <link
           rel="preload"
@@ -63,5 +57,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }

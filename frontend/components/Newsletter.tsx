@@ -1,35 +1,45 @@
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { AiOutlineSend } from "react-icons/ai";
-import { useDarkMode } from "@context/darkModeContext";
+import { useState } from "react"
+import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
+import { AiOutlineSend } from "react-icons/ai"
+import { useDarkMode } from "@context/darkModeContext"
+import { subscribeToNewsletter } from "@lib/backendAPI"
 
 export default function Newsletter() {
-  const { isDarkMode } = useDarkMode();
-  const [email, setEmail] = useState("");
+  const { isDarkMode } = useDarkMode()
+  const [email, setEmail] = useState("")
 
   async function subscribeNewsLetter(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      fetch(process.env.NEXT_PUBLIC_EMAIL_LIST + email, {
-        mode: "no-cors",
-      });
+      toast.info('Please wait ...')
+
+      const newsLetterSubscriptionResponse = await subscribeToNewsletter(email)
+
+      // Dismiss the previous toast
+      toast.dismiss()
+
+      if (newsLetterSubscriptionResponse.success === false) {
+        toast.error(newsLetterSubscriptionResponse.error.error_details)
+      } else if (newsLetterSubscriptionResponse.success === true) {
+        toast.success(newsLetterSubscriptionResponse.message)
+      } else {
+        toast.error('Something went wrong. Please try again later.')
+      }
     } catch (error) {
-      console.error(error);
+      toast.error('Something went wrong. Please try again later.')
     }
-    toast.success("You have been added to my mailing list.");
-    setEmail("");
+    setEmail('')
   }
 
   return (
     <>
       <div className="flex flex-col w-full gap-4 p-4 my-10 bg-white rounded-lg font-barlow ring-2 ring-gray-400 dark:bg-black dark:border-neutral-600 print:hidden">
-        <h2 className="text-2xl font-bold dark:text-white !my-0">
-          Numan Ibn Mazid's Newsletter
-        </h2>
+        <h2 className="text-2xl font-bold dark:text-white !my-0">Numan Ibn Mazid's Newsletter</h2>
         <p className="text-gray-600 dark:text-gray-300 font-medium !my-0">
-          Subscribe to my Personal Blog Newsletter for professional insights, industry trends, and valuable tips.
-          Stay updated and take your personal and professional growth to new heights. Join now (Spam Free)!
+          Subscribe to my Personal Blog Newsletter for professional insights, industry trends, and valuable tips. Stay
+          updated and take your personal and professional growth to new heights. Join now (Spam Free)!
         </p>
 
         <form className="relative w-full" onSubmit={subscribeNewsLetter}>
@@ -39,7 +49,7 @@ export default function Newsletter() {
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="example@email.com"
+            placeholder="john.doe@email.com"
             required={true}
           />
 
@@ -55,11 +65,7 @@ export default function Newsletter() {
         </form>
       </div>
 
-      <ToastContainer
-        theme={isDarkMode ? "dark" : "light"}
-        style={{ zIndex: 1000 }}
-        autoClose={3000}
-      />
+      <ToastContainer theme={isDarkMode ? 'dark' : 'light'} style={{ zIndex: 1000 }} autoClose={false} />
     </>
-  );
+  )
 }

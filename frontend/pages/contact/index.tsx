@@ -5,10 +5,18 @@ import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
 import React from 'react'
 import { opacityVariant, popUpFromBottomForText, FadeContainer } from '@content/FramerMotionVariants'
 import ContactForm from './ContactForm'
+import Metadata from '@components/MetaData'
+import pageMeta from '@content/meta'
 
-export default function ProjectDetailsSection() {
+export default function ContactSection() {
   return (
     <>
+      <Metadata
+        title="Contact"
+        description={pageMeta.contact.description}
+        previewImage={pageMeta.contact.image}
+        keywords={pageMeta.contact.keywords}
+      />
       <div className="dark:bg-darkPrimary dark:text-gray-100">
         <motion.section
           initial="hidden"

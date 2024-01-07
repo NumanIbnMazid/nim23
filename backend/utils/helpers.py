@@ -65,11 +65,13 @@ class ResponseWrapper(Response, JSONRenderer):
                     else "Failed to retrieve the object!"
                 )
             else:
-                message = (
-                    "SUCCESS!"
-                    if response_success
-                    else "FAILED!"
-                )
+                message = message
+        else:
+            message = (
+                "SUCCESS!"
+                if response_success
+                else "FAILED!"
+            )
 
         output_data = {
             "success": response_success,
@@ -79,11 +81,11 @@ class ResponseWrapper(Response, JSONRenderer):
             "data": data,
             "message": message
             if message
-            else str(error_message)
-            if error_message
             else "Success"
             if response_success
-            else "Failed",
+            else "Failed"
+            if response_success == False
+            else None,
             "error": {"code": error_code, "error_details": error_message},
         }
         if data_type is not None:
@@ -112,6 +114,21 @@ def custom_response_wrapper(viewset_cls):
 
     viewset_cls.finalize_response = wrapped_finalize_response
     return viewset_cls
+
+
+def handle_invalid_serializer(exception_obj, message=None):
+    error_messages = []
+    for field, errors in exception_obj.detail.items():
+        field_errors = [str(error) for error in errors]
+        error_messages.append(f"{field}: {' '.join(field_errors)}")
+
+    response_message = " ".join(error_messages)
+
+    return ResponseWrapper(
+        message=message,
+        error_message=response_message,
+        status=400
+    )
 
 
 class CustomModelManager(models.Manager):

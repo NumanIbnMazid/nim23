@@ -1,78 +1,108 @@
 import MDXContent from "@lib/MDXContent"
 import pageMeta from "@content/meta"
-import { MovieType, PostType, ExperienceType, EducationType, ProjectType } from "@lib/types"
+import {
+  PostType,
+  ExperienceType,
+  EducationType,
+  SkillType,
+  CertificateType,
+  InterestType,
+} from '@lib/types'
 import StaticPage from "@components/StaticPage"
-import { getAllExperiences, getAllEducations, getAllProjects, getAllMovies } from "@lib/backendAPI"
+import {
+  getAllExperiences,
+  getAllEducations,
+  getAllSkills,
+  getAllCertificates,
+  getAllInterests,
+} from '@lib/backendAPI'
 import { useEffect, useState } from 'react'
-import MovieCard from "@components/MovieCard"
 import { motion } from "framer-motion"
-import { FadeContainer, opacityVariant } from "@content/FramerMotionVariants"
-import AnimatedDiv from "@components/FramerMotion/AnimatedDiv"
-import SkillSection from "@components/Home/SkillSection"
-import ExperienceSection from "@components/Home/ExperienceSection"
-import Education from "@components/Education"
-import Certificates from "@components/Certificates"
-import ProjectSection from "@components/ProjectSection"
-import InterestSection from "@components/Interest"
-import Loader from "@components/Loader"
+import { FadeContainer } from "@content/FramerMotionVariants"
+import Loader from '@components/Loader'
 import NoData from "@components/NoData"
+import { HomeHeading } from '../pages'
+import AnimatedHeading from '@components/FramerMotion/AnimatedHeading'
+import { headingFromLeft } from '@content/FramerMotionVariants'
+import dynamic from 'next/dynamic'
+
+const SkillSection = dynamic(() => import('@components/Home/SkillSection'), {
+  loading: () => <Loader />,
+})
+
+const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
+  loading: () => <Loader />,
+})
+
+const Education = dynamic(() => import('@components/Education'), {
+  loading: () => <Loader />,
+})
+
+const Certificates = dynamic(() => import('@components/Certificates'), {
+  loading: () => <Loader />,
+})
+
+const InterestSection = dynamic(() => import('@components/Interest'), {
+  loading: () => <Loader />,
+})
 
 
 export default function About({
   about
 }: {
   about: PostType
-  movies: MovieType[]
 }) {
-  const [isLoading, setIsLoading] = useState(true)
+
+  // Loaders
+  const [experiencesLoading, setExperiencesLoading] = useState(true)
+  const [skillsLoading, setSkillsLoading] = useState(true)
+  const [educationsLoading, setEducationsLoading] = useState(true)
+  const [certificatesLoading, setCertificatesLoading] = useState(true)
+  const [interestsLoading, setInterestsLoading] = useState(true)
 
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
+  const [skills, setSkills] = useState<SkillType[]>([])
   const [educations, setEducations] = useState<EducationType[]>([])
-  const [projects, setProjects] = useState<ProjectType[]>([])
-  const [movies, setMovies] = useState([])
+  const [certificates, setCertificates] = useState<CertificateType[]>([])
+  const [interests, setInterests] = useState<InterestType[]>([])
 
   const fetchExperiences = async () => {
     const experiencesData: ExperienceType[] = await getAllExperiences()
     setExperiences(experiencesData)
+    setExperiencesLoading(false)
+  }
+
+  const fetchSkills = async () => {
+    const skillsData: SkillType[] = await getAllSkills()
+    setSkills(skillsData)
+    setSkillsLoading(false)
+  }
+
+  const fetchCertificates = async () => {
+    const certificatesData: CertificateType[] = await getAllCertificates()
+    setCertificates(certificatesData)
+    setCertificatesLoading(false)
+  }
+
+  const fetchInterests = async () => {
+    const interestsData = await getAllInterests()
+    setInterests(interestsData)
+    setInterestsLoading(false)
   }
 
   const fetchEducations = async () => {
     const educationsData: EducationType[] = await getAllEducations()
     setEducations(educationsData)
-  }
-
-  const fetchProjects = async () => {
-    const projectsData: ProjectType[] = await getAllProjects()
-    setProjects(projectsData)
-  }
-
-  const fetchMovies = async () => {
-    const moviesData = await getAllMovies()
-    setMovies(moviesData)
+    setEducationsLoading(false)
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        fetchExperiences(),
-        fetchEducations(),
-        fetchProjects(),
-        fetchMovies(),
-      ]);
-
-      setIsLoading(false)
-    }
-
-    fetchData()
+    fetchExperiences()
+    fetchEducations()
+    fetchSkills()
+    fetchCertificates()
+    fetchInterests()
   }, [])
-
-  // ******* Loader Starts *******
-  if (isLoading === true) {
-    return (
-      <Loader />
-    )
-  }
-  // ******* Loader Ends *******
 
   return (
     <>
@@ -87,58 +117,65 @@ export default function About({
         >
           <div>
             {/* Experiences */}
-            {experiences.length > 0 ? (
-              <ExperienceSection experiences={experiences} />
-            ):
-              <NoData topic="Experiences" />
-            }
+            <AnimatedHeading
+              className="w-full my-2 text-3xl font-bold text-left font-inter flex justify-center items-center"
+              variants={headingFromLeft}
+            >
+              <span className="mr-2">Work Experiences</span>
+              <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">
+                {experiences.length}
+              </span>
+            </AnimatedHeading>
+            {experiencesLoading ? (
+              <Loader />
+            ) : experiences.length > 0 ? (
+              <ExperienceSection experiences={experiences} showHomeHeading={false} />
+            ) : (
+              <NoData />
+            )}
+
             {/* Skills */}
-            <SkillSection />
-            {educations.length > 0 ? (
-              <Education educations={educations} />
-            ):
-              <NoData topic="Educations" />
-            }
+            <HomeHeading title="Skills" />
+            {skillsLoading ? (
+              <Loader />
+            ) : skills.length > 0 ? (
+              <SkillSection skills={skills} showHomeHeading={false} />
+            ) : (
+              <NoData />
+            )}
+
+            {/* Educations */}
+            <HomeHeading title="Educations" />
+            {educationsLoading ? (
+              <Loader />
+            ) : educations.length > 0 ? (
+              <Education educations={educations} showHomeHeading={false} />
+            ) : (
+              <NoData />
+            )}
+
             {/* Certificates */}
-            <Certificates />
-            {/* Projects */}
-            {projects.length > 0 ? (
-              <ProjectSection projects={projects} />
-            ):
-              <NoData topic="Projects" />
-            }
+            <HomeHeading title="Certificates" />
+            {certificatesLoading ? (
+              <Loader />
+            ) : certificates.length > 0 ? (
+              <Certificates certificates={certificates} showHomeHeading={false} />
+            ) : (
+              <NoData />
+            )}
+
             {/* Interests */}
-            <InterestSection />
+            <HomeHeading title="Interests" />
+            {interestsLoading ? (
+              <Loader />
+            ) : interests.length > 0 ? (
+              <InterestSection interests={interests} showHomeHeading={false} />
+            ) : (
+              <NoData />
+            )}
           </div>
         </motion.section>
-
-        {/* Movies */}
-        {movies.length > 0 ? (
-          <div className="-mt-5 pageTop print:hidden">
-            <motion.h3
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={opacityVariant}
-              className="w-full my-2 text-3xl font-bold font-inter flex justify-center items-center text-slate-500 dark:text-slate-100"
-            >
-              Recent watched Movies & TV Series
-            </motion.h3>
-
-            <AnimatedDiv
-              variants={FadeContainer}
-              className="flex items-center gap-2 pt-10 pb-5 overflow-x-scroll md:gap-4 horizontal-scrollbar"
-            >
-              {movies.map((movie: MovieType) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </AnimatedDiv>
-          </div>
-        ) :
-          <NoData topic="Movies" />
-        }
       </div>
-
     </>
   )
 }

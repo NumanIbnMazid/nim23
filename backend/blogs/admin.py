@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from blogs.models import BlogCategory,Blog, BlogViewIP, BlogComment
+from blogs.models import BlogCategory, Blog, BlogView, BlogComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
 
@@ -12,6 +12,7 @@ from tinymce.widgets import TinyMCE
 class BlogCategoryAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = BlogCategory
+
 
 admin.site.register(BlogCategory, BlogCategoryAdmin)
 
@@ -26,19 +27,8 @@ class BlogAdmin(admin.ModelAdmin):
     }
 
     list_display = (
-        'title', 'category', 'image', 'overview', 'author', 'tags', 'get_reading_time',
-        'get_total_words', 'status', 'order', 'get_table_of_contents'
+        'title', 'category', 'image', 'overview', 'author', 'tags', 'status', 'order', 'get_table_of_contents'
     )
-
-    def get_reading_time(self, obj):
-        return obj.get_reading_time()
-
-    get_reading_time.short_description = 'Reading Time'
-
-    def get_total_words(self, obj):
-        return obj.get_total_words()
-
-    get_total_words.short_description = 'Total Words'
 
     def get_table_of_contents(self, obj):
         return obj.get_table_of_contents()
@@ -48,18 +38,20 @@ class BlogAdmin(admin.ModelAdmin):
     class Meta:
         model = Blog
 
+
 admin.site.register(Blog, BlogAdmin)
 
 
 # ----------------------------------------------------
-# *** BlogViewIP ***
+# *** BlogView ***
 # ----------------------------------------------------
 
-class BlogViewIPAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+class BlogViewAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
-        model = BlogViewIP
+        model = BlogView
 
-admin.site.register(BlogViewIP, BlogViewIPAdmin)
+
+admin.site.register(BlogView, BlogViewAdmin)
 
 
 # ----------------------------------------------------
@@ -69,5 +61,6 @@ admin.site.register(BlogViewIP, BlogViewIPAdmin)
 class BlogCommentAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     class Meta:
         model = BlogComment
+
 
 admin.site.register(BlogComment, BlogCommentAdmin)

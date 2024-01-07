@@ -10,11 +10,11 @@
               </url>
             
               <url>
-                  <loc>https://nim23.com/certificates</loc>
+                  <loc>https://nim23.com</loc>
               </url>
             
               <url>
-                  <loc>https://nim23.com</loc>
+                  <loc>https://nim23.com/media</loc>
               </url>
             
               <url>
@@ -23,10 +23,6 @@
             
               <url>
                   <loc>https://nim23.com/stats</loc>
-              </url>
-            
-              <url>
-                  <loc>https://nim23.com/utilities</loc>
               </url>
             
     </urlset>

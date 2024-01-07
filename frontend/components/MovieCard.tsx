@@ -18,10 +18,11 @@ export default function MovieCard({ movie }: { movie: MovieType }) {
             className="object-cover transition-transform rounded-2xl lg:group-hover:scale-105"
             src={movie.image}
             alt={movie.name}
-            width={600}
-            height={720}
+            width={1000}
+            height={1000}
             style={{
               height: "100%",
+              width: "100%",
             }}
           />
         </div>

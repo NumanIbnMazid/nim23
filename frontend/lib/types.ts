@@ -8,8 +8,9 @@ import { ReadTimeResults } from "reading-time"
 /* Static Data Types */
 export type PersonalStaticData = {
   name: string,
-  profession: string,
-  current_position: string,
+  nickname: string,
+  current_designation: string,
+  current_company: string,
   about: string
 }
 
@@ -107,16 +108,17 @@ export type ExperienceType = {
   slug: string
   company: string
   company_image: string
-  company_url: string
-  address: string
+  company_url?: string
+  address?: string
   designation: string
   job_type: string
+  job_location_type?: string
   start_date: string
-  end_date: string
+  end_date?: string
   duration: string
   duration_in_days: string
-  currently_working: string
-  description: string
+  currently_working?: string
+  description?: string
   created_at: string
   updated_at: string
 }
@@ -126,7 +128,7 @@ export type SkillType = {
   slug: string
   title: string
   image: string
-  level: string
+  level?: string
   order: number
   created_at: string
   updated_at: string
@@ -136,7 +138,7 @@ export type EducationType = {
   id: number
   slug: string
   school: string
-  image?: string
+  image: string
   degree: string
   address?: string
   field_of_study?: string
@@ -205,8 +207,12 @@ export type CodeSnippetType = {
   overview?: string
   image: string
   language?: string
+  tags?: string
   content: string
   order: number
+  total_views: number
+  total_likes: number
+  user_liked: boolean
   created_at: string
   updated_at: string
 }
@@ -236,10 +242,11 @@ export type BlogType = {
   author: string
   tags?: string
   status: string
-  reading_time?: string
-  total_words?: number
   order: number
-  table_of_contents: TableOfContents[]
+  table_of_contents?: TableOfContents[]
+  total_views: number
+  total_likes: number
+  user_liked: boolean
   created_at: string
   updated_at: string
 }
@@ -285,6 +292,12 @@ export type FormInput = {
   message: string
 }
 
+export type CommentInput = {
+  name: string
+  email: string
+  comment: string
+}
+
 export type SpotifyAccessToken = {
   access_token: string
 }
@@ -305,13 +318,13 @@ export type PageData = {
 export type PageMeta = {
   home: PageData
   stats: PageData
-  utilities: PageData
   blogs: PageData
-  bookmark: PageData
   certificates: PageData
   projects: PageData
   about: PageData
+  media: PageData
   privacy: PageData
+  contact: PageData
   snippets: PageData
 }
 
@@ -320,10 +333,63 @@ export type MovieType = {
   slug: string
   name: string
   image: string
-  url: string
-  year: number
+  url?: string
+  year?: number
   watched: boolean
-  rating: number
+  rating?: number
   created_at: string
   updated_at: string
+}
+
+export type YoutubeVideoType = {
+  id: {
+    videoId: string
+  }
+  snippet: {
+    title: string
+    description: string
+    thumbnails: {
+      default: {
+        url: string
+        width: number
+        height: number
+      }
+      medium: {
+        url: string
+        width: number
+        height: number
+      }
+      high: {
+        url: string
+        width: number
+        height: number
+      }
+    }
+    publishedAt: string
+  },
+  nextPageToken: string,
+  prevPageToken: string,
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
+  }
+}
+
+
+export type ViewsType = {
+  total_views: number
+  total_likes: number
+  liked: boolean
+}
+
+export type LikeStatusType = {
+  liked : boolean
+}
+
+
+export type CommentType = {
+  name: string
+  email: string
+  comment: string
+  timestamp: string
 }

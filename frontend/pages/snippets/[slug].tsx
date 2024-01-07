@@ -70,8 +70,7 @@ export default function SnippetPage({
       {isLoading ? (
         <Loader />
       ) : code_snippet ? (
-        <SnippetLayout code_snippet={code_snippet}>
-        </SnippetLayout>
+        <SnippetLayout code_snippet={code_snippet} />
       ) : (
         <NoData allowSpacing={true} />
       )}

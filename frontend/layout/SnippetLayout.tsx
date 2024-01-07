@@ -19,7 +19,6 @@ export default function SnippetLayout({
   code_snippet,
 }: {
   code_snippet: CodeSnippetType,
-  children: React.ReactNode
 }) {
 
   const { currentURL } = useWindowLocation()

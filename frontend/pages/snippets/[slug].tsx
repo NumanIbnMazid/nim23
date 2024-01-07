@@ -15,10 +15,12 @@ const SnippetLayout = dynamic(() => import('@layout/SnippetLayout'), {
 
 export default function SnippetPage({
   error,
-  slug
+  slug,
+  codeSnippetData
 }: {
   error: boolean
   slug: string
+  codeSnippetData: CodeSnippetType
 }) {
   if (error) return <PageNotFound />
 
@@ -42,7 +44,7 @@ export default function SnippetPage({
     return strippedText
   }
 
-  const snippetOverview = code_snippet?.overview ? stripHtml(code_snippet.overview) : undefined
+  const snippetOverview = codeSnippetData?.overview ? stripHtml(codeSnippetData.overview) : undefined
 
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
@@ -55,34 +57,23 @@ export default function SnippetPage({
     fetchData()
   }, [slug])
 
-  // ******* Loader *******
-  if (isLoading === true) {
-    return <Loader />
-  }
-  // ******* Loader *******
-
-  // ******* No Data *******
-  if (!code_snippet) {
-    return <NoData allowSpacing={true} />
-  }
-  // ******* No Data *******
-
 
   return (
     <>
       <Metadata
-        title={code_snippet.title}
+        title={codeSnippetData.title || pageMeta.snippets.title}
         description={snippetOverview || pageMeta.snippets.description}
-        previewImage={code_snippet.image || pageMeta.snippets.image}
-        keywords={`${code_snippet.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
+        previewImage={codeSnippetData.image || pageMeta.snippets.image}
+        keywords={`${codeSnippetData.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
       />
 
-      {code_snippet ? (
-
+      {isLoading ? (
+        <Loader />
+      ) : code_snippet ? (
         <SnippetLayout code_snippet={code_snippet}>
         </SnippetLayout>
       ) : (
-        <Loader />
+        <NoData allowSpacing={true} />
       )}
     </>
   )
@@ -91,9 +82,11 @@ export default function SnippetPage({
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
+  const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails('1', slug)
   return {
     props: {
       slug,
+      codeSnippetData
     },
   }
 }

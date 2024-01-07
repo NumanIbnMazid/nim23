@@ -142,7 +142,7 @@ export default function BlogLayout({
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
       {/* TOC */}
-      {blog.table_of_contents.length > 0 && (
+      {blog.table_of_contents != null && blog.table_of_contents.length > 0 && (
         <div className="hide-on-print">
           <TableOfContents
             isTOCActive={isTOCActive}
@@ -157,8 +157,8 @@ export default function BlogLayout({
         className="p-5 sm:pt-10 relative font-barlow prose dark:prose-invert md:ml-[30%] lg:ml-[30%] print:!mx-auto bg-darkWhitePrimary dark:bg-darkPrimary"
         style={{
           maxWidth: '900px',
-          opacity: `${isTOCActive} && "0.3"`,
-          margin: `${blog.table_of_contents.length <= 0} && "auto"`,
+          opacity: isTOCActive ? "0.3" : "1",
+          margin: blog?.table_of_contents && blog.table_of_contents.length <= 0 ? "auto" : undefined,
         }}
       >
         <ScrollProgressBar />

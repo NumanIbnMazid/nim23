@@ -243,7 +243,7 @@ export type BlogType = {
   tags?: string
   status: string
   order: number
-  table_of_contents: TableOfContents[]
+  table_of_contents?: TableOfContents[]
   total_views: number
   total_likes: number
   user_liked: boolean

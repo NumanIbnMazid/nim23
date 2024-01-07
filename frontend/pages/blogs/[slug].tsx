@@ -12,7 +12,7 @@ const BlogLayout = dynamic(() => import('@layout/BlogLayout'), {
   loading: () => <Loader />,
 })
 
-export default function BlogDetails({ slug }: { slug: string }) {
+export default function BlogDetails({ slug, blogData }: { slug: string, blogData: BlogType }) {
 
   const [isLoading, setIsLoading] = useState(true)
   const { clientID } = useClientID()
@@ -26,7 +26,7 @@ export default function BlogDetails({ slug }: { slug: string }) {
     return strippedText
   }
 
-  const blogOverview = blog?.overview ? stripHtml(blog.overview) : undefined
+  const blogOverview = blogData?.overview ? stripHtml(blogData.overview) : undefined
 
   const fetchProfileInfo = async () => {
     const profileData: ProfileType = await getProfileInfo()
@@ -51,37 +51,33 @@ export default function BlogDetails({ slug }: { slug: string }) {
     fetchData()
   }, [slug])
 
-  // ******* Loader *******
-  if (isLoading === true) {
-    return <Loader />
-  }
-  // ******* Loader *******
-
-  // ******* No Data *******
-  if (!blog) {
-    return <NoData allowSpacing={true} />
-  }
-  // ******* No Data *******
-
   return (
     <>
       <MetaData
-        title={blog.title}
+        title={blogData.title || pageMeta.blogs.title}
         description={blogOverview || pageMeta.blogs.description}
-        previewImage={pageMeta.blogs.image}
-        keywords={blog.tags || pageMeta.blogs.keywords}
+        previewImage={blogData.image || pageMeta.blogs.image}
+        keywords={blogData.tags || pageMeta.blogs.keywords}
       />
 
-      {blog && profileInfo ? <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout> : null}
+      {isLoading ? (
+        <Loader />
+      ) : blog && profileInfo ? (
+        <BlogLayout blog={blog} profileInfo={profileInfo}></BlogLayout>
+      ) : (
+        <NoData allowSpacing={true} />
+      )}
     </>
   )
 }
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
+  const blogData: BlogType = await getBlogDetails('1', slug)
   return {
     props: {
-      slug
+      slug,
+      blogData
     }
   }
 }

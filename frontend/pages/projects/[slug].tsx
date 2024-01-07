@@ -18,7 +18,7 @@ import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 import * as LB from "@utils/yetAnotherlightboxImports"
 
-export default function ProjectDetailsSection({ slug }: { slug: string }) {
+export default function ProjectDetailsSection({ slug, projectData }: { slug: string, projectData: ProjectType }) {
   const [isLoading, setIsLoading] = useState(true)
   const [project, setProject] = useState<ProjectType>()
   const [bannerLightBoxOpen, setBannerLightBoxOpen] = React.useState(false)
@@ -63,27 +63,18 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
     fetchData()
   }, [slug])
 
-  // ******* Loader *******
-  if (isLoading === true) {
-    return <Loader />
-  }
-  // ******* Loader *******
-
-  // ******* No Data *******
-  if (!project) {
-    return <NoData allowSpacing={true} />
-  }
-  // ******* No Data *******
-
   return (
     <>
       <Metadata
-        title={project.title}
-        description={project.short_description || pageMeta.projects.description}
-        previewImage={project.image || pageMeta.projects.image}
-        keywords={`${project.technology || 'python project'}, ${pageMeta.projects.keywords}`}
+        title={projectData.title || pageMeta.projects.title}
+        description={projectData.short_description || pageMeta.projects.description}
+        previewImage={projectData.image || pageMeta.projects.image}
+        keywords={`${projectData.technology || 'python project'}, ${pageMeta.projects.keywords}`}
       />
-      {project && (
+
+      {isLoading ? (
+        <Loader />
+      ) : project ? (
         <div className="dark:text-gray-100">
           <motion.section
             initial="hidden"
@@ -246,7 +237,10 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
             </section>
           </motion.section>
         </div>
+      ) : (
+        <NoData allowSpacing={true} />
       )}
+
 
       {/* Banner Lightbox Start */}
       <LB.Lightbox
@@ -263,7 +257,7 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
       {/* Banner Lightbox End */}
 
       {/* Media LightBox Start */}
-      {project.project_media?.length ? (
+      {project?.project_media?.length ? (
         <LB.Lightbox
           plugins={[LB.Zoom, LB.Share, LB.Fullscreen, LB.Download, LB.Captions]}
           counter={{ container: { style: { top: '3%' } } }}
@@ -286,9 +280,11 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
+  const projectData: ProjectType = await getProjectDetails(slug)
   return {
     props: {
       slug,
+      projectData
     },
   }
 }

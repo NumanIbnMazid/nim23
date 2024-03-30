@@ -63,6 +63,12 @@ export default function BlogLayout({
     // Hide the TOC
     tocComponent!.classList.add('hide-on-print')
 
+    // Store the original classes of the author section
+    const authorSection = document.querySelector('.author')
+    const authorOriginalClasses: string = authorSection !== null ? authorSection.classList.value : ''
+    // Remove all classes of the author section
+    authorSection?.setAttribute('class', '')
+
     const style = document.createElement('style')
     style.textContent = `
     @media print {
@@ -93,6 +99,9 @@ export default function BlogLayout({
 
     // Show the TOC
     tocComponent!.classList.remove('hide-on-print')
+
+    // Set back the original classes of auther section
+    authorSection?.setAttribute('class', authorOriginalClasses)
 
     // Remove the CSS class and clean up the added style tag
     codeElements.forEach((codeElement) => {
@@ -174,13 +183,14 @@ export default function BlogLayout({
             className="rounded-xl shadow filter !m-0"
           />
         </div>
+        {/* Blog Title */}
         <h1 className="text-center text-3xl font-bold tracking-tight text-black md:text-5xl dark:text-white mt-10">
           {blog.title}
         </h1>
-
+          
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
-            <div className={`${blogInfoFull ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px]' : ''}`}>
+            <div className={`${blogInfoFull ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px] author' : ''}`}>
               {blog.author === 'Numan Ibn Mazid' && profileInfo.image !== null && (
                 <motion.div
                   variants={popUp}
@@ -252,7 +262,7 @@ export default function BlogLayout({
             )}
 
             {blog.tags && (
-              <div className="flex flex-wrap items-center gap-1">
+              <div className="flex flex-wrap items-center gap-1 hide-on-print">
                 <span className="text-base text-gray-500">Tags: </span>
                 {blog.tags.split(',').map((tag, index) => {
                   return (
@@ -286,7 +296,7 @@ export default function BlogLayout({
         </AnimatedDiv>
 
         {/* Like Button */}
-        <div>
+        <div className='print:hidden'>
           <div className="flex items-center w-full mt-10 mb-5">
             <div className="cursor-pointer">
               {fakeLikeStatus === true ? (

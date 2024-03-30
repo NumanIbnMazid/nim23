@@ -96,6 +96,7 @@
   - Use SWR for Data Fetching.
   - Investigate on app routes and get the differences between app and pages routes.
   - On every details page like blog details, project details, details api is calling twice. Once in getServersideProps and another in useEffect. Fix it. It is initially done because of dynamic meta tags issue. In server side props or any other server side function we don't have acces of useContext or localstorage. So we cannot use method `useClientID`. Now we are passing hardcoded client id 1. But it is not a good practice. So we need to fix it.
+  - Create a installation guide for the project on README.md.
 
 
 ## Improvement

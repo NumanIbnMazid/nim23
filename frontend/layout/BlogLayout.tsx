@@ -245,7 +245,7 @@ export default function BlogLayout({
               )}
 
               {/* Total Views and Likes */}
-              <div className="flex flex-wrap items-center gap-4 w-fit">
+              <div className="flex flex-wrap items-center gap-4 w-fit print:hidden">
                 <div className="flex flex-wrap items-center gap-2">
                   <AiFillEye className="w-4 h-4" />
                   <span className="text-base text-gray-500">{totalViews}</span>

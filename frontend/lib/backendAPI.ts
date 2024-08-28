@@ -1,11 +1,23 @@
 
 const BACKEND_API_BASE_URL = process.env.BACKEND_API_BASE_URL
-const BACKEND_API_TOKEN = process.env.BACKEND_API_TOKEN
+export const BACKEND_API_TOKEN = process.env.BACKEND_API_TOKEN
+
+// *** ====================== BACKEND URLs ====================== ***
+// Blogs URL
+const BLOGS_PATH = "blogs/"
+export const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
+
+
+
+
+
+
+
 
 // *** PROFILE ***
 // Profile URL
 const PROFILE_PATH = "users/get_portfolio_user/"
-const PROFILE_ENDPOINT = BACKEND_API_BASE_URL + PROFILE_PATH
+const PROFILE_ENDPOINT = "http://localhost:8000/api/" + PROFILE_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve Portfolio User Information.
@@ -310,10 +322,6 @@ export const getCodeSnippetDetails = async (clientID: string, slug: string) => {
 
 // *** BLOGS ***
 
-// Blogs URL
-const BLOGS_PATH = "blogs/"
-const BLOGS_ENDPOINT = BACKEND_API_BASE_URL + BLOGS_PATH
-
 /**
  * Makes a request to the BACKEND API to retrieve all Blogs Data.
  */
@@ -346,29 +354,29 @@ export const getAllBlogs = async (clientID: string, length?: number | undefined)
   }
 }
 
-export const getBlogDetails = async (clientID: string, slug: string) => {
-  try {
-    const blogDetails = await fetch(
-      BLOGS_ENDPOINT + slug + "/",
-      {
-        headers: {
-          Authorization: `Token ${BACKEND_API_TOKEN}`,
-          ClientID: clientID
-        }
-      }
-    )
+// export const getBlogDetails = async (clientID: string, slug: string) => {
+//   try {
+//     const blogDetails = await fetch(
+//       BLOGS_ENDPOINT + slug + "/",
+//       {
+//         headers: {
+//           Authorization: `Token ${BACKEND_API_TOKEN}`,
+//           ClientID: clientID
+//         }
+//       }
+//     )
 
-    if (blogDetails.ok) {
-      const responseData = await blogDetails.json()
-      return responseData.data
-    } else {
-      const errorMessage = `Error fetching Blog Details: ${blogDetails.status} ${blogDetails.statusText}`
-      console.log(errorMessage)
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
+//     if (blogDetails.ok) {
+//       const responseData = await blogDetails.json()
+//       return responseData.data
+//     } else {
+//       const errorMessage = `Error fetching Blog Details: ${blogDetails.status} ${blogDetails.statusText}`
+//       console.log(errorMessage)
+//     }
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 
 // *** NEWSLETTER-SUBSCRIPTION ***
@@ -401,7 +409,7 @@ export const subscribeToNewsletter = async (email: string) => {
 
 // Blogs URL
 const BLOG_VIEWS_PATH = "blog-views/"
-const BLOG_VIEWS_ENDPOINT = BACKEND_API_BASE_URL + BLOG_VIEWS_PATH
+const BLOG_VIEWS_ENDPOINT = "http://localhost:8000/api/" + BLOG_VIEWS_PATH
 
 /**
  * Makes a POST request to the BACKEND API.
@@ -426,7 +434,7 @@ export const addBlogViews = async (clientID: string, slug: string) => {
 
 // Blogs URL
 const BLOG_LIKE_PATH = "blog-views/like/"
-const BLOG_LIKE_ENDPOINT = BACKEND_API_BASE_URL + BLOG_LIKE_PATH
+const BLOG_LIKE_ENDPOINT = "http://localhost:8000/api/" + BLOG_LIKE_PATH
 
 /**
  * Makes a POST request to the BACKEND API.
@@ -452,7 +460,7 @@ export const addBlogLike = async (clientID: string, slug: string) => {
 
 // Blogs URL
 const BLOG_COMMENT_PATH = "blog-comments/"
-const BLOG_COMMENT_ENDPOINT = BACKEND_API_BASE_URL + BLOG_COMMENT_PATH
+const BLOG_COMMENT_ENDPOINT = "http://localhost:8000/api/" + BLOG_COMMENT_PATH
 
 /**
  * Makes a POST request to the BACKEND API.
@@ -480,7 +488,7 @@ export const addBlogComment = async (name: string, email: string, comment: strin
 
 // Blog Comments URL
 const BLOG_COMMENT_LIST_PATH = "blog-comments/"
-const BLOG_COMMENT_LIST_ENDPOINT = BACKEND_API_BASE_URL + BLOG_COMMENT_LIST_PATH
+const BLOG_COMMENT_LIST_ENDPOINT = "http://localhost:8000/api/" + BLOG_COMMENT_LIST_PATH
 
 /**
  * Makes a request to the BACKEND API to retrieve all Blog Comments Data.

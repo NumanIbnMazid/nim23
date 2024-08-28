@@ -19,6 +19,7 @@ import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import useWindowSize from '@hooks/useWindowSize'
 import { addBlogLike, addBlogViews } from '@lib/backendAPI'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 export default function BlogLayout({
   blog,
@@ -31,6 +32,7 @@ export default function BlogLayout({
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
   const size = useWindowSize()
+  const [filteredClientID, setFilteredClientID] = useState("1")
   const [blogInfoFull, setBlogInfoFull] = useState(false)
   const [_likeStatus, setLikeStatus] = useState<LikeStatusType>()
   const [fakeTotalLikes, setFakeTotalLikes] = useState<number>(blog.total_likes)
@@ -41,14 +43,12 @@ export default function BlogLayout({
   const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
-    if (!clientID) return
-    const likeStatusData: LikeStatusType = await addBlogLike(clientID, slug)
+    const likeStatusData: LikeStatusType = await addBlogLike(filteredClientID, slug)
     setLikeStatus(likeStatusData)
   }
 
-  const fetchTotalViews = async (slug: string) => {
-    if (!clientID) return
-    const totalViewsData: ViewsType = await addBlogViews(clientID, slug)
+  const fetchTotalViews = async (slug: string, finalClientID: string) => {
+    const totalViewsData: ViewsType = await addBlogViews(finalClientID, slug)
     setTotalViews(totalViewsData.total_views)
   }
 
@@ -143,8 +143,10 @@ export default function BlogLayout({
   }, [size, hasCode])
 
   useEffect(() => {
-    if (blog.slug) {
-      fetchTotalViews(blog.slug)
+    const clientIDParam = clientID || getOrSetClientID()
+    setFilteredClientID(clientIDParam)
+    if (blog.slug && clientIDParam) {
+      fetchTotalViews(blog.slug, clientIDParam)
     }
   }, [])
 

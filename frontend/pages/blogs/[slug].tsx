@@ -1,5 +1,4 @@
 import { ProfileType, BlogType } from '@lib/types'
-import { getProfileInfo } from '@lib/backendAPI'
 import { useEffect, useState } from 'react'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"

@@ -15,7 +15,7 @@ export default async function handler(
       return
     }
 
-    let length = limit
+    const length = limit
     let ENDPOINT = null
     
     // Set limit if length is not undefined

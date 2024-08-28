@@ -17,7 +17,6 @@ import CommentSection from '@components/BlogComment/CommentSection'
 import CommentList from '@components/BlogComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import useWindowSize from '@hooks/useWindowSize'
-import { addBlogLike, addBlogViews } from '@lib/backendAPI'
 import { useClientID } from '@context/clientIdContext'
 import { getOrSetClientID } from '@lib/clientIDManager'
 
@@ -43,13 +42,35 @@ export default function BlogLayout({
   const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
-    const likeStatusData: LikeStatusType = await addBlogLike(filteredClientID, slug)
-    setLikeStatus(likeStatusData)
+    try {
+      const response = await fetch(`/api/blogs/likes?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(filteredClientID)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const likeStatusData: LikeStatusType = await response.json()
+      setLikeStatus(likeStatusData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchTotalViews = async (slug: string, finalClientID: string) => {
-    const totalViewsData: ViewsType = await addBlogViews(finalClientID, slug)
-    setTotalViews(totalViewsData.total_views)
+    try {
+      const response = await fetch(`/api/blogs/views?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(finalClientID)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const totalViewsData: ViewsType = await response.json()
+      setTotalViews(totalViewsData.total_views)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   let readingTime = null

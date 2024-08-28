@@ -3,30 +3,32 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AiOutlineSend } from 'react-icons/ai'
 import { useDarkMode } from '@context/darkModeContext'
-import { subscribeToNewsletter } from '@lib/backendAPI'
+
 
 export default function Newsletter() {
   const { isDarkMode } = useDarkMode()
   const [email, setEmail] = useState('')
 
+  const subscribeToNewsLetter = async (email: string) => {
+    try {
+      const response = await fetch(`/api/newsletter-subscribe?email=${encodeURIComponent(email)}`)
+
+      if (!response.ok) {
+        toast.error("Failed to subscribe nim23's newsletter!")
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      toast.success("You have successfully subscribed to nim23's newsletter!")
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
+  }
+
   async function subscribeNewsLetter(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     try {
-      toast.info('Please wait ...')
-
-      const newsLetterSubscriptionResponse = await subscribeToNewsletter(email)
-
-      // Dismiss the previous toast
-      toast.dismiss()
-
-      if (newsLetterSubscriptionResponse.success === false) {
-        toast.error(newsLetterSubscriptionResponse.error.error_details)
-      } else if (newsLetterSubscriptionResponse.success === true) {
-        toast.success(newsLetterSubscriptionResponse.message)
-      } else {
-        toast.error('Something went wrong. Please try again later.')
-      }
+      await subscribeToNewsLetter(email)
     } catch (error) {
       toast.error('Something went wrong. Please try again later.')
     }

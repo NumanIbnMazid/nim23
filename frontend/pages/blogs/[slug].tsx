@@ -26,14 +26,24 @@ export default function BlogDetails({ slug }: { slug: string }) {
   }
 
   const fetchProfileInfo = async () => {
-    const profileData: ProfileType = await getProfileInfo()
-    setProfileInfo(profileData)
+    try {
+      const response = await fetch(`/api/profile-info`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const profileData: ProfileType = await response.json()
+      setProfileInfo(profileData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchBlogDetail = async (slug: string, clientIDParam: string) => {
     try {
       // Fetch the blog details from the API with slug and clientID as query parameters
-      const response = await fetch(`/api/blog/details?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(clientIDParam)}`)
+      const response = await fetch(`/api/blogs/details?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(clientIDParam)}`)
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)

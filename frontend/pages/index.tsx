@@ -13,13 +13,13 @@ import staticData from '@content/StaticData'
 import React from 'react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { getProfileInfo, getAllExperiences, getAllBlogs } from '@lib/backendAPI'
-import { ProfileType, ExperienceType } from '@lib/types'
+import { ProfileType, ExperienceType, BlogType } from '@lib/types'
 import { BsGithub, BsLinkedin } from 'react-icons/bs'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
 import dynamic from 'next/dynamic'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 const ExperienceSection = dynamic(() => import('@components/Home/ExperienceSection'), {
   loading: () => <Loader />,
@@ -40,32 +40,65 @@ export default function Home() {
 
   const [profileInfo, setProfileInfo] = useState<ProfileType>()
   const [experiences, setExperiences] = useState<ExperienceType[]>([])
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState<BlogType[]>([])
 
   const { clientID } = useClientID()
 
   const fetchExperiences = async () => {
-    const experiencesData: ExperienceType[] = await getAllExperiences(1)
-    setExperiences(experiencesData)
-    setExperiencesLoading(false)
+    try {
+      const response = await fetch(`/api/experiences?limit=${encodeURIComponent("1")}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const experiencesData: ExperienceType[] = await response.json()
+      setExperiences(experiencesData)
+      setExperiencesLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
-  const fetchBlogs = async () => {
-    if (!clientID) return
-    const blogsData = await getAllBlogs(clientID, 2)
-    setBlogs(blogsData)
-    setBlogsLoading(false)
+  const fetchBlogs = async (clientIDParam: string) => {
+    try {
+      // Fetch the blog details from the API with slug and clientID as query parameters
+      const response = await fetch(`/api/blogs/list?clientID=${encodeURIComponent(clientIDParam)}&limit=${encodeURIComponent("2")}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const blogsData: BlogType[] = await response.json()
+      setBlogs(blogsData)
+      setBlogsLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchProfileInfo = async () => {
-    const profileData: ProfileType = await getProfileInfo()
-    setProfileInfo(profileData)
+    try {
+      const response = await fetch(`/api/profile-info`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const profileData: ProfileType = await response.json()
+      setProfileInfo(profileData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {
-    fetchProfileInfo()
-    fetchExperiences()
-    fetchBlogs()
+    const fetchData = async () => {
+      const clientIDParam = clientID || getOrSetClientID()
+      await Promise.all([fetchProfileInfo(), fetchExperiences(), fetchBlogs(clientIDParam)])
+    }
+    fetchData()
   }, [])
 
   const latest_experience: ExperienceType | undefined = experiences && experiences.length > 0 ? experiences[0] : undefined;

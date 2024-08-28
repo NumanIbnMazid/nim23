@@ -5,12 +5,12 @@ import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import PageTop from '@components/PageTop'
 import pageMeta from '@content/meta'
 import { useEffect, useState } from 'react'
-import { getAllCodeSnippets } from '@lib/backendAPI'
 import { CodeSnippetType } from '@lib/types'
 import Loader from '@components/Loader'
 import NoData from '@components/NoData'
 import dynamic from 'next/dynamic'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 const SnippetCard = dynamic(() => import('@components/SnippetCard'), {
   loading: () => <Loader />,
@@ -21,15 +21,26 @@ export default function CodeSnippets() {
   const [code_snippets, setCodeSnippets] = useState<CodeSnippetType[]>([])
   const { clientID } = useClientID()
 
-  const fetchCodeSnippets = async () => {
-    if (!clientID) return
-    const code_snippetsData: CodeSnippetType[] = await getAllCodeSnippets(clientID)
-    setCodeSnippets(code_snippetsData)
+  const fetchCodeSnippets = async (clientIDParam: string) => {
+    try {
+      const response = await fetch(`/api/snippets/list?clientID=${encodeURIComponent(clientIDParam)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const code_snippetsData: CodeSnippetType[] = await response.json()
+      setCodeSnippets(code_snippetsData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchCodeSnippets()])
+      const clientIDParam = clientID || getOrSetClientID()
+      await Promise.all([fetchCodeSnippets(clientIDParam)])
       setIsLoading(false)
     }
     fetchData()

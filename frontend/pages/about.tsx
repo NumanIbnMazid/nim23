@@ -10,11 +10,6 @@ import {
 } from '@lib/types'
 import StaticPage from "@components/StaticPage"
 import {
-  getAllExperiences,
-  getAllEducations,
-  getAllSkills,
-  getAllCertificates,
-  getAllInterests,
 } from '@lib/backendAPI'
 import { useEffect, useState } from 'react'
 import { motion } from "framer-motion"
@@ -67,33 +62,83 @@ export default function About({
   const [interests, setInterests] = useState<InterestType[]>([])
 
   const fetchExperiences = async () => {
-    const experiencesData: ExperienceType[] = await getAllExperiences()
-    setExperiences(experiencesData)
-    setExperiencesLoading(false)
+    try {
+      const response = await fetch(`/api/experiences?limit=${encodeURIComponent("")}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const experiencesData: ExperienceType[] = await response.json()
+      setExperiences(experiencesData)
+      setExperiencesLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchSkills = async () => {
-    const skillsData: SkillType[] = await getAllSkills()
-    setSkills(skillsData)
-    setSkillsLoading(false)
+    try {
+      const response = await fetch(`/api/skills`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const skillsData: SkillType[] = await response.json()
+      setSkills(skillsData)
+      setSkillsLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchCertificates = async () => {
-    const certificatesData: CertificateType[] = await getAllCertificates()
-    setCertificates(certificatesData)
-    setCertificatesLoading(false)
+    try {
+      const response = await fetch(`/api/certificates`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const certificatesData: CertificateType[] = await response.json()
+      setCertificates(certificatesData)
+      setCertificatesLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchInterests = async () => {
-    const interestsData = await getAllInterests()
-    setInterests(interestsData)
-    setInterestsLoading(false)
+    try {
+      const response = await fetch(`/api/interests`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const interestsData: InterestType[] = await response.json()
+      setInterests(interestsData)
+      setInterestsLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const fetchEducations = async () => {
-    const educationsData: EducationType[] = await getAllEducations()
-    setEducations(educationsData)
-    setEducationsLoading(false)
+    try {
+      const response = await fetch(`/api/educations`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const educationsData: EducationType[] = await response.json()
+      setEducations(educationsData)
+      setEducationsLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {

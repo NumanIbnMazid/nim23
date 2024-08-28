@@ -7,7 +7,6 @@ import { FadeContainer } from '../../content/FramerMotionVariants'
 import { HomeHeading } from '..'
 import React from 'react'
 import { useEffect, useState, useCallback } from 'react'
-import { getProjectDetails } from '@lib/backendAPI'
 import AnimatedDiv from '@components/FramerMotion/AnimatedDiv'
 import { opacityVariant } from '@content/FramerMotionVariants'
 import Image from 'next/image'
@@ -32,11 +31,17 @@ export default function ProjectDetailsSection({ slug }: { slug: string }) {
 
   const fetchProjectDetails = async (slug: any) => {
     try {
-      const projectData: ProjectType = await getProjectDetails(slug)
+      const response = await fetch(`/api/projects/details?slug=${encodeURIComponent(slug)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const projectData: ProjectType = await response.json()
       setProject(projectData)
     } catch (error) {
-      // Handle error case
-      console.error(error)
+      // Handle errors
+      console.error('Fetch error:', error)
     }
   }
 

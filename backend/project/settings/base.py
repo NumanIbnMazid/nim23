@@ -71,6 +71,8 @@ MIDDLEWARE = [
     # Django CORS Headers Middleware
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    # Whitenoise Middleware
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -273,6 +275,9 @@ TINYMCE_COMPRESSOR = False
 # Django Admin Interface Configuration
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+# Whitenoise forever-cacheable files and compression support
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ----------------------------------------------------
 # *** Configurable Values ***

@@ -78,7 +78,7 @@ FRONTEND_BASE_URL = "https://nim23.com"
 # ----------------------------------------------------
 # *** Other Definitions ***
 # ----------------------------------------------------
-LOGIN_URL = "/backend/admin/login/"
+LOGIN_URL = "/admin/login/"
 
 # KNOX Configuration
 KNOX_TOKEN_MODEL = "knox.AuthToken"

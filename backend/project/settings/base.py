@@ -56,6 +56,10 @@ INSTALLED_APPS = (
         "django.contrib.sessions",
         "django.contrib.messages",
         "django.contrib.staticfiles",
+        # Django Cloudinary Storage
+        # going to use it only for media files though, it is django.contrib.staticfiles which has to be first
+        "cloudinary_storage",
+        "cloudinary"
     ]
     + THIRD_PARTY_APPS
     + LOCAL_APPS + [
@@ -275,6 +279,14 @@ TINYMCE_COMPRESSOR = False
 # Django Admin Interface Configuration
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+# Django Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv("CLOUDINARY_CLOUD_NAME"),
+    'API_KEY': os.getenv("CLOUDINARY_API_KEY"),
+    'API_SECRET': os.getenv("CLOUDINARY_API_SECRET")
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ----------------------------------------------------
 # *** Configurable Values ***

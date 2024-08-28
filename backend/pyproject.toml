@@ -22,6 +22,7 @@ django-filebrowser = "^4.0.2"
 django-tinymce = "^3.6.1"
 beautifulsoup4 = "^4.12.2"
 whitenoise = "^6.7.0"
+django-cloudinary-storage = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 

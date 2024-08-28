@@ -3,7 +3,6 @@ import { motion } from "framer-motion"
 import { FadeContainer } from "@content/FramerMotionVariants"
 import { ProjectType } from "@lib/types"
 import { useEffect, useState } from "react"
-import { getAllProjects } from "@lib/backendAPI"
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
@@ -14,15 +13,23 @@ const ProjectSection = dynamic(() => import('@components/ProjectSection'), {
   loading: () => <Loader />,
 })
 
-
 export default function Projects() {
   const [isLoading, setIsLoading] = useState(true)
-
   const [projects, setProjects] = useState<ProjectType[]>([])
 
   const fetchProjects = async () => {
-    const projectsData: ProjectType[] = await getAllProjects()
-    setProjects(projectsData)
+    try {
+      const response = await fetch(`/api/projects/list`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const projectsData: ProjectType[] = await response.json()
+      setProjects(projectsData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {

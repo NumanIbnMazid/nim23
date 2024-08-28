@@ -1,5 +1,4 @@
 import React from 'react'
-import { getAllBlogComments } from '@lib/backendAPI'
 import { CommentType } from '@lib/types'
 import { useEffect, useState } from 'react'
 import Loader from '@components/Loader'
@@ -11,10 +10,17 @@ const CommentList = ({ slug }: { slug: string }) => {
 
   const fetchBlogCommentList = async (slug: any) => {
     try {
-      const blogCommentData: CommentType[] = await getAllBlogComments(slug)
+      const response = await fetch(`/api/blogs/comments?name=${encodeURIComponent("")}&email=${encodeURIComponent("")}&comment=${encodeURIComponent("")}&slug=${encodeURIComponent(slug)}&method=${encodeURIComponent("GET")}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const blogCommentData: CommentType[] = await response.json()
       setComments(blogCommentData)
     } catch (error) {
-      // Handle error case
+      // Handle errors
+      console.error('Fetch error:', error)
     }
   }
 

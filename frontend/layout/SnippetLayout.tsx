@@ -12,8 +12,8 @@ import Prism from '../prismSetup'
 import CommentSection from '@components/SnippetComment/CommentSection'
 import CommentList from '@components/SnippetComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
-import { addSnippetLike, addSnippetViews } from '@lib/backendAPI'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 export default function SnippetLayout({
   code_snippet,
@@ -23,6 +23,7 @@ export default function SnippetLayout({
 
   const { currentURL } = useWindowLocation()
   const hasCode = code_snippet && code_snippet.content.includes('<code>')
+  const [filteredClientID, setFilteredClientID] = useState("1")
   const [_likeStatus, setLikeStatus] = useState<LikeStatusType>()
   const [fakeTotalLikes, setFakeTotalLikes] = useState<number>(code_snippet.total_likes)
   const [fakeLikeStatus, setFakeLikeStatus] = useState<boolean>(code_snippet.user_liked)
@@ -32,15 +33,36 @@ export default function SnippetLayout({
   const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
-    if (!clientID) return
-    const likeStatusData: LikeStatusType = await addSnippetLike(clientID, slug)
-    setLikeStatus(likeStatusData)
+    try {
+      const response = await fetch(`/api/snippets/likes?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(filteredClientID)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const likeStatusData: LikeStatusType = await response.json()
+      setLikeStatus(likeStatusData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
-  const fetchTotalViews = async (slug: string) => {
-    if (!clientID) return
-    const totalViewsData: ViewsType = await addSnippetViews(clientID, slug)
-    setTotalViews(totalViewsData.total_views)
+  const fetchTotalViews = async (slug: string, clientIDParam: string) => {
+    try {
+      // Fetch the blog details from the API with slug and clientID as query parameters
+      const response = await fetch(`/api/snippets/views?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(clientIDParam)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const totalViewsData: ViewsType = await response.json()
+      setTotalViews(totalViewsData.total_views)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   const injectStyle = () => {
@@ -115,8 +137,10 @@ export default function SnippetLayout({
   }, [hasCode])
 
   useEffect(() => {
+    const clientIDParam = clientID || getOrSetClientID()
+    setFilteredClientID(clientIDParam)
     if (code_snippet.slug) {
-      fetchTotalViews(code_snippet.slug)
+      fetchTotalViews(code_snippet.slug, clientIDParam)
     }
   }, [])
 

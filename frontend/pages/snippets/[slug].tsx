@@ -1,13 +1,13 @@
 import PageNotFound from "pages/404"
 import { CodeSnippetType } from "@lib/types"
 import { useEffect, useState } from 'react'
-import { getCodeSnippetDetails } from '@lib/backendAPI'
 import Loader from "@components/Loader"
 import NoData from "@components/NoData"
 import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 import dynamic from 'next/dynamic'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 const SnippetLayout = dynamic(() => import('@layout/SnippetLayout'), {
   loading: () => <Loader />,
@@ -26,14 +26,20 @@ export default function SnippetPage({
   const [code_snippet, setCodeSnippet] = useState<CodeSnippetType>()
   const { clientID } = useClientID()
 
-  const fetchCodeSnippetDetail = async (slug: any) => {
+  const fetchCodeSnippetDetail = async (slug: any, clientIDParam: string) => {
     try {
-      if (!clientID) return
-      const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails(clientID, slug)
+      // Fetch the blog details from the API with slug and clientID as query parameters
+      const response = await fetch(`/api/snippets/details?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(clientIDParam)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const codeSnippetData: CodeSnippetType = await response.json()
       setCodeSnippet(codeSnippetData)
     } catch (error) {
-      // Handle error case
-      console.error(error)
+      // Handle errors
+      console.error('Fetch error:', error)
     }
   }
 
@@ -45,8 +51,9 @@ export default function SnippetPage({
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
     const fetchData = async () => {
+      const clientIDParam = clientID || getOrSetClientID()
       await Promise.all([
-        fetchCodeSnippetDetail(slug)
+        fetchCodeSnippetDetail(slug, clientIDParam)
       ]);
       setIsLoading(false)
     }
@@ -82,6 +89,6 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       slug
-    },
+    }
   }
 }

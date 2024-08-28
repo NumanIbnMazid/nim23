@@ -8,11 +8,11 @@ import PageTop from '@components/PageTop'
 import pageMeta from '@content/meta'
 import { BlogType } from '@lib/types'
 import { CgSearch } from 'react-icons/cg'
-import { getAllBlogs } from '@lib/backendAPI'
 import Loader from '@components/Loader'
 import NoData from '@components/NoData'
 import dynamic from 'next/dynamic'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 const Blog = dynamic(() => import('@components/Blog'), {
   loading: () => <Loader />,
@@ -22,17 +22,29 @@ export default function Blogs() {
   const [isLoading, setIsLoading] = useState(true)
   const { clientID } = useClientID()
 
-  const [blogs, setBlogs] = useState([])
+  const [blogs, setBlogs] = useState<BlogType[]>([])
 
-  const fetchBlogs = async () => {
-    if (!clientID) return
-    const blogsData = await getAllBlogs(clientID)
-    setBlogs(blogsData)
+  const fetchBlogs = async (clientIDParam: string) => {
+    try {
+      // Fetch the blog details from the API with slug and clientID as query parameters
+      const response = await fetch(`/api/blogs/list?clientID=${encodeURIComponent(clientIDParam)}&limit=${encodeURIComponent("")}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const blogsData: BlogType[] = await response.json()
+      setBlogs(blogsData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchBlogs()])
+      const clientIDParam = clientID || getOrSetClientID()
+      await Promise.all([fetchBlogs(clientIDParam)])
       setIsLoading(false)
     }
     fetchData()
@@ -56,7 +68,6 @@ export default function Blogs() {
 
   useEffect(() => {
     document.addEventListener('keydown', handleAutoSearch)
-
     return () => document.removeEventListener('keydown', handleAutoSearch)
   }, [])
 

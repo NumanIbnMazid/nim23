@@ -10,7 +10,6 @@ import Metadata from '@components/MetaData'
 import PageTop from '@components/PageTop'
 import Loader from '@components/Loader'
 import NoData from "@components/NoData"
-import { getAllMovies } from '@lib/backendAPI'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
@@ -30,9 +29,20 @@ export default function MediaSection() {
   const [moviesLoading, setMoviesLoading] = useState(true)
 
   const fetchMovies = async () => {
-    const moviesData: MovieType[] = await getAllMovies()
-    setMovies(moviesData)
-    setMoviesLoading(false)
+    try {
+      const response = await fetch(`/api/movies`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const moviesData: MovieType[] = await response.json()
+      setMovies(moviesData)
+      setMoviesLoading(false)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   useEffect(() => {

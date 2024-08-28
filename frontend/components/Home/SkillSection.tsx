@@ -45,7 +45,7 @@ export default function SkillSection({ skills, showHomeHeading = true }: { skill
                       src={skill.image}
                       alt={skill.title}
                       quality={50}
-                      layout="fill"
+                      fill
                       objectFit="contain"
                     />
                   </div>

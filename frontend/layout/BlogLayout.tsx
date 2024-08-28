@@ -17,8 +17,8 @@ import CommentSection from '@components/BlogComment/CommentSection'
 import CommentList from '@components/BlogComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
 import useWindowSize from '@hooks/useWindowSize'
-import { addBlogLike, addBlogViews } from '@lib/backendAPI'
 import { useClientID } from '@context/clientIdContext'
+import { getOrSetClientID } from '@lib/clientIDManager'
 
 export default function BlogLayout({
   blog,
@@ -31,6 +31,7 @@ export default function BlogLayout({
   const [isTOCActive, setIsTOCActive] = useState(false)
   const hasCode = blog && blog.content.includes('<code>')
   const size = useWindowSize()
+  const [filteredClientID, setFilteredClientID] = useState("1")
   const [blogInfoFull, setBlogInfoFull] = useState(false)
   const [_likeStatus, setLikeStatus] = useState<LikeStatusType>()
   const [fakeTotalLikes, setFakeTotalLikes] = useState<number>(blog.total_likes)
@@ -41,15 +42,35 @@ export default function BlogLayout({
   const { clientID } = useClientID()
 
   const addLike = async (slug: string) => {
-    if (!clientID) return
-    const likeStatusData: LikeStatusType = await addBlogLike(clientID, slug)
-    setLikeStatus(likeStatusData)
+    try {
+      const response = await fetch(`/api/blogs/likes?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(filteredClientID)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const likeStatusData: LikeStatusType = await response.json()
+      setLikeStatus(likeStatusData)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
-  const fetchTotalViews = async (slug: string) => {
-    if (!clientID) return
-    const totalViewsData: ViewsType = await addBlogViews(clientID, slug)
-    setTotalViews(totalViewsData.total_views)
+  const fetchTotalViews = async (slug: string, finalClientID: string) => {
+    try {
+      const response = await fetch(`/api/blogs/views?slug=${encodeURIComponent(slug)}&clientID=${encodeURIComponent(finalClientID)}`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+      // Parse the JSON body
+      const totalViewsData: ViewsType = await response.json()
+      setTotalViews(totalViewsData.total_views)
+    } catch (error) {
+      // Handle errors
+      console.error('Fetch error:', error)
+    }
   }
 
   let readingTime = null
@@ -143,8 +164,10 @@ export default function BlogLayout({
   }, [size, hasCode])
 
   useEffect(() => {
-    if (blog.slug) {
-      fetchTotalViews(blog.slug)
+    const clientIDParam = clientID || getOrSetClientID()
+    setFilteredClientID(clientIDParam)
+    if (blog.slug && clientIDParam) {
+      fetchTotalViews(blog.slug, clientIDParam)
     }
   }, [])
 

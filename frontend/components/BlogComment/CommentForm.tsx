@@ -7,7 +7,6 @@ import { FadeContainer, mobileNavItemSideways } from '@content/FramerMotionVaria
 import Ripples from 'react-ripples'
 import { useRef } from 'react'
 import { CommentInput } from '@lib/types'
-import { addBlogComment } from '@lib/backendAPI'
 
 export default function CommentForm({ slug, contentURL }: { slug: string; contentURL: string }) {
   const { isDarkMode } = useDarkMode()
@@ -43,32 +42,50 @@ export default function CommentForm({ slug, contentURL }: { slug: string; conten
     // Creating a loading toast
     const toastId = toast.loading('Processing ⌛')
 
-    await addBlogComment(commentData.name, commentData.email, commentData.comment, slug)
-      .then(() => {
-        formRef.current.reset()
-        toast.update(toastId, {
-          render: 'Thanks for your valuable comment! Your comment will be visible after admin approval.',
-          type: 'success',
-          isLoading: false,
-          autoClose: 7000,
-        })
-        sendButtonRef.current.removeAttribute('disabled')
+    const addBlogComment = async (name: string, email: string, comment: string, slug: string) => {
+      try {
+        const response = await fetch(`/api/blogs/comments?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&comment=${encodeURIComponent(comment)}&slug=${encodeURIComponent(slug)}&method=${encodeURIComponent("POST")}`)
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        return response
+      } catch (error) {
+        // Handle errors
+        console.error('Fetch error:', error)
+      }
+    }
 
-        // Send email to admin
-        emailjs.send(
-          process.env.EMAIL_JS_SERVICE_ID!,
-          process.env.EMAIL_JS_COMMENT_TEMPLATE_ID!,
-          commentData!,
-          process.env.EMAIL_JS_PUBLIC_KEY
-        )
+    await addBlogComment(commentData.name, commentData.email, commentData.comment, slug)
+      .then(async (response) => {
+        if (response && response.status === 200) {
+          formRef.current.reset();
+          toast.update(toastId, {
+            render: 'Thanks for your valuable comment! Your comment will be visible after admin approval.',
+            type: 'success',
+            isLoading: false,
+            autoClose: 7000,
+          })
+          sendButtonRef.current.removeAttribute('disabled')
+
+          // Send email to admin
+          await emailjs.send(
+            process.env.EMAIL_JS_SERVICE_ID!,
+            process.env.EMAIL_JS_COMMENT_TEMPLATE_ID!,
+            commentData!,
+            process.env.EMAIL_JS_PUBLIC_KEY!
+          )
+        } else {
+          throw new Error('Failed to add comment')
+        }
       })
       .catch((err) => {
         toast.update(toastId, {
-          render: '😢 ' + err.text,
+          render: '😢 ' + err.message, // Updated to err.message
           type: 'error',
           isLoading: false,
-          autoClose: false,
-        })
+          autoClose: 7000,
+        });
         sendButtonRef.current.removeAttribute('disabled')
       })
   }

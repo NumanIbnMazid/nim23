@@ -5,6 +5,7 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
+    "nim23.onrender.com",
 ]
 
 # ----------------------------------------------------
@@ -13,9 +14,9 @@ ALLOWED_HOSTS = [
 # STATIC & MEDIA URL
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
-PUBLIC_ROOT = os.path.join(BASE_DIR, "/home/nimcom/public_html/")
+PUBLIC_ROOT = os.path.join(BASE_DIR, "public/")
 # STATIC & MEDIA ROOT
-MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
+# MEDIA_ROOT = os.path.join(PUBLIC_ROOT, "media/")
 STATIC_ROOT = os.path.join(PUBLIC_ROOT, "static/")
 # Static Files Directories
 STATICFILES_DIRS = (
@@ -43,6 +44,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     "https://nim23.com",
     "https://www.nim23.com",
+    "https://nim23.onrender.com",
+    "https://www.nim23.onrender.com",
 ]
 CORS_ALLOW_HEADERS = [
     'accept',
@@ -68,13 +71,14 @@ CORS_ALLOW_METHODS = [
 # ----------------------------------------------------
 # *** Site Info ***
 # ----------------------------------------------------
-BACKEND_BASE_URL = "https://nim23.com/backend"
+# BACKEND_BASE_URL = "https://nim23.com/backend"
+BACKEND_BASE_URL = "https://nim23.onrender.com"
 FRONTEND_BASE_URL = "https://nim23.com"
 
 # ----------------------------------------------------
 # *** Other Definitions ***
 # ----------------------------------------------------
-LOGIN_URL = "/backend/admin/login/"
+LOGIN_URL = "/admin/login/"
 
 # KNOX Configuration
 KNOX_TOKEN_MODEL = "knox.AuthToken"

@@ -8,6 +8,8 @@ import uuid
 import os
 import base64
 from django.contrib.staticfiles import finders
+from urllib.parse import urlparse
+import requests
 
 
 def random_string_generator(size=4, chars=string.ascii_lowercase + string.digits):
@@ -325,41 +327,83 @@ def get_static_file_path(static_path):
 
 def image_as_base64(image_file):
     """
-    :param `image_file` for the complete path of the image.
+    Convert an image file or URL to a base64-encoded string.
+    
+    :param image_file: The path to the image file or URL of the image.
+    :return: Base64-encoded image string in the format 'data:image/{extension};base64,{encoded_string}'.
     """
-    if not os.path.isfile(image_file):
-        print(f"Image file not found: {image_file}")
-        return
-
+    # Determine if the input is a URL or a file path
+    if urlparse(image_file).scheme in ['http', 'https']:
+        # Handle image URL
+        try:
+            response = requests.get(image_file)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            image_data = response.content
+        except requests.RequestException as e:
+            print(f"Error fetching image from URL: {e}")
+            return
+    else:
+        # Handle file path
+        if not os.path.isfile(image_file):
+            print(f"Image file not found: {image_file}")
+            return
+        with open(image_file, "rb") as img_f:
+            image_data = img_f.read()
+    
     # Get the file extension dynamically
-    extension = os.path.splitext(image_file)[1][1:]
-    encoded_string = ""
-
-    with open(image_file, "rb") as img_f:
-        encoded_string = base64.b64encode(img_f.read()).decode("utf-8")
-
+    extension = os.path.splitext(image_file)[1][1:] if not urlparse(image_file).scheme else image_file.split('.')[-1]
+    
+    # Encode the image data to base64
+    encoded_string = base64.b64encode(image_data).decode("utf-8")
+    
     return f"data:image/{extension};base64,{encoded_string}"
 
 
 def file_as_base64(file_path):
     """
-    Convert a file to base64.
+    Convert a file or URL to base64.
 
-    :param file_path: The complete path of the file.
-    :return: The base64 representation of the file.
+    :param file_path: The path to the file or URL of the file.
+    :return: Base64 representation of the file in the format 'data:application/{extension};base64,{encoded_string}'.
     """
-    if not os.path.isfile(file_path):
-        print(f"File not found: {file_path}")
-        return
-
+    # Determine if the input is a URL or a file path
+    if urlparse(file_path).scheme in ['http', 'https']:
+        # Handle file URL
+        try:
+            response = requests.get(file_path)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            file_data = response.content
+        except requests.RequestException as e:
+            print(f"Error fetching file from URL: {e}")
+            return
+    else:
+        # Handle local file path
+        if not os.path.isfile(file_path):
+            print(f"File not found: {file_path}")
+            return
+        with open(file_path, "rb") as file:
+            file_data = file.read()
+    
     # Get the file extension dynamically
-    extension = os.path.splitext(file_path)[1][1:]
-    encoded_string = ""
+    extension = os.path.splitext(file_path)[1][1:] if not urlparse(file_path).scheme else file_path.split('.')[-1]
+    
+    # Define MIME type based on extension
+    mime_types = {
+        'png': 'image/png',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'gif': 'image/gif',
+        'pdf': 'application/pdf',
+        'txt': 'text/plain',
+        'json': 'application/json',
+        'xml': 'application/xml'
+    }
+    mime_type = mime_types.get(extension, 'application/octet-stream')
 
-    with open(file_path, "rb") as file:
-        encoded_string = base64.b64encode(file.read()).decode("utf-8")
-
-    return f"data:application/{extension};base64,{encoded_string}"
+    # Encode the file data to base64
+    encoded_string = base64.b64encode(file_data).decode("utf-8")
+    
+    return f"data:{mime_type};base64,{encoded_string}"
 
 
 def get_client_ip(request):

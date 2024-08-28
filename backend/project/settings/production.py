@@ -5,6 +5,7 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
+    "nim23.onrender.com",
 ]
 
 # ----------------------------------------------------
@@ -68,7 +69,8 @@ CORS_ALLOW_METHODS = [
 # ----------------------------------------------------
 # *** Site Info ***
 # ----------------------------------------------------
-BACKEND_BASE_URL = "https://nim23.com/backend"
+# BACKEND_BASE_URL = "https://nim23.com/backend"
+BACKEND_BASE_URL = "https://nim23.onrender.com/backend"
 FRONTEND_BASE_URL = "https://nim23.com"
 
 # ----------------------------------------------------

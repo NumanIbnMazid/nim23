@@ -22,3 +22,7 @@
 }
 
 ```
+
+## Linux Required Packages
+
+build-essential libffi-dev libjpeg-dev libpq-dev

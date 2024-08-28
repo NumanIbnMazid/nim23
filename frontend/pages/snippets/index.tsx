@@ -46,7 +46,7 @@ export default function CodeSnippets() {
 
       {isLoading ? (
         <Loader />
-      ) : code_snippets.length > 0 ? (
+      ) : code_snippets && code_snippets.length > 0 ? (
         <section className="pageTop flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
           <PageTop pageTitle={pageMeta.snippets.title}>{pageMeta.snippets.description}</PageTop>
 
@@ -61,7 +61,9 @@ export default function CodeSnippets() {
           </section>
         </section>
       ) : (
-        <NoData />
+        <div className="mt-16">
+          <NoData />
+        </div>
       )}
     </>
   )

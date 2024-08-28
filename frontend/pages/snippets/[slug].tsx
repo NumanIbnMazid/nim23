@@ -15,12 +15,10 @@ const SnippetLayout = dynamic(() => import('@layout/SnippetLayout'), {
 
 export default function SnippetPage({
   error,
-  slug,
-  codeSnippetData
+  slug
 }: {
   error: boolean
   slug: string
-  codeSnippetData: CodeSnippetType
 }) {
   if (error) return <PageNotFound />
 
@@ -44,8 +42,6 @@ export default function SnippetPage({
     return strippedText
   }
 
-  const snippetOverview = codeSnippetData?.overview ? stripHtml(codeSnippetData.overview) : undefined
-
   // Add this useEffect to trigger the API request when slug is available
   useEffect(() => {
     const fetchData = async () => {
@@ -57,14 +53,16 @@ export default function SnippetPage({
     fetchData()
   }, [slug])
 
+  const snippetOverview = code_snippet?.overview ? stripHtml(code_snippet.overview) : undefined
+
 
   return (
     <>
       <Metadata
-        title={codeSnippetData.title || pageMeta.snippets.title}
+        title={code_snippet?.title || pageMeta.snippets.title}
         description={snippetOverview || pageMeta.snippets.description}
-        previewImage={codeSnippetData.image || pageMeta.snippets.image}
-        keywords={`${codeSnippetData.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
+        previewImage={code_snippet?.image || pageMeta.snippets.image}
+        keywords={`${code_snippet?.tags || "programming code snippets"}, ${pageMeta.snippets.keywords}`}
       />
 
       {isLoading ? (
@@ -81,11 +79,9 @@ export default function SnippetPage({
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
-  const codeSnippetData: CodeSnippetType = await getCodeSnippetDetails('1', slug)
   return {
     props: {
-      slug,
-      codeSnippetData
+      slug
     },
   }
 }

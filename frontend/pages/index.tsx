@@ -68,7 +68,7 @@ export default function Home() {
     fetchBlogs()
   }, [])
 
-  const latest_experience: ExperienceType = experiences[0]
+  const latest_experience: ExperienceType | undefined = experiences && experiences.length > 0 ? experiences[0] : undefined;
 
   return (
     <>
@@ -204,7 +204,7 @@ export default function Home() {
           <HomeHeading title="Work Experiences" />
           {experiencesLoading ? (
             <Loader />
-          ) : experiences.length > 0 ? (
+          ) : experiences && experiences.length > 0 ? (
             <ExperienceSection experiences={experiences} showHomeHeading={false} />
           ) : (
             <NoData />
@@ -214,7 +214,7 @@ export default function Home() {
           <HomeHeading title="Blogs" />
           {blogsLoading ? (
             <Loader />
-          ) : blogs.length > 0 ? (
+          ) : blogs && blogs.length > 0 ? (
             <BlogsSection blogs={blogs} showHomeHeading={false} />
           ) : (
             <NoData />

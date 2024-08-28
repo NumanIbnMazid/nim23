@@ -12,7 +12,7 @@ const BlogLayout = dynamic(() => import('@layout/BlogLayout'), {
   loading: () => <Loader />,
 })
 
-export default function BlogDetails({ slug, blogData }: { slug: string, blogData: BlogType }) {
+export default function BlogDetails({ slug }: { slug: string }) {
 
   const [isLoading, setIsLoading] = useState(true)
   const { clientID } = useClientID()
@@ -26,8 +26,6 @@ export default function BlogDetails({ slug, blogData }: { slug: string, blogData
     return strippedText
   }
 
-  const blogOverview = blogData?.overview ? stripHtml(blogData.overview) : undefined
-
   const fetchProfileInfo = async () => {
     const profileData: ProfileType = await getProfileInfo()
     setProfileInfo(profileData)
@@ -39,9 +37,11 @@ export default function BlogDetails({ slug, blogData }: { slug: string, blogData
       const blogData: BlogType = await getBlogDetails(clientID, slug)
       setBlog(blogData)
     } catch (error) {
-      // Handle error case
+      console.log(error)
     }
   }
+
+  const blogOverview = blog?.overview ? stripHtml(blog.overview) : undefined
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,10 +54,10 @@ export default function BlogDetails({ slug, blogData }: { slug: string, blogData
   return (
     <>
       <MetaData
-        title={blogData.title || pageMeta.blogs.title}
+        title={blog?.title || pageMeta.blogs.title}
         description={blogOverview || pageMeta.blogs.description}
-        previewImage={blogData.image || pageMeta.blogs.image}
-        keywords={blogData.tags || pageMeta.blogs.keywords}
+        previewImage={blog?.image || pageMeta.blogs.image}
+        keywords={blog?.tags || pageMeta.blogs.keywords}
       />
 
       {isLoading ? (
@@ -73,11 +73,9 @@ export default function BlogDetails({ slug, blogData }: { slug: string, blogData
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
-  const blogData: BlogType = await getBlogDetails('1', slug)
   return {
     props: {
-      slug,
-      blogData
+      slug
     }
   }
 }

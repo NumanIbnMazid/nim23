@@ -347,22 +347,26 @@ export const getAllBlogs = async (clientID: string, length?: number | undefined)
 }
 
 export const getBlogDetails = async (clientID: string, slug: string) => {
-  const blogDetails = await fetch(
-    BLOGS_ENDPOINT + slug,
-    {
-      headers: {
-        Authorization: `Token ${BACKEND_API_TOKEN}`,
-        ClientID: clientID
+  try {
+    const blogDetails = await fetch(
+      BLOGS_ENDPOINT + slug + "/",
+      {
+        headers: {
+          Authorization: `Token ${BACKEND_API_TOKEN}`,
+          ClientID: clientID
+        }
       }
-    }
-  )
+    )
 
-  if (blogDetails.ok) {
-    const responseData = await blogDetails.json()
-    return responseData.data
-  } else {
-    const errorMessage = `Error fetching Blog Details: ${blogDetails.status} ${blogDetails.statusText}`
-    console.log(errorMessage)
+    if (blogDetails.ok) {
+      const responseData = await blogDetails.json()
+      return responseData.data
+    } else {
+      const errorMessage = `Error fetching Blog Details: ${blogDetails.status} ${blogDetails.statusText}`
+      console.log(errorMessage)
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -413,7 +417,6 @@ export const addBlogViews = async (clientID: string, slug: string) => {
     },
     body: JSON.stringify({ clientID }),
   })
-
   const responseData = await response.json()
   return responseData.data
 }

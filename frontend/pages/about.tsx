@@ -123,12 +123,12 @@ export default function About({
             >
               <span className="mr-2">Work Experiences</span>
               <span className="px-2 py-1 text-xs font-bold text-white bg-blue-500 rounded-full">
-                {experiences.length}
+                {experiences?.length || 0}
               </span>
             </AnimatedHeading>
             {experiencesLoading ? (
               <Loader />
-            ) : experiences.length > 0 ? (
+            ) : experiences && experiences.length > 0 ? (
               <ExperienceSection experiences={experiences} showHomeHeading={false} />
             ) : (
               <NoData />
@@ -138,7 +138,7 @@ export default function About({
             <HomeHeading title="Skills" />
             {skillsLoading ? (
               <Loader />
-            ) : skills.length > 0 ? (
+            ) : skills && skills.length > 0 ? (
               <SkillSection skills={skills} showHomeHeading={false} />
             ) : (
               <NoData />
@@ -148,7 +148,7 @@ export default function About({
             <HomeHeading title="Educations" />
             {educationsLoading ? (
               <Loader />
-            ) : educations.length > 0 ? (
+            ) : educations && educations.length > 0 ? (
               <Education educations={educations} showHomeHeading={false} />
             ) : (
               <NoData />
@@ -158,7 +158,7 @@ export default function About({
             <HomeHeading title="Certificates" />
             {certificatesLoading ? (
               <Loader />
-            ) : certificates.length > 0 ? (
+            ) : certificates && certificates.length > 0 ? (
               <Certificates certificates={certificates} showHomeHeading={false} />
             ) : (
               <NoData />
@@ -168,7 +168,7 @@ export default function About({
             <HomeHeading title="Interests" />
             {interestsLoading ? (
               <Loader />
-            ) : interests.length > 0 ? (
+            ) : interests && interests.length > 0 ? (
               <InterestSection interests={interests} showHomeHeading={false} />
             ) : (
               <NoData />

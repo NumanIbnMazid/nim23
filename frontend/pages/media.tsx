@@ -119,7 +119,7 @@ export default function MediaSection() {
         <HomeHeading title="Recent Watched Movies & TV Series" />
         {moviesLoading ? (
           <Loader />
-        ) : movies.length > 0 ? (
+        ) : movies && movies.length > 0 ? (
           <MovieSection movies={movies} showHomeHeading={false} />
         ) : (
           <NoData />

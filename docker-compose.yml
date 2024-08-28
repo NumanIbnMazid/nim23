@@ -1,15 +1,11 @@
-version: '3'
-
 services:
   db:
     image: postgres:14.5-alpine
     volumes:
-      - ./data/db:/var/lib/postgresql/data/
+      - ./data/db:/var/lib/postgresql/data
     environment:
-      - PGDATA=/var/lib/postgresql/data/db-files/
-      - POSTGRES_USER=numanibnmazid
-      - POSTGRES_PASSWORD=numanibnmazid
-      - POSTGRES_DB=numanibnmazid_portfolio
+      - PGDATA=/var/lib/postgresql/data/db-files
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     networks:
       - net-tier
 
@@ -17,10 +13,16 @@ services:
     depends_on:
       - db
     env_file: .env
+    container_name: backend
     environment:
       WAIT_HOSTS: db:5432
-      DATABASE_HOST: db
-    build: ./backend
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+    build: 
+      context: .
+      dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/app
     ports:
@@ -31,9 +33,13 @@ services:
   frontend:
     depends_on:
       - backend
-    build: ./frontend
+    env_file: .env
+    container_name: frontend
+    build: 
+      context: .
+      dockerfile: ./frontend/Dockerfile
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend:/app
     ports:
       - "3000:3000"
     stdin_open: true

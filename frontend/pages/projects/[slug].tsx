@@ -18,7 +18,7 @@ import Metadata from '@components/MetaData'
 import pageMeta from '@content/meta'
 import * as LB from "@utils/yetAnotherlightboxImports"
 
-export default function ProjectDetailsSection({ slug, projectData }: { slug: string, projectData: ProjectType }) {
+export default function ProjectDetailsSection({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [project, setProject] = useState<ProjectType>()
   const [bannerLightBoxOpen, setBannerLightBoxOpen] = React.useState(false)
@@ -66,10 +66,10 @@ export default function ProjectDetailsSection({ slug, projectData }: { slug: str
   return (
     <>
       <Metadata
-        title={projectData.title || pageMeta.projects.title}
-        description={projectData.short_description || pageMeta.projects.description}
-        previewImage={projectData.image || pageMeta.projects.image}
-        keywords={`${projectData.technology || 'python project'}, ${pageMeta.projects.keywords}`}
+        title={project?.title || pageMeta.projects.title}
+        description={project?.short_description || pageMeta.projects.description}
+        previewImage={project?.image || pageMeta.projects.image}
+        keywords={`${project?.technology || 'python project'}, ${pageMeta.projects.keywords}`}
       />
 
       {isLoading ? (
@@ -280,11 +280,9 @@ export default function ProjectDetailsSection({ slug, projectData }: { slug: str
 
 export async function getServerSideProps(context: any) {
   const { slug } = context.params
-  const projectData: ProjectType = await getProjectDetails(slug)
   return {
     props: {
-      slug,
-      projectData
-    },
+      slug
+    }
   }
 }

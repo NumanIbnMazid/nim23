@@ -39,12 +39,12 @@ export default function Blogs() {
   }, [])
 
   const [searchValue, setSearchValue] = useState('')
-  const [filteredBlogs, setFilteredBlogs] = useState([...blogs])
+  const [filteredBlogs, setFilteredBlogs] = useState(blogs ? [...blogs] : [])
   const searchRef = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
     setFilteredBlogs(
-      blogs.filter((post: BlogType) => post.title.toLowerCase().includes(searchValue.trim().toLowerCase()))
+      blogs?.filter((post: BlogType) => post.title.toLowerCase().includes(searchValue.trim().toLowerCase()))
     )
   }, [searchValue, blogs])
 
@@ -71,7 +71,7 @@ export default function Blogs() {
 
       {isLoading ? (
         <Loader />
-      ) : blogs.length > 0 ? (
+      ) : blogs && blogs.length > 0 ? (
         <section className="pageTop flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
           <PageTop pageTitle="Blogs">
             Welcome to my blog page! Here, you will find a collection of insightful and informative articles that I
@@ -128,7 +128,9 @@ export default function Blogs() {
           </section>
         </section>
       ) : (
-        <NoData />
+        <div className="mt-16">
+          <NoData />
+        </div>
       )}
     </>
   )

@@ -45,7 +45,7 @@ export default function Projects() {
       />
       {isLoading ? (
         <Loader />
-      ) : projects.length > 0 ? (
+      ) : projects && projects.length > 0 ? (
         <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
           <motion.section
             initial="hidden"
@@ -60,7 +60,9 @@ export default function Projects() {
           </motion.section>
         </div>
       ) : (
-        <NoData />
+        <div className="mt-16">
+          <NoData />
+        </div>
       )}
       
     </>

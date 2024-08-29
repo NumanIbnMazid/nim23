@@ -6,6 +6,7 @@ from project.settings.base import *
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
     "nim23.onrender.com",
+    "nursing-violante-nim23-c4da3b73.koyeb.app"
 ]
 
 # ----------------------------------------------------
@@ -44,8 +45,6 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     "https://nim23.com",
     "https://www.nim23.com",
-    "https://nim23.onrender.com",
-    "https://www.nim23.onrender.com",
 ]
 CORS_ALLOW_HEADERS = [
     'accept',

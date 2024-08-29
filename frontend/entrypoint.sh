@@ -9,8 +9,9 @@ fi
 # Run lint command
 yarn run lint
 
-# Conditionally run start or dev command based on MODE value
+# Conditionally run build and start or dev command based on MODE value
 if [ "$MODE" = "PRODUCTION" ]; then
+  yarn run build
   yarn run start
 else
   yarn run dev

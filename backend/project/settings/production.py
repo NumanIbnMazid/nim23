@@ -70,7 +70,7 @@ CORS_ALLOW_METHODS = [
 # *** Site Info ***
 # ----------------------------------------------------
 # BACKEND_BASE_URL = "https://nim23.com/backend"
-BACKEND_BASE_URL = "https://nnim23.koyeb.app"
+BACKEND_BASE_URL = "https://nim23.koyeb.app"
 FRONTEND_BASE_URL = "https://nim23.com"
 
 # ----------------------------------------------------

@@ -5,8 +5,7 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
-    "nim23.onrender.com",
-    "nursing-violante-nim23-c4da3b73.koyeb.app"
+    "nim23.koyeb.app"
 ]
 
 # ----------------------------------------------------
@@ -71,7 +70,7 @@ CORS_ALLOW_METHODS = [
 # *** Site Info ***
 # ----------------------------------------------------
 # BACKEND_BASE_URL = "https://nim23.com/backend"
-BACKEND_BASE_URL = "https://nursing-violante-nim23-c4da3b73.koyeb.app"
+BACKEND_BASE_URL = "https://nnim23.koyeb.app"
 FRONTEND_BASE_URL = "https://nim23.com"
 
 # ----------------------------------------------------

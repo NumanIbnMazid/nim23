@@ -6,7 +6,8 @@ from project.settings.base import *
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
     "nim23.onrender.com",
-    "nursing-violante-nim23-c4da3b73.koyeb.app"
+    "nursing-violante-nim23-c4da3b73.koyeb.app",
+    "numanibnmazid.pythonanywhere.com"
 ]
 
 # ----------------------------------------------------

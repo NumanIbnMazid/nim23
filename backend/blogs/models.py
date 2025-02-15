@@ -75,7 +75,7 @@ class Blog(models.Model):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.company_image.url
         else:
             image_path = get_static_file_path("icons/blog.png")
         return image_as_base64(image_path)

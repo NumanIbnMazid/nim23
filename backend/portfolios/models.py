@@ -60,7 +60,7 @@ class ProfessionalExperience(models.Model, DurationMixin):
 
     def get_company_image(self):
         if self.company_image:
-            image_path = settings.MEDIA_ROOT + self.company_image.url.lstrip("/media/")
+            image_path = self.company_image.url
         else:
             image_path = get_static_file_path("icons/company.png")
         return image_as_base64(image_path)

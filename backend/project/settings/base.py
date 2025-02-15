@@ -183,7 +183,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "level": config.DJANGO_LOG_LEVEL,
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         }
@@ -191,11 +191,11 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": [],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "level": config.DJANGO_LOG_LEVEL,
             "propagate": True,
         },
     },
-    "root": {"level": os.getenv("DJANGO_LOG_LEVEL", "INFO"), "handlers": ["console"]},
+    "root": {"level": config.DJANGO_LOG_LEVEL, "handlers": ["console"]},
 }
 
 # ----------------------------------------------------
@@ -282,9 +282,10 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # Django Cloudinary
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY': os.getenv("CLOUDINARY_API_KEY"),
-    'API_SECRET': os.getenv("CLOUDINARY_API_SECRET")
+    'CLOUD_NAME': config.CLOUDINARY_CLOUD_NAME,
+    'API_KEY': config.CLOUDINARY_API_KEY,
+    'API_SECRET': config.CLOUDINARY_API_SECRET
+    # 'API_SECRET': os.getenv("CLOUDINARY_API_SECRET")
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 

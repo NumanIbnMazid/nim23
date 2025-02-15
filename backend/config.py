@@ -7,6 +7,10 @@ class BaseConfig(BaseSettings):
     MODE: str = Field(..., regex="(DEVELOPMENT|STAGING|PRODUCTION)")
     LOG_LEVEL: str = Field("DEBUG", regex="(DEBUG|INFO|WARNING|ERROR|CRITICAL)")
     SECRET_KEY: str = Field(..., env="SECRET_KEY")
+    DJANGO_LOG_LEVEL: str = Field("INFO", env="DJANGO_LOG_LEVEL")
+    CLOUDINARY_CLOUD_NAME: str = Field(..., env="CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY: str = Field(..., env="CLOUDINARY_API_KEY")
+    CLOUDINARY_API_SECRET: str = Field(..., env="CLOUDINARY_API_SECRET")
 
     class Config:
         env_file = f"{Path(__file__).resolve().parent.parent}/.env"

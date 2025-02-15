@@ -133,7 +133,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_user_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             if self.gender and self.gender == "Male":
                 image_path = get_static_file_path("icons/user/avatar-male.png")

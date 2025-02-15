@@ -101,7 +101,7 @@ class Skill(models.Model):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             image_path = get_static_file_path("icons/skill.png")
         return image_as_base64(image_path)
@@ -167,7 +167,7 @@ class Education(models.Model, DurationMixin):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             image_path = get_static_file_path("icons/school.png")
         return image_as_base64(image_path)
@@ -220,7 +220,7 @@ class Certification(models.Model):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             image_path = get_static_file_path("icons/certificate.png")
         return image_as_base64(image_path)
@@ -284,7 +284,7 @@ class Project(models.Model, DurationMixin):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             image_path = get_static_file_path("icons/project.png")
         return image_as_base64(image_path)
@@ -359,7 +359,7 @@ class Interest(models.Model):
 
     def get_icon(self):
         if self.icon:
-            icon_path = settings.MEDIA_ROOT + self.icon.url.lstrip("/media/")
+            icon_path = self.icon.url
         else:
             icon_path = get_static_file_path("icons/interest.png")
         return image_as_base64(icon_path)
@@ -420,7 +420,7 @@ class Movie(models.Model):
 
     def get_image(self):
         if self.image:
-            image_path = settings.MEDIA_ROOT + self.image.url.lstrip("/media/")
+            image_path = self.image.url
         else:
             image_path = get_static_file_path("icons/movie.png")
         return image_as_base64(image_path)

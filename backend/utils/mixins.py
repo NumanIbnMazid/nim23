@@ -49,7 +49,7 @@ class ModelMediaMixin(models.Model):
 
     def get_file(self):
         if self.file:
-            file_path = settings.MEDIA_ROOT + self.file.url.lstrip("/media/")
+            file_path = self.file.url
             return file_as_base64(file_path)
         return
 

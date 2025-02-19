@@ -4,7 +4,7 @@ import { generateUUIDSlug } from '@/lib/utils/helpers'
 
 export async function GET(req: NextRequest) {
   try {
-    console.log('✅ Snippet interactions API called *****')
+    // console.log('✅ Snippet interactions API called *****')
     const url = new URL(req.url)
     const snippetSlug = url.searchParams.get('slug') // ✅ Snippet slug
     const clientID = url.searchParams.get('clientID')

@@ -70,13 +70,13 @@ export const pageMeta: PageMeta = {
     image: myImage,
     keywords: 'about, about me, about numan, who is numan, mazid, about mazid, portfolio about page',
   },
-  media: {
-    title: 'Media | NIM23',
+  entertainment: {
+    title: 'Entertainment | NIM23',
     description:
       'Here you will find a collection of my uploaded videos, watched movies and other captivating media content.',
     image: logoImage,
     keywords:
-      'media, media page, numan media, mazid media, portfolio media page, media page template, youtube videos, youtube videos page, portfolio videos',
+      'media, media page, entertainment, entertainment page, numan media, mazid media, portfolio media page, media page template, youtube videos, youtube videos page, portfolio videos',
   },
   privacy: {
     title: 'Privacy Policy | NIM23',

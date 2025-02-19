@@ -3,10 +3,10 @@ import { globby } from "globby";
 
 export default async function generate() {
   const pages = await globby([
-    "pages/*.tsx",
-    "!pages/_*.tsx",
-    "!pages/api",
-    "!pages/404.tsx",
+    "src/app/*.tsx",
+    "!src/app/_*.tsx",
+    "!src/app/api",
+    "!src/app/404.tsx",
   ]);
 
 

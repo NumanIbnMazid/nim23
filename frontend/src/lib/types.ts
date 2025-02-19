@@ -338,7 +338,7 @@ export type PageMeta = {
   projects: PageData
   projectDetails: PageData
   about: PageData
-  media: PageData
+  entertainment: PageData
   privacy: PageData
   contact: PageData
   snippets: PageData

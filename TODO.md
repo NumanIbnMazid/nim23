@@ -102,6 +102,8 @@
   - Fix two same api calls in details page, ex: blog. One in getServerSideProps, another in useEffect.
   - Make BLOG_ENDPOINT Dynamic in BlogLayout.
   - Fix Blog View Increment API. First api calls gives error but later ones don't.
+  - Fix code highlighting.
+  - Fix font in work experience section.
 
 
 ## Improvement

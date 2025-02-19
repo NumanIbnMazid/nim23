@@ -11,7 +11,8 @@
     "start": "NODE_ENV=production node server.js",
     "tsc-watch": "tsc --watch",
     "lint": "next lint",
-    "find:unused": "next-unused"
+    "find:unused": "next-unused",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",

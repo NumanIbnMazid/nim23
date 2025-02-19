@@ -49,6 +49,7 @@
     "rehype-autolink-headings": "^6.1.1",
     "rehype-pretty-code": "^0.10.0",
     "rehype-slug": "^5.1.0",
+    "request": "^2.88.2",
     "rss": "^1.2.2",
     "sharp": "^0.32.3",
     "shiki": "^0.14.3",

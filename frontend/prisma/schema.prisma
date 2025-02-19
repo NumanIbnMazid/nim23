@@ -1,0 +1,545 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NIM23_DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model admin_interface_theme {
+  id                                       Int     @id @default(autoincrement())
+  name                                     String  @unique(map: "admin_interface_theme_name_30bda70f_uniq") @db.VarChar(50)
+  active                                   Boolean
+  title                                    String  @db.VarChar(50)
+  title_visible                            Boolean
+  logo                                     String  @db.VarChar(100)
+  logo_visible                             Boolean
+  css_header_background_color              String  @db.VarChar(10)
+  title_color                              String  @db.VarChar(10)
+  css_header_text_color                    String  @db.VarChar(10)
+  css_header_link_color                    String  @db.VarChar(10)
+  css_header_link_hover_color              String  @db.VarChar(10)
+  css_module_background_color              String  @db.VarChar(10)
+  css_module_text_color                    String  @db.VarChar(10)
+  css_module_link_color                    String  @db.VarChar(10)
+  css_module_link_hover_color              String  @db.VarChar(10)
+  css_module_rounded_corners               Boolean
+  css_generic_link_color                   String  @db.VarChar(10)
+  css_generic_link_hover_color             String  @db.VarChar(10)
+  css_save_button_background_color         String  @db.VarChar(10)
+  css_save_button_background_hover_color   String  @db.VarChar(10)
+  css_save_button_text_color               String  @db.VarChar(10)
+  css_delete_button_background_color       String  @db.VarChar(10)
+  css_delete_button_background_hover_color String  @db.VarChar(10)
+  css_delete_button_text_color             String  @db.VarChar(10)
+  list_filter_dropdown                     Boolean
+  related_modal_active                     Boolean
+  related_modal_background_color           String  @db.VarChar(10)
+  related_modal_rounded_corners            Boolean
+  logo_color                               String  @db.VarChar(10)
+  recent_actions_visible                   Boolean
+  favicon                                  String  @db.VarChar(100)
+  related_modal_background_opacity         String  @db.VarChar(5)
+  env_name                                 String  @db.VarChar(50)
+  env_visible_in_header                    Boolean
+  env_color                                String  @db.VarChar(10)
+  env_visible_in_favicon                   Boolean
+  related_modal_close_button_visible       Boolean
+  language_chooser_active                  Boolean
+  language_chooser_display                 String  @db.VarChar(10)
+  list_filter_sticky                       Boolean
+  form_pagination_sticky                   Boolean
+  form_submit_sticky                       Boolean
+  css_module_background_selected_color     String  @db.VarChar(10)
+  css_module_link_selected_color           String  @db.VarChar(10)
+  logo_max_height                          Int     @db.SmallInt
+  logo_max_width                           Int     @db.SmallInt
+  foldable_apps                            Boolean
+  language_chooser_control                 String  @db.VarChar(20)
+  list_filter_highlight                    Boolean
+  list_filter_removal_links                Boolean
+  show_fieldsets_as_tabs                   Boolean
+  show_inlines_as_tabs                     Boolean
+  css_generic_link_active_color            String  @db.VarChar(10)
+  collapsible_stacked_inlines              Boolean
+  collapsible_stacked_inlines_collapsed    Boolean
+  collapsible_tabular_inlines              Boolean
+  collapsible_tabular_inlines_collapsed    Boolean
+
+  @@index([name], map: "admin_interface_theme_name_30bda70f_like")
+}
+
+model auth_group {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique @db.VarChar(150)
+  auth_group_permissions auth_group_permissions[]
+  users_user_groups      users_user_groups[]
+
+  @@index([name], map: "auth_group_name_a6ea08ec_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_group_permissions {
+  id              BigInt          @id @default(autoincrement())
+  group_id        Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm")
+  auth_group      auth_group      @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id")
+
+  @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+  @@index([group_id], map: "auth_group_permissions_group_id_b120cbf9")
+  @@index([permission_id], map: "auth_group_permissions_permission_id_84c5c92e")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_permission {
+  id                          Int                           @id @default(autoincrement())
+  name                        String                        @db.VarChar(255)
+  content_type_id             Int
+  codename                    String                        @db.VarChar(100)
+  auth_group_permissions      auth_group_permissions[]
+  django_content_type         django_content_type           @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_permission_content_type_id_2f476e4b_fk_django_co")
+  users_user_user_permissions users_user_user_permissions[]
+
+  @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+  @@index([content_type_id], map: "auth_permission_content_type_id_2f476e4b")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model blog {
+  id            BigInt         @id @default(autoincrement())
+  title         String         @unique @db.VarChar(255)
+  slug          String         @unique @db.VarChar(255)
+  image         String?        @db.VarChar(100)
+  overview      String?
+  content       String
+  author        String         @db.VarChar(100)
+  tags          String?        @db.VarChar(255)
+  status        String         @db.VarChar(20)
+  order         Int
+  created_at    DateTime       @db.Timestamptz(6)
+  updated_at    DateTime       @db.Timestamptz(6)
+  category_id   BigInt?
+  blog_category blog_category? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_category_id_efb54956_fk_blog_category_id")
+  blog_comment  blog_comment[]
+  blog_view     blog_view[]
+
+  @@index([category_id], map: "blog_category_id_efb54956")
+  @@index([slug], map: "blog_slug_e924580b_like")
+  @@index([title], map: "blog_title_07f3c6e7_like")
+}
+
+model blog_category {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @unique @db.VarChar(255)
+  slug       String   @unique @db.VarChar(255)
+  created_at DateTime @db.Timestamptz(6)
+  updated_at DateTime @db.Timestamptz(6)
+  blog       blog[]
+
+  @@index([name], map: "blog_category_name_92eb1483_like")
+  @@index([slug], map: "blog_category_slug_92643dc5_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model blog_comment {
+  id          BigInt   @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  email       String   @db.VarChar(255)
+  comment     String
+  slug        String   @unique @db.VarChar(255)
+  is_approved Boolean
+  created_at  DateTime @db.Timestamptz(6)
+  updated_at  DateTime @db.Timestamptz(6)
+  blog_id     BigInt
+  blog        blog     @relation(fields: [blog_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_comment_blog_id_c664fb0d_fk_blog_id")
+
+  @@index([blog_id], map: "blog_comment_blog_id_c664fb0d")
+  @@index([slug], map: "blog_comment_slug_1acb5a4a_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model blog_view {
+  id               BigInt   @id @default(autoincrement())
+  clientID         String   @db.VarChar(255)
+  slug             String   @unique @db.VarChar(255)
+  first_visited_at DateTime @db.Timestamptz(6)
+  last_visited_at  DateTime @db.Timestamptz(6)
+  liked            Boolean
+  blog_id          BigInt
+  blog             blog     @relation(fields: [blog_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_view_blog_id_0dc61bc8_fk_blog_id")
+
+  @@unique([clientID, blog_id], map: "blog_view_cliendID_blog_id_61528542_uniq")
+  @@index([blog_id], map: "blog_view_blog_id_0dc61bc8")
+  @@index([slug], map: "blog_view_slug_0633998f_like")
+}
+
+model certification {
+  id                  BigInt                @id @default(autoincrement())
+  title               String                @unique @db.VarChar(150)
+  slug                String                @unique @db.VarChar(255)
+  organization        String                @db.VarChar(150)
+  address             String?               @db.VarChar(254)
+  image               String?               @db.VarChar(100)
+  issue_date          DateTime              @db.Date
+  expiration_date     DateTime?             @db.Date
+  does_not_expire     Boolean
+  credential_id       String?               @db.VarChar(254)
+  credential_url      String?               @db.VarChar(200)
+  description         String?
+  created_at          DateTime              @db.Timestamptz(6)
+  updated_at          DateTime              @db.Timestamptz(6)
+  certification_media certification_media[]
+
+  @@index([slug], map: "certification_slug_98e84f24_like")
+  @@index([title], map: "certification_title_4324266e_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model certification_media {
+  id               BigInt        @id @default(autoincrement())
+  title            String        @db.VarChar(150)
+  slug             String        @unique @db.VarChar(255)
+  description      String?
+  created_at       DateTime      @db.Timestamptz(6)
+  updated_at       DateTime      @db.Timestamptz(6)
+  file             String        @db.VarChar(100)
+  certification_id BigInt
+  order            Int           @map("_order")
+  certification    certification @relation(fields: [certification_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "certification_media_certification_id_0c30098d_fk_certifica")
+
+  @@index([certification_id], map: "certification_media_certification_id_0c30098d")
+  @@index([slug], map: "certification_media_slug_cc00776c_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model code_snippet {
+  id                   BigInt                 @id @default(autoincrement())
+  title                String                 @unique @db.VarChar(255)
+  slug                 String                 @unique @db.VarChar(255)
+  overview             String?
+  image                String?                @db.VarChar(100)
+  language             String                 @db.VarChar(50)
+  content              String
+  order                Int
+  created_at           DateTime               @db.Timestamptz(6)
+  updated_at           DateTime               @db.Timestamptz(6)
+  tags                 String?                @db.VarChar(255)
+  status               String                 @db.VarChar(20)
+  code_snippet_comment code_snippet_comment[]
+  code_snippet_view    code_snippet_view[]
+
+  @@index([slug], map: "code_snippet_slug_37fce9da_like")
+  @@index([title], map: "code_snippet_title_34df04e7_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model code_snippet_comment {
+  id              BigInt       @id @default(autoincrement())
+  name            String       @db.VarChar(255)
+  email           String       @db.VarChar(255)
+  comment         String
+  slug            String       @unique @db.VarChar(255)
+  is_approved     Boolean
+  created_at      DateTime     @db.Timestamptz(6)
+  updated_at      DateTime     @db.Timestamptz(6)
+  code_snippet_id BigInt
+  code_snippet    code_snippet @relation(fields: [code_snippet_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "code_snippet_comment_code_snippet_id_5b2de690_fk_code_snip")
+
+  @@index([code_snippet_id], map: "code_snippet_comment_code_snippet_id_5b2de690")
+  @@index([slug], map: "code_snippet_comment_slug_3790522e_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model code_snippet_view {
+  id               BigInt       @id @default(autoincrement())
+  clientID         String       @db.VarChar(255)
+  slug             String       @unique @db.VarChar(255)
+  first_visited_at DateTime     @db.Timestamptz(6)
+  last_visited_at  DateTime     @db.Timestamptz(6)
+  liked            Boolean
+  code_snippet_id  BigInt
+  code_snippet     code_snippet @relation(fields: [code_snippet_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "code_snippet_view_code_snippet_id_776f61af_fk_code_snippet_id")
+
+  @@unique([clientID, code_snippet_id], map: "code_snippet_view_clientID_code_snippet_id_0dae0c1e_uniq")
+  @@index([code_snippet_id], map: "code_snippet_view_code_snippet_id_776f61af")
+  @@index([slug], map: "code_snippet_view_slug_2d6fac91_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model django_admin_log {
+  id                  Int                  @id @default(autoincrement())
+  action_time         DateTime             @db.Timestamptz(6)
+  object_id           String?
+  object_repr         String               @db.VarChar(200)
+  action_flag         Int                  @db.SmallInt
+  change_message      String
+  content_type_id     Int?
+  user_id             BigInt
+  django_content_type django_content_type? @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_content_type_id_c4bce8eb_fk_django_co")
+  users_user          users_user           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_user_id_c564eba6_fk_users_user_id")
+
+  @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
+  @@index([user_id], map: "django_admin_log_user_id_c564eba6")
+}
+
+model django_content_type {
+  id               Int                @id @default(autoincrement())
+  app_label        String             @db.VarChar(100)
+  model            String             @db.VarChar(100)
+  auth_permission  auth_permission[]
+  django_admin_log django_admin_log[]
+
+  @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+}
+
+model django_migrations {
+  id      BigInt   @id @default(autoincrement())
+  app     String   @db.VarChar(255)
+  name    String   @db.VarChar(255)
+  applied DateTime @db.Timestamptz(6)
+}
+
+model django_session {
+  session_key  String   @id @db.VarChar(40)
+  session_data String
+  expire_date  DateTime @db.Timestamptz(6)
+
+  @@index([expire_date], map: "django_session_expire_date_a5c62663")
+  @@index([session_key], map: "django_session_session_key_c0390e0f_like")
+}
+
+model education {
+  id              BigInt            @id @default(autoincrement())
+  school          String            @unique @db.VarChar(150)
+  slug            String            @unique @db.VarChar(255)
+  image           String?           @db.VarChar(100)
+  degree          String            @db.VarChar(150)
+  address         String?           @db.VarChar(254)
+  field_of_study  String            @db.VarChar(200)
+  start_date      DateTime          @db.Date
+  end_date        DateTime?         @db.Date
+  present         Boolean
+  grade           String?           @db.VarChar(254)
+  activities      String?           @db.VarChar(254)
+  description     String?
+  created_at      DateTime          @db.Timestamptz(6)
+  updated_at      DateTime          @db.Timestamptz(6)
+  education_media education_media[]
+
+  @@index([school], map: "education_school_d52aa636_like")
+  @@index([slug], map: "education_slug_136cd7c5_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model education_media {
+  id           BigInt    @id @default(autoincrement())
+  title        String    @db.VarChar(150)
+  slug         String    @unique @db.VarChar(255)
+  description  String?
+  created_at   DateTime  @db.Timestamptz(6)
+  updated_at   DateTime  @db.Timestamptz(6)
+  file         String    @db.VarChar(100)
+  education_id BigInt
+  order        Int       @map("_order")
+  education    education @relation(fields: [education_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "education_media_education_id_910fdc1f_fk_education_id")
+
+  @@index([education_id], map: "education_media_education_id_910fdc1f")
+  @@index([slug], map: "education_media_slug_184e772c_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model interest {
+  id         BigInt   @id @default(autoincrement())
+  title      String   @db.VarChar(200)
+  slug       String   @unique @db.VarChar(255)
+  icon       String?  @db.VarChar(100)
+  order      Int
+  created_at DateTime @db.Timestamptz(6)
+  updated_at DateTime @db.Timestamptz(6)
+
+  @@index([slug], map: "interest_slug_a791ba92_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model knox_authtoken {
+  digest     String     @id @db.VarChar(128)
+  created    DateTime   @db.Timestamptz(6)
+  user_id    BigInt
+  expiry     DateTime?  @db.Timestamptz(6)
+  token_key  String     @db.VarChar(8)
+  users_user users_user @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "knox_authtoken_user_id_e5a5d899_fk_users_user_id")
+
+  @@index([digest], map: "knox_authtoken_digest_188c7e77_like")
+  @@index([token_key], map: "knox_authtoken_token_key_8f4f7d47")
+  @@index([token_key], map: "knox_authtoken_token_key_8f4f7d47_like")
+  @@index([user_id], map: "knox_authtoken_user_id_e5a5d899")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model movie {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @db.VarChar(200)
+  slug       String   @unique @db.VarChar(255)
+  image      String?  @db.VarChar(100)
+  url        String?  @db.VarChar(200)
+  year       Int?
+  watched    Boolean
+  rating     Float?
+  created_at DateTime @db.Timestamptz(6)
+  updated_at DateTime @db.Timestamptz(6)
+
+  @@index([slug], map: "movie_slug_a66e0d4a_like")
+}
+
+model newsletter_subscription {
+  id         BigInt   @id @default(autoincrement())
+  slug       String   @unique @db.VarChar(255)
+  email      String   @unique @db.VarChar(254)
+  created_at DateTime @db.Timestamptz(6)
+
+  @@index([email], map: "newsletter_subscription_email_3b8020aa_like")
+  @@index([slug], map: "newsletter_subscription_slug_167f7f5f_like")
+}
+
+model professional_experience {
+  id                BigInt    @id @default(autoincrement())
+  company           String    @unique @db.VarChar(150)
+  slug              String    @unique @db.VarChar(255)
+  company_image     String?   @db.VarChar(100)
+  company_url       String?   @db.VarChar(200)
+  address           String?   @db.VarChar(254)
+  designation       String    @db.VarChar(150)
+  job_type          String    @db.VarChar(20)
+  start_date        DateTime  @db.Date
+  end_date          DateTime? @db.Date
+  present           Boolean
+  description       String?
+  created_at        DateTime  @db.Timestamptz(6)
+  updated_at        DateTime  @db.Timestamptz(6)
+  job_location_type String?   @db.VarChar(20)
+
+  @@index([company], map: "professional_experience_company_c11df10d_like")
+  @@index([slug], map: "professional_experience_slug_d7daf2e7_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model project {
+  id                BigInt          @id @default(autoincrement())
+  title             String          @unique @db.VarChar(200)
+  slug              String          @unique @db.VarChar(255)
+  image             String?         @db.VarChar(100)
+  short_description String          @db.VarChar(254)
+  technology        String?         @db.VarChar(255)
+  start_date        DateTime        @db.Date
+  end_date          DateTime?       @db.Date
+  present           Boolean
+  preview_url       String?         @db.VarChar(200)
+  github_url        String?         @db.VarChar(200)
+  description       String?
+  order             Int
+  created_at        DateTime        @db.Timestamptz(6)
+  updated_at        DateTime        @db.Timestamptz(6)
+  project_media     project_media[]
+
+  @@index([slug], map: "project_slug_347e0619_like")
+  @@index([title], map: "project_title_2a0e6002_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model project_media {
+  id          BigInt   @id @default(autoincrement())
+  title       String   @db.VarChar(150)
+  slug        String   @unique @db.VarChar(255)
+  description String?
+  created_at  DateTime @db.Timestamptz(6)
+  updated_at  DateTime @db.Timestamptz(6)
+  file        String   @db.VarChar(100)
+  project_id  BigInt
+  order       Int      @map("_order")
+  project     project  @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_media_project_id_916e071d_fk_project_id")
+
+  @@index([project_id], map: "project_media_project_id_916e071d")
+  @@index([slug], map: "project_media_slug_66d7f6f6_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model skill {
+  id         BigInt   @id @default(autoincrement())
+  title      String   @unique @db.VarChar(150)
+  slug       String   @unique @db.VarChar(255)
+  image      String?  @db.VarChar(100)
+  level      String?  @db.VarChar(2)
+  order      Int
+  created_at DateTime @db.Timestamptz(6)
+  updated_at DateTime @db.Timestamptz(6)
+
+  @@index([slug], map: "skill_slug_2f48bbe3_like")
+  @@index([title], map: "skill_title_101d534d_like")
+}
+
+model users_user {
+  id                          BigInt                        @id @default(autoincrement())
+  password                    String                        @db.VarChar(128)
+  email                       String                        @unique @db.VarChar(254)
+  username                    String                        @unique @db.VarChar(254)
+  name                        String?                       @db.VarChar(100)
+  slug                        String                        @unique @db.VarChar(254)
+  updated_at                  DateTime                      @db.Timestamptz(6)
+  nickname                    String?                       @db.VarChar(100)
+  gender                      String?                       @db.VarChar(20)
+  image                       String?                       @db.VarChar(100)
+  dob                         DateTime?                     @db.Date
+  website                     String?                       @db.VarChar(200)
+  contact                     String?                       @db.VarChar(30)
+  contact_email               String?                       @db.VarChar(254)
+  linkedin                    String?                       @db.VarChar(200)
+  github                      String?                       @db.VarChar(200)
+  address                     String?                       @db.VarChar(254)
+  about                       String?
+  is_portfolio_user           Boolean
+  resume_link                 String?                       @db.VarChar(200)
+  is_staff                    Boolean
+  is_superuser                Boolean
+  is_active                   Boolean
+  last_login                  DateTime?                     @db.Timestamptz(6)
+  date_joined                 DateTime                      @db.Timestamptz(6)
+  django_admin_log            django_admin_log[]
+  knox_authtoken              knox_authtoken[]
+  users_user_groups           users_user_groups[]
+  users_user_user_permissions users_user_user_permissions[]
+
+  @@index([email], map: "users_user_email_243f6e77_like")
+  @@index([slug], map: "users_user_slug_5176bea7_like")
+  @@index([username], map: "users_user_username_06e46fe6_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model users_user_groups {
+  id         BigInt     @id @default(autoincrement())
+  user_id    BigInt
+  group_id   Int
+  auth_group auth_group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_user_groups_group_id_9afc8d0e_fk_auth_group_id")
+  users_user users_user @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_user_groups_user_id_5f6f5a90_fk_users_user_id")
+
+  @@unique([user_id, group_id], map: "users_user_groups_user_id_group_id_b88eab82_uniq")
+  @@index([group_id], map: "users_user_groups_group_id_9afc8d0e")
+  @@index([user_id], map: "users_user_groups_user_id_5f6f5a90")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model users_user_user_permissions {
+  id              BigInt          @id @default(autoincrement())
+  user_id         BigInt
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_user_user_perm_permission_id_0b93982e_fk_auth_perm")
+  users_user      users_user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_user_user_permissions_user_id_20aca447_fk_users_user_id")
+
+  @@unique([user_id, permission_id], map: "users_user_user_permissions_user_id_permission_id_43338c45_uniq")
+  @@index([permission_id], map: "users_user_user_permissions_permission_id_0b93982e")
+  @@index([user_id], map: "users_user_user_permissions_user_id_20aca447")
+}

@@ -4,30 +4,35 @@
     "module": "commonjs", /* Specify what module code is generated. */ // "rootDir": "./",                                  /* Specify the root folder within your source files. */
     "baseUrl": ".", /* Specify the base directory to resolve non-relative module names. */
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@content/*": [
-        "content/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@context/*": [
-        "context/*"
-      ],
-      "@layout/*": [
-        "layout/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ]
+      // "@/components/*": [
+      //   "components/*"
+      // ],
+      // "@lib/*": [
+      //   "src/lib/*"
+      // ],
+      // "@utils/*": [
+      //   "utils/*"
+      // ],
+      // "@content/*": [
+      //   "src/content/*"
+      // ],
+      // "@styles/*": [
+      //   "styles/*"
+      // ],
+      // "@context/*": [
+      //   "src/context/*"
+      // ],
+      // "@layout/*": [
+      //   "layout/*"
+      // ],
+      // "@hooks/*": [
+      //   "src/hooks/*"
+      // ],
+      // "@/lib/*": ["src/lib/*"],
+      // "@/utils/*": ["src/utils/*"],
+      // "@/app/*": ["src/app/*"],
+      // "@/*": ["./*"],
+      "@/*": ["src/*"]
     }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     "checkJs": true, /* Enable error reporting in type-checked JavaScript files. */
     "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */ // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
@@ -58,7 +63,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/sitemap.xml.jsx",
+    "src/pages/sitemap.xml.jsx",
     ".next/types/**/*.ts"
   ],
   "exclude": [

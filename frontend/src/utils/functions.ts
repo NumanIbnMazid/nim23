@@ -69,31 +69,33 @@ export async function highlightCode(content: string): Promise<string> {
 export function copyToClipboard(button: HTMLElement) {
   const codeBlock = button.closest('.code-block-wrapper')?.querySelector('pre code')
 
-  if (codeBlock && codeBlock instanceof HTMLElement) {
-    try {
-      navigator.clipboard
-        .writeText(codeBlock.innerText)
-        .then(() => {
-          button.textContent = 'Copied!'
-          setTimeout(() => {
-            button.textContent = 'Copy'
-          }, 2000)
-        })
-        .catch((err) => {
-          console.error('Clipboard API Error:', err)
-          button.textContent = 'Failed!'
-        })
-    } catch (err) {
-      console.error('Clipboard API Not Available:', err)
-      button.textContent = 'Not Supported'
-    }
+  if (!codeBlock || !(codeBlock instanceof HTMLElement)) {
+    console.warn('❌ Code block not found.')
+    return
   }
+
+  const text = codeBlock.innerText.trim()
+  if (!text) {
+    console.warn('❌ No text found to copy.')
+    return
+  }
+
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      button.textContent = 'Copied!'
+      setTimeout(() => (button.textContent = 'Copy'), 2000)
+    })
+    .catch((err) => {
+      console.error('❌ Clipboard API Error:', err)
+      button.textContent = 'Failed!'
+    })
 }
 
 // ✅ Function to add copy button event listeners
 export function addCopyListeners() {
   document.querySelectorAll('.copy-button').forEach((button) => {
-    button.removeEventListener('click', handleCopyClick) // ✅ Remove previous listeners
+    button.removeEventListener('click', handleCopyClick)
     button.addEventListener('click', handleCopyClick)
   })
 }

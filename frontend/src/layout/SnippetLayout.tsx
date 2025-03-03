@@ -1,5 +1,3 @@
-import { opacityVariant } from '@/content/FramerMotionVariants'
-import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
 import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
 import { FiPrinter } from 'react-icons/fi'
 import useWindowLocation from '@/hooks/useWindowLocation'
@@ -151,7 +149,7 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
     if (typeof window !== 'undefined') {
       addCopyListeners()
     }
-  }, [processedContent])
+  }, [processedContent, totalLikes, userLiked, totalViews, isLiking])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
@@ -220,12 +218,11 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
         )}
 
         {/* Content */}
-        <AnimatedDiv
-          variants={opacityVariant}
+        <div
           className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
-        </AnimatedDiv>
+        </div>
 
         {/* Like Button */}
         <div className="print:hidden">

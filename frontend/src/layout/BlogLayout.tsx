@@ -4,8 +4,7 @@ import { FiPrinter } from 'react-icons/fi'
 import useWindowLocation from '@/hooks/useWindowLocation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 import { useState, useEffect } from 'react'
-import { opacityVariant, popUp } from '@/content/FramerMotionVariants'
-import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
+import { popUp } from '@/content/FramerMotionVariants'
 import { getFormattedDate } from '@/utils/date'
 import { BlogType, ProfileType } from '@/lib/types'
 import TableOfContents from '@/components/TableOfContents'
@@ -178,7 +177,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
     if (typeof window !== 'undefined') {
       addCopyListeners()
     }
-  }, [processedContent])
+  }, [processedContent, totalLikes, userLiked, totalViews, isLiking])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
@@ -319,12 +318,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
         {/* Blog Content */}
 
-        <AnimatedDiv
-          variants={opacityVariant}
+        <div
           className="my-16 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
-        </AnimatedDiv>
+        </div>
 
         {/* Like Button */}
         <div className="print:hidden">

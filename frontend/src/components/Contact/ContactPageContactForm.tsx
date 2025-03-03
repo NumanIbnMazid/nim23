@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { motion } from 'framer-motion'
 import { FadeContainer, mobileNavItemSideways } from '@/content/FramerMotionVariants'
-import Ripples from 'react-ripples'
 import { toast } from 'sonner' // ✅ Replaced Toastify with Sonner
 import { FormInput } from '@/lib/types'
 
@@ -170,22 +169,14 @@ export default function ContactForm() {
           variants={mobileNavItemSideways}
           className="w-full overflow-hidden rounded-lg shadow-lg sm:max-w-sm"
         >
-          <Ripples
-            className="flex justify-center w-full"
-            color="rgba(225, 225,225,0.2)"
-            placeholder=""
-            onPointerEnterCapture={() => {}}
-            onPointerLeaveCapture={() => {}}
+          <button
+            ref={sendButtonRef}
+            type="submit"
+            className="relative w-full px-4 py-3 text-sm font-medium text-center text-white transition duration-300 rounded-lg outline-none bg-neutral-800 dark:bg-darkSecondary active:scale-95 disabled:opacity-50 disabled:active:scale-100"
+            disabled={isSubmitting}
           >
-            <button
-              ref={sendButtonRef}
-              type="submit"
-              className="relative w-full px-4 py-3 text-sm font-medium text-center text-white transition duration-300 rounded-lg outline-none bg-neutral-800 dark:bg-darkSecondary active:scale-95 disabled:opacity-50 disabled:active:scale-100"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Sending...' : 'Send'}
-            </button>
-          </Ripples>
+            {isSubmitting ? 'Sending...' : 'Send'}
+          </button>
         </motion.div>
       </motion.form>
     </>

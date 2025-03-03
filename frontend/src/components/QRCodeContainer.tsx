@@ -1,5 +1,4 @@
 import QRCode from 'react-qr-code'
-import Ripples from 'react-ripples'
 import useWindowLocation from '@/hooks/useWindowLocation'
 import { CgClose } from 'react-icons/cg'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -75,20 +74,12 @@ export default function QRCodeContainer({
                 />
               )}
 
-              <Ripples
-                className="mt-2"
-                color={isDarkMode ? 'rgba(0,0,0, 0.2)' : 'rgba(225, 225, 225, 0.2)'}
-                placeholder=""
-                onPointerEnterCapture={() => {}}
-                onPointerLeaveCapture={() => {}}
+              <button
+                className="w-full px-3 py-2 text-sm font-medium text-white rounded bg-darkPrimary dark:bg-gray-100 dark:text-darkPrimary"
+                onClick={downloadQRCode}
               >
-                <button
-                  className="w-full px-3 py-2 text-sm font-medium text-white rounded bg-darkPrimary dark:bg-gray-100 dark:text-darkPrimary"
-                  onClick={downloadQRCode}
-                >
-                  Download
-                </button>
-              </Ripples>
+                Download
+              </button>
             </div>
           </motion.div>
         )}

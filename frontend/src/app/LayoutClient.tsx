@@ -23,6 +23,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       NProgress.start()
       const timer = setTimeout(() => {
         NProgress.done()
+        // ✅ FIX: Re-run Prism highlighting after NProgress finishes
+        import('@/lib/prismSetup').then((Prism) => {
+          setTimeout(() => {
+            Prism.default.highlightAll();
+          }, 200); // Delay ensures React renders first
+        });
       }, 500)
 
       return () => {

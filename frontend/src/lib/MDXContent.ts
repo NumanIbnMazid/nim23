@@ -5,7 +5,7 @@ import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
 import rehypeSlug from "rehype-slug"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import rehypePrettyCode from "rehype-pretty-code"
+// import rehypePrettyCode from "rehype-pretty-code"
 import { FrontMatter } from "./types"
 
 export default class MDXContent {
@@ -54,30 +54,30 @@ export default class MDXContent {
 
     const frontMatter = this.getFrontMatter(slug)
 
-    const prettyCodeOptions = {
-      theme: "one-dark-pro",
-      onVisitLine(node: any) {
-        // Prevent lines from collapsing in `display: grid` mode, and
-        // allow empty lines to be copy/pasted
-        if (node.children.length === 0) {
-          node.children = [{ type: "text", value: " " }]
-        }
-      },
-      // Feel free to add classNames that suit your docs
-      onVisitHighlightedLine(node: any) {
-        node.properties.className.push("highlighted")
-      },
-      onVisitHighlightedWord(node: any) {
-        node.properties.className = ["word"]
-      },
-    }
+    // const prettyCodeOptions = {
+    //   theme: "one-dark-pro",
+    //   onVisitLine(node: any) {
+    //     // Prevent lines from collapsing in `display: grid` mode, and
+    //     // allow empty lines to be copy/pasted
+    //     if (node.children.length === 0) {
+    //       node.children = [{ type: "text", value: " " }]
+    //     }
+    //   },
+    //   // Feel free to add classNames that suit your docs
+    //   onVisitHighlightedLine(node: any) {
+    //     node.properties.className.push("highlighted")
+    //   },
+    //   onVisitHighlightedWord(node: any) {
+    //     node.properties.className = ["word"]
+    //   },
+    // }
     const mdxSource = await serialize(content, {
       mdxOptions: {
         development: process.env.NODE_ENV !== 'production',
         rehypePlugins: [
-          rehypeSlug,
+          rehypeSlug as any,
           [rehypeAutolinkHeadings, { behaviour: "wrap" }],
-          [rehypePrettyCode, prettyCodeOptions],
+          // [rehypePrettyCode, prettyCodeOptions],
         ],
       },
     })
@@ -89,7 +89,6 @@ export default class MDXContent {
       },
     }
   }
-
   getAllPosts(length?: number | undefined) {
     const allPosts = this.getSlugs()
       .map((slug) => {

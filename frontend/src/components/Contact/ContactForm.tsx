@@ -84,7 +84,7 @@ export default function Form() {
               type="text"
               name="first_name"
               id="floating_first_name"
-              className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 text-white-900 border-slate-500 dark:text-white dark:border-gray-400 focus:border-black peer"
+              className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               required
             />
@@ -101,7 +101,7 @@ export default function Form() {
               type="text"
               name="last_name"
               id="floating_last_name"
-              className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 text-white-900 border-slate-500 dark:text-white dark:border-gray-400 focus:border-black peer"
+              className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               required
             />
@@ -119,7 +119,7 @@ export default function Form() {
             type="email"
             name="email"
             id="floating_email"
-            className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 text-white-900 border-slate-500 dark:text-white dark:border-gray-400 focus:border-black peer"
+            className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
             placeholder=" "
             required
           />
@@ -136,7 +136,7 @@ export default function Form() {
             type="text"
             name="subject"
             id="floating_subject"
-            className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 text-white-900 border-slate-500 dark:text-white dark:border-gray-400 focus:border-black peer"
+            className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
             placeholder=" "
             required
           />
@@ -152,7 +152,7 @@ export default function Form() {
           <textarea
             name="message"
             id="floating_message"
-            className="block py-2 mt-2 px-0 w-full text-sm bg-transparent border-0 border-b-2 text-white-900 border-slate-500 dark:text-white dark:border-gray-400 focus:border-black peer min-h-[100px] resize-y"
+            className="block w-full px-0 py-2 mt-2 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer min-h-[100px] resize-y"
             placeholder=" "
             required
           />
@@ -168,7 +168,13 @@ export default function Form() {
           variants={mobileNavItemSideways}
           className="w-full overflow-hidden rounded-lg shadow-lg sm:max-w-sm"
         >
-          <Ripples className="flex justify-center w-full" color="rgba(225,225,225,0.2)">
+          <Ripples
+            className="flex justify-center w-full"
+            color="rgba(225, 225,225,0.2)"
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          >
             <button
               ref={sendButtonRef}
               type="submit"

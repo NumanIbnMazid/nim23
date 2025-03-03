@@ -67,7 +67,7 @@ export default function QRCodeContainer({
               {currentURL && (
                 <QRCode
                   id="QRCode"
-                  value={currentURL} 
+                  value={currentURL}
                   bgColor={isDarkMode ? '#25282a' : 'white'}
                   fgColor={isDarkMode ? 'white' : '#25282a'}
                   level="M"
@@ -75,7 +75,13 @@ export default function QRCodeContainer({
                 />
               )}
 
-              <Ripples className="mt-2" color={isDarkMode ? 'rgba(0,0,0, 0.2)' : 'rgba(225, 225, 225, 0.2)'}>
+              <Ripples
+                className="mt-2"
+                color={isDarkMode ? 'rgba(0,0,0, 0.2)' : 'rgba(225, 225, 225, 0.2)'}
+                placeholder=""
+                onPointerEnterCapture={() => {}}
+                onPointerLeaveCapture={() => {}}
+              >
                 <button
                   className="w-full px-3 py-2 text-sm font-medium text-white rounded bg-darkPrimary dark:bg-gray-100 dark:text-darkPrimary"
                   onClick={downloadQRCode}

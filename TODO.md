@@ -92,16 +92,18 @@
   - (DONE) Add comment like and total view features in Snippets.
   - (DONE) Fix Like Bug.
   - (DONE) Fix newsletter subscription bug.
-  - Fix Blog and Snippet Details page's Dynamic Meta loading issue. Meta is loading, there is no initial loader.
+  - (DONE) Fix Blog and Snippet Details page's Dynamic Meta loading issue. Meta is loading, there is no initial loader.
   - Use SWR for Data Fetching.
-  - Investigate on app routes and get the differences between app and pages routes.
-  - On every details page like blog details, project details, details api is calling twice. Once in getServersideProps and another in useEffect. Fix it. It is initially done because of dynamic meta tags issue. In server side props or any other server side function we don't have acces of useContext or localstorage. So we cannot use method `useClientID`. Now we are passing hardcoded client id 1. But it is not a good practice. So we need to fix it.
+  - (DONE) Investigate on app routes and get the differences between app and pages routes.
+  - (DONE) On every details page like blog details, project details, details api is calling twice. Once in getServersideProps and another in useEffect. Fix it. It is initially done because of dynamic meta tags issue. In server side props or any other server side function we don't have acces of useContext or localstorage. So we cannot use method `useClientID`. Now we are passing hardcoded client id 1. But it is not a good practice. So we need to fix it.
   - Create a installation guide for the project on README.md.
   - Fix different BACKEND_API_BASE_URL for production and development. Make identical.
   - Fix Details page bug in Docker environment.
-  - Fix two same api calls in details page, ex: blog. One in getServerSideProps, another in useEffect.
   - Make BLOG_ENDPOINT Dynamic in BlogLayout.
-  - Fix Blog View Increment API. First api calls gives error but later ones don't.
+  - (DONE) Fix Blog View Increment API. First api calls gives error but later ones don't.
+  - Fix code highlighting.
+  - Fix font in work experience section.
+  - Fix Newsletter section's email placeholder.
 
 
 ## Improvement

@@ -1,8 +1,9 @@
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./layout/*.{js,jsx,ts,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/layout/*.{js,jsx,ts,tsx}",
   ],
   darkMode: "class", // or 'media' or 'class'
   theme: {
@@ -48,7 +49,6 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/line-clamp"),
     require("@tailwindcss/typography"),
   ],
 };

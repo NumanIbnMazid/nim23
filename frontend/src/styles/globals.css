@@ -427,3 +427,31 @@ pre[class*="language-"]::-webkit-scrollbar-corner {
     display: none;
   }
 }
+
+/* Copy Button to code block */
+.code-block-wrapper {
+  position: relative;
+}
+
+.copy-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.code-block-wrapper:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:active {
+  background: rgba(0, 0, 0, 0.9);
+}

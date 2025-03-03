@@ -148,7 +148,9 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
 
   // ✅ Add event listeners for copy buttons
   useEffect(() => {
-    addCopyListeners()
+    if (typeof window !== 'undefined') {
+      addCopyListeners()
+    }
   }, [processedContent])
 
   return (

@@ -175,7 +175,9 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
   // ✅ Add event listeners for copy buttons
   useEffect(() => {
-    addCopyListeners()
+    if (typeof window !== 'undefined') {
+      addCopyListeners()
+    }
   }, [processedContent])
 
   return (

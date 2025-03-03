@@ -41,7 +41,7 @@ export async function highlightCode(content: string): Promise<string> {
     if (response.ok) {
       const { highlightedBlocks } = await response.json()
 
-      highlightedBlocks.forEach(({ original, highlighted }: { original: string, highlighted: string }) => {
+      highlightedBlocks.forEach(({ original, highlighted }: { original: string; highlighted: string }) => {
         const matchingBlock = Array.from(tempDiv.querySelectorAll('pre code')).find((block) =>
           block.textContent?.includes(original)
         )
@@ -56,7 +56,8 @@ export async function highlightCode(content: string): Promise<string> {
             </div>
           `
         }
-      })    }
+      })
+    }
   } catch (error) {
     console.error('Failed to highlight:', error)
   }
@@ -69,19 +70,34 @@ export function copyToClipboard(button: HTMLElement) {
   const codeBlock = button.closest('.code-block-wrapper')?.querySelector('pre code')
 
   if (codeBlock && codeBlock instanceof HTMLElement) {
-    navigator.clipboard.writeText(codeBlock.innerText)
-    button.textContent = 'Copied!'
-    setTimeout(() => {
-      button.textContent = 'Copy'
-    }, 2000)
+    try {
+      navigator.clipboard
+        .writeText(codeBlock.innerText)
+        .then(() => {
+          button.textContent = 'Copied!'
+          setTimeout(() => {
+            button.textContent = 'Copy'
+          }, 2000)
+        })
+        .catch((err) => {
+          console.error('Clipboard API Error:', err)
+          button.textContent = 'Failed!'
+        })
+    } catch (err) {
+      console.error('Clipboard API Not Available:', err)
+      button.textContent = 'Not Supported'
+    }
   }
 }
 
 // ✅ Function to add copy button event listeners
 export function addCopyListeners() {
   document.querySelectorAll('.copy-button').forEach((button) => {
-    button.addEventListener('click', (event) => {
-      copyToClipboard(event.currentTarget as HTMLElement) // ✅ Use the copy function
-    })
+    button.removeEventListener('click', handleCopyClick) // ✅ Remove previous listeners
+    button.addEventListener('click', handleCopyClick)
   })
+}
+
+function handleCopyClick(event: Event) {
+  copyToClipboard(event.currentTarget as HTMLElement)
 }

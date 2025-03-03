@@ -102,8 +102,8 @@
   - Make BLOG_ENDPOINT Dynamic in BlogLayout.
   - (DONE) Fix Blog View Increment API. First api calls gives error but later ones don't.
   - Fix code highlighting.
-  - Fix font in work experience section.
-  - Fix Newsletter section's email placeholder.
+  - (DONE) Fix font in work experience section.
+  - (DONE) Fix Newsletter section's email placeholder.
 
 
 ## Improvement

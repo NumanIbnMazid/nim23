@@ -1,11 +1,9 @@
-import { opacityVariant } from '@/content/FramerMotionVariants'
-import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
 import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
 import { FiPrinter } from 'react-icons/fi'
 import useWindowLocation from '@/hooks/useWindowLocation'
 import { CodeSnippetType } from '@/lib/types'
 import Image from 'next/image'
-import cn from 'classnames'
+import { highlightCode, addCopyListeners } from '@/utils/functions'
 import { useEffect, useState } from 'react'
 import { getFormattedDate } from '@/utils/date'
 import CommentSection from '@/components/SnippetComment/CommentSection'
@@ -17,8 +15,8 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { SNIPPET_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnippetType }) {
+  const [processedContent, setProcessedContent] = useState<string>(code_snippet.content)
   const { currentURL } = useWindowLocation()
-  const hasCode = code_snippet && code_snippet.content.includes('<code>')
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
   const [totalLikes, setTotalLikes] = useState<number>(code_snippet.total_likes)
@@ -88,18 +86,6 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
     }
   }, [code_snippet.slug, clientID]) // ✅ `isLiking` removed to prevent unnecessary re-fetching
 
-  const injectStyle = () => {
-    if (hasCode) {
-      const style = document.createElement('style')
-      style.innerHTML = `
-        .text-code code {
-          color: #78a5b3
-        }
-      `
-      document.head.appendChild(style)
-    }
-  }
-
   function adjustContentForPrint() {
     // Table of Contents
     const tocComponent = document.querySelector('.hide-on-print')
@@ -150,16 +136,20 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
   }
 
   useEffect(() => {
-    injectStyle();
-    // Prism JS
-    if (typeof window !== 'undefined') {
-      import('@/lib/prismSetup').then((Prism) => {
-        setTimeout(() => {
-          Prism.default.highlightAll();
-        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
-      });
+    async function processCode() {
+      const highlighted = await highlightCode(code_snippet.content)
+      setProcessedContent(highlighted)
     }
+
+    processCode()
   }, [code_snippet.content])
+
+  // ✅ Add event listeners for copy buttons
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      addCopyListeners()
+    }
+  }, [processedContent, totalLikes, userLiked, totalViews, isLiking])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
@@ -228,15 +218,11 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
         )}
 
         {/* Content */}
-        <AnimatedDiv
-          variants={opacityVariant}
+        <div
           className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
-          <div
-            dangerouslySetInnerHTML={{ __html: code_snippet.content }}
-            className={cn('my-4', { 'text-code': hasCode, 'line-numbers': hasCode })}
-          />
-        </AnimatedDiv>
+          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+        </div>
 
         {/* Like Button */}
         <div className="print:hidden">

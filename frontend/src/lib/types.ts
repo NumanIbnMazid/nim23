@@ -1,6 +1,6 @@
 import { Variants } from "framer-motion"
 import { MDXRemoteSerializeResult } from "next-mdx-remote"
-import React from "react"
+import React, { JSX } from "react"
 import { IconType } from "react-icons/lib"
 import { ReadTimeResults } from "reading-time"
 

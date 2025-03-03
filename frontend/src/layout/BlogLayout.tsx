@@ -4,12 +4,11 @@ import { FiPrinter } from 'react-icons/fi'
 import useWindowLocation from '@/hooks/useWindowLocation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
 import { useState, useEffect } from 'react'
-import { opacityVariant, popUp } from '@/content/FramerMotionVariants'
-import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
+import { popUp } from '@/content/FramerMotionVariants'
 import { getFormattedDate } from '@/utils/date'
 import { BlogType, ProfileType } from '@/lib/types'
 import TableOfContents from '@/components/TableOfContents'
-import cn from 'classnames'
+import { highlightCode, addCopyListeners } from '@/utils/functions'
 import { motion } from 'framer-motion'
 import readTime from 'reading-time'
 import CommentSection from '@/components/BlogComment/CommentSection'
@@ -22,9 +21,10 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { BLOG_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; profileInfo: ProfileType }) {
+  const hasCode = blog && blog.content.includes('<code>')
+  const [processedContent, setProcessedContent] = useState<string>(blog.content)
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
-  const hasCode = blog && blog.content.includes('<code>')
   const size = useWindowSize()
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [blogInfoFull, setBlogInfoFull] = useState(false)
@@ -157,35 +157,27 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
     document.head.removeChild(style)
   }
 
-  const injectStyle = () => {
-    if (hasCode) {
-      const style = document.createElement('style')
-      style.innerHTML = `
-        .text-code code {
-          color: #78a5b3
-        }
-      `
-      document.head.appendChild(style)
-    }
-  }
-
   useEffect(() => {
     // Syntax Highlighting
-    injectStyle()
-    // Prism JS
-    if (typeof window !== 'undefined') {
-      import('@/lib/prismSetup').then((Prism) => {
-        setTimeout(() => {
-          Prism.default.highlightAll();
-        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
-      });
+    async function processCode() {
+      const highlighted = await highlightCode(blog.content)
+      setProcessedContent(highlighted)
     }
+    processCode()
+
     if (size.width > 1600) {
       setBlogInfoFull(true)
     } else {
       setBlogInfoFull(false)
     }
-  }, [blog.content, size])
+  }, [hasCode, blog.content, size])
+
+  // ✅ Add event listeners for copy buttons
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      addCopyListeners()
+    }
+  }, [processedContent, totalLikes, userLiked, totalViews, isLiking])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
@@ -326,15 +318,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
         {/* Blog Content */}
 
-        <AnimatedDiv
-          variants={opacityVariant}
+        <div
           className="my-16 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
         >
-          <div
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-            className={cn('my-4', { 'text-code': hasCode, 'line-numbers': hasCode })}
-          />
-        </AnimatedDiv>
+          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+        </div>
 
         {/* Like Button */}
         <div className="print:hidden">

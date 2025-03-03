@@ -89,7 +89,7 @@ export function TimelineItem({
           </div>
         </div>
         <div
-          className="relative md:border-gray-300 md:dark:border-gray-400 md:col-span-4 text-sm text-inherit font-light pt-6"
+          className="relative md:border-gray-300 md:dark:border-gray-400 md:col-span-4 text-sm text-inherit font-light"
           dangerouslySetInnerHTML={{ __html: description }}
         ></div>
       </article>

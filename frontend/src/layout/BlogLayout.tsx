@@ -23,7 +23,7 @@ import { BLOG_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; profileInfo: ProfileType }) {
   const hasCode = blog && blog.content.includes('<code>')
-  const prismInitialized = useRef(false) // ✅ Prevent duplicate highlighting
+  const prismRef = useRef(false) // ✅ Prevents redundant Prism calls
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
   const size = useWindowSize()
@@ -174,20 +174,34 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
     // Syntax Highlighting
     injectStyle()
     // Prism JS
-    if (typeof window !== 'undefined' && hasCode && !prismInitialized.current) {
-      import('@/lib/prismSetup').then((Prism) => {
-        setTimeout(() => {
-          Prism.default.highlightAll()
-          prismInitialized.current = true // ✅ Ensure it runs only once per snippet
-        }, 500)
-      })
+    if (typeof window !== 'undefined' && hasCode) {
+      const applyPrism = () => {
+        if (!prismRef.current) {
+          import('@/lib/prismSetup').then((Prism) => {
+            setTimeout(() => {
+              Prism.default.highlightAll()
+              prismRef.current = true // ✅ Ensures Prism only runs once per content
+            }, 400) // ✅ Allows Next.js hydration to finish
+          })
+        }
+      }
+
+      // ✅ Run immediately
+      applyPrism()
+
+      // ✅ Run again after NProgress completes (in case styles were removed)
+      setTimeout(applyPrism, 800)
+
+      return () => {
+        prismRef.current = false // Allow re-application if needed
+      }
     }
     if (size.width > 1600) {
       setBlogInfoFull(true)
     } else {
       setBlogInfoFull(false)
     }
-  }, [hasCode, size])
+  }, [hasCode, blog.content, size])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

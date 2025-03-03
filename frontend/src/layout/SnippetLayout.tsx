@@ -17,8 +17,8 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { SNIPPET_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnippetType }) {
-  const hasCode = code_snippet && code_snippet.content.includes('<code>');
-  const prismInitialized = useRef(false); // ✅ Prevent duplicate highlighting
+  const hasCode = code_snippet && code_snippet.content.includes('<code>')
+  const prismRef = useRef(false) // ✅ Prevents redundant Prism calls
   const { currentURL } = useWindowLocation()
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
@@ -151,17 +151,31 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
   }
 
   useEffect(() => {
-    injectStyle();
+    injectStyle()
     // Prism JS
-    if (typeof window !== 'undefined' && hasCode && !prismInitialized.current) {
-      import('@/lib/prismSetup').then((Prism) => {
-        setTimeout(() => {
-          Prism.default.highlightAll();
-          prismInitialized.current = true; // ✅ Ensure it runs only once per snippet
-        }, 500);
-      });
+    if (typeof window !== 'undefined' && hasCode) {
+      const applyPrism = () => {
+        if (!prismRef.current) {
+          import('@/lib/prismSetup').then((Prism) => {
+            setTimeout(() => {
+              Prism.default.highlightAll()
+              prismRef.current = true // ✅ Ensures Prism only runs once per content
+            }, 400) // ✅ Allows Next.js hydration to finish
+          })
+        }
+      }
+
+      // ✅ Run immediately
+      applyPrism()
+
+      // ✅ Run again after NProgress completes (in case styles were removed)
+      setTimeout(applyPrism, 800)
+
+      return () => {
+        prismRef.current = false // Allow re-application if needed
+      }
     }
-  }, [hasCode])
+  }, [hasCode, code_snippet.content])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

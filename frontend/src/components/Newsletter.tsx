@@ -48,12 +48,12 @@ export default function Newsletter() {
 
         <form className="relative w-full" onSubmit={subscribeNewsletter}>
           <input
-            className="px-4 py-2.5 rounded-lg text-lg bg-gray-200 dark:bg-darkSecondary outline-none border-0 w-full placeholder:text-gray-700 dark:placeholder:text-gray-400 dark:text-gray-300"
+            className="px-4 py-2.5 rounded-lg text-lg bg-gray-200 dark:bg-darkSecondary outline-none border-0 w-full placeholder:text-gray-400 dark:placeholder:text-gray-600 dark:text-gray-300"
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="john.doe@email.com"
+            placeholder="enter your email address"
             required
             disabled={isSubmitting} // ✅ Disable input while submitting
           />

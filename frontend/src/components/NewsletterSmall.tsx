@@ -51,12 +51,12 @@ export default function Newsletter() {
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             <input
-              className="px-4 py-2.5 rounded-lg text-lg bg-gray-200 dark:bg-darkSecondary outline-none border-0 w-auto placeholder:text-gray-700 dark:placeholder:text-gray-500 dark:text-gray-300"
+              className="px-4 py-2.5 rounded-lg text-lg bg-gray-200 dark:bg-darkSecondary outline-none border-0 w-auto placeholder:text-gray-400 dark:placeholder:text-gray-600 dark:text-gray-300"
               type="email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="john.doe@email.com"
+              placeholder="enter your email"
               required
             />
             <button

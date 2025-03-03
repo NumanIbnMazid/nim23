@@ -3,7 +3,7 @@ import ShareOnSocialMedia from '../components/ShareOnSocialMedia'
 import { FiPrinter } from 'react-icons/fi'
 import useWindowLocation from '@/hooks/useWindowLocation'
 import ScrollProgressBar from '@/components/ScrollProgressBar'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { opacityVariant, popUp } from '@/content/FramerMotionVariants'
 import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
 import { getFormattedDate } from '@/utils/date'
@@ -22,9 +22,10 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { BLOG_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; profileInfo: ProfileType }) {
+  const hasCode = blog && blog.content.includes('<code>')
+  const prismInitialized = useRef(false) // ✅ Prevent duplicate highlighting
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
-  const hasCode = blog && blog.content.includes('<code>')
   const size = useWindowSize()
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [blogInfoFull, setBlogInfoFull] = useState(false)
@@ -173,19 +174,20 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
     // Syntax Highlighting
     injectStyle()
     // Prism JS
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && hasCode && !prismInitialized.current) {
       import('@/lib/prismSetup').then((Prism) => {
         setTimeout(() => {
-          Prism.default.highlightAll();
-        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
-      });
+          Prism.default.highlightAll()
+          prismInitialized.current = true // ✅ Ensure it runs only once per snippet
+        }, 500)
+      })
     }
     if (size.width > 1600) {
       setBlogInfoFull(true)
     } else {
       setBlogInfoFull(false)
     }
-  }, [blog.content, size])
+  }, [hasCode, size])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

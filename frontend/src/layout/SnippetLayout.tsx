@@ -6,7 +6,7 @@ import useWindowLocation from '@/hooks/useWindowLocation'
 import { CodeSnippetType } from '@/lib/types'
 import Image from 'next/image'
 import cn from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { getFormattedDate } from '@/utils/date'
 import CommentSection from '@/components/SnippetComment/CommentSection'
 import CommentList from '@/components/SnippetComment/CommentList'
@@ -17,8 +17,9 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { SNIPPET_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnippetType }) {
+  const hasCode = code_snippet && code_snippet.content.includes('<code>');
+  const prismInitialized = useRef(false); // ✅ Prevent duplicate highlighting
   const { currentURL } = useWindowLocation()
-  const hasCode = code_snippet && code_snippet.content.includes('<code>')
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
   const [totalLikes, setTotalLikes] = useState<number>(code_snippet.total_likes)
@@ -152,14 +153,15 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
   useEffect(() => {
     injectStyle();
     // Prism JS
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && hasCode && !prismInitialized.current) {
       import('@/lib/prismSetup').then((Prism) => {
         setTimeout(() => {
           Prism.default.highlightAll();
-        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
+          prismInitialized.current = true; // ✅ Ensure it runs only once per snippet
+        }, 500);
       });
     }
-  }, [code_snippet.content])
+  }, [hasCode])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

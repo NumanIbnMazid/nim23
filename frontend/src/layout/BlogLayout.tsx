@@ -10,7 +10,6 @@ import { getFormattedDate } from '@/utils/date'
 import { BlogType, ProfileType } from '@/lib/types'
 import TableOfContents from '@/components/TableOfContents'
 import cn from 'classnames'
-import Prism from '@/lib/prismSetup'
 import { motion } from 'framer-motion'
 import readTime from 'reading-time'
 import CommentSection from '@/components/BlogComment/CommentSection'
@@ -175,15 +174,18 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
     injectStyle()
     // Prism JS
     if (typeof window !== 'undefined') {
-      Prism.highlightAll()
-      // Prism.plugins.lineNumbers = true
+      import('@/lib/prismSetup').then((Prism) => {
+        setTimeout(() => {
+          Prism.default.highlightAll();
+        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
+      });
     }
     if (size.width > 1600) {
       setBlogInfoFull(true)
     } else {
       setBlogInfoFull(false)
     }
-  }, [size, hasCode])
+  }, [blog.content, size])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

@@ -8,7 +8,6 @@ import Image from 'next/image'
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import { getFormattedDate } from '@/utils/date'
-import Prism from '@/lib/prismSetup'
 import CommentSection from '@/components/SnippetComment/CommentSection'
 import CommentList from '@/components/SnippetComment/CommentList'
 import { AiFillEye, AiFillLike, AiOutlineLike } from 'react-icons/ai'
@@ -151,14 +150,16 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
   }
 
   useEffect(() => {
-    injectStyle()
-
+    injectStyle();
     // Prism JS
     if (typeof window !== 'undefined') {
-      Prism.highlightAll()
-      // Prism.plugins.lineNumbers = true
+      import('@/lib/prismSetup').then((Prism) => {
+        setTimeout(() => {
+          Prism.default.highlightAll();
+        }, 500); // ✅ Ensures React hydration is complete before applying syntax highlighting
+      });
     }
-  }, [hasCode])
+  }, [code_snippet.content])
 
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">

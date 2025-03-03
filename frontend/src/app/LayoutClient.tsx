@@ -1,6 +1,6 @@
 'use client' // ✅ Ensure Client Component
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation' // ✅ Correct Hook
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -16,19 +16,25 @@ NProgress.configure({
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() // ✅ Detects navigation changes
-  const { isDarkMode } = useDarkMode() // ✅ Now works
+  const { isDarkMode } = useDarkMode()
+  const [prismLoaded, setPrismLoaded] = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       NProgress.start()
+
       const timer = setTimeout(() => {
         NProgress.done()
-        // ✅ FIX: Re-run Prism highlighting after NProgress finishes
-        import('@/lib/prismSetup').then((Prism) => {
-          setTimeout(() => {
-            Prism.default.highlightAll();
-          }, 200); // Delay ensures React renders first
-        });
+
+        // ✅ FIX: Delay Prism.js until everything is fully loaded
+        setTimeout(() => {
+          if (!prismLoaded) {
+            import('@/lib/prismSetup').then((Prism) => {
+              Prism.default.highlightAll()
+              setPrismLoaded(true) // ✅ Ensure it only runs once
+            })
+          }
+        }, 300) // Slight delay to ensure Next.js hydration is complete
       }, 500)
 
       return () => {
@@ -36,14 +42,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         NProgress.done()
       }
     }
-  }, [pathname])
+  }, [pathname, prismLoaded]) // ✅ Runs once per route change, ensuring Prism doesn't reset
 
   return (
     <>
       {process.env.NODE_ENV === 'production' && <GoogleAnalytics strategy="lazyOnload" />}
 
       {children}
-      
+
       {/* ✅ Add the Sonner Toaster */}
       <Toaster
         position="top-right"

@@ -1,6 +1,5 @@
-import { getAllMovies } from '@/lib/api/movies'
-import { getYoutubeVideos } from '@/lib/api/youtube'
 import MediaClient from './EntertainmentClient'
+import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { getPageMetadata, pageMeta } from '@/lib/Meta'
@@ -16,6 +15,7 @@ export const metadata: Metadata = getPageMetadata({
   url: `${PUBLIC_SITE_URL}/media`, // ✅ Media page URL
 })
 
+// ✅ Fetch media data using API routes
 export default function MediaPage() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
@@ -24,9 +24,18 @@ export default function MediaPage() {
   )
 }
 
+// ✅ Fetch Movies & YouTube Videos Using API for Fresh Data
 async function MainMediaPage() {
-  const movies = await getAllMovies() // ✅ Server-side fetch for better performance
-  const youtubeVideos = await getYoutubeVideos() // ✅ Server-side fetch for YouTube videos
+  const [moviesRes, youtubeRes] = await Promise.all([
+    fetch(`${PUBLIC_SITE_URL}/api/movies`, { cache: 'no-store' }),
+    fetch(`${PUBLIC_SITE_URL}/api/youtube`, { cache: 'no-store' }),
+  ])
 
-  return <MediaClient initialMovies={movies} initialYoutubeVideos={youtubeVideos} /> // ✅ Pass data to the Client Component
+  if (!moviesRes.ok || !youtubeRes.ok) {
+    return notFound() // ✅ Redirect to `not-found.tsx` if any API fails
+  }
+
+  const [movies, youtubeVideos] = await Promise.all([moviesRes.json(), youtubeRes.json()])
+
+  return <MediaClient initialMovies={movies} initialYoutubeVideos={youtubeVideos} />
 }

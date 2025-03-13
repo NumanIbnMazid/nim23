@@ -1,10 +1,10 @@
-import { getGithubStats } from '@/lib/api/github'
-import StatsClient from '@/app/stats/StatsClient'
-import { Suspense } from 'react'
-import SkeletonLoader from '@/components/SkeletonLoader'
-import { getPageMetadata, pageMeta } from '@/lib/Meta'
-import type { Metadata } from 'next'
-import { PUBLIC_SITE_URL } from '@/lib/constants'
+import StatsClient from "@/app/stats/StatsClient";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import SkeletonLoader from "@/components/SkeletonLoader";
+import { getPageMetadata, pageMeta } from "@/lib/Meta";
+import type { Metadata } from "next";
+import { PUBLIC_SITE_URL } from "@/lib/constants";
 
 // ✅ Generate metadata for Stats Page
 export const metadata: Metadata = getPageMetadata({
@@ -13,18 +13,25 @@ export const metadata: Metadata = getPageMetadata({
   image: pageMeta.stats.image,
   keywords: pageMeta.stats.keywords,
   url: `${PUBLIC_SITE_URL}/stats`, // ✅ Stats page URL
-})
+});
 
+// ✅ Fetch stats using API route (`/api/github`)
 export default function StatsPage() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainStatsPage />
     </Suspense>
-  )
+  );
 }
 
+// ✅ Fetch GitHub Stats Using API for Fresh Data
 async function MainStatsPage() {
-  const githubStats = await getGithubStats() // ✅ Server-side fetch for better performance
+  const res = await fetch(`${PUBLIC_SITE_URL}/api/github`, { cache: "no-store" });
 
-  return <StatsClient initialStats={githubStats} /> // ✅ Pass stats to the Client Component
+  if (!res.ok) {
+    return notFound(); // ✅ Automatically redirects to `not-found.tsx` if stats are missing
+  }
+
+  const githubStats = await res.json();
+  return <StatsClient initialStats={githubStats} />;
 }

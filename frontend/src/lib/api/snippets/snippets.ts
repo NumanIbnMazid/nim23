@@ -8,8 +8,11 @@ import { SNIPPET_DEFAULT_IMAGE_PATH } from '@/lib/constants';
 export async function getAllSnippets() {
   try {
     const snippets = await prisma.code_snippet.findMany({
+      where: {
+        status: "Published",  // ✅ Ensure only published snippets appear
+      },
       orderBy: [
-        { order: 'desc' }, // ✅ Order blogs by custom order first
+        { order: 'desc' }, // ✅ Order snippets by custom order first
         { created_at: 'desc' }, // ✅ Then order by creation date (latest first)
       ],
       include: {

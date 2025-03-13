@@ -2,12 +2,18 @@ import { prisma } from '@/lib/prisma';
 import { BLOG_DEFAULT_IMAGE_PATH } from '@/lib/constants';
 import { getCloudinaryUrl } from '@/lib/utils/cloudinary';
 
+// This forces Next.js to always fetch fresh data.
+export const dynamic = "force-dynamic";
+
 /**
  * Fetch blogs from the database with optional limit support.
  */
 export async function getAllBlogs(limit?: number) {
   try {
     const blogs = await prisma.blog.findMany({
+      where: {
+        status: "Published",  // ✅ Ensure only published blogs appear
+      },
       orderBy: [
         { order: 'desc' }, // ✅ Order blogs by custom order first
         { created_at: 'desc' }, // ✅ Then order by creation date (latest first)

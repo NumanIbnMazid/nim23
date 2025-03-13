@@ -2,9 +2,6 @@ import { prisma } from '@/lib/prisma';
 import { BLOG_DEFAULT_IMAGE_PATH } from '@/lib/constants';
 import { getCloudinaryUrl } from '@/lib/utils/cloudinary';
 
-// This forces Next.js to always fetch fresh data.
-export const dynamic = "force-dynamic";
-
 /**
  * Fetch blogs from the database with optional limit support.
  */

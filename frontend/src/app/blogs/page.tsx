@@ -1,10 +1,10 @@
-import { getAllBlogs } from "@/lib/api/blogs/blogs";
 import BlogsClient from "@/app/blogs/BlogsClient";
 import { Suspense } from "react";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import { getPageMetadata, pageMeta } from "@/lib/Meta";
 import type { Metadata } from "next";
 import { PUBLIC_SITE_URL } from "@/lib/constants";
+import { notFound } from "next/navigation";
 
 // ✅ Generate metadata for All Blogs Page
 export const metadata: Metadata = getPageMetadata({
@@ -24,7 +24,16 @@ export default async function BlogsPage() {
 }
 
 async function MainBlogsPage() {
-    const blogs = await getAllBlogs(); // ✅ Server-side fetch for better performance
+    const res = await fetch(`${PUBLIC_SITE_URL}/api/blogs`, {
+        cache: "no-store", // ✅ Prevents caching, always fetch fresh data
+    });
+
+    if (!res.ok) {
+        console.error("Failed to fetch blogs");
+        notFound(); // ✅ Automatically triggers `not-found.tsx`
+    }
+    
+    const blogs = await res.json();
 
     return <BlogsClient initialBlogs={blogs} />; // ✅ Pass blogs to the Client Component
 }

@@ -3,7 +3,7 @@ import { getAllEducations } from "@/lib/api/educations";
 
 export async function GET() {
   try {
-    const educations = await getAllEducations();
+    const educations = await getAllEducations() || [];
 
     return NextResponse.json(educations, { status: 200 });
   } catch (error) {

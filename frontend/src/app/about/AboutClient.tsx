@@ -8,6 +8,9 @@ import Loader from '@/components/Loader'
 import NoData from '@/components/NoData'
 import { HomeHeading } from '@/app/HomeClient'
 import dynamic from 'next/dynamic'
+import AnimatedDiv from '@/components/FramerMotion/AnimatedDiv'
+import PageTop from '@/components/PageTop'
+import { opacityVariant } from '@/content/FramerMotionVariants'
 
 const SkillSection = dynamic(() => import('@/components/Home/SkillSection'), { loading: () => <Loader /> })
 const ExperienceSection = dynamic(() => import('@/components/Home/ExperienceSection'), { loading: () => <Loader /> })
@@ -32,7 +35,13 @@ export default function AboutClient({
 }) {
   return (
     <>
-      <StaticPage metadata={about.meta} page={about} />
+      <section className="pageTop bg-darkWhitePrimary dark:bg-darkPrimary">
+        <PageTop containerClass="mb-0" pageTitle="About me" />
+        <AnimatedDiv variants={opacityVariant} className="max-w-full prose dark:prose-invert">
+          Thank you for taking time to learn more about me. I am Numan Ibn Mazid. You can call me Numan. I'm excited to
+          share a glimpse into my background, work experience, education, my projects, what I like etc.
+        </AnimatedDiv>
+      </section>
       <div className="relative max-w-4xl mx-auto bg-darkWhitePrimary dark:bg-darkPrimary dark:text-gray-100 2xl:max-w-5xl 3xl:max-w-7xl">
         <motion.section
           initial="hidden"

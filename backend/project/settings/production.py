@@ -72,7 +72,7 @@ CORS_ALLOW_METHODS = [
 # *** Site Info ***
 # ----------------------------------------------------
 # BACKEND_BASE_URL = "https://nim23.com/backend"
-BACKEND_BASE_URL = "https://nursing-violante-nim23-c4da3b73.koyeb.app"
+BACKEND_BASE_URL = config.BACKEND_BASE_URL
 FRONTEND_BASE_URL = "https://nim23.com"
 
 # ----------------------------------------------------

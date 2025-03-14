@@ -5,7 +5,7 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host
-    "nim23.backend.com",  # Backend Host
+    "backend.nim23.com",  # Backend Host
     "nim23.koyeb.app",  # Backend Host
     "p01--nim23--47v76khxj6jn.code.run",  # Northflank Host
 ]

@@ -30,6 +30,7 @@ const nextConfig = withPWA({
   experimental: {
     turbo: {}, // ✅ Ensure Turbopack is enabled correctly
     serverActions: {}, // ✅ Ensure Server Actions are enabled correctly,
+    workerThreads: false, // ✅ Ensure service worker updates
   },
   generateBuildId: async () => {
     return "nim23-build";

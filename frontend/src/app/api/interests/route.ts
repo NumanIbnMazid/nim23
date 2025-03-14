@@ -3,7 +3,7 @@ import { getAllInterests } from "@/lib/api/interests";
 
 export async function GET() {
   try {
-    const interests = await getAllInterests();
+    const interests = await getAllInterests() || [];
 
     return NextResponse.json(interests, { status: 200 });
   } catch (error) {

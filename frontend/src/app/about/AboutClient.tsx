@@ -49,7 +49,7 @@ export default function AboutClient({
         >
           <div>
             {/* Experiences */}
-            <HomeHeading title="Experiences" />
+            {experiences.length === 0 && <HomeHeading title="Work Experiences" />}
             {experiences.length > 0 ? (
               <ExperienceSection experiences={experiences} showHomeHeading={true} />
             ) : (

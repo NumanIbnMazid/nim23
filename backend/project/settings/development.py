@@ -51,7 +51,7 @@ CORS_ALLOW_HEADERS = [
 # ----------------------------------------------------
 # *** Site Info ***
 # ----------------------------------------------------
-BACKEND_BASE_URL = "http://localhost:8000"
+BACKEND_BASE_URL = config.BACKEND_BASE_URL
 FRONTEND_BASE_URL = "http://localhost:3000"
 
 # ----------------------------------------------------

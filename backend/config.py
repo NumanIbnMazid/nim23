@@ -11,6 +11,7 @@ class BaseConfig(BaseSettings):
     CLOUDINARY_CLOUD_NAME: str = Field(..., env="CLOUDINARY_CLOUD_NAME")
     CLOUDINARY_API_KEY: str = Field(..., env="CLOUDINARY_API_KEY")
     CLOUDINARY_API_SECRET: str = Field(..., env="CLOUDINARY_API_SECRET")
+    BACKEND_BASE_URL: str = Field(..., env="BACKEND_BASE_URL")
 
     class Config:
         env_file = f"{Path(__file__).resolve().parent.parent}/.env"

@@ -12,6 +12,8 @@ export async function getAllEducations() {
       include: { education_media: true }, // ✅ Ensure media is included
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return educations.map((edu) => {
       const startDate = new Date(edu.start_date);
       const endDate = edu.end_date ? new Date(edu.end_date) : null;

@@ -24,25 +24,32 @@ export default function AboutPage() {
   );
 }
 
-// ✅ Fetch About Page Content and Related Data
+// ✅ Optimize API Calls: Reduce Concurrent Requests
 async function MainAboutPage() {
-  // ✅ Fetch data from API routes in parallel
-  const [experiencesRes, skillsRes, educationsRes, certificatesRes, interestsRes] = await Promise.all([
+  // ✅ Fetch first batch: experiences & skills
+  const [experiencesRes, skillsRes] = await Promise.all([
     fetch(`${PUBLIC_SITE_URL}/api/experiences`, { cache: "no-store" }),
     fetch(`${PUBLIC_SITE_URL}/api/skills`, { cache: "no-store" }),
+  ]);
+
+  if (!experiencesRes.ok || !skillsRes.ok) {
+    return notFound();
+  }
+
+  const [experiences, skills] = await Promise.all([experiencesRes.json(), skillsRes.json()]);
+
+  // ✅ Fetch second batch: educations, certificates, interests
+  const [educationsRes, certificatesRes, interestsRes] = await Promise.all([
     fetch(`${PUBLIC_SITE_URL}/api/educations`, { cache: "no-store" }),
     fetch(`${PUBLIC_SITE_URL}/api/certificates`, { cache: "no-store" }),
     fetch(`${PUBLIC_SITE_URL}/api/interests`, { cache: "no-store" }),
   ]);
 
-  if (!experiencesRes.ok || !skillsRes.ok || !educationsRes.ok || !certificatesRes.ok || !interestsRes.ok) {
-    return notFound(); // ✅ Redirect to `not-found.tsx` if any API fails
+  if (!educationsRes.ok || !certificatesRes.ok || !interestsRes.ok) {
+    return notFound();
   }
 
-  // ✅ Parse JSON responses
-  const [experiences, skills, educations, certificates, interests] = await Promise.all([
-    experiencesRes.json(),
-    skillsRes.json(),
+  const [educations, certificates, interests] = await Promise.all([
     educationsRes.json(),
     certificatesRes.json(),
     interestsRes.json(),

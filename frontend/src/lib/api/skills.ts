@@ -11,6 +11,8 @@ export async function getAllSkills() {
       orderBy: { order: 'asc' },
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return skills.map((skill) => ({
       ...skill,
       id: Number(skill.id),

@@ -15,6 +15,8 @@ export async function getAllProjects() {
       },
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return projects.map((project) => ({
       id: String(project.id),
       title: project.title,

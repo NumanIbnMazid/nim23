@@ -18,6 +18,8 @@ export async function getSnippetBySlug(slug: string) {
       },
     })
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     if (!snippet) return null
 
     return {

@@ -16,6 +16,8 @@ export async function getAllExperiences(limit?: number) {
       ...(limit ? { take: limit } : {}), // ✅ Apply limit if provided
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return experiences.map((exp) => {
       const startDate = new Date(exp.start_date);
       const endDate = exp.end_date ? new Date(exp.end_date) : null;

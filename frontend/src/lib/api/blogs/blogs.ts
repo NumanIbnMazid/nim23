@@ -22,6 +22,8 @@ export async function getAllBlogs(limit?: number) {
       ...(limit ? { take: limit } : {}), // ✅ Apply limit if provided
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return blogs.map((blog) => ({
       ...blog,
       id: Number(blog.id),

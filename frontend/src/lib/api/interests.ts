@@ -11,6 +11,8 @@ export async function getAllInterests() {
       orderBy: { order: 'asc' },
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return interests.map((interest) => ({
       ...interest,
       id: Number(interest.id),

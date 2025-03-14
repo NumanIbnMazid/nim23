@@ -10,6 +10,9 @@ export async function getAllMovies() {
     const movies = await prisma.movie.findMany({
       orderBy: { updated_at: "desc" },
     });
+
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+    
     return movies.map((movie) => ({
       ...movie,
       id: Number(movie.id),

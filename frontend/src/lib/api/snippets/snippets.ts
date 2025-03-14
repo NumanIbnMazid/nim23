@@ -19,7 +19,9 @@ export async function getAllSnippets() {
         code_snippet_comment: true,
         code_snippet_view: true,
       },
-    })
+    });
+
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
 
     return snippets.map((snippet) => ({
       id: snippet.id,

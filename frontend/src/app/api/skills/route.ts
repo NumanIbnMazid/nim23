@@ -3,7 +3,7 @@ import { getAllSkills } from "@/lib/api/skills";
 
 export async function GET() {
   try {
-    const skills = await getAllSkills();
+    const skills = await getAllSkills() || [];
 
     return NextResponse.json(skills, { status: 200 });
   } catch (error) {

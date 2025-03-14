@@ -1,5 +1,5 @@
 import MDXContent from "@/lib/MDXContent";
-import AboutClient from "./AboutClient";
+import AboutClient from "@/app/about/AboutClient";
 import { PostType, FrontMatter } from "@/lib/types";
 import { getPageMetadata, pageMeta } from "@/lib/Meta";
 import { Suspense } from "react";

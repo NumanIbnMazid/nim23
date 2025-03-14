@@ -5,11 +5,6 @@ import { jsonBigIntReplacer } from "@/lib/utils/helpers"; // ✅ Handle BigInt s
 export async function GET() {
   try {
     const projects = await getAllProjects();
-
-    if (!projects || projects.length === 0) {
-      return NextResponse.json({ error: "No projects found" }, { status: 404 });
-    }
-
     return new NextResponse(JSON.stringify(projects, jsonBigIntReplacer), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -1,27 +1,10 @@
-import MDXContent from "@/lib/MDXContent";
 import AboutClient from "@/app/about/AboutClient";
-import { PostType, FrontMatter } from "@/lib/types";
 import { getPageMetadata, pageMeta } from "@/lib/Meta";
 import { Suspense } from "react";
 import SkeletonLoader from "@/components/SkeletonLoader";
 import type { Metadata } from "next";
 import { PUBLIC_SITE_URL } from "@/lib/constants";
 import { notFound } from "next/navigation";
-
-/**
- * Default About Metadata if `meta` is not found.
- */
-const DEFAULT_META: FrontMatter = {
-  slug: "about",
-  readingTime: { text: "0 min read", minutes: 0, time: 0, words: 0 },
-  excerpt: "About me page.",
-  title: pageMeta.about.title,
-  date: new Date().toISOString(),
-  keywords: pageMeta.about.keywords,
-  image: pageMeta.about.image,
-  url: `${PUBLIC_SITE_URL}/about`,
-  description: pageMeta.about.description,
-};
 
 // ✅ Generate metadata using `pageMeta.about`
 export const metadata: Metadata = getPageMetadata({
@@ -43,17 +26,6 @@ export default function AboutPage() {
 
 // ✅ Fetch About Page Content and Related Data
 async function MainAboutPage() {
-  const aboutData = await new MDXContent("src/static_pages").getPostFromSlug("about");
-
-  // ✅ Ensure `aboutData.post` is never null
-  const about: PostType = {
-    source: aboutData?.post?.source ?? { compiledSource: "", scope: {}, frontmatter: {} },
-    tableOfContents: aboutData?.post?.tableOfContents ?? [],
-    meta: aboutData?.post?.meta
-      ? { ...aboutData.post.meta, description: aboutData.post.meta.description ?? DEFAULT_META.description }
-      : DEFAULT_META,
-  };
-
   // ✅ Fetch data from API routes in parallel
   const [experiencesRes, skillsRes, educationsRes, certificatesRes, interestsRes] = await Promise.all([
     fetch(`${PUBLIC_SITE_URL}/api/experiences`, { cache: "no-store" }),
@@ -78,7 +50,6 @@ async function MainAboutPage() {
 
   return (
     <AboutClient
-      about={about}
       experiences={experiences}
       skills={skills}
       educations={educations}

@@ -1,7 +1,6 @@
 'use client'
 
-import { PostType, ExperienceType, EducationType, SkillType, CertificateType, InterestType } from '@/lib/types'
-import StaticPage from '@/components/StaticPage'
+import { ExperienceType, EducationType, SkillType, CertificateType, InterestType } from '@/lib/types'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
 import Loader from '@/components/Loader'
@@ -19,14 +18,12 @@ const Certificates = dynamic(() => import('@/components/Certificates'), { loadin
 const InterestSection = dynamic(() => import('@/components/Interest'), { loading: () => <Loader /> })
 
 export default function AboutClient({
-  about,
   experiences,
   skills,
   educations,
   certificates,
   interests,
 }: {
-  about: PostType
   experiences: ExperienceType[]
   skills: SkillType[]
   educations: EducationType[]

@@ -34,6 +34,8 @@ export async function getAllCertificates() {
       include: { certification_media: true }, // ✅ Ensure media is included
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     return certificates.map((cert) => ({
       id: String(cert.id),
       title: cert.title,

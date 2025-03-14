@@ -2,12 +2,17 @@ import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = global as unknown as { prisma?: PrismaClient };
 
-// ✅ Create a single instance of Prisma Client
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+// ✅ Use connection pooling with Prisma
+export const prisma = globalForPrisma.prisma || new PrismaClient({
+  datasources: {
+    db: { url: process.env.DATABASE_URL },
+  },
+  // log: ["query", "info", "warn", "error"], // ✅ Enable Prisma logs for debugging
+});
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-// ✅ Ensure Prisma disconnects when the app shuts down
+// ✅ Gracefully close Prisma connection on shutdown
 process.on("SIGINT", async () => {
   console.log("🔌 Disconnecting Prisma...");
   await prisma.$disconnect();

@@ -42,6 +42,8 @@ export async function getBlogBySlug(slug: string): Promise<BlogType | null> {
     },
   });
 
+  await prisma.$disconnect(); // ✅ Close connection after fetching data
+
   if (!blog) return null;
 
   // ✅ Ensure TOC is always a valid array

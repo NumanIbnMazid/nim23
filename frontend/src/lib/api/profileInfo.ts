@@ -33,6 +33,8 @@ export async function getProfileInfo() {
     },
   });
 
+  await prisma.$disconnect(); // ✅ Close connection after fetching data
+
   return {
     id: profile ? Number(profile.id) : 0, // ✅ Convert `bigint` to `number`
     image: profile?.image ? getCloudinaryUrl(profile.image) : USER_DEFAULT_IMAGE_PATH, // ✅ Use Cloudinary if available

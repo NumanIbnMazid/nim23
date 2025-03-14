@@ -15,6 +15,8 @@ export async function getProjectBySlug(slug: string) {
       },
     });
 
+    await prisma.$disconnect(); // ✅ Close connection after fetching data
+
     if (!project) return null;
 
     return {

@@ -1,9 +1,8 @@
 from datetime import timedelta
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.db.models import Max
 from django.utils import timezone
 from utils.snippets import (
@@ -12,6 +11,7 @@ from utils.snippets import (
 from utils.image_upload_helpers import (
     get_code_snippet_image_path,
 )
+from utils.helpers import sync_markdown_html_fields, sync_markdown_html_post_save
 
 
 """ *************** Code Snippet *************** """
@@ -31,7 +31,8 @@ class CodeSnippet(models.Model):
     language = models.CharField(max_length=50, blank=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PUBLISHED)
-    content = models.TextField()
+    content = models.TextField(blank=True)  # HTML content
+    content_in_markdown = models.TextField(blank=True, null=True)  # Markdown content
     order = models.PositiveIntegerField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -82,6 +83,16 @@ def generate_order(sender, instance, **kwargs):
                     instance.order = reused_order
             else:
                 instance.order = max_order + 1 if max_order is not None else 1
+
+
+@receiver(pre_save, sender=CodeSnippet)
+def snippet_pre_save(sender, instance, **kwargs):
+    sync_markdown_html_fields(instance, "content_in_markdown", "content")
+
+
+@receiver(post_save, sender=CodeSnippet)
+def snippet_post_save(sender, instance, **kwargs):
+    sync_markdown_html_post_save(instance, "content_in_markdown", "content")
 
 
 """ *************** Code Snippet View *************** """

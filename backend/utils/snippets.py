@@ -9,6 +9,10 @@ import os
 import base64
 from django.contrib.staticfiles import finders
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+import markdown2
+import markdown
+import markdownify
 import requests
 
 
@@ -340,12 +344,10 @@ def image_as_base64(image_file):
             response.raise_for_status()  # Raise an exception for HTTP errors
             image_data = response.content
         except requests.RequestException as e:
-            print(f"Error fetching image from URL: {e}")
             return
     else:
         # Handle file path
         if not os.path.isfile(image_file):
-            print(f"Image file not found: {image_file}")
             return
         with open(image_file, "rb") as img_f:
             image_data = img_f.read()
@@ -374,12 +376,10 @@ def file_as_base64(file_path):
             response.raise_for_status()  # Raise an exception for HTTP errors
             file_data = response.content
         except requests.RequestException as e:
-            print(f"Error fetching file from URL: {e}")
             return
     else:
         # Handle local file path
         if not os.path.isfile(file_path):
-            print(f"File not found: {file_path}")
             return
         with open(file_path, "rb") as file:
             file_data = file.read()
@@ -417,3 +417,103 @@ def get_client_ip(request):
     else:
         clientID = request.META.get('REMOTE_ADDR')
     return clientID
+
+
+def markdown_to_html(md_text):
+    """
+    Convert Markdown to clean HTML while ensuring correct lists, line breaks, steps, and syntax highlighting.
+    Uses BOTH markdown (for better code highlighting) and markdown2 (for better lists & formatting).
+    """
+
+    if not md_text.strip():
+        return ""
+
+    # **Fix: If Markdown starts with a code block, prepend a hidden paragraph & line break**
+    prepend_hidden_p = False
+    if md_text.strip().startswith("```"):
+        md_text = '<p style="display:none;">hidden-content</p>\n\n' + md_text  # Add hidden content
+        prepend_hidden_p = True
+
+    # **Step 1: Convert Markdown Using markdown (Better Code Highlighting)**
+    md_html = markdown.markdown(
+        md_text.strip(),
+        extensions=["fenced_code", "codehilite"]
+    )
+
+    # **Step 2: Convert Markdown Using markdown2 (Better Lists & Formatting)**
+    md2_html = markdown2.markdown(md_text.strip(), extras=[
+        "fenced-code-blocks",
+        "tables",
+        "strike",
+        "code-friendly",
+        "footnotes",
+        "cuddled-lists",
+        "metadata",
+        "header-ids",
+        "break-on-newline",
+        "inline-code",
+    ])
+
+    # **Step 3: Merge The Best Parts of Both Outputs**
+    soup = BeautifulSoup(md2_html, "html.parser")  # Start with markdown2 output
+
+    # **Find All Code Blocks in markdown Output**
+    md_soup = BeautifulSoup(md_html, "html.parser")
+    md_code_blocks = md_soup.find_all("pre")
+
+    # **Find All Code Blocks in markdown2 Output**
+    md2_code_blocks = soup.find_all("pre")
+
+    # **Replace markdown2 Code Blocks With Proper markdown Code Blocks**
+    for md2_block, md_block in zip(md2_code_blocks, md_code_blocks):
+        md2_block.replace_with(md_block)
+
+    # **Ensure Language Classes Are Applied Correctly**
+    for pre in soup.find_all("pre"):
+        code_block = pre.find("code")
+
+        if code_block:
+            # Extract language class from `<code>`
+            class_attr = code_block.get("class", [])
+            language = "plaintext"
+
+            for cls in class_attr:
+                if cls.startswith("language-"):
+                    language = cls.replace("language-", "")
+
+            # **Move language class to `<pre>` and remove from `<code>`**
+            pre["class"] = f"language-{language}"
+            del code_block["class"]
+
+    # **Ensure an extra line break after the hidden paragraph if added**
+    if prepend_hidden_p:
+        first_pre = soup.find("pre")
+        if first_pre:
+            first_pre.insert_before("\n")
+
+    final_html = str(soup)
+    return final_html.strip()
+
+
+
+def html_to_markdown(html_text):
+    """
+    Convert HTML to clean Markdown while ensuring:
+    - Correct fenced code blocks (```python)
+    - Proper indentation & spacing
+    - Fixes inline `<code>` formatting
+    - Preserves ordered/unordered lists
+    """
+
+    markdown_text = markdownify.markdownify(
+        html_text,
+        code_language_callback=lambda el: el.get("class", [""])[0].replace("language-", "") if el.has_attr("class") else "",
+        heading_style="ATX",  # Ensures headings are converted properly (e.g., ## Title)
+        bullets="-",  # Uses `-` for unordered lists
+        autolinks=True,  # Keeps automatic links formatted correctly
+        default_title=False,  # Avoids setting default titles in links
+        escape_asterisks=False,  # Prevents escaping `*`
+        escape_underscores=False,  # Prevents escaping `_`
+        newline_style="BACKSLASH",  # Ensures correct line breaks
+    )
+    return markdown_text.strip()

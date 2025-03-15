@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.db.models import Max
 from django.utils import timezone
 from utils.snippets import (
@@ -15,6 +15,7 @@ import math
 from bs4 import BeautifulSoup
 import re
 from datetime import timedelta
+from utils.helpers import sync_markdown_html_fields, sync_markdown_html_post_save
 
 
 """ *************** Blog Category *************** """
@@ -53,7 +54,8 @@ class Blog(models.Model):
     category = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, related_name='blogs', blank=True, null=True)
     image = models.ImageField(upload_to=get_blog_image_path, blank=True, null=True)
     overview = models.TextField(max_length=500, blank=True, null=True)
-    content = models.TextField()
+    content = models.TextField(blank=True)  # HTML content
+    content_in_markdown = models.TextField(blank=True, null=True)  # Markdown content
     author = models.CharField(max_length=100, default="Numan Ibn Mazid", blank=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PUBLISHED)
@@ -170,6 +172,15 @@ def add_unique_ids_to_content_headings(sender, instance, **kwargs):
         content = content.replace(heading_string, f'<{heading_string} id="{heading_id}">')
 
     instance.content = str(soup)
+
+@receiver(pre_save, sender=Blog)
+def blog_pre_save(sender, instance, **kwargs):
+    sync_markdown_html_fields(instance, "content_in_markdown", "content")
+
+
+@receiver(post_save, sender=Blog)
+def blog_post_save(sender, instance, **kwargs):
+    sync_markdown_html_post_save(instance, "content_in_markdown", "content")
 
 
 """ *************** Blog View *************** """

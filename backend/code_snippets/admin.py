@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db import models
+from django.forms import Textarea
 from code_snippets.models import CodeSnippet, CodeSnippetView, CodeSnippetComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
@@ -10,9 +10,12 @@ from tinymce.widgets import TinyMCE
 # ----------------------------------------------------
 
 class CodeSnippetAdmin(CustomModelAdminMixin, admin.ModelAdmin):
-    formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()},
-    }
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name in ["content", "overview"]:
+            kwargs["widget"] = TinyMCE()  # Apply TinyMCE
+        elif db_field.name == "content_in_markdown":
+            kwargs["widget"] = Textarea(attrs={"cols": 123, "rows": 10})  # Force plain textarea
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
 
     class Meta:
         model = CodeSnippet

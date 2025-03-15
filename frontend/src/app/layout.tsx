@@ -6,6 +6,7 @@ import Layout from '@/layout/Layout'
 import LayoutClient from '@/app/LayoutClient'
 import { Metadata } from 'next'
 import { pageMeta } from "@/lib/Meta"
+import SitemapPrefetch from "@/components/SitemapPrefetch";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ClientIDProvider>
             <Layout>
               <LayoutClient>{children}</LayoutClient>
+              <SitemapPrefetch />
             </Layout>
           </ClientIDProvider>
         </DarkModeProvider>

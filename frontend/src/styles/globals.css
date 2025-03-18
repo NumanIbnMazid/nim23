@@ -456,9 +456,39 @@ pre[class*="language-"]::-webkit-scrollbar-corner {
   background: rgba(0, 0, 0, 0.9);
 }
 
+/* Default Light Mode (body does NOT have .dark class) */
 .blog-container {
-  font-size: 1.125rem !important;
-  line-height: 1.75rem !important;
+  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, 
+               "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol" !important;
+  font-size: 16px !important;
+  line-height: 28px !important;
   font-weight: 400 !important;
-  letter-spacing: 0.023em !important;
+  letter-spacing: normal !important;
+  word-spacing: 0px !important;
+  text-align: start !important;
+  color: rgb(0, 0, 0) !important; /* Black text for light mode */
+  background-color: rgba(255, 255, 255, 1) !important; /* Solid white background */
+  padding: 1.5rem !important; /* Adds spacing inside */
+  border-radius: 10px !important; /* Smooth edges */
+  border: 1px solid rgba(0, 0, 0, 0.1) !important; /* Subtle border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important; /* Light shadow */
+  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease !important;
+}
+
+/* Dark Mode Styles (When body has class "dark") */
+body.dark .blog-container {
+  color: rgb(236, 236, 236) !important; /* Light text */
+  background-color: rgba(0, 0, 0, 0) !important; /* Transparent black */
+  border: 1px solid rgba(236, 236, 236, 0.2) !important; /* Subtle dark mode border */
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1) !important; /* Soft glow effect */
+}
+
+/* Optional: Hover Effect */
+.blog-container:hover {
+  background-color: rgba(245, 245, 245, 1) !important; /* Slightly lighter in light mode */
+}
+
+body.dark .blog-container:hover {
+  /* background-color: rgba(25, 25, 25, 0.8) !important; */
+  background-color: rgba(33,33,33,.9) !important; /* Slightly lighter in dark mode */
 }

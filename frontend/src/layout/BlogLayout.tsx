@@ -163,14 +163,17 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
       const highlighted = await highlightCode(blog.content)
       setProcessedContent(highlighted)
     }
-    processCode()
+    
+    if (blog.content) {  // Check that `blog.content` is not null/undefined
+      processCode();
+    }
 
     if (size.width > 1600) {
       setBlogInfoFull(true)
     } else {
       setBlogInfoFull(false)
     }
-  }, [hasCode, blog.content, size])
+  }, [blog.content, size])
 
   // ✅ Add event listeners for copy buttons
   useEffect(() => {
@@ -187,7 +190,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
           <TableOfContents
             isTOCActive={isTOCActive}
             setIsTOCActive={setIsTOCActive}
-            tableOfContents={blog.table_of_contents}
+            tableOfContents={blog.table_of_contents != null ? blog.table_of_contents : []}
           />
         </div>
       )}

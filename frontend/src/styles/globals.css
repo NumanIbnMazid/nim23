@@ -244,7 +244,7 @@ code > .line::before {
     @apply bg-white dark:bg-darkSecondary p-5 sm:p-10 flex flex-col sm:flex-row gap-8 items-center max-w-2xl shadow-md rounded-lg mt-[30%] sm:mt-8 transition-all;
   }
   .blog-container {
-    @apply !w-full dark:text-neutral-300 my-5 font-medium;
+    @apply !w-full dark:text-neutral-100 my-5;
   }
 }
 
@@ -454,4 +454,11 @@ pre[class*="language-"]::-webkit-scrollbar-corner {
 
 .copy-button:active {
   background: rgba(0, 0, 0, 0.9);
+}
+
+.blog-container {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.023em !important;
 }

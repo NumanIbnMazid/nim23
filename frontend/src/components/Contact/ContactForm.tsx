@@ -51,11 +51,11 @@ export default function Form() {
       )
 
       formRef.current?.reset()
-      toast.success('✅ Message Sent!', { id: toastId })
+      toast.success('Message Sent!', { id: toastId })
       sendButtonRef.current?.removeAttribute('disabled')
       setIsSubmitting(false)
     } catch (err) {
-      toast.error('❌ Failed to send. Try again!', { id: toastId })
+      toast.error('Failed to send. Try again!', { id: toastId })
       sendButtonRef.current?.removeAttribute('disabled')
       setIsSubmitting(false)
     }

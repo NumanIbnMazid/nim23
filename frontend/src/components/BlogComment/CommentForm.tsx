@@ -32,7 +32,7 @@ export default function CommentForm({ slug, contentURL }: { slug: string; conten
 
     if (!validateForm(commentData)) {
       setIsSubmitting(false)
-      return toast.error('⚠️ Please fill out all fields properly!')
+      return toast.error('Please fill out all fields properly!')
     }
 
     sendButtonRef.current?.setAttribute('disabled', 'true')
@@ -52,7 +52,7 @@ export default function CommentForm({ slug, contentURL }: { slug: string; conten
       formRef.current?.reset() // ✅ Clear form safely
 
       // ✅ Show success message
-      toast.success('✅ Comment submitted! Awaiting admin approval.', { id: toastId })
+      toast.success('Comment submitted! Awaiting admin approval.', { id: toastId })
 
       sendButtonRef.current?.removeAttribute('disabled')
       setIsSubmitting(false)
@@ -65,7 +65,7 @@ export default function CommentForm({ slug, contentURL }: { slug: string; conten
         process.env.EMAIL_JS_PUBLIC_KEY!
       )
     } catch (error) {
-      toast.error('❌ Failed to submit comment. Please try again!', { id: toastId })
+      toast.error('Failed to submit comment. Please try again!', { id: toastId })
       sendButtonRef.current?.removeAttribute('disabled')
       setIsSubmitting(false)
     }

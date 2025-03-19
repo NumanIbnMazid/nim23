@@ -1,12 +1,10 @@
-import { getAllBlogs } from '@/lib/api/blogs/blogs'
 import HomeClient from '@/app/HomeClient'
-import { getProfileInfo } from '@/lib/api/profileInfo'
-import { getAllExperiences } from '@/lib/api/experiences'
 import { Suspense } from 'react'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
+import { notFound } from 'next/navigation'
 
 // ✅ Generate metadata for HomePage
 export const metadata: Metadata = getPageMetadata({
@@ -17,7 +15,7 @@ export const metadata: Metadata = getPageMetadata({
   url: PUBLIC_SITE_URL, // ✅ Homepage URL
 })
 
-export default async function Home() {
+export default function Home() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainHomePage />
@@ -26,9 +24,23 @@ export default async function Home() {
 }
 
 async function MainHomePage() {
-  const blogs = await getAllBlogs(2)
-  const profileInfo = await getProfileInfo()
-  const experiences = await getAllExperiences(1)
+  // ✅ Fetch all required data in parallel
+  const [blogsRes, profileRes, experiencesRes] = await Promise.all([
+    fetch(`${PUBLIC_SITE_URL}/api/blogs?limit=2`, { cache: 'no-store' }),
+    fetch(`${PUBLIC_SITE_URL}/api/profile`, { cache: 'no-store' }),
+    fetch(`${PUBLIC_SITE_URL}/api/experiences?limit=1`, { cache: 'no-store' }),
+  ])
+
+  if (!blogsRes.ok || !profileRes.ok || !experiencesRes.ok) {
+    console.error('Failed to fetch homepage data')
+    return notFound()
+  }
+
+  const [blogs, profileInfo, experiences] = await Promise.all([
+    blogsRes.json(),
+    profileRes.json(),
+    experiencesRes.json(),
+  ])
 
   return <HomeClient blogs={blogs} profileInfo={profileInfo} experiences={experiences} />
 }

@@ -23,13 +23,14 @@ admin.site.register(BlogCategory, BlogCategoryAdmin)
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'category', 'image', 'overview', 'author', 'tags', 'status', 'order', 'get_table_of_contents'
+        'title', 'category', 'image', 'slug', 'overview', 'tags', 'status', 'order', 
+        #'get_table_of_contents'
     )
 
-    def get_table_of_contents(self, obj):
-        return obj.get_table_of_contents()
+    # def get_table_of_contents(self, obj):
+    #     return obj.get_table_of_contents()
     
-    get_table_of_contents.short_description = 'Table of Contents'
+    # get_table_of_contents.short_description = 'Table of Contents'
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in ["content", "overview"]:

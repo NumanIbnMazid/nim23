@@ -192,15 +192,17 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
           </div>
         )}
         {code_snippet.tags && (
-          <div className="flex flex-wrap items-center gap-1 mb-2 mt-2">
-            <span className="text-base text-gray-500">Tags: </span>
-            {code_snippet.tags.split(',').map((tag, index) => {
-              return (
-                <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
-                  {tag.toLowerCase()}
-                </span>
-              )
-            })}
+          <div className="mb-2 mt-2">
+            <div className="grid grid-cols-[auto_1fr] items-start">
+              <span className="text-base text-gray-500 whitespace-nowrap">Tags:</span>
+              <div className="flex flex-wrap gap-1">
+                {code_snippet.tags.split(',').map((tag, index) => (
+                  <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+                    {tag.toLowerCase()}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -218,9 +220,7 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
         )}
 
         {/* Content */}
-        <div
-          className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
-        >
+        <div className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white">
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         </div>
 

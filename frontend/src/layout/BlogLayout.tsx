@@ -163,9 +163,10 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
       const highlighted = await highlightCode(blog.content)
       setProcessedContent(highlighted)
     }
-    
-    if (blog.content) {  // Check that `blog.content` is not null/undefined
-      processCode();
+
+    if (blog.content) {
+      // Check that `blog.content` is not null/undefined
+      processCode()
     }
 
     if (size.width > 1600) {
@@ -298,15 +299,17 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
             )}
 
             {blog.tags && (
-              <div className="flex flex-wrap items-center gap-1 hide-on-print">
-                <span className="text-base text-gray-500">Tags: </span>
-                {blog.tags.split(',').map((tag, index) => {
-                  return (
-                    <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
-                      {tag.toLowerCase()}
-                    </span>
-                  )
-                })}
+              <div className="hide-on-print">
+                <div className="grid grid-cols-[auto_1fr] items-start">
+                  <span className="text-base text-gray-500 whitespace-nowrap">Tags:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {blog.tags.split(',').map((tag, index) => (
+                      <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
+                        {tag.toLowerCase()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -321,9 +324,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
         {/* Blog Content */}
 
-        <div
-          className="my-16 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white"
-        >
+        <div className="my-7 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white">
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         </div>
 

@@ -23,9 +23,9 @@ export default function Newsletter() {
         throw new Error(result.message || 'Failed to subscribe')
       }
 
-      toast.success(`✅ ${result.message}`)
+      toast.success(`${result.message}`)
     } catch (error) {
-      toast.error(`❌ ${error instanceof Error ? error.message : 'Something went wrong'}`)
+      toast.error(`${error instanceof Error ? error.message : 'Something went wrong'}`)
     } finally {
       setIsSubmitting(false)
     }

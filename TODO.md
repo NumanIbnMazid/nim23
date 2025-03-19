@@ -104,6 +104,8 @@
   - Fix code highlighting.
   - (DONE) Fix font in work experience section.
   - (DONE) Fix Newsletter section's email placeholder.
+  - While click print button, disable scroll on code highlight section.
+  - Add functionality for newsletter feature.
 
 
 ## Improvement

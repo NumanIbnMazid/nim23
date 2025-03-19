@@ -31,25 +31,25 @@ export default function ShareOnSocialMedia({ className, title, url, summary, cov
           url: url,
           files: [file],
         })
-        toast.success('Thanks for sharing! ✅')
+        toast.success('Thanks for sharing!')
       }
     } catch (error) {
       console.error('Sharing failed:', error)
-      toast.error('⚠️ Could not share the content.')
+      toast.error('Could not share the content.')
     }
   }
 
   // Copy to clipboard function
   function copyTextToClipboard(text: string) {
     if (!navigator.clipboard) {
-      toast.error("❌ Your device doesn't support this feature.")
+      toast.error("Your device doesn't support this feature.")
       return
     }
     navigator.clipboard.writeText(text).then(
-      () => toast.success('✅ Link Copied Successfully!'),
+      () => toast.success('Link Copied Successfully!'),
       (err) => {
         console.error(err)
-        toast.error('⚠️ Something went wrong while copying.')
+        toast.error('Something went wrong while copying.')
       }
     )
   }

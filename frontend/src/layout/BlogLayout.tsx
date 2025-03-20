@@ -19,6 +19,7 @@ import { useClientID } from '@/context/clientIdContext'
 import { getOrSetClientID } from '@/lib/clientIDManager'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { BLOG_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
+import SkeletonLoader from '@/components/SkeletonLoader'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; profileInfo: ProfileType }) {
   const hasCode = blog && blog.content.includes('<code>')
@@ -334,13 +335,17 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
         {/* Blog Content */}
 
-        <div
-          className={`my-7 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
-            contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
-          }`}
-        >
-          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
-        </div>
+        {contentLoaded ? (
+          <div
+            className={`my-7 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
+              contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
+            }`}
+          >
+            <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+          </div>
+        ) : (
+          <SkeletonLoader />
+        )}
 
         {/* Like Button */}
         <div className="print:hidden">

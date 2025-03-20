@@ -13,6 +13,7 @@ import { useClientID } from '@/context/clientIdContext'
 import { getOrSetClientID } from '@/lib/clientIDManager'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { SNIPPET_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
+import SkeletonLoader from '@/components/SkeletonLoader'
 
 export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnippetType }) {
   const [processedContent, setProcessedContent] = useState<string>('')
@@ -223,13 +224,17 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
         )}
 
         {/* Content */}
-        <div
-          className={`text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
-            contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
-          }`}
-        >
-          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
-        </div>
+        {contentLoaded ? (
+          <div
+            className={`text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
+              contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
+            }`}
+          >
+            <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+          </div>
+        ) : (
+          <SkeletonLoader />
+        )}
 
         {/* Like Button */}
         <div className="print:hidden">

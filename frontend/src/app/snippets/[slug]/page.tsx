@@ -1,15 +1,20 @@
-import SnippetDetailsClient from "@/app/snippets/[slug]/SnippetDetailsClient";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-import SkeletonLoader from "@/components/SkeletonLoader";
-import { getPageMetadata, pageMeta } from "@/lib/Meta";
-import type { Metadata } from "next";
-import { PUBLIC_SITE_URL } from "@/lib/constants";
+import SnippetDetailsClient from '@/app/snippets/[slug]/SnippetDetailsClient'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import SkeletonLoader from '@/components/SkeletonLoader'
+import { getPageMetadata, pageMeta } from '@/lib/Meta'
+import type { Metadata } from 'next'
+import { PUBLIC_SITE_URL } from '@/lib/constants'
+
+// revalidate all fetch requests in a route segment
+export const revalidate = 60 // revalidate at 1 min
 
 // ✅ Fetch metadata using API instead of `getSnippetBySlug`
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params; // ✅ Await params before using
-  const res = await fetch(`${PUBLIC_SITE_URL}/api/snippets/${slug}`, { cache: "no-store" });
+  const { slug } = await params // ✅ Await params before using
+  const res = await fetch(`${PUBLIC_SITE_URL}/api/snippets/${slug}`, {
+    // cache: "no-store"
+  })
 
   if (!res.ok) {
     return getPageMetadata({
@@ -18,10 +23,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       image: pageMeta.snippetDetails.image,
       keywords: pageMeta.snippetDetails.keywords,
       url: PUBLIC_SITE_URL,
-    });
+    })
   }
 
-  const snippet = await res.json();
+  const snippet = await res.json()
 
   return getPageMetadata({
     title: snippet ? `${snippet.title} - ${pageMeta.snippetDetails.title}` : pageMeta.snippetDetails.title,
@@ -29,28 +34,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     image: snippet?.image || pageMeta.snippetDetails.image,
     keywords: snippet?.tags || pageMeta.snippetDetails.keywords,
     url: snippet?.slug ? `${PUBLIC_SITE_URL}/snippets/${snippet.slug}` : PUBLIC_SITE_URL,
-  });
+  })
 }
 
 // ✅ Fetch snippet using API route (`/api/snippets/[slug]`)
 export default async function SnippetDetailsPage(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params; // ✅ Await params before using
+  const params = await props.params // ✅ Await params before using
 
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainSnippetDetailsPage params={params} />
     </Suspense>
-  );
+  )
 }
 
 // ✅ Fetch Snippet Using API for Fresh Data
 async function MainSnippetDetailsPage({ params }: { params: { slug: string } }) {
-  const res = await fetch(`${PUBLIC_SITE_URL}/api/snippets/${params.slug}`, { cache: "no-store" });
+  const res = await fetch(`${PUBLIC_SITE_URL}/api/snippets/${params.slug}`, {
+    // cache: "no-store"
+  })
 
   if (!res.ok) {
-    return notFound(); // ✅ Automatically redirects to `not-found.tsx` if snippet is missing
+    return notFound() // ✅ Automatically redirects to `not-found.tsx` if snippet is missing
   }
 
-  const snippet = await res.json();
-  return <SnippetDetailsClient snippet={snippet} />;
+  const snippet = await res.json()
+  return <SnippetDetailsClient snippet={snippet} />
 }

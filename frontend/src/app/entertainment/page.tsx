@@ -6,6 +6,9 @@ import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 
+// revalidate all fetch requests in a route segment
+export const revalidate = 300 // revalidate at 5 min
+
 // ✅ Generate metadata for Media Page
 export const metadata: Metadata = getPageMetadata({
   title: pageMeta.entertainment.title,
@@ -27,8 +30,12 @@ export default function MediaPage() {
 // ✅ Fetch Movies & YouTube Videos Using API for Fresh Data
 async function MainMediaPage() {
   const [moviesRes, youtubeRes] = await Promise.all([
-    fetch(`${PUBLIC_SITE_URL}/api/movies`, { cache: 'no-store' }),
-    fetch(`${PUBLIC_SITE_URL}/api/youtube`, { cache: 'no-store' }),
+    fetch(`${PUBLIC_SITE_URL}/api/movies`, {
+      // cache: 'no-store'
+    }),
+    fetch(`${PUBLIC_SITE_URL}/api/youtube`, {
+      // cache: 'no-store'
+    }),
   ])
 
   if (!moviesRes.ok || !youtubeRes.ok) {

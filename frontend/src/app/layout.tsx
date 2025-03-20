@@ -8,6 +8,9 @@ import { Metadata } from 'next'
 import { pageMeta } from "@/lib/Meta"
 import SitemapPrefetch from "@/components/SitemapPrefetch";
 
+// revalidate all fetch requests in a route segment
+export const revalidate = 60 // revalidate at 1 min
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

@@ -5,10 +5,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "tsc": "tsc",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start --turbopack",
     "tsc-watch": "tsc --watch",
     "lint": "next lint",
     "find:unused": "next-unused",

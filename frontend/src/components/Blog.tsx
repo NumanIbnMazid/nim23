@@ -15,8 +15,7 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
 
     return (
         <div>
-            {/* ✅ FIX: Use `shallow` navigation for smoother transitions */}
-            <Link href={`/blogs/${blog.slug}`} title="View Blog Details" shallow={true}>
+            <Link href={`/blogs/${blog.slug}`} title="View Blog Details" prefetch={true}>
                 <motion.article
                     ref={blogRef}
                     variants={BlogCardAnimation}

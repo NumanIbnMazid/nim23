@@ -19,7 +19,7 @@ export const metadata: Metadata = getPageMetadata({
 })
 
 // ✅ Fetch stats using API route (`/api/github`)
-export default function StatsPage() {
+export default function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainStatsPage />

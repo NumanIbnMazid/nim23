@@ -8,6 +8,14 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
+export const dynamic = "force-dynamic"; // Forces SSR but doesn't block rendering
+
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const res = await fetch(`${PUBLIC_SITE_URL}/api/blogs`)
+  const blogs = await res.json()
+
+  return blogs.map((blog: { slug: string }) => ({ slug: blog.slug }))
+}
 
 // ✅ Fix: `params` should be awaited before using
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -38,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 // ✅ Fix: `params` should be awaited
-export default async function BlogDetailsPage(props: { params: Promise<{ slug: string }> }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params // ✅ Await params correctly
 
   return (

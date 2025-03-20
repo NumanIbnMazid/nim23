@@ -18,7 +18,7 @@ export const metadata: Metadata = getPageMetadata({
     url: `${PUBLIC_SITE_URL}/blogs`, // ✅ Blogs page URL
 });
 
-export default async function BlogsPage() {
+export default async function Page() {
     return (
         <Suspense fallback={<SkeletonLoader />}>
             <MainBlogsPage />

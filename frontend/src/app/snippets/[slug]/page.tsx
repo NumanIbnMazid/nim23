@@ -8,6 +8,14 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
+export const dynamic = "force-dynamic"; // Forces SSR but doesn't block rendering
+
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const res = await fetch(`${PUBLIC_SITE_URL}/api/snippets`)
+  const snippets = await res.json()
+
+  return snippets.map((snippet: { slug: string }) => ({ slug: snippet.slug }))
+}
 
 // ✅ Fetch metadata using API instead of `getSnippetBySlug`
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -38,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 // ✅ Fetch snippet using API route (`/api/snippets/[slug]`)
-export default async function SnippetDetailsPage(props: { params: Promise<{ slug: string }> }) {
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params // ✅ Await params before using
 
   return (

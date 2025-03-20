@@ -1,11 +1,11 @@
 {
-  "name": "nim23.com-frontend",
+  "name": "nim23.com",
   "homepage": "https://nim23.com",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "tsc": "tsc",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
@@ -86,7 +86,12 @@
     "portfolio",
     "website",
     "blog",
-    "application"
+    "application",
+    "blog site",
+    "portfolio website",
+    "Next JS Application",
+    "Next JS Blog",
+    "Numan Ibn Mazid"
   ],
   "author": "Numan Ibn Mazid"
 }

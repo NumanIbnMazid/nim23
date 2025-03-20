@@ -18,7 +18,7 @@ export const metadata: Metadata = getPageMetadata({
   url: PUBLIC_SITE_URL, // ✅ Homepage URL
 })
 
-export default function Home() {
+export default function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainHomePage />

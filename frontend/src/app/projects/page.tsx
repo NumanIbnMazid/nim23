@@ -19,7 +19,7 @@ export const metadata: Metadata = getPageMetadata({
 })
 
 // ✅ Fetch projects using API route (`/api/projects`)
-export default function ProjectsPage() {
+export default function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainProjectsPage />

@@ -6,7 +6,7 @@ import ScrollProgressBar from '@/components/ScrollProgressBar'
 import { useState, useEffect } from 'react'
 import { popUp } from '@/content/FramerMotionVariants'
 import { getFormattedDate } from '@/utils/date'
-import { BlogType, ProfileType } from '@/lib/types'
+import { BlogType, ProfileType, TableOfContentsType } from '@/lib/types'
 import TableOfContents from '@/components/TableOfContents'
 import { highlightCode, addCopyListeners } from '@/utils/functions'
 import { motion } from 'framer-motion'
@@ -22,12 +22,14 @@ import { BLOG_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; profileInfo: ProfileType }) {
   const hasCode = blog && blog.content.includes('<code>')
-  const [processedContent, setProcessedContent] = useState<string>(blog.content)
+  const [processedContent, setProcessedContent] = useState<string>('')
+  const [contentLoaded, setContentLoaded] = useState<boolean>(false)
   const { currentURL } = useWindowLocation()
   const [isTOCActive, setIsTOCActive] = useState(false)
+  const [tableOfContents, setTableOfContents] = useState<TableOfContentsType[]>([])
   const size = useWindowSize()
   const [filteredClientID, setFilteredClientID] = useState('1')
-  const [blogInfoFull, setBlogInfoFull] = useState(false)
+  const [blogInfoFull, setBlogInfoFull] = useState<boolean>(size.width > 1600)
   const [totalViews, setTotalViews] = useState<number>(blog.total_views)
   const [totalLikes, setTotalLikes] = useState<number>(blog.total_likes)
   const [userLiked, setUserLiked] = useState<boolean>(blog.user_liked)
@@ -159,22 +161,26 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
   useEffect(() => {
     // Syntax Highlighting
-    async function processCode() {
-      const highlighted = await highlightCode(blog.content)
-      setProcessedContent(highlighted)
-    }
-
-    if (blog.content) {
-      // Check that `blog.content` is not null/undefined
+    if (blog.content && !processedContent) {
+      const processCode = async () => {
+        const highlighted = await highlightCode(blog.content)
+        setProcessedContent(highlighted)
+        setContentLoaded(true) // Content is now loaded, trigger animation
+        // Generate table of contents after content is highlighted
+        setTableOfContents(blog.table_of_contents || []) // Ensure it's an array, or empty array if null
+      }
       processCode()
     }
+  }, [blog.content, blog.table_of_contents])
 
-    if (size.width > 1600) {
+  useEffect(() => {
+    // Only update blogInfoFull if size changes
+    if (size.width > 1600 && !blogInfoFull) {
       setBlogInfoFull(true)
-    } else {
+    } else if (size.width <= 1600 && blogInfoFull) {
       setBlogInfoFull(false)
     }
-  }, [blog.content, size])
+  }, [size.width]) // This ensures it only runs when size changes
 
   // ✅ Add event listeners for copy buttons
   useEffect(() => {
@@ -186,12 +192,12 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
   return (
     <section className="mt-[44px] md:mt-[60px] relative !overflow-hidden">
       {/* TOC */}
-      {blog.table_of_contents != null && blog.table_of_contents.length > 0 && (
+      {tableOfContents && tableOfContents.length > 0 && (
         <div className="hide-on-print">
           <TableOfContents
             isTOCActive={isTOCActive}
             setIsTOCActive={setIsTOCActive}
-            tableOfContents={blog.table_of_contents != null ? blog.table_of_contents : []}
+            tableOfContents={tableOfContents}
           />
         </div>
       )}
@@ -202,7 +208,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
         style={{
           maxWidth: '900px',
           opacity: isTOCActive ? '0.3' : '1',
-          margin: blog?.table_of_contents && blog.table_of_contents.length <= 0 ? 'auto' : undefined,
+          margin: tableOfContents && tableOfContents.length <= 0 ? 'auto' : undefined,
         }}
       >
         <ScrollProgressBar />
@@ -226,7 +232,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
         <div className="!w-full text-gray-700 dark:text-gray-300">
           <div className="w-full">
             <div
-              className={`${blogInfoFull ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px] author' : ''}`}
+              className={`${
+                blogInfoFull
+                  ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px] author transition-all duration-500'
+                  : 'transition-all duration-500 opacity-0 top-[-100px]' // Move the element off-screen or fade it out
+              }`}
             >
               {blog.author === 'Numan Ibn Mazid' && profileInfo.image !== null && (
                 <motion.div
@@ -324,7 +334,11 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
         {/* Blog Content */}
 
-        <div className="my-7 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white">
+        <div
+          className={`my-7 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-img:mx-auto prose-img:rounded-md dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
+            contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
+          }`}
+        >
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         </div>
 

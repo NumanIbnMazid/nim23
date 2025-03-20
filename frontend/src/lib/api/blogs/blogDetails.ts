@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { BLOG_DEFAULT_IMAGE_PATH } from "@/lib/constants";
 import { getCloudinaryUrl } from "@/lib/utils/cloudinary";
-import { BlogType, TableOfContents } from "@/lib/types";
+import { BlogType, TableOfContentsType } from "@/lib/types";
 import { JSDOM } from "jsdom";
 
 /**
  * Extract Table of Contents (TOC) from HTML content.
  */
-const extractTableOfContents = (htmlContent: string): TableOfContents[] => {
+const extractTableOfContents = (htmlContent: string): TableOfContentsType[] => {
   if (!htmlContent) return [];
 
   const dom = new JSDOM(htmlContent);
@@ -47,7 +47,7 @@ export async function getBlogBySlug(slug: string): Promise<BlogType | null> {
   if (!blog) return null;
 
   // ✅ Ensure TOC is always a valid array
-  const table_of_contents: TableOfContents[] = extractTableOfContents(blog.content);
+  const table_of_contents: TableOfContentsType[] = extractTableOfContents(blog.content);
 
   return {
     id: Number(blog.id),

@@ -6,6 +6,9 @@ import type { Metadata } from "next";
 import { PUBLIC_SITE_URL } from "@/lib/constants";
 import { notFound } from "next/navigation";
 
+// revalidate all fetch requests in a route segment
+export const revalidate = 60 // revalidate at 1 min
+
 // ✅ Generate metadata for All Blogs Page
 export const metadata: Metadata = getPageMetadata({
     title: pageMeta.blogs.title,
@@ -25,7 +28,7 @@ export default async function BlogsPage() {
 
 async function MainBlogsPage() {
     const res = await fetch(`${PUBLIC_SITE_URL}/api/blogs`, {
-        cache: "no-store", // ✅ Prevents caching, always fetch fresh data
+        // cache: "no-store", // ✅ Prevents caching, always fetch fresh data
     });
 
     if (!res.ok) {

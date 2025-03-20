@@ -6,6 +6,9 @@ import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { notFound } from 'next/navigation'
 
+// revalidate all fetch requests in a route segment
+export const revalidate = 60 // revalidate at 1 min
+
 // ✅ Generate metadata for HomePage
 export const metadata: Metadata = getPageMetadata({
   title: pageMeta.home.title,
@@ -26,9 +29,15 @@ export default function Home() {
 async function MainHomePage() {
   // ✅ Fetch all required data in parallel
   const [blogsRes, profileRes, experiencesRes] = await Promise.all([
-    fetch(`${PUBLIC_SITE_URL}/api/blogs?limit=2`, { cache: 'no-store' }),
-    fetch(`${PUBLIC_SITE_URL}/api/profile`, { cache: 'no-store' }),
-    fetch(`${PUBLIC_SITE_URL}/api/experiences?limit=1`, { cache: 'no-store' }),
+    fetch(`${PUBLIC_SITE_URL}/api/blogs?limit=2`, {
+      // cache: 'no-store'
+    }),
+    fetch(`${PUBLIC_SITE_URL}/api/profile`, {
+      // cache: 'no-store'
+    }),
+    fetch(`${PUBLIC_SITE_URL}/api/experiences?limit=1`, {
+      // cache: 'no-store'
+    }),
   ])
 
   if (!blogsRes.ok || !profileRes.ok || !experiencesRes.ok) {

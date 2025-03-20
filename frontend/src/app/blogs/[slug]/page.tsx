@@ -8,7 +8,7 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
-export const dynamic = "force-dynamic"; // Forces SSR but doesn't block rendering
+// export const dynamic = "force-dynamic"; // Forces SSR but doesn't block rendering
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const res = await fetch(`${PUBLIC_SITE_URL}/api/blogs`)

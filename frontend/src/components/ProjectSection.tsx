@@ -38,7 +38,12 @@ export default function ProjectSection({ projects }: { projects: ProjectType[] }
                 <div className="card">
                   {project.image !== null && (
                     <div className="relative -mt-[35%] sm:-mt-0 md:-ml-[35%] w-full sm:w-1/2 md:w-8/12 shrink-0 rounded-xl overflow-hidden shadow-2xl before:absolute before:inset-0 dark:before:bg-black/20 before:z-auto">
-                      <Link href={`projects/${project.slug}`} title="View Project Details" rel="noopener noreferrer">
+                      <Link
+                        href={`projects/${project.slug}`}
+                        title="View Project Details"
+                        rel="noopener noreferrer"
+                        prefetch={true}
+                      >
                         <Image
                           title={project.title}
                           alt={project.title}

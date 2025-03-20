@@ -7,6 +7,7 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
   return (
     <Link
       href={`snippets/${code_snippet.slug}`}
+      prefetch={true}
       title="View Code Snippet Details"
       className="w-full p-4 bg-white dark:bg-darkSecondary ring-1 hover:bg-darkWhite dark:hover:bg-darkFourth dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] flex flex-col gap-2 rounded"
     >

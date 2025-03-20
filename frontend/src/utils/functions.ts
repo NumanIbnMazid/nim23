@@ -16,35 +16,49 @@ export function removeScrollLock() {
 }
 
 // ✅ Function to highlight code using Shiki API
+// Language to Shiki language map
+const languageMap: Record<string, string> = {
+  docker: 'dockerfile',
+  // Add more mappings as needed
+};
+
 export async function highlightCode(content: string): Promise<string> {
-  const tempDiv = document.createElement('div')
-  tempDiv.innerHTML = content
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
 
-  const codeBlocks = Array.from(tempDiv.querySelectorAll('pre code'))
-  if (codeBlocks.length === 0) return content // ✅ Return early if no code blocks exist
+  const codeBlocks = Array.from(tempDiv.querySelectorAll('pre'));
+  if (codeBlocks.length === 0) return content; // ✅ Return early if no code blocks exist
 
-  const requests = codeBlocks.map((block) => ({
-    code: block.textContent || '',
-    language:
-      Array.from(block.classList)
-        .find((cls) => cls.startsWith('language-'))
-        ?.replace('language-', '') || 'python',
-  }))
+  const requests = codeBlocks.map((block) => {
+    // Access the class of the <pre> element, not the <code> element
+    const language =
+      block.classList?.value.match(/language-(\w+)/)?.[1] || 'XXX';
+
+    // Map the detected language to the corresponding Shiki language
+    const mappedLanguage = languageMap[language.toLowerCase()] || language;
+
+    // console.log('✅ Detected language:', language, 'Mapped to:', mappedLanguage); // ✅ Log detected language and mapped value
+
+    return {
+      code: block.querySelector('code')?.textContent || '',
+      language: mappedLanguage
+    };
+  });
 
   try {
     const response = await fetch('/api/highlight', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ codeBlocks: requests }), // ✅ Send all code blocks in a single request
-    })
+    });
 
     if (response.ok) {
-      const { highlightedBlocks } = await response.json()
+      const { highlightedBlocks } = await response.json();
 
       highlightedBlocks.forEach(({ original, highlighted }: { original: string; highlighted: string }) => {
         const matchingBlock = Array.from(tempDiv.querySelectorAll('pre code')).find((block) =>
           block.textContent?.includes(original)
-        )
+        );
 
         if (matchingBlock && matchingBlock.parentElement) {
           matchingBlock.parentElement.outerHTML = `
@@ -54,16 +68,17 @@ export async function highlightCode(content: string): Promise<string> {
                 Copy
               </button>
             </div>
-          `
+          `;
         }
-      })
+      });
     }
   } catch (error) {
-    console.error('Failed to highlight:', error)
+    console.error('❌ Failed to highlight:', error);
   }
 
-  return tempDiv.innerHTML
+  return tempDiv.innerHTML;
 }
+
 
 // ✅ Function to copy text to clipboard
 export function copyToClipboard(button: HTMLElement) {

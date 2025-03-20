@@ -6,12 +6,13 @@ let cachedHighlighter: any = null // ✅ Cached Singleton
 async function getHighlighter() {
   if (!cachedHighlighter) {
     cachedHighlighter = await createHighlighter({
-      themes: ['dark-plus', 'nord', 'dracula'], // ✅ Ensure themes are correctly loaded
+      themes: ['houston', 'dark-plus', 'nord', 'dracula'], // ✅ Ensure themes are correctly loaded
       langs: [
         'python',
         'javascript',
         'typescript',
         'html',
+        'docker',
         'css',
         'cpp',
         'java',
@@ -45,11 +46,11 @@ export async function POST(req: Request) {
 
     const highlightedBlocks = await Promise.all(
       codeBlocks.map(async ({ code, language }: { code: string; language: string }) => {
-        const selectedLanguage = supportedLanguages.includes(language) ? language : 'plaintext' // ✅ Default to plaintext if unsupported
+        const selectedLanguage = supportedLanguages.includes(language) ? language : 'plaintext'
 
         const highlightedCode = await highlighter.codeToHtml(code, {
           lang: selectedLanguage,
-          theme: 'dark-plus',
+          theme: 'houston',
         })
 
         return { original: code, highlighted: highlightedCode }

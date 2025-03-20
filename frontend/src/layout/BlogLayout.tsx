@@ -113,19 +113,19 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
 
     const style = document.createElement('style')
     style.textContent = `
-    @media print {
-      code[class*="language-"],
-      pre[class*="language-"] {
-        overflow: visible !important;
-        white-space: pre-wrap;
+      @media print {
+        code[class*="shiki"],
+        pre[class*="shiki"] {
+          overflow: visible !important;
+          white-space: pre-wrap;
+        }
       }
-    }
-  `
+    `
     document.head.appendChild(style)
 
     // Find all code and pre elements that need adjustments
-    const codeElements = document.querySelectorAll('code[class*="language-"]')
-    const preElements = document.querySelectorAll('pre[class*="language-"]')
+    const codeElements = document.querySelectorAll('code[class*="shiki"]')
+    const preElements = document.querySelectorAll('pre[class*="shiki"]')
 
     // Apply the CSS class for printing adjustments
     codeElements.forEach((codeElement) => {

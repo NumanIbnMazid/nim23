@@ -15,7 +15,7 @@ export const metadata: Metadata = getPageMetadata({
   url: `${PUBLIC_SITE_URL}/privacy`, // ✅ Privacy Policy page URL
 })
 
-export default function PrivacyPage() {
+export default function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainPrivacyPage />

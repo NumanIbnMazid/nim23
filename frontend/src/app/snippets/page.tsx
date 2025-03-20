@@ -19,7 +19,7 @@ export const metadata: Metadata = getPageMetadata({
 })
 
 // ✅ Fetch snippets using API route (`/api/snippets`)
-export default function SnippetsPage() {
+export default async function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainSnippetsPage />

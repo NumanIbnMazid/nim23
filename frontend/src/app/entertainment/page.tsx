@@ -19,7 +19,7 @@ export const metadata: Metadata = getPageMetadata({
 })
 
 // ✅ Fetch media data using API routes
-export default function MediaPage() {
+export default function Page() {
   return (
     <Suspense fallback={<SkeletonLoader />}>
       <MainMediaPage />

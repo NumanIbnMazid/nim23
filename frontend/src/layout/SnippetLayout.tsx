@@ -15,7 +15,8 @@ import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { SNIPPET_INTERACTION_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnippetType }) {
-  const [processedContent, setProcessedContent] = useState<string>(code_snippet.content)
+  const [processedContent, setProcessedContent] = useState<string>('')
+  const [contentLoaded, setContentLoaded] = useState<boolean>(false)
   const { currentURL } = useWindowLocation()
   const [filteredClientID, setFilteredClientID] = useState('1')
   const [totalViews, setTotalViews] = useState<number>(code_snippet.total_views)
@@ -95,8 +96,8 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
     const style = document.createElement('style')
     style.textContent = `
     @media print {
-      code[class*="language-"],
-      pre[class*="language-"] {
+      code[class*="shiki"],
+      pre[class*="shiki"] {
         overflow: visible !important;
         white-space: pre-wrap;
       }
@@ -105,8 +106,8 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
     document.head.appendChild(style)
 
     // Find all code and pre elements that need adjustments
-    const codeElements = document.querySelectorAll('code[class*="language-"]')
-    const preElements = document.querySelectorAll('pre[class*="language-"]')
+    const codeElements = document.querySelectorAll('code[class*="shiki"]')
+    const preElements = document.querySelectorAll('pre[class*="shiki"]')
 
     // Apply the CSS class for printing adjustments
     codeElements.forEach((codeElement) => {
@@ -136,13 +137,15 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
   }
 
   useEffect(() => {
-    async function processCode() {
-      const highlighted = await highlightCode(code_snippet.content)
-      setProcessedContent(highlighted)
+    if (code_snippet.content && !processedContent) {
+      const processCode = async () => {
+        const highlighted = await highlightCode(code_snippet.content)
+        setProcessedContent(highlighted)
+        setContentLoaded(true) // Content is now loaded, trigger animation
+      }
+      processCode()
     }
-
-    processCode()
-  }, [code_snippet.content])
+  }, [code_snippet.content, processedContent])
 
   // ✅ Add event listeners for copy buttons
   useEffect(() => {
@@ -220,7 +223,11 @@ export default function SnippetLayout({ code_snippet }: { code_snippet: CodeSnip
         )}
 
         {/* Content */}
-        <div className="text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white">
+        <div
+          className={`text-slate-700 max-w-full prose-sm blog-container sm:prose-base prose-pre:bg-white prose-pre:shadow dark:prose-pre:shadow-black/80 dark:prose-pre:bg-darkSecondary prose-pre:saturate-150 dark:prose-pre:saturate-100 marker:text-black dark:marker:text-white ${
+            contentLoaded ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'
+          }`}
+        >
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         </div>
 

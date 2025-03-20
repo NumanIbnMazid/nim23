@@ -226,7 +226,7 @@ export type BlogCategoryType = {
   updated_at: string
 }
 
-export type TableOfContents = {
+export type TableOfContentsType = {
   id?: string;
   level: number;
   heading: string;
@@ -255,7 +255,7 @@ export type BlogType = {
   tags?: string
   status: string
   order: number
-  table_of_contents?: TableOfContents[]
+  table_of_contents?: TableOfContentsType[]
   total_views: number
   total_likes: number
   user_liked: boolean
@@ -279,7 +279,7 @@ export type FrontMatter = {
 export type PostType = {
   meta: FrontMatter;
   source: MDXRemoteSerializeResult;
-  tableOfContents?: TableOfContents[];
+  tableOfContents?: TableOfContentsType[];
 };
 
 export type SupportMe = {

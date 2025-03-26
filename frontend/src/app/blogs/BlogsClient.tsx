@@ -18,6 +18,7 @@ import en_US from 'rc-pagination/lib/locale/en_US'
 import '@/styles/pagination.css'
 import BlogGridView from '@/components/BlogGridView'
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/utils/localStorage'
+import useWindowSize from '@/hooks/useWindowSize'
 
 const Blog = dynamic(() => import('@/components/Blog'), {
   loading: () => <Loader />,
@@ -30,6 +31,16 @@ const LIST_ITEMS_PER_PAGE = 5
 export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[] }) {
   const [searchValue, setSearchValue] = useState('')
   const searchRef = useRef<HTMLInputElement>(null!)
+  const size = useWindowSize()
+  const [showGridToggle, setShowGridToggle] = useState(true)
+
+  useEffect(() => {
+    if (size.width < 640) {
+      setShowGridToggle(false)
+    } else {
+      setShowGridToggle(true)
+    }
+  }, [size, setShowGridToggle])
 
   // Use localStorage for isGridView
   const [isGridView, setIsGridView] = useState<boolean>(() => {
@@ -130,12 +141,14 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
                     All Posts ({filteredBlogs.length})
                   </motion.h3>
                   {/* Grid View Toggle Button */}
-                  <button
-                    onClick={toggleGridView}
-                    className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                  >
-                    {isGridView ? <FaList size={20} /> : <FaTh size={20} />}
-                  </button>
+                  {showGridToggle && (
+                    <button
+                      onClick={toggleGridView}
+                      className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    >
+                      {isGridView ? <FaList size={20} /> : <FaTh size={20} />}
+                    </button>
+                  )}
                 </AnimatedDiv>
 
                 <AnimatedDiv variants={FadeContainer} className="grid grid-cols-1 gap-4">

@@ -175,59 +175,36 @@ class ProjectGenericModelViewset(ModelViewSet):
         return queryset
 
 
-def sync_markdown_html_fields(instance, markdown_field, html_field):
+def sync_markdown_html_fields(instance, markdown_field_name, html_field_name):
     """
-    Synchronizes Markdown and HTML fields for any model dynamically.
-    
-    - If Markdown is updated, update HTML.
-    - If HTML is updated, update Markdown.
-    - Prevents infinite loops in `post_save`.
+    Synchronizes Markdown and HTML fields in a model instance.
+
+    Args:
+        instance: The model instance being saved.
+        markdown_field_name: The name of the field containing Markdown text.
+        html_field_name: The name of the field containing HTML text.
     """
+    if instance.pk is None:  # First time creation
+        markdown_content = getattr(instance, markdown_field_name)
+        html_content = getattr(instance, html_field_name)
 
-    if not hasattr(instance, markdown_field) or not hasattr(instance, html_field):
-        raise AttributeError(f"Instance {instance} does not have fields '{markdown_field}' or '{html_field}'")
+        if html_content and not markdown_content:
+            setattr(instance, markdown_field_name, html_to_markdown(html_content))
+        elif markdown_content and not html_content:
+            setattr(instance, html_field_name, markdown_to_html(markdown_content))
+    else:  # Updating existing instance
+        model_class = instance.__class__  # Dynamically get the model class
+        old_instance = model_class.objects.get(pk=instance.pk)  # Access objects using the model class
 
-    if instance.pk:  # Existing instance (update)
-        model = instance.__class__
-        old_instance = model.objects.get(pk=instance.pk)
-
-        # If Markdown was modified, update HTML
-        if getattr(old_instance, markdown_field) != getattr(instance, markdown_field):
-            setattr(instance, html_field, markdown_to_html(getattr(instance, markdown_field).strip()))
-            instance.last_updated_field = markdown_field
-
-        # If HTML was modified, update Markdown
-        elif getattr(old_instance, html_field) != getattr(instance, html_field):
-            setattr(instance, markdown_field, html_to_markdown(getattr(instance, html_field).strip()))
-            instance.last_updated_field = html_field
-
-    else:  # New instance
-        if getattr(instance, html_field) and not getattr(instance, markdown_field):
-            setattr(instance, markdown_field, html_to_markdown(getattr(instance, html_field).strip()))
-            instance.last_updated_field = html_field
-        elif getattr(instance, markdown_field) and not getattr(instance, html_field):
-            setattr(instance, html_field, markdown_to_html(getattr(instance, markdown_field).strip()))
-            instance.last_updated_field = markdown_field
+        markdown_content = getattr(instance, markdown_field_name)
+        html_content = getattr(instance, html_field_name)
+        old_markdown_content = getattr(old_instance, markdown_field_name)
+        old_html_content = getattr(old_instance, html_field_name)
 
 
-def sync_markdown_html_post_save(instance, markdown_field, html_field):
-    """
-    Ensures Markdown and HTML fields stay in sync after saving.
-    """
-
-    update_fields = {}
-
-    if instance.last_updated_field == markdown_field:
-        setattr(instance, html_field, markdown_to_html(getattr(instance, markdown_field).strip()))
-        update_fields[html_field] = getattr(instance, html_field)
-
-    elif instance.last_updated_field == html_field:
-        setattr(instance, markdown_field, html_to_markdown(getattr(instance, html_field).strip()))
-        update_fields[markdown_field] = getattr(instance, markdown_field)
-
-    if update_fields:
-        instance.__class__.objects.filter(pk=instance.pk).update(**update_fields)
-
-        # Ensure instance in memory reflects changes
-        for field, value in update_fields.items():
-            setattr(instance, field, value)
+        if old_html_content != html_content:
+            # HTML content updated
+            setattr(instance, markdown_field_name, html_to_markdown(html_content))
+        elif old_markdown_content != markdown_content:
+            # Markdown content updated
+            setattr(instance, html_field_name, markdown_to_html(markdown_content))

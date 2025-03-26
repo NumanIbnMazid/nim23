@@ -226,6 +226,14 @@ export type BlogCategoryType = {
   updated_at: string
 }
 
+export type BlogSubCategoryType = {
+  id: number
+  name: string
+  slug: string
+  created_at: string
+  updated_at: string
+}
+
 export type TableOfContentsType = {
   id?: string;
   level: number;
@@ -248,6 +256,7 @@ export type BlogType = {
   slug: string
   title: string
   category?: BlogCategoryType
+  sub_category?: BlogSubCategoryType
   image: string
   overview?: string
   content: string

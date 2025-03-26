@@ -1,30 +1,30 @@
-import { prisma } from "@/lib/prisma";
-import { BLOG_DEFAULT_IMAGE_PATH } from "@/lib/constants";
-import { getCloudinaryUrl } from "@/lib/utils/cloudinary";
-import { BlogType, TableOfContentsType } from "@/lib/types";
-import { JSDOM } from "jsdom";
+import { prisma } from '@/lib/prisma'
+import { BLOG_DEFAULT_IMAGE_PATH } from '@/lib/constants'
+import { getCloudinaryUrl } from '@/lib/utils/cloudinary'
+import { BlogType, TableOfContentsType } from '@/lib/types'
+import { JSDOM } from 'jsdom'
 
 /**
  * Extract Table of Contents (TOC) from HTML content.
  */
 const extractTableOfContents = (htmlContent: string): TableOfContentsType[] => {
-  if (!htmlContent) return [];
+  if (!htmlContent) return []
 
-  const dom = new JSDOM(htmlContent);
-  const document = dom.window.document;
-  const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  const dom = new JSDOM(htmlContent)
+  const document = dom.window.document
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
 
   return Array.from(headings).map((heading) => {
-    const text = (heading as Element).textContent || "untitled";
-    const id = (heading as Element).id || text.toLowerCase().replace(/\s+/g, "-");
+    const text = (heading as Element).textContent || 'untitled'
+    const id = (heading as Element).id || text.toLowerCase().replace(/\s+/g, '-')
 
     return {
       id,
-      level: parseInt((heading as Element).tagName.replace("H", ""), 10),
+      level: parseInt((heading as Element).tagName.replace('H', ''), 10),
       heading: text,
-    };
-  });
-};
+    }
+  })
+}
 
 /**
  * Fetch a single blog by slug, including TOC and comments.
@@ -35,19 +35,20 @@ export async function getBlogBySlug(slug: string): Promise<BlogType | null> {
     include: {
       blog_view: true,
       blog_category: true,
+      blog_sub_category: true,
       blog_comment: {
         where: { is_approved: true }, // ✅ Only fetch approved comments
-        orderBy: { created_at: "desc" }, // ✅ Sort by latest first
+        orderBy: { created_at: 'desc' }, // ✅ Sort by latest first
       },
     },
-  });
+  })
 
-  await prisma.$disconnect(); // ✅ Close connection after fetching data
+  await prisma.$disconnect() // ✅ Close connection after fetching data
 
-  if (!blog) return null;
+  if (!blog) return null
 
   // ✅ Ensure TOC is always a valid array
-  const table_of_contents: TableOfContentsType[] = extractTableOfContents(blog.content);
+  const table_of_contents: TableOfContentsType[] = extractTableOfContents(blog.content)
 
   return {
     id: Number(blog.id),
@@ -74,6 +75,15 @@ export async function getBlogBySlug(slug: string): Promise<BlogType | null> {
           updated_at: blog.blog_category.updated_at.toISOString(),
         }
       : undefined,
+    sub_category: blog.blog_sub_category
+      ? {
+          id: Number(blog.blog_sub_category.id),
+          name: blog.blog_sub_category.name,
+          slug: blog.blog_sub_category.slug,
+          created_at: blog.blog_sub_category.created_at.toISOString(),
+          updated_at: blog.blog_sub_category.updated_at.toISOString(),
+        }
+      : undefined,
     table_of_contents,
     blog_comments: blog.blog_comment.map((comment) => ({
       id: Number(comment.id),
@@ -84,5 +94,5 @@ export async function getBlogBySlug(slug: string): Promise<BlogType | null> {
       comment: comment.comment,
       created_at: comment.created_at.toISOString(),
     })), // ✅ Convert comments into a clean structure
-  };
+  }
 }

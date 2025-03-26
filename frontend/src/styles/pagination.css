@@ -1,0 +1,107 @@
+.custom-pagination {
+    margin-top: 23px;
+    margin-bottom: 23px;
+}
+
+/* Quick Jumper Styling */
+.rc-pagination-options-quick-jumper {
+  display: flex;
+  align-items: center;
+  color: var(--quick-jumper-text-color);
+}
+
+.rc-pagination-options-quick-jumper input {
+  border: 1px solid var(--quick-jumper-border-color);
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0 5px;
+  width: 50px; /* Adjust as needed */
+  text-align: center;
+  background-color: var(--quick-jumper-bg-color);
+  color: var(--quick-jumper-text-color);
+}
+
+.rc-pagination-options-quick-jumper button {
+  background-color: var(--quick-jumper-button-bg-color);
+  color: var(--quick-jumper-button-text-color);
+  border: 1px solid var(--quick-jumper-button-border-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.rc-pagination-options-quick-jumper button:hover {
+  background-color: var(--quick-jumper-button-hover-bg-color);
+}
+
+/* Default Number Li Styling */
+.custom-pagination li.rc-pagination-item a {
+    background-color: var(--pagination-bg-color);
+    color: var(--pagination-text-color);
+    border-color: var(--pagination-active-border-color);
+}
+
+/* Active Number Li Styling */
+.custom-pagination li.rc-pagination-item-active a {
+    background-color: var(--pagination-active-bg-color);
+    color: var(--pagination-active-text-color);
+    border-color: var(--pagination-active-border-color);
+}
+
+/* Next Li Styling */
+.custom-pagination li.rc-pagination-next button {
+    background-color: var(--pagination-bg-color);
+    color: var(--pagination-text-color);
+    border-color: var(--pagination-active-border-color);
+}
+
+/* Prev Li Styling */
+.custom-pagination li.rc-pagination-prev button {
+    background-color: var(--pagination-bg-color);
+    color: var(--pagination-text-color);
+    border-color: var(--pagination-active-border-color);
+}
+
+/* Dark Mode Variables */
+body.dark {
+  --pagination-text-color: #e2e8f0; /* Dark Mode Text */
+  --pagination-bg-color: #334155; /* Dark Mode Background */
+  --pagination-border-color: #475569; /* Dark Mode Border */
+  --pagination-active-text-color: white; /* Dark Mode Active Text */
+  --pagination-active-bg-color: rgb(4, 49, 91); /* Dark Mode Active Background */
+  --pagination-active-border-color: #172a53; /* Dark Mode Active Border */
+  --pagination-hover-bg-color: #475569; /* Dark Mode Hover Background */
+  --pagination-disabled-text-color: #64748b; /* Dark Mode Disabled Text */
+
+  /* Quick Jumper Dark Mode */
+  --quick-jumper-text-color: #e2e8f0;
+  --quick-jumper-border-color: #475569;
+  --quick-jumper-bg-color: #334155;
+
+  --quick-jumper-button-text-color: #e2e8f0;
+  --quick-jumper-button-bg-color: #334155;
+  --quick-jumper-button-border-color: #475569;
+  --quick-jumper-button-hover-bg-color: #475569;
+}
+
+/* Light Mode Variables (Defaults) */
+body {
+  --pagination-text-color: #374151; /* Light Mode Text */
+  --pagination-bg-color: #f9fafb; /* Light Mode Background */
+  --pagination-border-color: #d1d5db; /* Light Mode Border */
+  --pagination-active-text-color: white; /* Light Mode Active Text */
+  --pagination-active-bg-color: #1d4ed8; /* Light Mode Active Background */
+  --pagination-active-border-color: #1d4ed8; /* Light Mode Active Border */
+  --pagination-hover-bg-color: #e5e7eb; /* Light Mode Hover Background */
+  --pagination-disabled-text-color: #9ca3af; /* Light Mode Disabled Text */
+
+  /* Quick Jumper Light Mode */
+  --quick-jumper-text-color: #374151;
+  --quick-jumper-border-color: #d1d5db;
+  --quick-jumper-bg-color: #f9fafb;
+
+  --quick-jumper-button-text-color: #374151;
+  --quick-jumper-button-bg-color: #f9fafb;
+  --quick-jumper-button-border-color: #d1d5db;
+  --quick-jumper-button-hover-bg-color: #e5e7eb;
+}

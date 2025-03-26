@@ -264,17 +264,20 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
                 <span className="font-bold">{getFormattedDate(new Date(blog.created_at))}</span>
               </div>
 
-              {getFormattedDate(new Date(blog.created_at)) !== getFormattedDate(new Date(blog.updated_at)) && (
-                <div className="text-base text-gray-500 mb-2">
-                  <span>Last Update: </span>
-                  <span className="font-bold">{getFormattedDate(new Date(blog.updated_at))}</span>
-                </div>
-              )}
-
+              <div className="text-base text-gray-500 mb-2">
+                <span>Last Update: </span>
+                <span className="font-bold">{getFormattedDate(new Date(blog.updated_at))}</span>
+              </div>
               {blog.category && (
                 <div className="text-base text-gray-500 mb-2">
                   <span>Category: </span>
                   <span className="font-bold">{blog.category.name}</span>
+                </div>
+              )}
+              {blog.sub_category && (
+                <div className="text-base text-gray-500 mb-2">
+                  <span>Sub-Category: </span>
+                  <span className="font-bold">{blog.sub_category.name}</span>
                 </div>
               )}
 

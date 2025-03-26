@@ -35,7 +35,7 @@ admin.site.register(BlogSubCategory, BlogSubCategoryAdmin)
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'category', 'image', 'slug', 'overview', 'tags', 'status', 'order', 
+        'title', 'category', 'sub_category', 'image', 'slug', 'overview', 'tags', 'status', 'order', 
         #'get_table_of_contents'
     )
 

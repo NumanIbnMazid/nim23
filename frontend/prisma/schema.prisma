@@ -110,26 +110,30 @@ model auth_permission {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
 model blog {
-  id            BigInt         @id @default(autoincrement())
-  title         String         @unique @db.VarChar(255)
-  slug          String         @unique @db.VarChar(255)
-  image         String?        @db.VarChar(100)
-  overview      String?
-  content       String
-  author        String         @db.VarChar(100)
-  tags          String?        @db.VarChar(255)
-  status        String         @db.VarChar(20)
-  order         Int
-  created_at    DateTime       @db.Timestamptz(6)
-  updated_at    DateTime       @db.Timestamptz(6)
-  category_id   BigInt?
-  blog_category blog_category? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_category_id_efb54956_fk_blog_category_id")
-  blog_comment  blog_comment[]
-  blog_view     blog_view[]
+  id                  BigInt             @id @default(autoincrement())
+  title               String             @unique @db.VarChar(255)
+  slug                String             @unique @db.VarChar(255)
+  image               String?            @db.VarChar(100)
+  overview            String?
+  content             String
+  author              String             @db.VarChar(100)
+  tags                String?            @db.VarChar(255)
+  status              String             @db.VarChar(20)
+  order               Int
+  created_at          DateTime           @db.Timestamptz(6)
+  updated_at          DateTime           @db.Timestamptz(6)
+  category_id         BigInt?
+  content_in_markdown String?
+  sub_category_id     BigInt?
+  blog_category       blog_category?     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_category_id_efb54956_fk_blog_category_id")
+  blog_sub_category   blog_sub_category? @relation(fields: [sub_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blog_sub_category_id_f2b7a992_fk_blog_sub_category_id")
+  blog_comment        blog_comment[]
+  blog_view           blog_view[]
 
   @@index([category_id], map: "blog_category_id_efb54956")
   @@index([slug], map: "blog_slug_e924580b_like")
   @@index([title], map: "blog_title_07f3c6e7_like")
+  @@index([sub_category_id], map: "blog_sub_category_id_f2b7a992")
 }
 
 model blog_category {
@@ -229,6 +233,7 @@ model code_snippet {
   updated_at           DateTime               @db.Timestamptz(6)
   tags                 String?                @db.VarChar(255)
   status               String                 @db.VarChar(20)
+  content_in_markdown  String?
   code_snippet_comment code_snippet_comment[]
   code_snippet_view    code_snippet_view[]
 
@@ -542,4 +547,29 @@ model users_user_user_permissions {
   @@unique([user_id, permission_id], map: "users_user_user_permissions_user_id_permission_id_43338c45_uniq")
   @@index([permission_id], map: "users_user_user_permissions_permission_id_0b93982e")
   @@index([user_id], map: "users_user_user_permissions_user_id_20aca447")
+}
+
+model blog_sub_category {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @unique @db.VarChar(255)
+  slug       String   @unique @db.VarChar(255)
+  created_at DateTime @db.Timestamptz(6)
+  updated_at DateTime @db.Timestamptz(6)
+  blog       blog[]
+
+  @@index([name], map: "blog_sub_category_name_0d67fb78_like")
+  @@index([slug], map: "blog_sub_category_slug_2987ec4f_like")
+}
+
+model uploaded_files {
+  id          BigInt   @id @default(autoincrement())
+  slug        String   @unique @db.VarChar(255)
+  file        String   @db.VarChar(100)
+  file_name   String   @db.VarChar(255)
+  folder_path String   @db.VarChar(255)
+  file_url    String?  @db.VarChar(200)
+  created_at  DateTime @db.Timestamptz(6)
+  file_type   String   @db.VarChar(50)
+
+  @@index([slug], map: "uploaded_files_slug_bd9d9a53_like")
 }

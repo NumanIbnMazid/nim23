@@ -11,14 +11,66 @@ import Loader from '@/components/Loader'
 import NoData from '@/components/NoData'
 import dynamic from 'next/dynamic'
 import { BlogType } from '@/lib/types'
+import { FaList, FaTh } from 'react-icons/fa'
+import Pagination from 'rc-pagination' // Import rc-pagination
+import 'rc-pagination/assets/index.css' // Import CSS
+import en_US from 'rc-pagination/lib/locale/en_US'
+import '@/styles/pagination.css'
+import BlogGridView from '@/components/BlogGridView'
+import { getLocalStorageItem, setLocalStorageItem } from '@/lib/utils/localStorage'
 
 const Blog = dynamic(() => import('@/components/Blog'), {
   loading: () => <Loader />,
 })
 
+// Pagnation
+const GRID_ITEMS_PER_PAGE = 9
+const LIST_ITEMS_PER_PAGE = 5
+
 export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[] }) {
   const [searchValue, setSearchValue] = useState('')
   const searchRef = useRef<HTMLInputElement>(null!)
+
+  // Use localStorage for isGridView
+  const [isGridView, setIsGridView] = useState<boolean>(() => {
+    return getLocalStorageItem('isGridView', false) === true
+  })
+
+  useEffect(() => {
+    setLocalStorageItem('isGridView', isGridView)
+  }, [isGridView])
+
+  const toggleGridView = () => {
+    setIsGridView((prev) => !prev) // Toggle the state
+  }
+
+  // Dynamically set ITEMS_PER_PAGE based on isGridView
+  const ITEMS_PER_PAGE = isGridView ? GRID_ITEMS_PER_PAGE : LIST_ITEMS_PER_PAGE
+
+  // Filtering and pagination
+  const filteredBlogs = initialBlogs.filter((post) =>
+    post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
+  )
+
+  const [currentPage, setCurrentPage] = useState<number>(() => {
+    const savedPage = Number(getLocalStorageItem('snippetCurrentPage', 1)) || 1
+    // Make sure that saved page is less than total pages if total pages less then savedPages
+    return Math.min(savedPage, Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE)) || 1
+  })
+
+  useEffect(() => {
+    setLocalStorageItem('blogCurrentPage', currentPage)
+  }, [currentPage])
+
+  const paginatedBlogs = filteredBlogs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+
+  const totalItems = filteredBlogs.length
+
+  // Invoke when user click to request another page.
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    setLocalStorageItem('currentPage', page) //update localStorage
+  }
 
   useEffect(() => {
     function handleAutoSearch(e: KeyboardEvent) {
@@ -29,11 +81,6 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
     document.addEventListener('keydown', handleAutoSearch)
     return () => document.removeEventListener('keydown', handleAutoSearch)
   }, [])
-
-  // ✅ Use `initialBlogs` directly (no need for `setBlogs`)
-  const filteredBlogs = initialBlogs.filter((post) =>
-    post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
-  )
 
   return (
     <>
@@ -76,13 +123,46 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
                   >
                     All Posts ({filteredBlogs.length})
                   </motion.h3>
+                  {/* Grid View Toggle Button */}
+                  <button
+                    onClick={toggleGridView}
+                    className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    {isGridView ? <FaList size={20} /> : <FaTh size={20} />}
+                  </button>
                 </AnimatedDiv>
 
                 <AnimatedDiv variants={FadeContainer} className="grid grid-cols-1 gap-4">
-                  {filteredBlogs.map((blog, index) => {
-                    return <Blog key={index} blog={blog} />
-                  })}
+                  {isGridView ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {paginatedBlogs.map((blog, index) => (
+                        <BlogGridView key={index} blog={blog} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-4">
+                      {paginatedBlogs.map((blog, index) => (
+                        <Blog key={index} blog={blog} />
+                      ))}
+                    </div>
+                  )}
                 </AnimatedDiv>
+
+                {/* Pagination Controls */}
+                {/* rc-pagination */}
+                <div className="flex justify-center items-center mt-4">
+                  <Pagination
+                    current={currentPage}
+                    total={totalItems}
+                    pageSize={ITEMS_PER_PAGE}
+                    showTotal={(total) => `Total ${total} Blogs`}
+                    showLessItems
+                    onChange={handlePageChange}
+                    showQuickJumper
+                    locale={en_US}
+                    className="custom-pagination"
+                  />
+                </div>
               </>
             ) : (
               <NoData /> // ✅ Show NoData when no blogs found

@@ -22,7 +22,7 @@ export default function BlogGridView({ blog, animate = false }: { blog: BlogType
           initial={animate && 'hidden'}
           whileInView={animate ? 'visible' : ''}
           viewport={{ once: true }}
-          className="bg-white dark:bg-darkSecondary hover:bg-darkWhite dark:hover:bg-darkFourth ring-1 dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] rounded-2xl p-4 flex flex-col shadow-md md:shadow-lg" // Changed to flex-col
+          className="bg-white dark:bg-darkSecondary hover:bg-darkWhite dark:hover:bg-darkFourth ring-1 dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] rounded-2xl p-4 flex flex-col shadow-md md:shadow-lg"
         >
           {/* Image */}
           <div className="mb-4">
@@ -34,7 +34,7 @@ export default function BlogGridView({ blog, animate = false }: { blog: BlogType
               height={600}
               blurDataURL={blog.image}
               quality={50}
-              className="my-auto transition-all duration-300 backdrop-blur-xl rounded-xl w-full h-auto object-cover" // Added object-cover
+              className="my-auto transition-all duration-300 backdrop-blur-xl rounded-xl w-full h-auto object-cover"
             />
           </div>
 

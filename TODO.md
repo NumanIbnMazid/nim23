@@ -101,10 +101,10 @@
   - Fix Details page bug in Docker environment.
   - Make BLOG_ENDPOINT Dynamic in BlogLayout.
   - (DONE) Fix Blog View Increment API. First api calls gives error but later ones don't.
-  - Fix code highlighting.
+  - (DONE) Fix code highlighting.
   - (DONE) Fix font in work experience section.
   - (DONE) Fix Newsletter section's email placeholder.
-  - While click print button, disable scroll on code highlight section.
+  - (DONE) While click print button, disable scroll on code highlight section.
   - Add functionality for newsletter feature.
 
 
@@ -162,4 +162,20 @@ Desktop:
 Performance: 95
 Accessibility: 98
 Best Practices: 83
+SEO: 100
+
+### 27-03-2025
+
+Mobile:
+
+Performance: 69
+Accessibility: 98
+Best Practices: 100
+SEO: 100
+
+Desktop:
+
+Performance: 92
+Accessibility: 98
+Best Practices: 100
 SEO: 100

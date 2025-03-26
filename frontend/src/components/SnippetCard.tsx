@@ -32,17 +32,6 @@ export default function SnippetCard({ code_snippet }: { code_snippet: CodeSnippe
           })}
         </div>
       )}
-      {code_snippet.tags && (
-        <div className="flex flex-wrap items-center gap-1 mb-2">
-          {code_snippet.tags.split(',').map((tag, index) => {
-            return (
-              <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
-                {tag.toLowerCase()}
-              </span>
-            )
-          })}
-        </div>
-      )}
 
       {/* Total Views and Likes */}
       <div className="flex flex-wrap items-center gap-4 w-fit pt-2">

@@ -22,7 +22,7 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
           initial={animate && 'hidden'}
           whileInView={animate ? 'visible' : ''}
           viewport={{ once: true }}
-          className="bg-white dark:bg-darkSecondary hover:bg-darkWhite dark:hover:bg-darkFourth ring-1 dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] rounded-2xl p-2 flex flex-col sm:flex-row items-center w-full sm:w-[95%] mx-auto gap-2 md:gap-7 shadow-md md:shadow-lg"
+          className="bg-white dark:bg-darkSecondary hover:bg-darkWhite dark:hover:bg-darkFourth ring-1 dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] rounded-2xl p-2 flex flex-col sm:flex-row items-center w-full mx-auto gap-2 md:gap-7 shadow-md md:shadow-lg"
         >
           <div className="">
             <Image
@@ -57,18 +57,6 @@ export default function Blog({ blog, animate = false }: { blog: BlogType; animat
                     {blog.sub_category.name}
                   </div>
                 )}
-              </div>
-            )}
-
-            {blog.tags && (
-              <div className="flex flex-wrap items-center gap-1 mb-2">
-                {blog.tags.split(',').map((tag, index) => {
-                  return (
-                    <span key={`${tag}-${index}`} className="px-2 py-1 text-xs rounded bg-teal-800 text-gray-50">
-                      {tag.toLowerCase()}
-                    </span>
-                  )
-                })}
               </div>
             )}
 

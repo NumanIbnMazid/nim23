@@ -16,7 +16,7 @@ const ProjectSection = dynamic(() => import('@/components/ProjectSection'), {
   loading: () => <Loader />,
 })
 
-const ITEMS_PER_PAGE = 6 // Adjust as needed
+const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_PROJECTS_ITEMS_PER_PAGE) || 9;
 
 export default function ProjectsClient({ initialProjects }: { initialProjects: ProjectType[] }) {
   const [currentPage, setCurrentPage] = useState<number>(() => {

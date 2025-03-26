@@ -25,8 +25,8 @@ const Blog = dynamic(() => import('@/components/Blog'), {
 })
 
 // Pagnation
-const GRID_ITEMS_PER_PAGE = 9
-const LIST_ITEMS_PER_PAGE = 5
+const GRID_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_GRID_ITEMS_PER_PAGE) || 9;
+const LIST_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_LIST_ITEMS_PER_PAGE) || 5;
 
 export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[] }) {
   const [searchValue, setSearchValue] = useState('')

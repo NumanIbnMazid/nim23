@@ -47,20 +47,26 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
   // Dynamically set ITEMS_PER_PAGE based on isGridView
   const ITEMS_PER_PAGE = isGridView ? GRID_ITEMS_PER_PAGE : LIST_ITEMS_PER_PAGE
 
-  // Filtering and pagination
+  // Filtering
   const filteredBlogs = initialBlogs.filter((post) =>
     post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
   )
 
   const [currentPage, setCurrentPage] = useState<number>(() => {
-    const savedPage = Number(getLocalStorageItem('snippetCurrentPage', 1)) || 1
+    const savedPage = Number(getLocalStorageItem('blogCurrentPage', 1)) || 1
     // Make sure that saved page is less than total pages if total pages less then savedPages
     return Math.min(savedPage, Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE)) || 1
   })
 
   useEffect(() => {
-    setLocalStorageItem('blogCurrentPage', currentPage)
-  }, [currentPage])
+    // Recalculate currentPage when isGridView changes
+    const firstItemIndex = (currentPage - 1) * (isGridView ? LIST_ITEMS_PER_PAGE : GRID_ITEMS_PER_PAGE)
+    const newCurrentPage = Math.floor(firstItemIndex / ITEMS_PER_PAGE) + 1
+    const maxValidPage = Math.max(1, Math.ceil(filteredBlogs.length / ITEMS_PER_PAGE))
+    setCurrentPage(Math.min(newCurrentPage, maxValidPage)) //To remove the last element problem you mentioned in the description
+
+    setLocalStorageItem('blogCurrentPage', Math.min(newCurrentPage, maxValidPage)) //Update the localStorage here as well
+  }, [isGridView, filteredBlogs.length, GRID_ITEMS_PER_PAGE, LIST_ITEMS_PER_PAGE, ITEMS_PER_PAGE]) //Remove the page values to prevent any re rendering
 
   const paginatedBlogs = filteredBlogs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
@@ -69,7 +75,7 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
   // Invoke when user click to request another page.
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
-    setLocalStorageItem('currentPage', page) //update localStorage
+    setLocalStorageItem('blogCurrentPage', page) //update localStorage
   }
 
   useEffect(() => {

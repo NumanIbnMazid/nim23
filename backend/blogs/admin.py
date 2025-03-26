@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.forms import Textarea
-from blogs.models import BlogCategory, Blog, BlogView, BlogComment
+from blogs.models import BlogCategory, BlogSubCategory, Blog, BlogView, BlogComment
 from utils.mixins import CustomModelAdminMixin
 from tinymce.widgets import TinyMCE
 
@@ -15,6 +15,18 @@ class BlogCategoryAdmin(CustomModelAdminMixin, admin.ModelAdmin):
 
 
 admin.site.register(BlogCategory, BlogCategoryAdmin)
+
+
+# ----------------------------------------------------
+# *** BlogSubCategory ***
+# ----------------------------------------------------
+
+class BlogSubCategoryAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    class Meta:
+        model = BlogSubCategory
+
+
+admin.site.register(BlogSubCategory, BlogSubCategoryAdmin)
 
 
 # ----------------------------------------------------

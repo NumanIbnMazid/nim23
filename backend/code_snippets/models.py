@@ -11,7 +11,7 @@ from utils.snippets import (
 from utils.image_upload_helpers import (
     get_code_snippet_image_path,
 )
-from utils.helpers import sync_markdown_html_fields, sync_markdown_html_post_save
+from utils.helpers import sync_markdown_html_fields
 
 
 """ *************** Code Snippet *************** """
@@ -88,11 +88,6 @@ def generate_order(sender, instance, **kwargs):
 @receiver(pre_save, sender=CodeSnippet)
 def snippet_pre_save(sender, instance, **kwargs):
     sync_markdown_html_fields(instance, "content_in_markdown", "content")
-
-
-@receiver(post_save, sender=CodeSnippet)
-def snippet_post_save(sender, instance, **kwargs):
-    sync_markdown_html_post_save(instance, "content_in_markdown", "content")
 
 
 """ *************** Code Snippet View *************** """

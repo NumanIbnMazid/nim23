@@ -25,14 +25,16 @@ const Blog = dynamic(() => import('@/components/Blog'), {
 })
 
 // Pagnation
-const GRID_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_GRID_ITEMS_PER_PAGE) || 9;
-const LIST_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_LIST_ITEMS_PER_PAGE) || 5;
+const GRID_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_GRID_ITEMS_PER_PAGE) || 9
+const LIST_ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_BLOGS_LIST_ITEMS_PER_PAGE) || 5
 
 export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[] }) {
   const [searchValue, setSearchValue] = useState('')
   const searchRef = useRef<HTMLInputElement>(null!)
   const size = useWindowSize()
   const [showGridToggle, setShowGridToggle] = useState(true)
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([])
 
   useEffect(() => {
     if (size.width < 640) {
@@ -40,7 +42,7 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
     } else {
       setShowGridToggle(true)
     }
-  }, [size, setShowGridToggle])
+  }, [size])
 
   // Use localStorage for isGridView
   const [isGridView, setIsGridView] = useState<boolean>(() => {
@@ -58,10 +60,14 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
   // Dynamically set ITEMS_PER_PAGE based on isGridView
   const ITEMS_PER_PAGE = isGridView ? GRID_ITEMS_PER_PAGE : LIST_ITEMS_PER_PAGE
 
-  // Filtering
-  const filteredBlogs = initialBlogs.filter((post) =>
-    post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
-  )
+  // Filtering - Combine search, category, and subcategory filters
+  const filteredBlogs = initialBlogs.filter((post) => {
+    const searchMatch = post.title.toLowerCase().includes(searchValue.trim().toLowerCase())
+    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(post.category?.name || '')
+    const subCategoryMatch =
+      selectedSubCategories.length === 0 || selectedSubCategories.includes(post.sub_category?.name || '')
+    return searchMatch && categoryMatch && subCategoryMatch
+  })
 
   const [currentPage, setCurrentPage] = useState<number>(() => {
     const savedPage = Number(getLocalStorageItem('blogCurrentPage', 1)) || 1
@@ -99,6 +105,31 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
     return () => document.removeEventListener('keydown', handleAutoSearch)
   }, [])
 
+  // Extract categories and subcategories for display
+  const categories = Array.from(
+    new Set(initialBlogs.map((blog) => blog.category?.name).filter((name): name is string => Boolean(name)))
+  )
+  const subCategories = Array.from(
+    new Set(initialBlogs.map((blog) => blog.sub_category?.name).filter(Boolean))
+  ) as string[]
+
+  const clearFilters = () => {
+    setSelectedCategories([])
+    setSelectedSubCategories([])
+  }
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+    )
+  }
+
+  const toggleSubCategory = (subCategory: string) => {
+    setSelectedSubCategories((prev) =>
+      prev.includes(subCategory) ? prev.filter((s) => s !== subCategory) : [...prev, subCategory]
+    )
+  }
+
   return (
     <>
       <section className="pageTop flex flex-col gap-2 bg-darkWhitePrimary dark:bg-darkPrimary">
@@ -128,6 +159,56 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogType[]
             <RiCloseCircleLine className="w-5 h-5 mr-3" />
           </button>
         </AnimatedDiv>
+
+        {/* Category Filter */}
+        <div className="mt-4">
+          <h4 className="text-center font-semibold mb-2">Categories</h4>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={`px-3 py-1 rounded-md text-sm ${
+                  selectedCategories.includes(category)
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                } transition-colors`}
+                onClick={() => toggleCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+        {/* Sub-category Filter */}
+        <div className="mt-4">
+          <h4 className="text-center font-semibold mb-2">Sub-categories</h4>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {subCategories.map((subCategory) => (
+              <button
+                key={subCategory}
+                className={`px-3 py-1 rounded-md text-sm ${
+                  selectedSubCategories.includes(subCategory)
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                } transition-colors`}
+                onClick={() => toggleSubCategory(subCategory)}
+              >
+                {subCategory}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          {(selectedCategories.length > 0 || selectedSubCategories.length > 0) && (
+            <button
+              className="px-3 py-1 rounded-md text-sm bg-red-500 text-white hover:bg-red-600 transition-colors"
+              onClick={clearFilters}
+            >
+              Clear Filters
+            </button>
+          )}
+        </div>
 
         <section className="relative py-5 flex flex-col gap-2 min-h-[50vh]">
           <AnimatePresence>

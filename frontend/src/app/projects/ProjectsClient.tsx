@@ -16,11 +16,11 @@ const ProjectSection = dynamic(() => import('@/components/ProjectSection'), {
   loading: () => <Loader />,
 })
 
-const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_PROJECTS_ITEMS_PER_PAGE) || 9;
+const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_PROJECTS_ITEMS_PER_PAGE) || 9
 
 export default function ProjectsClient({ initialProjects }: { initialProjects: ProjectType[] }) {
   const [currentPage, setCurrentPage] = useState<number>(() => {
-    const savedPage = Number(getLocalStorageItem('snippetCurrentPage', 1)) || 1
+    const savedPage = Number(getLocalStorageItem('projectCurrentPage', 1)) || 1
     // Make sure that saved page is less than total pages if total pages less then savedPages
     return Math.min(savedPage, Math.ceil(initialProjects.length / ITEMS_PER_PAGE)) || 1
   })

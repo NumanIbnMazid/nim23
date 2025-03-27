@@ -20,7 +20,7 @@ const SnippetCard = dynamic(() => import('@/components/SnippetCard'), {
   loading: () => <Loader />,
 })
 
-const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_SNIPPETS_ITEMS_PER_PAGE) || 9;
+const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_SNIPPETS_ITEMS_PER_PAGE) || 9
 
 export default function SnippetsClient({ initialSnippets }: { initialSnippets: CodeSnippetType[] }) {
   const [currentPage, setCurrentPage] = useState<number>(() => {

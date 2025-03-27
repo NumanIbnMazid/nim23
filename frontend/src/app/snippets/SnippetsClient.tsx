@@ -30,26 +30,27 @@ export default function SnippetsClient({ initialSnippets }: { initialSnippets: C
 
   const [paginatedSnippets, setPaginatedSnippets] = useState<CodeSnippetType[]>([])
   const [isSnippetsReady, setIsSnippetsReady] = useState(false) // Prevents pagination from appearing too soon
+  const [showPagination, setShowPagination] = useState(false) // State to control when pagination should show
 
   useEffect(() => {
     setLocalStorageItem('snippetCurrentPage', currentPage)
   }, [currentPage])
 
   useEffect(() => {
-    setIsSnippetsReady(false) // Reset before fetching new snippets
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
     const endIndex = startIndex + ITEMS_PER_PAGE
     const newSnippets = initialSnippets.slice(startIndex, endIndex)
     setPaginatedSnippets(newSnippets)
 
-    // Delay pagination rendering slightly to ensure snippets appear first
-    const timer = setTimeout(() => {
-      if (newSnippets.length > 0) {
-        setIsSnippetsReady(true)
-      }
-    }, 100) // Adjust delay if necessary
+    // Only set setIsSnippetsReady to true when new snippets are ready
+    if (newSnippets.length > 0) {
+      setIsSnippetsReady(true)
 
-    return () => clearTimeout(timer) // Cleanup timeout on re-renders
+      // Add delay to show pagination after a small timeout
+      setTimeout(() => {
+        setShowPagination(true)
+      }, 300) // 300ms delay before showing pagination
+    }
   }, [initialSnippets, currentPage])
 
   const totalItems = initialSnippets.length
@@ -57,6 +58,8 @@ export default function SnippetsClient({ initialSnippets }: { initialSnippets: C
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
     setLocalStorageItem('snippetCurrentPage', page)
+    setShowPagination(false) // Hide pagination when the page is being changed
+    setIsSnippetsReady(false) // Hide snippets while new ones are being loaded
   }
 
   return (
@@ -68,9 +71,10 @@ export default function SnippetsClient({ initialSnippets }: { initialSnippets: C
           </PageTop>
 
           <section className="relative flex flex-col gap-2 min-h-[50vh]">
+            {/* Show loader if projects are not ready */}
             {!isSnippetsReady && <Loader />}
 
-            {paginatedSnippets.length > 0 && (
+            {isSnippetsReady && paginatedSnippets.length > 0 && (
               <AnimatedDiv variants={FadeContainer} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <AnimatePresence>
                   {paginatedSnippets.map((snippet, index) => (
@@ -81,7 +85,7 @@ export default function SnippetsClient({ initialSnippets }: { initialSnippets: C
             )}
 
             {/* Render pagination ONLY when snippets are fully loaded */}
-            {isSnippetsReady && (
+            {showPagination && isSnippetsReady && (
               <div className="flex justify-center items-center mt-4">
                 <Pagination
                   current={currentPage}

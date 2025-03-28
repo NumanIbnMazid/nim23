@@ -22,6 +22,7 @@ RUN apt-get update && \
     zlib1g-dev \
     netcat \
     tzdata \
+    ffmpeg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

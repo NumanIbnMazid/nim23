@@ -1,5 +1,6 @@
 import yt_dlp
 
+
 def fetch_media_info(url):
     """Fetches the media details from the provided URL using yt-dlp and integrates with the DownloadRequest model."""
 
@@ -9,7 +10,7 @@ def fetch_media_info(url):
             "format_id": f.get("format_id"),
             "ext": f.get("ext"),
             "quality": f.get("format_note"),
-            "bitrate": f.get("tbr"), # Bitrate in kbps
+            "bitrate": f.get("tbr"),  # Bitrate in kbps
             "filesize": f.get("filesize", f.get("filesize_approx")),  # Size in bytes
             "url": f.get("url"),  # Direct URL to the video/audio stream
             "resolution": f.get("resolution"),
@@ -30,17 +31,17 @@ def fetch_media_info(url):
                 "best_video": next(
                     get_format_info(f, "video")
                     for f in info_dict.get("formats", [])[::-1]
-                    if f["vcodec"] != "none" and f["acodec"] == "none"
+                    if f.get("vcodec") != "none" and f.get("acodec") == "none"
                 ),
                 "best_audio": next(
                     get_format_info(f, "audio")
                     for f in info_dict.get("formats", [])[::-1]
-                    if f["vcodec"] == "none" and f["acodec"] != "none"
+                    if f.get("vcodec") == "none" and f.get("acodec") != "none"
                 ),
                 "videos_with_audio": [
                     get_format_info(f, "video")
                     for f in info_dict.get("formats", [])
-                    if f["vcodec"] != "none" and f["acodec"] != "none"
+                    if f.get("vcodec") != "none" and f.get("acodec") != "none"
                 ],
                 "video_formats": [
                     get_format_info(f, "video")
@@ -49,10 +50,7 @@ def fetch_media_info(url):
                     and f.get("vcodec")
                     != "none"  # Only include video formats with non-empty video_ext and valid vcodec
                     and f.get("format_note")
-                    and "sb"
-                    not in f.get(
-                        "format_id"
-                    )
+                    and "sb" not in f.get("format_id")
                 ],
                 "audio_formats": [
                     get_format_info(f, "audio")
@@ -62,10 +60,7 @@ def fetch_media_info(url):
                     != "none"  # Only include audio formats with non-empty audio_ext and valid acodec
                     and f.get("format_note")
                     and bool(f.get("audio_channels"))
-                    and "sb"
-                    not in f.get(
-                        "format_id"
-                    )
+                    and "sb" not in f.get("format_id")
                 ],
             },
             "description": info_dict.get("description"),

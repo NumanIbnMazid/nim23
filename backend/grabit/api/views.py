@@ -9,6 +9,7 @@ from grabit.api.serializers import DownloadRequestSerializer
 from utils.helpers import custom_response_wrapper, ResponseWrapper
 from utils.grabit_utils import fetch_media_info
 from utils.snippets import random_string_generator
+import re
 
 
 @custom_response_wrapper
@@ -81,6 +82,19 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
     def download_media(self, download_request, video_url, selected_media_format, raw_data, download_path):
         """Download media and convert if necessary based on selected format"""
 
+        def clean_filename(filename: str) -> str:
+            # Remove any invalid characters (non-alphanumeric, non-hyphen, non-underscore, non-period)
+            filename = re.sub(r'[^a-zA-Z0-9-_\.]', '_', filename)
+            # Replace multiple consecutive underscores with a single underscore
+            filename = re.sub(r'_+', '_', filename)
+            # Ensure it does not start or end with an underscore or hyphen
+            filename = filename.strip('_-')
+            # Limit filename length to a max of 100 characters
+            max_length = 100
+            if len(filename) > max_length:
+                filename = filename[:max_length]
+            return filename
+
         def get_format_id(dl_info):
             """Select the best video and the best audio that won't result in an mkv."""
             best_video = raw_data
@@ -106,9 +120,9 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             best_audio = selected_audio
             if not best_audio:
                 raise Exception("No suitable audio format found.")
-
             return f'{best_video["format_id"]}+{best_audio["format_id"]}'
     
+
         with yt_dlp.YoutubeDL() as ydl:
             # Extract info without downloading
             info_dict = ydl.extract_info(video_url, download=False)
@@ -122,7 +136,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
         os.makedirs(download_path, exist_ok=True)
 
         # Generate unique filename for the original file
-        original_filename = os.path.join(download_path, f"{video_title}_{random_string_generator()}.{original_ext}")
+        original_filename = os.path.join(download_path, f"{clean_filename(video_title)}_{random_string_generator()}.{original_ext}")
 
         # Configure yt-dlp options
         ydl_opts = {
@@ -140,7 +154,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
 
         # If the selected format differs from the original, convert the video
         else:
-            converted_filename = os.path.join(download_path, f"{video_title}_{random_string_generator()}")  # removed extension for duplicate extension bug
+            converted_filename = os.path.join(download_path, f"{clean_filename(video_title)}_{random_string_generator()}")  # removed extension for duplicate extension bug
             postprocessor_opts = {
                 "key": "FFmpegVideoConvertor",
                 "preferedformat": final_ext,  # Convert to user-defined format

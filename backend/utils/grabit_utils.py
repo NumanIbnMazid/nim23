@@ -1,11 +1,11 @@
 import yt_dlp
 
 
-def fetch_media_info(url):
+def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using yt-dlp and integrates with the DownloadRequest model."""
 
     def get_format_info(f, format_type):
-        return {
+        data = {
             "format": format_type,
             "format_id": f.get("format_id"),
             "ext": f.get("ext"),
@@ -17,8 +17,10 @@ def fetch_media_info(url):
             "protocol": f.get("protocol"),
             "has_audio": bool(f.get("audio_channels")),
             "format_details": f.get("format"),
-            # "others": f
         }
+        if detailed:
+            data["original_data"] = f
+        return data
 
     with yt_dlp.YoutubeDL() as ydl:
         info_dict = ydl.extract_info(url, download=False)

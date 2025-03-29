@@ -106,6 +106,7 @@
   - (DONE) Fix Newsletter section's email placeholder.
   - (DONE) While click print button, disable scroll on code highlight section.
   - Add functionality for newsletter feature.
+  - Remove `export const dynamic = 'force-dynamic'` from every page.tsx. Then check yarn build if it fails.
 
 
 ## Improvement

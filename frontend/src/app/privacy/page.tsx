@@ -1,4 +1,3 @@
-import { getPrivacyPolicy } from '@/lib/api/staticPages'
 import PrivacyClient from '@/app/privacy/PrivacyClient'
 import { Suspense } from 'react'
 import SkeletonLoader from '@/components/SkeletonLoader'
@@ -26,11 +25,5 @@ export default function Page() {
 }
 
 async function MainPrivacyPage() {
-  const privacyPolicy = await getPrivacyPolicy() // ✅ Server-side fetch for better performance
-
-  return privacyPolicy && privacyPolicy.meta ? (
-    <PrivacyClient privacyPolicy={{ ...privacyPolicy, meta: privacyPolicy.meta! }} />
-  ) : (
-    <div>Error loading privacy policy</div>
-  ) // ✅ Pass data to the Client Component
+  return <PrivacyClient />
 }

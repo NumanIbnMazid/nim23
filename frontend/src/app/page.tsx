@@ -6,6 +6,8 @@ import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { notFound } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
 

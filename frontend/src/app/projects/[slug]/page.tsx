@@ -6,6 +6,8 @@ import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL, STATIC_SITE_URL } from '@/lib/constants'
 
+export const dynamic = 'force-dynamic'
+
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
 // export const dynamic = "force-dynamic"; // Forces SSR but doesn't block rendering

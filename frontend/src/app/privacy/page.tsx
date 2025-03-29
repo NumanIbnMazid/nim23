@@ -6,6 +6,8 @@ import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 
+export const dynamic = 'force-dynamic'
+
 // ✅ Generate metadata for Privacy Policy Page
 export const metadata: Metadata = getPageMetadata({
   title: pageMeta.privacy.title,

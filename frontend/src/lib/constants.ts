@@ -14,16 +14,16 @@ const port = process.env.PORT || 3000 // Use the defined port, otherwise default
 
 export const PUBLIC_SITE_URL = isDev
   ? `http://localhost:${port}` // Localhost with dynamic port
-  : process.env.MODE === 'PRODUCTION'
-  ? 'https://nim23.com'
   : process.env.MODE === 'STAGING'
   ? 'https://nim23-staging.vercel.app'
-  : 'https://nim23.com'
+  : process.env.MODE === 'PRODUCTION'
+  ? 'https://nim23.com'
+  : 'http://localhost:3000'
 
 export const STATIC_SITE_URL = isDev
-  ? `http://localhost:${port}`
-  : process.env.MODE === 'PRODUCTION'
-  ? 'https://nim23.com'
+  ? `http://localhost:${port}` // Localhost with dynamic port
   : process.env.MODE === 'STAGING'
   ? 'https://nim23-staging.vercel.app'
-  : 'https://nim23.com'
+  : process.env.MODE === 'PRODUCTION'
+  ? 'https://nim23.com'
+  : 'http://localhost:3000'

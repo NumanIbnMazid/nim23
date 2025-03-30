@@ -35,18 +35,6 @@ const nextConfig = withPWA({
   generateBuildId: async () => {
     return "nim23-build";
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://nim23.com/:path*',
-      },
-      {
-        source: '/api/:path*',
-        destination: 'https://nim23-staging.vercel.app/:path*',
-      }
-    ]
-  },
   reactStrictMode: true,
   images: {
     remotePatterns: [

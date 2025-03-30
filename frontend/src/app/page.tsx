@@ -1,17 +1,12 @@
+import HomeClient from '@/app/HomeClient'
 import { Suspense } from 'react'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import { notFound } from 'next/navigation'
-import Loader from '@/components/Loader'
-import dynamic from 'next/dynamic'
 
-const HomeClient = dynamic(() => import('@/app/HomeClient'), {
-  loading: () => <Loader />, ssr: false,
-})
-
-// export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min

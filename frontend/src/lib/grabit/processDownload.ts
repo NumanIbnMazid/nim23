@@ -1,4 +1,5 @@
 import { downloadMedia } from '@/lib/grabit/downloadMedia'
+import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 export const processDownload = async (
   mediaUrlRef: React.RefObject<HTMLInputElement>,
@@ -9,7 +10,7 @@ export const processDownload = async (
   const selectedFormat = JSON.parse(formatSelectRef.current?.value || '{}')
 
   const downloadApiUrl =
-    `/api/grabit/media-download?` +
+    `${PUBLIC_SITE_URL}/api/grabit/media-download?` +
     `media_url=${encodeURIComponent(mediaUrlRef.current?.value.trim() || '')}&` +
     `media_type=${encodeURIComponent(mediaTypeRef.current?.value || '')}&` +
     `raw_data=${encodeURIComponent(JSON.stringify(selectedFormat))}&` +

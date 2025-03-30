@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 async function downloadMediaInfo(mediaUrl: string, mediaType: string, selectedFormat: any, downloadPath: string) {
   // Construct the API URL for downloading media
   const downloadApiUrl =
-    `http://127.0.0.1:8000/api/grabit-download/media-download-info?` +
+    `${process.env.BACKEND_API_BASE_URL}/grabit-download/media-download-info?` +
     `media_url=${encodeURIComponent(mediaUrl)}&` +
     `media_type=${encodeURIComponent(mediaType)}&` +
     `raw_data=${encodeURIComponent(JSON.stringify(selectedFormat))}&` +

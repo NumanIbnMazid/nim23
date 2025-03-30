@@ -43,7 +43,6 @@ async function MainHomePage() {
   ])
 
   if (!blogsRes.ok || !profileRes.ok || !experiencesRes.ok) {
-    console.error('Failed to fetch homepage data')
     return notFound()
   }
 

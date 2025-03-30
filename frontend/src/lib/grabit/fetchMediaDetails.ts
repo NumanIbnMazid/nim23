@@ -1,7 +1,7 @@
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 export const fetchMediaDetails = async (url: string) => {
-  const apiUrl = `${PUBLIC_SITE_URL}/api/vidgrab/media-details`
+  const apiUrl = `${PUBLIC_SITE_URL}/api/grabit/media-details`
   try {
     const response = await fetch(`${apiUrl}?media_url=${encodeURIComponent(url)}`)
     const result = await response.json()

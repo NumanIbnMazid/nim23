@@ -22,4 +22,4 @@ export const STATIC_SITE_URL = isDev
   ? 'https://nim23-staging.vercel.app'
   : process.env.MODE === 'PRODUCTION'
   ? 'https://nim23.com'
-  : 'http://localhost:2323'
+  : 'https://nim23.com'

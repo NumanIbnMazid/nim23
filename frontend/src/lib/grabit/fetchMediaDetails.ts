@@ -5,8 +5,6 @@ export const fetchMediaDetails = async (url: string) => {
   try {
     const response = await fetch(`${apiUrl}?media_url=${encodeURIComponent(url)}`)
     const result = await response.json()
-    console.log('Media details:', result);
-    
     return result.success ? result.data.media_info : null
   } catch (error) {
     throw new Error('Failed to fetch media details: ' + (error instanceof Error ? error.message : 'Unknown error'))

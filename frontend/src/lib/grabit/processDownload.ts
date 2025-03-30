@@ -9,7 +9,7 @@ export const processDownload = async (
   const selectedFormat = JSON.parse(formatSelectRef.current?.value || '{}')
 
   const downloadApiUrl =
-    `/api/vidgrab/media-download?` +
+    `/api/grabit/media-download?` +
     `media_url=${encodeURIComponent(mediaUrlRef.current?.value.trim() || '')}&` +
     `media_type=${encodeURIComponent(mediaTypeRef.current?.value || '')}&` +
     `raw_data=${encodeURIComponent(JSON.stringify(selectedFormat))}&` +

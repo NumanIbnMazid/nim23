@@ -14,8 +14,8 @@ export const downloadMedia = async (
     const output_file = `${outputFileName}.${mediaFormat}`
 
     // Write files to FFmpeg's virtual file system
-    const videoProxyUrl = `${PUBLIC_SITE_URL}/api/vidgrab/proxy?url=${encodeURIComponent(videoFile)}`
-    const audioProxyUrl = `${PUBLIC_SITE_URL}/api/vidgrab/proxy?url=${encodeURIComponent(audioFile)}`
+    const videoProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(videoFile)}`
+    const audioProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(audioFile)}`
 
     await ffmpeg.writeFile('input.mp4', await fetchFile(videoProxyUrl))
     await ffmpeg.writeFile('input.m4a', await fetchFile(audioProxyUrl))

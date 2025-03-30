@@ -7,7 +7,7 @@ interface Props {
 
 const FFmpegLoadingButton: React.FC<Props> = ({ load, isLoading }) => {
   return (
-    <button onClick={load} className="flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+    <button onClick={load} className="mt-6 flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
       Load ffmpeg-core
       {isLoading && (
         <span className="animate-spin ml-3">

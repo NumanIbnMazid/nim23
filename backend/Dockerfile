@@ -6,6 +6,7 @@ ENV PYTHONUNBUFFERED=1
 # Set the environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Dhaka
+ENV PYTHON_VERSION=3.12.2
 
 # Install required system dependencies (including zlib-dev)
 RUN apt-get update && \
@@ -22,24 +23,25 @@ RUN apt-get update && \
     zlib1g-dev \
     netcat \
     tzdata \
+    ffmpeg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python 3.9.16 from source (using --no-check-certificate for wget)
-RUN wget --no-check-certificate https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz && \
-    tar xzf Python-3.9.16.tgz && \
-    cd Python-3.9.16 && \
+# Install Python ${PYTHON_VERSION} from source (using --no-check-certificate for wget)
+RUN wget --no-check-certificate https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+    tar xzf Python-${PYTHON_VERSION}.tgz && \
+    cd Python-${PYTHON_VERSION} && \
     ./configure --without-tests --enable-optimizations --enable-shared && \
     make -j$(nproc) && \
     make altinstall && \
     ldconfig /usr/local/lib && \
-    cd .. && rm -f Python-3.9.16.tgz && rm -rf Python-3.9.16 && \
-    ln -s /usr/local/bin/python3.9 /usr/local/bin/python
+    cd .. && rm -rf Python-${PYTHON_VERSION}.tgz Python-${PYTHON_VERSION} && \
+    ln -s /usr/local/bin/python3.12 /usr/local/bin/python
 
 # Set the Python executable path explicitly
-ENV PYTHON="/usr/local/bin/python3.9" 
+ENV PYTHON="/usr/local/bin/python3.12" 
 
-# Upgrade pip for Python 3.9
+# Upgrade pip for Python
 RUN $PYTHON -m ensurepip && \
     $PYTHON -m pip install --no-cache --upgrade pip
 

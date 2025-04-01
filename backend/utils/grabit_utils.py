@@ -1,6 +1,8 @@
 import yt_dlp
 import requests
 import random
+import os
+from django.conf import settings
 
 
 def get_free_proxy():
@@ -25,9 +27,6 @@ def get_free_proxy():
         raise e
 
 
-print(get_free_proxy())
-
-
 def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using yt-dlp and integrates with the DownloadRequest model."""
 
@@ -48,20 +47,19 @@ def fetch_media_info(url, detailed=False):
         if detailed:
             data["original_data"] = f
         return data
+    
+    cookies_path = os.path.join(settings.BASE_DIR,"public", "staticfiles", "others", "youtube_cookies.txt")
 
     ydl_opts = {
         "quiet": True,
-        "no_warnings": True,
-        "ignoreerrors": True,
-        "nocheckcertificate": True,
-        "geo_bypass": True,
-        "geo_bypass_country": "US",
-        "extract_flat": True,
         "skip_download": True,
+        "cookiefile": cookies_path
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
+        if not info_dict:
+            return {}
 
         # Initialize a dictionary to store the media info
         media_info = {

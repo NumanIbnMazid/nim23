@@ -24,6 +24,7 @@ RUN apt-get update && \
     netcat \
     tzdata \
     ffmpeg \
+    tor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

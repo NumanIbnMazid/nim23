@@ -9,6 +9,16 @@
 
 # echo "PostgreSQL started"
 
+echo "Starting Tor in the background..."
+tor &  # Start Tor in the background
+
+# Wait until Tor's SOCKS5 proxy (9050) is ready
+echo "Waiting for Tor to start..."
+while ! nc -z 127.0.0.1 9050; do
+  sleep 1
+done
+echo "Tor is running!"
+
 python manage.py migrate --noinput || exit 1
 
 # run entrypoint.py to create superuser and for other required staffs

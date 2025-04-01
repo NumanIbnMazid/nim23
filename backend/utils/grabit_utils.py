@@ -1,8 +1,6 @@
 import yt_dlp
 import requests
 import random
-import os
-from django.conf import settings
 
 
 def get_free_proxy():
@@ -48,12 +46,10 @@ def fetch_media_info(url, detailed=False):
             data["original_data"] = f
         return data
     
-    cookies_path = os.path.join(settings.BASE_DIR,"public", "staticfiles", "others", "youtube_cookies.txt")
-
     ydl_opts = {
         "quiet": True,
         "skip_download": True,
-        "cookiefile": cookies_path
+        'proxy': 'socks5://127.0.0.1:9050',
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

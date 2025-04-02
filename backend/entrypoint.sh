@@ -25,6 +25,15 @@ python manage.py migrate --noinput || exit 1
 python entrypoint.py
 
 python manage.py collectstatic --no-input
-python manage.py runserver 0.0.0.0:8000
+# python manage.py runserver 0.0.0.0:8000
+
+# Start Gunicorn server with increased timeout
+gunicorn --bind 0.0.0.0:8000 \
+         --workers 3 \
+         --threads 3 \
+         --timeout 120 \
+         --access-logfile - \
+         --error-logfile - \
+         project.wsgi:application
 
 exec "$@"

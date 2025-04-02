@@ -1,28 +1,4 @@
 import yt_dlp
-import requests
-import random
-
-
-def get_free_proxy():
-    """Fetches a fresh list of free proxies and returns one at random."""
-    try:
-        # Get the free proxy list from a public API
-        response = requests.get("https://www.sslproxies.org/")
-        response.raise_for_status()
-
-        # Extract proxies from the response
-        proxies = response.text.split("\n")
-        proxies = [p.strip() for p in proxies if p.strip() and ":" in p]
-
-        # Pick a random proxy
-        if proxies:
-            proxy = random.choice(proxies)
-            return f"http://{proxy}"
-        else:
-            return None
-    except Exception as e:
-        print(f"Error fetching proxies: {e}")
-        raise e
 
 
 def fetch_media_info(url, detailed=False):

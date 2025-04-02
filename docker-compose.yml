@@ -33,7 +33,7 @@ services:
   frontend:
     depends_on:
       - backend
-    env_file: .env
+    env_file: ./frontend/.env
     container_name: frontend
     build: 
       context: .

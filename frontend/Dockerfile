@@ -25,8 +25,16 @@ RUN apt-get update && apt-get install -y yarn
 # Install webpack
 RUN yarn global add webpack
 
-# Set working directory
+# Create a new user
+RUN useradd -m appuser
 WORKDIR /app
+COPY --chown=appuser:appuser frontend /app
+
+# Switch to the new user
+USER appuser
+
+# Copy the .env file to /app
+COPY frontend/.env /app/.env
 
 # Copy package files
 COPY frontend/package*.json /app
@@ -40,7 +48,7 @@ RUN yarn install
 
 # Add the entrypoint script and make it executable
 COPY frontend/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY --chmod=755 frontend/entrypoint.sh /app/entrypoint.sh
 
 # Copy the rest of the application files
 COPY frontend /app

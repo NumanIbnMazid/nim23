@@ -7,7 +7,7 @@
 # fi
 if [ -f .env ]; then
   set -a
-  ./app .env
+  . .env
   set +a
 
 fi

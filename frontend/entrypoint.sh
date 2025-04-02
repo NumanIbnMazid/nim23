@@ -2,8 +2,14 @@
 
 # Source the .env file to load environment variables
 # Ensure the .env file is in the same directory as this script
+# if [ -f .env ]; then
+#   export $(grep -v '^#' .env | xargs)
+# fi
 if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs)
+  set -a
+  . .env
+  set +a
+
 fi
 
 # Run lint command

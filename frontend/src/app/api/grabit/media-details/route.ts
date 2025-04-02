@@ -30,7 +30,14 @@ export async function GET(req: Request) {
 async function fetchMediaInfo(mediaUrl: string) {
   const apiUrl = `${process.env.BACKEND_API_BASE_URL}/grabit-fetch-media-info/retrieve_media_info/`
 
-  const response = await fetch(apiUrl + '?media_url=' + encodeURIComponent(mediaUrl))
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 300000); // 5 minutes timeout
+
+  const response = await fetch(apiUrl + '?media_url=' + encodeURIComponent(mediaUrl), {
+    signal: controller.signal
+  });
+  clearTimeout(timeout);
+
   const result = await response
   return result
 }

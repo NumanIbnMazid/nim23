@@ -24,8 +24,7 @@ def fetch_media_info(url, detailed=False):
     
     ydl_opts = {
         "quiet": True,
-        "skip_download": True,
-        'proxy': 'socks5://127.0.0.1:9050',
+        "skip_download": True
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

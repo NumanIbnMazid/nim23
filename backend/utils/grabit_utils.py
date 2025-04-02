@@ -25,7 +25,11 @@ def fetch_media_info(url, detailed=False):
     ydl_opts = {
         "quiet": True,
         "skip_download": True,
-        "extractor-args": "youtube:player_client=android_vr"
+        "extractor_args": {
+            "youtube": {
+                "getpot_bgutil_baseurl": "http://127.0.0.1:4416"  # Use the local POT provider
+            }
+        }
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

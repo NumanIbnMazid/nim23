@@ -254,3 +254,32 @@ GitHub.sublime-settings
 # Data
 /data
 /.adhoc
+/bgutil-ytdlp-pot-provider/.git
+/bgutil-ytdlp-pot-provider/server/build/
+/bgutil-ytdlp-pot-provider/server/node_modules/
+/bgutil-ytdlp-pot-provider/server/tsconfig.tsbuildinfo
+
+/bgutil-ytdlp-pot-provider/plugin/dist/
+/bgutil-ytdlp-pot-provider/plugin/__pycache__/
+/bgutil-ytdlp-pot-provider/plugin/README.md
+/bgutil-ytdlp-pot-provider/plugin/CHANGELOG.md
+/bgutil-ytdlp-pot-provider/plugin/**.pyc
+/bgutil-ytdlp-pot-provider/plugin/**.pyo
+
+**/yt-dlp
+**/yt-dlp.exe
+**/yt-dlp_macos
+**/yt-dlp_x86.exe
+**/yt-dlp_min.exe
+**/yt-dlp_linux
+**/yt-dlp_linux_armv7l
+**/yt-dlp_linux_aarch64
+**/yt-dlp_win.zip
+**/yt-dlp_macos.zip
+**/yt-dlp_macos_legacy
+# yt-dlp binaries
+**/yt-dlp/
+# yt-dlp source code
+
+**/tmp/
+**/cache.json

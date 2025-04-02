@@ -1,13 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
-# Currently using remote DB. Uncomment while use Docker DB.
-# echo "Waiting for postgres..."
+# ================= bgutil-ytdlp-pot-provider ========================
+# Start bgutil-ytdlp-pot-provider
+echo "Starting bgutil-ytdlp-pot-provider..."
+cd /app/bgutil-ytdlp-pot-provider/server/
+npx tsc
+node build/main.js --port 4416 &
 
-# while ! nc -z db 5432; do
-#   sleep 0.1
-# done
+# Wait for bgutil-ytdlp-pot-provider to be ready
+echo "Waiting for bgutil-ytdlp-pot-provider to be ready..."
+while ! nc -z 127.0.0.1 4416; do   
+  sleep 0.5
+done
+echo "bgutil-ytdlp-pot-provider is up and running."
 
-# echo "PostgreSQL started"
+
+# ================= Django ========================
+cd /app/
 
 python manage.py migrate --noinput || exit 1
 

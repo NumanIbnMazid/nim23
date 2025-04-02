@@ -60,5 +60,19 @@ RUN chmod +x /app/entrypoint.sh
 # Copy the rest of the application files
 COPY backend /app
 
+# Install and update ca-certificates
+RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    update-ca-certificates
+
+# Install Node.js via 'n'
+RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
+    npm install -g npm@latest && \
+    npm install -g yarn
+
+# Copy and set up bgutil-ytdlp-pot-provider
+COPY backend/bgutil-ytdlp-pot-provider /app/bgutil-ytdlp-pot-provider
+RUN cd /app/bgutil-ytdlp-pot-provider/server/ && yarn install --frozen-lockfile
+
 # Set the entrypoint
 ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]

@@ -26,3 +26,24 @@
 ## Linux Required Packages
 
 build-essential libffi-dev libjpeg-dev libpq-dev
+
+
+## Grabit Utils
+
+### `bgutil-ytdlp-pot-provider`
+
+Source: <https://github.com/Brainicism/bgutil-ytdlp-pot-provider>
+
+```bash
+docker run --name bgutil-provider -d -p 4416:4416 brainicism/bgutil-ytdlp-pot-provider
+```
+
+Using Native:
+
+```bash
+git clone --single-branch --branch 0.8.2 https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git
+cd bgutil-ytdlp-pot-provider/server/
+yarn install --frozen-lockfile
+npx tsc
+node build/main.js
+```

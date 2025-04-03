@@ -27,13 +27,14 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
+      - "4416:4416"
     networks:
       - net-tier
 
   frontend:
     depends_on:
       - backend
-    env_file: .env
+    env_file: ./frontend/.env
     container_name: frontend
     build: 
       context: .

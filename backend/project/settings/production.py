@@ -4,12 +4,14 @@ from project.settings.base import *
 # *** Allowed Hosts ***
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
-    "nim23.com",  # Frontend Host
-    "nim23-staging.vercel.app",  # Frontend Host
+    "nim23.com",  # Frontend Host (Production)
+    "nim23-staging.vercel.app",  # Frontend Host (Staging)
     "admin.nim23.com",  # Backend Host
     "backend.nim23.com",  # Backend Host
     "nim23.koyeb.app",  # Backend Host
-    "p01--nim23--47v76khxj6jn.code.run",  # Northflank Host
+    "p01--nim23--47v76khxj6jn.code.run",  # Northflank Host (Production)
+    "staging.nim23.com",  # Northflank Host (Staging)
+    "p01--nim23-staging--47v76khxj6jn.code.run",  # Northflank Host (Staging)
 ]
 
 # ----------------------------------------------------

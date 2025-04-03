@@ -1,10 +1,11 @@
-import { getPrivacyPolicy } from '@/lib/api/staticPages'
 import PrivacyClient from '@/app/privacy/PrivacyClient'
 import { Suspense } from 'react'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
+
+export const dynamic = 'force-dynamic'
 
 // ✅ Generate metadata for Privacy Policy Page
 export const metadata: Metadata = getPageMetadata({
@@ -24,11 +25,5 @@ export default function Page() {
 }
 
 async function MainPrivacyPage() {
-  const privacyPolicy = await getPrivacyPolicy() // ✅ Server-side fetch for better performance
-
-  return privacyPolicy && privacyPolicy.meta ? (
-    <PrivacyClient privacyPolicy={{ ...privacyPolicy, meta: privacyPolicy.meta! }} />
-  ) : (
-    <div>Error loading privacy policy</div>
-  ) // ✅ Pass data to the Client Component
+  return <PrivacyClient />
 }

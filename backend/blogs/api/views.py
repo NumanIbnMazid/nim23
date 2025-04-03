@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.db.models import Count, Sum, Case, When, IntegerField
 from utils.helpers import custom_response_wrapper, ResponseWrapper, handle_invalid_serializer
-from utils.snippets import get_client_ip
 from blogs.models import Blog, BlogComment, BlogView
 from blogs.api.serializers import BlogSerializer, BlogCommentSerializer, BlogViewSerializer
 from drf_yasg import openapi

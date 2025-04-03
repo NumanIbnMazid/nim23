@@ -1,0 +1,129 @@
+{
+  "success": true,
+  "status_code": 200,
+  "data": {
+    "media_info": {
+      "title": "Test your screen resolution",
+      "formats_filtered": {
+        "best_video": {
+          "format": "video",
+          "format_id": "336",
+          "ext": "webm",
+          "quality": "1440p HDR",
+          "bitrate": 8935.567,
+          "filesize": 75989181,
+          "url": "https://rr2---",
+          "resolution": "2560x1280",
+          "protocol": "https",
+          "has_audio": false,
+          "format_details": "336 - 2560x1280 (1440p HDR)"
+        },
+        "best_audio": {
+          "format": "audio",
+          "format_id": "251",
+          "ext": "webm",
+          "quality": "medium",
+          "bitrate": 130.692,
+          "filesize": 1111886,
+          "url": "https://rr2---",
+          "resolution": "audio only",
+          "protocol": "https",
+          "has_audio": true,
+          "format_details": "251 - audio only (medium)"
+        },
+        "videos_with_audio": [
+          {
+            "format": "video",
+            "format_id": "18",
+            "ext": "mp4",
+            "quality": "360p",
+            "bitrate": 629.4,
+            "filesize": null,
+            "url": "https://rr2---",
+            "resolution": "640x320",
+            "protocol": "https",
+            "has_audio": true,
+            "format_details": "18 - 640x320 (360p)"
+          }
+        ],
+        "video_formats": [
+          {
+            "format": "video",
+            "format_id": "336",
+            "ext": "webm",
+            "quality": "1440p HDR",
+            "bitrate": 8935.567,
+            "filesize": 75989181,
+            "url": "https://rr2---sn-gvcp5m",
+            "resolution": "2560x1280",
+            "protocol": "https",
+            "has_audio": false,
+            "format_details": "336 - 2560x1280 (1440p HDR)"
+          },
+          {
+            "format": "video",
+            "format_id": "271",
+            "ext": "webm",
+            "quality": "1440p",
+            "bitrate": 6636.22,
+            "filesize": 56435247,
+            "url": "https://rr2---sn",
+            "resolution": "2560x1280",
+            "protocol": "https",
+            "has_audio": false,
+            "format_details": "271 - 2560x1280 (1440p)"
+          }
+        ],
+        "audio_formats": [
+          {
+            "format": "audio",
+            "format_id": "251",
+            "ext": "webm",
+            "quality": "medium",
+            "bitrate": 130.692,
+            "filesize": 1111886,
+            "url": "https://rr2---",
+            "resolution": "audio only",
+            "protocol": "https",
+            "has_audio": true,
+            "format_details": "251 - audio only (medium)"
+          },
+          {
+            "format": "audio",
+            "format_id": "140",
+            "ext": "m4a",
+            "quality": "medium",
+            "bitrate": 129.553,
+            "filesize": 1102498,
+            "url": "https://rr2---",
+            "resolution": "audio only",
+            "protocol": "https",
+            "has_audio": true,
+            "format_details": "140 - audio only (medium)"
+          }
+        ]
+      },
+      "description": "#Phone #HD #HDD #HDR #resolution #HDR10 #huawei",
+      "uploader": "ѕтιηg Gs",
+      "upload_date": "20200420",
+      "duration": 68,
+      "resolution": "2560x1280",
+      "fps": 30,
+      "aspect_ratio": 2,
+      "thumbnail": "https://i.ytimg.com/vi/dtyhP4gX68E/sddefault.jpg",
+      "categories": null,
+      "channel": "ѕтιηg Gs",
+      "tags": [],
+      "view_count": 132419,
+      "like_count": 542,
+      "dislike_count": 0,
+      "average_rating": null,
+      "source": "Youtube"
+    }
+  },
+  "message": "SUCCESS!",
+  "error": {
+    "code": null,
+    "error_details": null
+  }
+}

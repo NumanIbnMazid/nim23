@@ -8,9 +8,14 @@ export const processDownload = async (
   selectedFormatRef: React.RefObject<HTMLSelectElement>,
   bestAudioObject: any,
   downloadPathRef: React.RefObject<HTMLInputElement>,
-  ffmpeg: any
+  ffmpeg: any,
+  setDownloadProgress: any,
+  setStatusMessage: any
 ) => {
   const selectedMediaObject = JSON.parse(selectedFormatRef.current?.value || '{}')
+
+  setDownloadProgress(0)
+  setStatusMessage("Processing download.....")
 
   const downloadApiUrl =
     `${PUBLIC_SITE_URL}/api/grabit/media-download?` +
@@ -20,9 +25,12 @@ export const processDownload = async (
     `selected_media_object=${encodeURIComponent(JSON.stringify(selectedMediaObject))}&` +
     `best_audio_object=${encodeURIComponent(JSON.stringify(bestAudioObject))}&` +
     `download_path=${encodeURIComponent(downloadPathRef.current?.value || '~/Downloads')}`
-  
+
   const response = await fetch(downloadApiUrl)
   const data = await response.json()
+
+  setDownloadProgress(5)
+
   const videoUrl = data.data.video_url
   const audioUrl = data.data.audio_url
   const mediaType = mediaTypeRef.current?.value || 'video'
@@ -36,8 +44,17 @@ export const processDownload = async (
   const filteredTitle = videoTitle
     .replace(validFilenameRegex, '') // Remove invalid characters
     .slice(0, 100) // Ensure the title doesn't exceed 100 characters
-  const outputFileName = filteredTitle.replace(/\s+/g, '_')  
+  const outputFileName = filteredTitle.replace(/\s+/g, '_')
   // Merge and download media
-  const isSucceed = await downloadMedia(videoUrl, audioUrl, outputFileName, selectedMediaFormat, mediaType, ffmpeg)
+  const isSucceed = await downloadMedia(
+    videoUrl,
+    audioUrl,
+    outputFileName,
+    selectedMediaFormat,
+    mediaType,
+    ffmpeg,
+    setDownloadProgress,
+    setStatusMessage
+  )
   return isSucceed
 }

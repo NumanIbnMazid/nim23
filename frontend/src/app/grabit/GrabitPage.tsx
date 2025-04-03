@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
 import { HomeHeading } from '@/app/HomeClient'
@@ -12,7 +12,7 @@ import MediaSelect from '@/components/Grabit/MediaSelect'
 import MediaFormat from '@/components/Grabit/MediaFormat'
 import DownloadButton from '@/components/Grabit/DownloadButton'
 import FFmpegLoadingButton from '@/components/Grabit/FFmpegLoadingButton'
-import FFmpegMessage from '@/components/Grabit/FFmpegMessage'
+import StatusMessage from '@/components/Grabit/StatusMessage'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 
 export default function GrabitPage() {
@@ -20,6 +20,8 @@ export default function GrabitPage() {
   const [downloadLoading, setDownloadLoading] = useState(false)
   const [ffmpegLoading, setFfmpegLoading] = useState(false)
   const [ffmpegLoaded, setFfmpegLoaded] = useState(false)
+  const [downloadProgress, setDownloadProgress] = useState<number>(0)
+  const [statusMessage, setStatusMessage] = useState<string>('')
 
   const [error, setError] = useState('')
 
@@ -31,14 +33,13 @@ export default function GrabitPage() {
   const mediaTypeRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
   const mediaFormatRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
   const downloadPathRef = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>
-  const ffmpegMessageRef = useRef<HTMLParagraphElement>(null) as React.RefObject<HTMLParagraphElement>
 
   const ffmpegRef = useRef(new FFmpeg())
 
   const loadFFmpegHandler = async () => {
     setFfmpegLoading(true)
     try {
-      await loadFFmpeg(ffmpegRef.current, ffmpegMessageRef)
+      await loadFFmpeg(ffmpegRef.current, setStatusMessage)
       setFfmpegLoading(true)
     } catch (error) {
       setError(`${error}`)
@@ -47,8 +48,18 @@ export default function GrabitPage() {
     setFfmpegLoaded(true)
   }
 
+  // Reset statusMessage
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => setStatusMessage(''), 50000)
+      return () => clearTimeout(timer) // Cleanup timer on unmount or statusMessage change
+    }
+  }, [statusMessage])
+
   const downloadLoadHandler = async () => {
     setDownloadLoading(true)
+    setDownloadProgress(0)
+    setStatusMessage('')
     setError('')
 
     const mediaTitle = mediaData?.title || ''
@@ -62,7 +73,9 @@ export default function GrabitPage() {
         selectedFormatRef,
         bestAudioObject,
         downloadPathRef,
-        ffmpegRef.current
+        ffmpegRef.current,
+        setDownloadProgress,
+        setStatusMessage
       )
       setDownloadLoading(false)
     } catch (error) {
@@ -74,11 +87,12 @@ export default function GrabitPage() {
 
   const fetchDetails = async () => {
     setError('')
+    setStatusMessage('')
     if (!mediaUrlRef.current) return
 
     setFetchMediaLoading(true)
     try {
-      const mediaDetails = await fetchMediaDetails(mediaUrlRef.current.value)
+      const mediaDetails = await fetchMediaDetails(mediaUrlRef.current.value, setStatusMessage)
       setMediaData(mediaDetails)
       const formats = updateFormatOptions('video', mediaDetails)
       setFormats(formats)
@@ -121,13 +135,14 @@ export default function GrabitPage() {
                   downloadMedia={downloadLoadHandler}
                   selectedFormatRef={selectedFormatRef}
                   loading={downloadLoading}
+                  progress={downloadProgress}
                 />
               ) : (
                 <FFmpegLoadingButton load={loadFFmpegHandler} isLoading={ffmpegLoading} />
               )}
 
+              <StatusMessage statusMessage={statusMessage} />
               <p className="text-red-500 text-center mt-2">{error}</p>
-              <FFmpegMessage messageRef={ffmpegMessageRef} />
             </div>
           )}
         </section>

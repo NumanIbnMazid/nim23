@@ -57,6 +57,10 @@ WORKDIR /app
 COPY backend/requirements.txt /app/requirements.txt
 RUN $PYTHON -m pip install -r requirements.txt
 
+# Install Node.js via 'n' (Required for Pytube PO-Token)
+RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
+    npm install -g npm@latest
+
 # Set up Supervisor
 COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
 

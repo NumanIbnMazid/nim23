@@ -64,5 +64,8 @@ COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
 COPY backend/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+# Copy the rest of the application files
+COPY backend /app
+
 # Set the entrypoint
 ENTRYPOINT [ "bash", "-c", "/app/entrypoint.sh" ]

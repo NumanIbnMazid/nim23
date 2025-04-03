@@ -8,4 +8,13 @@ python entrypoint.py
 python manage.py collectstatic --no-input
 
 # Start Supervisor
-exec supervisord -c /etc/supervisor/supervisord.conf
+# Start Supervisor if not already running
+if ! ps aux | grep -q "[s]upervisor"; then
+    echo "Starting supervisor service ⏳"
+    exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
+    echo "Supervisor started ✅"
+else
+    echo "Supervisor is currently running ✅"
+fi
+
+exec "$@"

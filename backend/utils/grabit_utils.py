@@ -27,7 +27,7 @@ def fetch_media_info(url, detailed=False):
         "skip_download": True,
         "extractor_args": {
             "youtube": {
-                "getpot_bgutil_baseurl": "http://127.0.0.1:4416"  # Use the local POT provider
+                "getpot_bgutil_baseurl": "http://127.0.0.1:4416",  # Use the local POT provider
             }
         }
     }

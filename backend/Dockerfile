@@ -24,6 +24,9 @@ RUN apt-get update && \
     netcat \
     tzdata \
     ffmpeg \
+    supervisor \
+    ca-certificates \
+    && update-ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -60,11 +63,6 @@ RUN chmod +x /app/entrypoint.sh
 # Copy the rest of the application files
 COPY backend /app
 
-# Install and update ca-certificates
-RUN apt-get update && \
-    apt-get install -y ca-certificates && \
-    update-ca-certificates
-
 # Install Node.js via 'n'
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
     npm install -g npm@latest && \
@@ -74,5 +72,16 @@ RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 COPY backend/bgutil-ytdlp-pot-provider /app/bgutil-ytdlp-pot-provider
 RUN cd /app/bgutil-ytdlp-pot-provider/server/ && yarn install --frozen-lockfile
 
-# Set the entrypoint
-ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]
+# Set up Supervisor
+COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Back to main directory
+WORKDIR /app
+
+# Expose required ports
+EXPOSE 8000 4416
+
+RUN apt update && apt install -y lsof net-tools iproute2
+
+# Run Supervisor to manage services
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

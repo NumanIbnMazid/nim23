@@ -287,3 +287,4 @@ GitHub.sublime-settings
 **/tmp/
 **/cache.json
 
+backend/utils/pytube/tokens.json

@@ -1,10 +1,66 @@
 from pytubefix import YouTube
 from pytubefix.cli import on_progress
+from pytubefix.helpers import reset_cache
+from pytubefix import innertube
+from dotenv import load_dotenv
+import os
+import time
 import json
 
 
+# Define the token file path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TOKEN_DIR = os.path.join(BASE_DIR, "pytube")
+TOKEN_FILE = os.path.join(TOKEN_DIR, "tokens.json")
+
+
+def is_token_valid(token_data):
+    """Check if the access token is still valid."""
+    expires_at = token_data.get("expires")
+    if not expires_at:
+        return False
+    return int(expires_at) > int(time.time())
+
+def generate_tokens_json():
+    """Creates tokens.json from environment variables if it does not exist."""
+    # Load environment variables
+    load_dotenv()
+    tokens = {
+        "access_token": os.getenv("PYTUBE_ACCESS_TOKEN"),
+        "refresh_token": os.getenv("PYTUBE_REFRESH_TOKEN"),
+        "expires": float(os.getenv("PYTUBE_EXPIRES")),
+        "visitorData": os.getenv("PYTUBE_VISITOR_DATA") if os.getenv("PYTUBE_VISITOR_DATA") != "" else None,
+        "po_token": os.getenv("PYTUBE_PO_TOKEN") if os.getenv("PYTUBE_PO_TOKEN") != "" else None,
+    }
+    
+    # Ensure the directory exists
+    os.makedirs(TOKEN_DIR, exist_ok=True)
+
+    # Write to tokens.json
+    with open(TOKEN_FILE, "w") as f:
+        json.dump(tokens, f)
+
 def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using pytube."""
+
+    # Check if tokens.json exists
+    if os.path.exists(TOKEN_FILE):
+        with open(TOKEN_FILE, "r") as f:
+            token_data = json.load(f)
+
+        # Validate token
+        # if not is_token_valid(token_data):
+        #     raise Exception("OAuth token expired. Please refresh your credentials.")
+
+    else:
+        # Reset the cache
+        reset_cache()
+        # Create tokens.json from environment variables
+        generate_tokens_json()
+
+    # Set PyTube token location
+    innertube._cache_dir = TOKEN_DIR
+    innertube._token_file = TOKEN_FILE
 
     yt = YouTube(url, use_oauth=True, allow_oauth_cache=True, on_progress_callback=on_progress)
 

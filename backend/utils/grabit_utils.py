@@ -7,7 +7,7 @@ def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using pytube."""
 
     try:
-        yt = YouTube(url, on_progress_callback=on_progress)
+        yt = YouTube(url, client='WEB', on_progress_callback=on_progress)
 
         # TODO: Filter only mp4 videos (Normally there are two formas, mp4 and webm)
         # yt.streams.filter(only_video=True, file_extension="mp4")

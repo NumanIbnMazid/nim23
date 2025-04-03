@@ -22,10 +22,15 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
 
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('media_url', openapi.IN_QUERY, description='URL of the target media', type=openapi.TYPE_STRING)
+            openapi.Parameter(
+                "media_url",
+                openapi.IN_QUERY,
+                description="URL of the target media",
+                type=openapi.TYPE_STRING,
+            )
         ]
     )
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=["get"], url_path="details")
     def retrieve_media_info(self, request):
         """
         Retrieve media information (formats, quality) based on the provided URL in query parameter.
@@ -36,20 +41,27 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
 
         try:
             media_info = fetch_media_info(media_url)
-            return ResponseWrapper(data={"media_info": media_info}, status=status.HTTP_200_OK)
+            return ResponseWrapper(
+                data={"media_info": media_info}, status=status.HTTP_200_OK
+            )
         except Exception as e:
             return ResponseWrapper(
                 message="Failed to get media information!",
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('media_url', openapi.IN_QUERY, description='URL of the target media', type=openapi.TYPE_STRING)
+            openapi.Parameter(
+                "media_url",
+                openapi.IN_QUERY,
+                description="URL of the target media",
+                type=openapi.TYPE_STRING,
+            )
         ]
     )
-    @action(detail=False, methods=['get'], url_path='detail')
+    @action(detail=False, methods=["get"], url_path="detail")
     def retrieve_media_info_detailed(self, request):
         """
         Retrieve media information (formats, quality) based on the provided URL in query parameter.
@@ -60,7 +72,9 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
 
         try:
             media_info = fetch_media_info(media_url, detailed=True)
-            return ResponseWrapper(data={"media_info": media_info}, status=status.HTTP_200_OK)
+            return ResponseWrapper(
+                data={"media_info": media_info}, status=status.HTTP_200_OK
+            )
         except Exception as e:
             return ResponseWrapper(
                 message="Failed to get media formats!",
@@ -90,7 +104,11 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
         try:
             # Attempt download or conversion based on user's choice
             file_path = self.download_media(
-                download_request, video_url, selected_media_format, raw_data, download_path, 
+                download_request,
+                video_url,
+                selected_media_format,
+                raw_data,
+                download_path,
             )
             download_request.file_path = file_path
             download_request.status = DownloadRequest.Status.COMPLETED
@@ -111,33 +129,178 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
     def clean_filename(self, filename: str) -> str:
         # Remove any invalid characters (non-alphanumeric, non-hyphen, non-underscore, non-period)
-        filename = re.sub(r'[^a-zA-Z0-9-_\.]', '_', filename)
+        filename = re.sub(r"[^a-zA-Z0-9-_\.]", "_", filename)
         # Replace multiple consecutive underscores with a single underscore
-        filename = re.sub(r'_+', '_', filename)
+        filename = re.sub(r"_+", "_", filename)
         # Ensure it does not start or end with an underscore or hyphen
-        filename = filename.strip('_-')
+        filename = filename.strip("_-")
         # Limit filename length to a max of 100 characters
         max_length = 100
         if len(filename) > max_length:
             filename = filename[:max_length]
         return filename
-        
-    
+
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('media_url', openapi.IN_QUERY, description='URL of the target media', type=openapi.TYPE_STRING),
-            openapi.Parameter('media_type', openapi.IN_QUERY, description='Media type to download', type=openapi.TYPE_STRING),
-            openapi.Parameter('media_format', openapi.IN_QUERY, description='Media format to download', type=openapi.TYPE_STRING),
-            openapi.Parameter('raw_data', openapi.IN_QUERY, description='Raw data of selected playlist', type=openapi.TYPE_OBJECT),
-            openapi.Parameter('download_path', openapi.IN_QUERY, description='path to download the media', type=openapi.TYPE_STRING)
+            openapi.Parameter(
+                "video_title",
+                openapi.IN_QUERY,
+                description="Title of the Video",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "media_type",
+                openapi.IN_QUERY,
+                description="Media type to download",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "media_format",
+                openapi.IN_QUERY,
+                description="Media format to download",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "selected_media_object",
+                openapi.IN_QUERY,
+                description="Selected Media Raw Data Object to download",
+                type=openapi.TYPE_OBJECT,
+            ),
+            openapi.Parameter(
+                "best_audio_object",
+                openapi.IN_QUERY,
+                description="Best audio object from Raw Data",
+                type=openapi.TYPE_OBJECT,
+            ),
+            openapi.Parameter(
+                "download_path",
+                openapi.IN_QUERY,
+                description="path to download the media",
+                type=openapi.TYPE_STRING,
+            ),
         ]
     )
-    @action(detail=False, methods=['get'], url_path='media-download-info')
+    @action(detail=False, methods=["get"], url_path="process-media-download")
+    def process_media_download(self, request):
+        """*** FOR CLIENT ***"""
+
+        def prepare_download_request(
+            video_title,
+            media_type,
+            media_format,
+            selected_media_object,
+            best_audio_object,
+            download_path,
+        ):
+            data = {
+                "video_title": video_title,
+                "video_url": None,
+                "audio_url": None,
+                "video_ext": None,
+                "audio_ext": None,
+                "target_media_type": media_type,
+                "target_media_format": media_format,
+                "download_path": download_path,
+            }
+            if media_type == "video":
+                # process video data
+                data["video_url"] = selected_media_object["url"]
+                data["video_ext"] = selected_media_object["ext"]
+                # process audio data
+                data["audio_url"] = best_audio_object["url"]
+                data["audio_ext"] = best_audio_object["ext"]
+            if media_type == "audio":
+                data["audio_url"] = selected_media_object["url"]
+                data["audio_ext"] = selected_media_object["ext"]
+            return data
+
+        # Get the mdata from the request
+        video_title = request.query_params.get("video_title")
+        media_type = request.query_params.get("media_type")
+        media_format = request.query_params.get("media_format")
+        selected_media_object = json.loads(
+            request.query_params.get("selected_media_object")
+        )
+        best_audio_object = json.loads(
+            request.query_params.get("best_audio_object")
+        )
+        download_path = request.query_params.get("download_path", "~/Downloads")
+
+        if (
+            not video_title
+            or not media_type
+            or not best_audio_object
+            or not selected_media_object
+        ):
+            return ResponseWrapper(
+                error_message="`video_title`, `media_type`, `selected_media_object`, `best_audio_object` are required parameters!",
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            video_title = self.clean_filename(video_title)
+
+            processed_data = prepare_download_request(
+                video_title,
+                media_type,
+                media_format,
+                selected_media_object,
+                best_audio_object,
+                download_path,
+            )
+            return ResponseWrapper(
+                data=processed_data,
+                message="Media download request processed successfully!",
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            return ResponseWrapper(
+                message="Failed to process media download request!",
+                error_message=str(e),
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "media_url",
+                openapi.IN_QUERY,
+                description="URL of the target media",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "media_type",
+                openapi.IN_QUERY,
+                description="Media type to download",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "media_format",
+                openapi.IN_QUERY,
+                description="Media format to download",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "raw_data",
+                openapi.IN_QUERY,
+                description="Raw data of selected playlist",
+                type=openapi.TYPE_OBJECT,
+            ),
+            openapi.Parameter(
+                "download_path",
+                openapi.IN_QUERY,
+                description="path to download the media",
+                type=openapi.TYPE_STRING,
+            ),
+        ]
+    )
+    @action(detail=False, methods=["get"], url_path="media-download-info")
     def get_media_download_info(self, request):
         """*** FOR CLIENT ***"""
+
         def get_best_formats(dl_info, raw_data):
             """Select the best video and the best audio formats."""
             best_video = raw_data
@@ -147,37 +310,39 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             # Find a compatible audio format
             # Select the best m4a and webm audio formats using reverse sorting in a single list comprehension
             m4a_audio_formats = [
-                f for f in dl_info.get("formats", [])[::-1]
+                f
+                for f in dl_info.get("formats", [])[::-1]
                 if f.get("ext") == "m4a" and f.get("height") is None
             ]
             best_m4a = m4a_audio_formats[0] if m4a_audio_formats else None
 
             webm_audio_formats = [
-                f for f in dl_info.get("formats", [])[::-1]
+                f
+                for f in dl_info.get("formats", [])[::-1]
                 if f.get("ext") == "webm" and f.get("height") is None
             ]
             best_webm = webm_audio_formats[0] if webm_audio_formats else None
 
-            selected_audio = best_m4a if best_video['ext'] == 'mp4' else best_webm
+            selected_audio = best_m4a if best_video["ext"] == "mp4" else best_webm
 
             best_audio = selected_audio
             if not best_audio:
                 raise Exception("No suitable audio format found.")
             return best_video, best_audio
-        
+
         # Get the mdata from the request
-        media_url = request.query_params.get('media_url')
-        media_type = request.query_params.get('media_type')
-        media_format = request.query_params.get('media_format')
-        raw_data = json.loads(request.query_params.get('raw_data', '{}'))
-        download_path = request.query_params.get('download_path', '~/Downloads')
+        media_url = request.query_params.get("media_url")
+        media_type = request.query_params.get("media_type")
+        media_format = request.query_params.get("media_format")
+        raw_data = json.loads(request.query_params.get("raw_data", "{}"))
+        download_path = request.query_params.get("download_path", "~/Downloads")
 
         if not media_url or not media_type or not raw_data:
             return ResponseWrapper(
                 error_message="`media_url`, `media_type`, `raw_data` are required parameters!",
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
+
         try:
             with yt_dlp.YoutubeDL({"quiet": True}) as ydl:
                 info_dict = ydl.extract_info(media_url, download=False)
@@ -207,10 +372,10 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
                     "audio_ext": best_audio["ext"],
                     "target_media_type": media_type,
                     "target_media_format": media_format,
-                    "download_path": download_path
+                    "download_path": download_path,
                 },
                 message="Media download info extracted successfully!",
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
         except Exception as e:
             return ResponseWrapper(
@@ -219,8 +384,14 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-
-    def download_media(self, download_request, video_url, selected_media_format, raw_data, download_path):
+    def download_media(
+        self,
+        download_request,
+        video_url,
+        selected_media_format,
+        raw_data,
+        download_path,
+    ):
         """**FOR SERVER** Download media and convert if necessary based on selected format"""
 
         def get_format_id(dl_info):
@@ -231,31 +402,34 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             # Find a compatible audio format
             # Select the best m4a and webm audio formats using reverse sorting in a single list comprehension
             m4a_audio_formats = [
-                f for f in dl_info.get("formats", [])[::-1]
+                f
+                for f in dl_info.get("formats", [])[::-1]
                 if f.get("ext") == "m4a" and f.get("height") is None
             ]
             best_m4a = m4a_audio_formats[0] if m4a_audio_formats else None
 
             webm_audio_formats = [
-                f for f in dl_info.get("formats", [])[::-1]
+                f
+                for f in dl_info.get("formats", [])[::-1]
                 if f.get("ext") == "webm" and f.get("height") is None
             ]
             best_webm = webm_audio_formats[0] if webm_audio_formats else None
 
-            selected_audio = best_m4a if best_video['ext'] == 'mp4' else best_webm
+            selected_audio = best_m4a if best_video["ext"] == "mp4" else best_webm
 
             best_audio = selected_audio
             if not best_audio:
                 raise Exception("No suitable audio format found.")
             return f'{best_video["format_id"]}+{best_audio["format_id"]}'
-    
 
         with yt_dlp.YoutubeDL() as ydl:
             # Extract info without downloading
             info_dict = ydl.extract_info(video_url, download=False)
 
         video_title = info_dict.get("title", "Video").replace(" ", "_")
-        original_ext = info_dict.get("ext", "mp4")  # Default to MP4 if no extension found
+        original_ext = info_dict.get(
+            "ext", "mp4"
+        )  # Default to MP4 if no extension found
         final_ext = selected_media_format or original_ext  # Use user format or original
 
         # Prepare download path and ensure it exists
@@ -263,7 +437,10 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
         os.makedirs(download_path, exist_ok=True)
 
         # Generate unique filename for the original file
-        original_filename = os.path.join(download_path, f"{self.clean_filename(video_title)}_{random_string_generator()}.{original_ext}")
+        original_filename = os.path.join(
+            download_path,
+            f"{self.clean_filename(video_title)}_{random_string_generator()}.{original_ext}",
+        )
 
         # Configure yt-dlp options
         ydl_opts = {
@@ -272,7 +449,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             "noplaylist": True,
             "quiet": False,  # Enable progress messages
         }
-        
+
         # If the selected format and original format are the same, download directly
         if original_ext == final_ext:
             # Download the media in original format
@@ -281,7 +458,10 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
 
         # If the selected format differs from the original, convert the video
         else:
-            converted_filename = os.path.join(download_path, f"{self.clean_filename(video_title)}_{random_string_generator()}")  # removed extension for duplicate extension bug
+            converted_filename = os.path.join(
+                download_path,
+                f"{self.clean_filename(video_title)}_{random_string_generator()}",
+            )  # removed extension for duplicate extension bug
             postprocessor_opts = {
                 "key": "FFmpegVideoConvertor",
                 "preferedformat": final_ext,  # Convert to user-defined format
@@ -293,11 +473,11 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             # Download and convert the video to the selected format
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
-            
+
             # Delete the original file after conversion
             if os.path.exists(original_filename):
                 os.remove(original_filename)
-                
+
             return converted_filename  # Return the converted file path
 
         return original_filename

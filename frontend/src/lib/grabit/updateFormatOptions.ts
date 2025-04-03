@@ -11,6 +11,14 @@ export const updateFormatOptions = (
     formats = formats.concat(mediaData.formats_filtered.audio_formats)
   }
 
+  // filter formats where quality is null and where format, quality and size is same to remove duplicates
+  formats = formats.filter((format, index, self) => {
+    const isDuplicate = self.findIndex(f => f.format === format.format && f.quality === format.quality && f.filesize === format.filesize) !== index
+    return !isDuplicate && format.quality !== null
+  })
+  // filter formats where quality is null
+  formats = formats.filter(format => format.quality !== null)
+
   formats = formats.filter(Boolean) // Remove null/undefined values
   return formats
 }

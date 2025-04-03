@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import time
 import json
+from django.conf import settings
 
 
 # Define the token file path
@@ -42,6 +43,13 @@ def generate_tokens_json():
 
 def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using pytube."""
+    # TODO: REMOVE TEST CODE
+    # fake_data_file = os.path.join(
+    #     settings.BASE_DIR, "utils", "tester.json"
+    # )
+    # with open(fake_data_file, "r") as f:
+    #     return json.load(f)["data"]["media_info"]
+    # TODO: REMOVE END
 
     # Check if tokens.json exists
     if os.path.exists(TOKEN_FILE):
@@ -90,12 +98,13 @@ def fetch_media_info(url, detailed=False):
             "format_id": stream.itag,
             "ext": stream.mime_type.split("/")[-1],
             "quality": stream.resolution if format_type == "video" else stream.abr,
-            "bitrate": None,  # Pytube does not expose this directly
+            "bitrate": stream.bitrate if stream.bitrate else None,
+            "fps": stream.fps if format_type == "video" else None,
             "filesize": stream.filesize,  # Size in bytes
-            "url": stream.url,  # Direct URL to the stream
             "resolution": stream.resolution if format_type == "video" else None,
-            "protocol": "https",
-            "has_audio": stream.includes_audio_track
+            "has_audio": stream.includes_audio_track,
+            "is_dash": stream.is_dash,
+            "url": stream.url  # Direct URL to the stream
         }
 
         if detailed:

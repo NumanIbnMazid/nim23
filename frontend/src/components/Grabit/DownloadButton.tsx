@@ -2,7 +2,7 @@ import React from 'react'
 
 interface Props {
   downloadMedia: () => void
-  formatSelectRef: React.RefObject<HTMLSelectElement>
+  selectedFormatRef: React.RefObject<HTMLSelectElement>
   loading: boolean
 }
 

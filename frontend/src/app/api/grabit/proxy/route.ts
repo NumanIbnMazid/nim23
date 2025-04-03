@@ -10,14 +10,14 @@ export async function GET(req: Request) {
 
   try {
     const response = await fetch(videoUrl, {
-      headers: { Origin: '*' }, // Some servers might allow this
+      headers: { Origin: '*' },
     })
-    const contentType = response.headers.get('content-type')
 
     return new Response(response.body, {
       headers: {
-        'Content-Type': contentType || 'application/octet-stream',
+        'Content-Type': response.headers.get('content-type') || 'application/octet-stream',
         'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
       },
     })
   } catch (error) {

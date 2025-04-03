@@ -16,13 +16,9 @@ interface Props {
   } | null
   mediaTypeRef: React.RefObject<HTMLSelectElement>
   updateFormatOptions: () => void
-  error: string | null
 }
 
-const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptions, error }) => {
-  if (error) {
-    return <p className="text-red-500 mt-2">{error}</p>
-  }
+const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptions }) => {
 
   if (!mediaData) {
     return null
@@ -37,7 +33,7 @@ const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptio
         id="mediaType"
         ref={mediaTypeRef}
         onChange={updateFormatOptions}
-        className="select select-bordered w-full mt-2"
+        className="select select-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
       >
         <option value="video">Video</option>
         <option value="audio">Audio</option>

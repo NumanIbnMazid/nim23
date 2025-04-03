@@ -27,7 +27,7 @@ export async function GET(req: Request) {
 }
 
 async function fetchMediaInfo(mediaUrl: string) {
-  const apiUrl = `${process.env.BACKEND_API_BASE_URL}/grabit-fetch-media-info/retrieve_media_info/`
+  const apiUrl = `${process.env.BACKEND_API_BASE_URL}/grabit-fetch-media-info/details/`
 
   const response = await fetch(apiUrl + '?media_url=' + encodeURIComponent(mediaUrl))
   const result = await response

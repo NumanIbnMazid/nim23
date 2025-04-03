@@ -107,6 +107,8 @@
   - (DONE) While click print button, disable scroll on code highlight section.
   - Add functionality for newsletter feature.
   - Remove `export const dynamic = 'force-dynamic'` from every page.tsx. Then check yarn build if it fails. Specially in Home Page. Others are working fine a guess, but removing would be better.
+  - Add audio file size to show in format details. Remove file size if still providing incorrect information.
+  - Add progress of download.
 
 
 ## Improvement

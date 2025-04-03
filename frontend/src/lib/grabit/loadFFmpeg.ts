@@ -1,11 +1,9 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { toBlobURL } from '@ffmpeg/util'
 
-export const loadFFmpeg = async (ffmpeg: FFmpeg, messageRef: React.RefObject<HTMLParagraphElement>) => {
+export const loadFFmpeg = async (ffmpeg: FFmpeg, setStatusMessage: any) => {
   ffmpeg.on('log', ({ message }) => {
-    console.log("FFmpeg log:", message);
-    
-    if (messageRef.current) messageRef.current.innerHTML = message
+    setStatusMessage(message)
   })
   await ffmpeg.load({
     coreURL: await toBlobURL('/scripts/ffmpeg-core.js', 'text/javascript'),

@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     if (mediaDownloadData) {
       return mediaDownloadData
     } else {
-      return NextResponse.json({ success: false, error: 'Failed to download media' })
+      return NextResponse.json({ success: false, error: 'Failed process media download!' })
     }
   } catch (error) {
     return NextResponse.json({

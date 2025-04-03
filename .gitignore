@@ -254,17 +254,20 @@ GitHub.sublime-settings
 # Data
 /data
 /.adhoc
-/bgutil-ytdlp-pot-provider/.git
-/bgutil-ytdlp-pot-provider/server/build/
-/bgutil-ytdlp-pot-provider/server/node_modules/
-/bgutil-ytdlp-pot-provider/server/tsconfig.tsbuildinfo
+/backend/bgutil-ytdlp-pot-provider/.git
+/backend/bgutil-ytdlp-pot-provider/server/build/
+/backend/bgutil-ytdlp-pot-provider/server/node_modules/
+/backend/bgutil-ytdlp-pot-provider/server/tsconfig.tsbuildinfo
 
-/bgutil-ytdlp-pot-provider/plugin/dist/
-/bgutil-ytdlp-pot-provider/plugin/__pycache__/
-/bgutil-ytdlp-pot-provider/plugin/README.md
-/bgutil-ytdlp-pot-provider/plugin/CHANGELOG.md
-/bgutil-ytdlp-pot-provider/plugin/**.pyc
-/bgutil-ytdlp-pot-provider/plugin/**.pyo
+/backend/bgutil-ytdlp-pot-provider/plugin/dist/
+/backend/bgutil-ytdlp-pot-provider/plugin/__pycache__/
+/backend/bgutil-ytdlp-pot-provider/plugin/README.md
+/backend/bgutil-ytdlp-pot-provider/plugin/CHANGELOG.md
+/backend/bgutil-ytdlp-pot-provider/plugin/**.pyc
+/backend/bgutil-ytdlp-pot-provider/plugin/**.pyo
+
+/backend/supervisord.log
+/backend/supervisord.pid
 
 **/yt-dlp
 **/yt-dlp.exe
@@ -283,3 +286,4 @@ GitHub.sublime-settings
 
 **/tmp/
 **/cache.json
+

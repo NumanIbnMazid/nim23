@@ -2,21 +2,31 @@ import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
   const url = new URL(req.url)
-  const mediaUrl = url.searchParams.get('media_url')
+  const videoTitle = url.searchParams.get('video_title')
   const mediaType = url.searchParams.get('media_type')
-  const rawData = url.searchParams.get('raw_data')
+  const mediaFormat = url.searchParams.get('media_format')
+  const selectedMediaobject = url.searchParams.get('selected_media_object')
+  const bestAudioObject = url.searchParams.get('best_audio_object')
   const downloadPath = url.searchParams.get('download_path')
 
-  if (!mediaUrl || !mediaType || !rawData) {
+  if (!videoTitle || !mediaType || !bestAudioObject || !selectedMediaobject) {
     return NextResponse.json({ success: false, error: 'Missing required parameters' })
   }
 
   try {
     // Parse the raw data for the selected format
-    const selectedFormat = JSON.parse(rawData)
+    const parsedSelectedObject = JSON.parse(selectedMediaobject)
+    const parsedBestAudioObject = JSON.parse(bestAudioObject)
 
     // Call your backend logic to download the media
-    const mediaDownloadData = await downloadMediaInfo(mediaUrl, mediaType, selectedFormat, downloadPath || '')
+    const mediaDownloadData = await downloadMediaInfo(
+      videoTitle,
+      mediaType,
+      mediaFormat || null,
+      parsedSelectedObject,
+      parsedBestAudioObject,
+      downloadPath || ''
+    )
 
     if (mediaDownloadData) {
       return mediaDownloadData
@@ -31,13 +41,22 @@ export async function GET(req: Request) {
   }
 }
 
-async function downloadMediaInfo(mediaUrl: string, mediaType: string, selectedFormat: any, downloadPath: string) {
+async function downloadMediaInfo(
+  videoTitle: string,
+  mediaType: string,
+  mediaFormat: string | null,
+  selectedMediaobject: any,
+  bestAudioObject: any,
+  downloadPath: string
+) {
   // Construct the API URL for downloading media
   const downloadApiUrl =
-    `${process.env.BACKEND_API_BASE_URL}/grabit-download/media-download-info?` +
-    `media_url=${encodeURIComponent(mediaUrl)}&` +
+    `${process.env.BACKEND_API_BASE_URL}/grabit-download/process-media-download?` +
+    `video_title=${encodeURIComponent(videoTitle)}&` +
     `media_type=${encodeURIComponent(mediaType)}&` +
-    `raw_data=${encodeURIComponent(JSON.stringify(selectedFormat))}&` +
+    `media_format=${encodeURIComponent(JSON.stringify(mediaFormat))}&` +
+    `selected_media_object=${encodeURIComponent(JSON.stringify(selectedMediaobject))}&` +
+    `best_audio_object=${encodeURIComponent(JSON.stringify(bestAudioObject))}&` +
     `download_path=${encodeURIComponent(downloadPath)}`
 
   const response = await fetch(downloadApiUrl)

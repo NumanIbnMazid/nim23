@@ -16,10 +16,10 @@ interface MediaFormat {
 
 interface Props {
   formats: MediaFormat[]
-  formatSelectRef: React.RefObject<HTMLSelectElement>
+  selectedFormatRef: React.RefObject<HTMLSelectElement>
 }
 
-const MediaSelect: React.FC<Props> = ({ formats, formatSelectRef }) => {
+const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
   // function formatBitrate(bitrate: number) {
   //   if (!bitrate || bitrate <= 0) return "";
 
@@ -45,7 +45,7 @@ const MediaSelect: React.FC<Props> = ({ formats, formatSelectRef }) => {
       </label>
       <select
         id="formatSelect"
-        ref={formatSelectRef}
+        ref={selectedFormatRef}
         className="select select-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
       >
         {formats.map((format, index) => (

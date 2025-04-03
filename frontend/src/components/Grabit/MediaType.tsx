@@ -16,13 +16,9 @@ interface Props {
   } | null
   mediaTypeRef: React.RefObject<HTMLSelectElement>
   updateFormatOptions: () => void
-  error: string | null
 }
 
-const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptions, error }) => {
-  if (error) {
-    return <p className="text-red-500 mt-2">{error}</p>
-  }
+const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptions }) => {
 
   if (!mediaData) {
     return null

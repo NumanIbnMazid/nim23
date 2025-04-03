@@ -9,6 +9,7 @@ import { processDownload } from '@/lib/grabit/processDownload'
 import MediaInput from '@/components/Grabit/MediaInput'
 import MediaType from '@/components/Grabit/MediaType'
 import MediaSelect from '@/components/Grabit/MediaSelect'
+import MediaFormat from '@/components/Grabit/MediaFormat'
 import DownloadButton from '@/components/Grabit/DownloadButton'
 import FFmpegLoadingButton from '@/components/Grabit/FFmpegLoadingButton'
 import FFmpegMessage from '@/components/Grabit/FFmpegMessage'
@@ -26,8 +27,10 @@ export default function GrabitPage() {
   const [formats, setFormats] = useState<any[]>([])
 
   const mediaUrlRef = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>
-  const formatSelectRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
+  const selectedFormatRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
   const mediaTypeRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
+  const mediaFormatRef = useRef<HTMLSelectElement>(null) as React.RefObject<HTMLSelectElement>
+  const downloadPathRef = useRef<HTMLInputElement>(null) as React.RefObject<HTMLInputElement>
   const ffmpegMessageRef = useRef<HTMLParagraphElement>(null) as React.RefObject<HTMLParagraphElement>
 
   const ffmpegRef = useRef(new FFmpeg())
@@ -37,8 +40,8 @@ export default function GrabitPage() {
     try {
       await loadFFmpeg(ffmpegRef.current, ffmpegMessageRef)
       setFfmpegLoading(true)
-    } catch (err) {
-      setError('Failed to load FFmpeg')
+    } catch (error) {
+      setError(`${error}`)
     }
     setFfmpegLoading(false)
     setFfmpegLoaded(true)
@@ -46,17 +49,31 @@ export default function GrabitPage() {
 
   const downloadLoadHandler = async () => {
     setDownloadLoading(true)
+    setError('')
+
+    const mediaTitle = mediaData?.title || ''
+    const bestAudioObject = mediaData?.formats_filtered?.best_audio || {}
 
     try {
-      await processDownload(mediaUrlRef, formatSelectRef, mediaTypeRef, ffmpegRef.current)
+      await processDownload(
+        mediaTitle,
+        mediaTypeRef,
+        mediaFormatRef,
+        selectedFormatRef,
+        bestAudioObject,
+        downloadPathRef,
+        ffmpegRef.current
+      )
       setDownloadLoading(false)
     } catch (error) {
-      setError('Error downloading media')
+      setDownloadLoading(false)
+      setError(`${error}`)
     }
-    setFetchMediaLoading(false)
+    setDownloadLoading(false)
   }
 
   const fetchDetails = async () => {
+    setError('')
     if (!mediaUrlRef.current) return
 
     setFetchMediaLoading(true)
@@ -66,7 +83,7 @@ export default function GrabitPage() {
       const formats = updateFormatOptions('video', mediaDetails)
       setFormats(formats)
     } catch (error) {
-      setError('Error fetching media details!')
+      setError(`${error}`)
     }
     setFetchMediaLoading(false)
   }
@@ -96,19 +113,20 @@ export default function GrabitPage() {
                 mediaData={mediaData}
                 mediaTypeRef={mediaTypeRef}
                 updateFormatOptions={handleFormatOptionsUpdate}
-                error={error}
               />
-              <MediaSelect formats={formats} formatSelectRef={formatSelectRef} />
+              <MediaSelect formats={formats} selectedFormatRef={selectedFormatRef} />
+              <MediaFormat mediaTypeRef={mediaTypeRef} mediaFormatRef={mediaFormatRef} />
               {ffmpegLoaded ? (
                 <DownloadButton
                   downloadMedia={downloadLoadHandler}
-                  formatSelectRef={formatSelectRef}
+                  selectedFormatRef={selectedFormatRef}
                   loading={downloadLoading}
                 />
               ) : (
                 <FFmpegLoadingButton load={loadFFmpegHandler} isLoading={ffmpegLoading} />
               )}
 
+              <p className="text-red-500 text-center mt-2">{error}</p>
               <FFmpegMessage messageRef={ffmpegMessageRef} />
             </div>
           )}

@@ -11,6 +11,8 @@ export const downloadMedia = async (
   ffmpeg: FFmpeg
 ) => {
   try {
+    console.log("Starting download....");
+    
     const output_file = `${outputFileName}.${mediaFormat}`
 
     // Write files to FFmpeg's virtual file system

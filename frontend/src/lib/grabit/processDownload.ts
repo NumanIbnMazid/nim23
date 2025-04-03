@@ -2,27 +2,32 @@ import { downloadMedia } from '@/lib/grabit/downloadMedia'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 
 export const processDownload = async (
-  mediaUrlRef: React.RefObject<HTMLInputElement>,
-  formatSelectRef: React.RefObject<HTMLSelectElement>,
+  videoTitle: string,
   mediaTypeRef: React.RefObject<HTMLSelectElement>,
+  mediaFormatRef: React.RefObject<HTMLSelectElement>,
+  selectedFormatRef: React.RefObject<HTMLSelectElement>,
+  bestAudioObject: any,
+  downloadPathRef: React.RefObject<HTMLInputElement>,
   ffmpeg: any
 ) => {
-  const selectedFormat = JSON.parse(formatSelectRef.current?.value || '{}')
+  const selectedMediaObject = JSON.parse(selectedFormatRef.current?.value || '{}')
 
   const downloadApiUrl =
     `${PUBLIC_SITE_URL}/api/grabit/media-download?` +
-    `media_url=${encodeURIComponent(mediaUrlRef.current?.value.trim() || '')}&` +
+    `video_title=${encodeURIComponent(videoTitle.trim() || '')}&` +
     `media_type=${encodeURIComponent(mediaTypeRef.current?.value || '')}&` +
-    `raw_data=${encodeURIComponent(JSON.stringify(selectedFormat))}&` +
-    `download_path=${encodeURIComponent('~/Documents')}`
-
+    `media_format=${encodeURIComponent(mediaFormatRef.current?.value || '')}&` +
+    `selected_media_object=${encodeURIComponent(JSON.stringify(selectedMediaObject))}&` +
+    `best_audio_object=${encodeURIComponent(JSON.stringify(bestAudioObject))}&` +
+    `download_path=${encodeURIComponent(downloadPathRef.current?.value || '~/Downloads')}`
+  
   const response = await fetch(downloadApiUrl)
   const data = await response.json()
   const videoUrl = data.data.video_url
   const audioUrl = data.data.audio_url
-  const videoTitle = data.data.video_title
-  const mediaFormat = data.data.target_media_format || 'mp4'
-  const mediaType = data.data.target_media_type || 'video'
+  const mediaType = mediaTypeRef.current?.value || 'video'
+  const selectedMediaFormat = mediaFormatRef.current?.value || 'mp4'
+  // const DownloadPath = data.data.download_path || '~/Downloads'
   // const audio_ext = data.data.audio_ext
   // const video_ext = data.data.video_ext
   // Define the regex for valid filename characters
@@ -33,6 +38,6 @@ export const processDownload = async (
     .slice(0, 100) // Ensure the title doesn't exceed 100 characters
   const outputFileName = filteredTitle.replace(/\s+/g, '_')  
   // Merge and download media
-  const isSucceed = await downloadMedia(videoUrl, audioUrl, outputFileName, mediaFormat, mediaType, ffmpeg)
+  const isSucceed = await downloadMedia(videoUrl, audioUrl, outputFileName, selectedMediaFormat, mediaType, ffmpeg)
   return isSucceed
 }

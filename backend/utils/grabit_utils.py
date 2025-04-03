@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import time
 import json
+from django.conf import settings
 
 
 # Define the token file path
@@ -42,6 +43,13 @@ def generate_tokens_json():
 
 def fetch_media_info(url, detailed=False):
     """Fetches the media details from the provided URL using pytube."""
+    # TODO: REMOVE TEST CODE
+    # fake_data_file = os.path.join(
+    #     settings.BASE_DIR, "utils", "tester.json"
+    # )
+    # with open(fake_data_file, "r") as f:
+    #     return json.load(f)["data"]["media_info"]
+    # TODO: REMOVE END
 
     # Check if tokens.json exists
     if os.path.exists(TOKEN_FILE):

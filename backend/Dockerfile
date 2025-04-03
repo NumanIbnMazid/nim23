@@ -70,7 +70,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 
 # Copy and set up bgutil-ytdlp-pot-provider
 COPY backend/bgutil-ytdlp-pot-provider /app/bgutil-ytdlp-pot-provider
-RUN cd /app/bgutil-ytdlp-pot-provider/server/ && yarn install --frozen-lockfile
+RUN cd /app/bgutil-ytdlp-pot-provider/server/ && yarn install --frozen-lockfile && npx tsc
 
 # Set up Supervisor
 COPY backend/supervisord.conf /etc/supervisor/supervisord.conf

@@ -75,7 +75,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
     serializer_class = DownloadRequestSerializer
 
     def create(self, request, *args, **kwargs):
-        """Override create to return a custom response"""
+        """*** FOR SERVER *** Override create to return a custom response"""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -137,6 +137,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
     )
     @action(detail=False, methods=['get'], url_path='media-download-info')
     def get_media_download_info(self, request):
+        """*** FOR CLIENT ***"""
         def get_best_formats(dl_info, raw_data):
             """Select the best video and the best audio formats."""
             best_video = raw_data
@@ -220,7 +221,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
 
 
     def download_media(self, download_request, video_url, selected_media_format, raw_data, download_path):
-        """Download media and convert if necessary based on selected format"""
+        """**FOR SERVER** Download media and convert if necessary based on selected format"""
 
         def get_format_id(dl_info):
             best_video = raw_data

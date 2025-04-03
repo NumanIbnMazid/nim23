@@ -27,6 +27,7 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
+      - "4416:4416"
     networks:
       - net-tier
 

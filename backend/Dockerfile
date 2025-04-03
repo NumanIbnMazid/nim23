@@ -84,4 +84,7 @@ EXPOSE 8000 4416
 RUN apt update && apt install -y lsof net-tools iproute2
 
 # Run Supervisor to manage services
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
+# Set the entrypoint
+ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]

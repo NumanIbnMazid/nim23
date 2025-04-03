@@ -47,3 +47,5 @@ yarn install --frozen-lockfile
 npx tsc
 node build/main.js
 ```
+
+TODO: Use ffmpeg directly to download video.

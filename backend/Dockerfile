@@ -57,9 +57,12 @@ WORKDIR /app
 COPY backend/requirements.txt /app/requirements.txt
 RUN $PYTHON -m pip install -r requirements.txt
 
+# Set up Supervisor
+COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
+
 # Add the entrypoint script and make it executable
 COPY backend/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
 # Set the entrypoint
-ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]
+ENTRYPOINT [ "bash", "-c", "/app/entrypoint.sh" ]

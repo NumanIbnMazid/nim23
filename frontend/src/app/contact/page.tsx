@@ -3,8 +3,6 @@ import { getPageMetadata, pageMeta } from "@/lib/Meta";
 import type { Metadata } from "next";
 import { PUBLIC_SITE_URL } from "@/lib/constants";
 
-export const dynamic = 'force-dynamic'
-
 // ✅ Generate metadata for Contact Page
 export const metadata: Metadata = getPageMetadata({
     title: pageMeta.contact.title,

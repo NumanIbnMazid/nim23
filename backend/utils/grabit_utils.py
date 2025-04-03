@@ -1,99 +1,97 @@
-import yt_dlp
+from pytubefix import YouTube
+from pytubefix.cli import on_progress
+import json
 
 
 def fetch_media_info(url, detailed=False):
-    """Fetches the media details from the provided URL using yt-dlp and integrates with the DownloadRequest model."""
+    """Fetches the media details from the provided URL using pytube."""
 
-    def get_format_info(f, format_type):
-        data = {
-            "format": format_type,
-            "format_id": f.get("format_id"),
-            "ext": f.get("ext"),
-            "quality": f.get("format_note"),
-            "bitrate": f.get("tbr"),  # Bitrate in kbps
-            "filesize": f.get("filesize", f.get("filesize_approx")),  # Size in bytes
-            "url": f.get("url"),  # Direct URL to the video/audio stream
-            "resolution": f.get("resolution"),
-            "protocol": f.get("protocol"),
-            "has_audio": bool(f.get("audio_channels")),
-            "format_details": f.get("format"),
-        }
-        if detailed:
-            data["original_data"] = f
-        return data
-    
-    ydl_opts = {
-        "quiet": True,
-        "skip_download": True,
-        "extractor_args": {
-            "youtube": {
-                "getpot_bgutil_baseurl": "http://127.0.0.1:4416",  # Use the local POT provider
+    try:
+        yt = YouTube(url, on_progress_callback=on_progress)
+
+        # TODO: Filter only mp4 videos (Normally there are two formas, mp4 and webm)
+        # yt.streams.filter(only_video=True, file_extension="mp4")
+
+        # Fetch the highest quality video and audio streams
+        best_video = (
+            yt.streams.filter(only_video=True,)
+            .order_by("resolution")
+            .desc()
+            .first()
+        )
+        best_audio = (
+            yt.streams.filter(only_audio=True,)
+            .order_by("abr")
+            .desc()
+            .first()
+        )
+
+        def get_format_info(stream, format_type):
+            if not stream:
+                return None
+
+            data = {
+                "format": format_type,
+                "format_id": stream.itag,
+                "ext": stream.mime_type.split("/")[-1],
+                "quality": stream.resolution if format_type == "video" else stream.abr,
+                "bitrate": None,  # Pytube does not expose this directly
+                "filesize": stream.filesize,  # Size in bytes
+                "url": stream.url,  # Direct URL to the stream
+                "resolution": stream.resolution if format_type == "video" else None,
+                "protocol": "https",
+                "has_audio": stream.includes_audio_track
             }
-        }
-    }
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(url, download=False)
-        if not info_dict:
-            return {}
+            if detailed:
+                data["original_data"] = str(stream)
+            return data
 
-        # Initialize a dictionary to store the media info
         media_info = {
-            "title": info_dict.get("title"),
-            # Filtered video and audio formats (separated by type)
+            "title": yt.title,
             "formats_filtered": {
-                "best_video": next(
-                    get_format_info(f, "video")
-                    for f in info_dict.get("formats", [])[::-1]
-                    if f.get("vcodec") != "none" and f.get("acodec") == "none"
-                ),
-                "best_audio": next(
-                    get_format_info(f, "audio")
-                    for f in info_dict.get("formats", [])[::-1]
-                    if f.get("vcodec") == "none" and f.get("acodec") != "none"
-                ),
+                "best_video": get_format_info(best_video, "video"),
+                "best_audio": get_format_info(best_audio, "audio"),
                 "videos_with_audio": [
-                    get_format_info(f, "video")
-                    for f in info_dict.get("formats", [])
-                    if f.get("vcodec") != "none" and f.get("acodec") != "none"
+                    get_format_info(s, "video")
+                    for s in yt.streams.filter(progressive=True,)
                 ],
                 "video_formats": [
-                    get_format_info(f, "video")
-                    for f in info_dict.get("formats", [])[::-1]
-                    if f.get("video_ext") != "none"
-                    and f.get("vcodec")
-                    != "none"  # Only include video formats with non-empty video_ext and valid vcodec
-                    and f.get("format_note")
-                    and "sb" not in f.get("format_id")
+                    get_format_info(s, "video")
+                    for s in yt.streams.filter(only_video=True,)
                 ],
                 "audio_formats": [
-                    get_format_info(f, "audio")
-                    for f in info_dict.get("formats", [])[::-1]
-                    if f.get("audio_ext") != "none"
-                    and f.get("acodec")
-                    != "none"  # Only include audio formats with non-empty audio_ext and valid acodec
-                    and f.get("format_note")
-                    and bool(f.get("audio_channels"))
-                    and "sb" not in f.get("format_id")
+                    get_format_info(s, "audio")
+                    for s in yt.streams.filter(only_audio=True,)
                 ],
             },
-            "description": info_dict.get("description"),
-            "uploader": info_dict.get("uploader"),
-            "upload_date": info_dict.get("upload_date"),
-            "duration": info_dict.get("duration", 0),
-            "resolution": info_dict.get("resolution"),
-            "fps": info_dict.get("fps"),
-            "aspect_ratio": info_dict.get("aspect_ratio"),
-            # Additional metadata
-            "thumbnail": info_dict.get("thumbnail"),
-            "categories": info_dict.get("categories", []),
-            "channel": info_dict.get("channel"),
-            "tags": info_dict.get("tags", []),
-            "view_count": info_dict.get("view_count", 0),
-            "like_count": info_dict.get("like_count", 0),
-            "dislike_count": info_dict.get("dislike_count", 0),
-            "average_rating": info_dict.get("average_rating", 0),
-            "source": info_dict.get("extractor_key", "Unknown"),
+            "description": yt.description,
+            "author": yt.author,
+            "upload_date": (
+                yt.publish_date.strftime("%Y-%m-%d") if yt.publish_date else None
+            ),
+            "duration": yt.length,
+            "resolution": best_video.resolution if best_video else None,
+            # "fps": None,  # Pytube does not provide FPS info
+            # "aspect_ratio": None,  # Pytube does not expose aspect ratio
+            "thumbnail": yt.thumbnail_url,
+            "categories": [],  # Pytube does not expose categories
+            "channel": yt.channel_url,
+            "tags": yt.keywords,
+            "view_count": yt.views,
+            # "like_count": None,  # Pytube does not expose like counts
+            # "dislike_count": None,
+            "average_rating": yt.rating if yt.rating else None,
+            "source": "YouTube",
         }
 
         return media_info
+
+    except Exception as e:
+        print(f"Error fetching media info: {e}")
+        return {}
+
+
+# data = fetch_media_info("https://www.youtube.com/watch?v=dtyhP4gX68E&ab_channel=%D1%95%D1%82%CE%B9%CE%B7gGs")
+# # print in json format indented with 4 spaces
+# print(json.dumps(data, indent=4))

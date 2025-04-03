@@ -15,6 +15,7 @@ RUN apt-get update && \
     gcc \
     curl \
     wget \
+    net-tools \
     musl-dev \
     libssl-dev \
     libffi-dev \
@@ -60,28 +61,5 @@ RUN $PYTHON -m pip install -r requirements.txt
 COPY backend/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Copy the rest of the application files
-COPY backend /app
-
-# Install Node.js via 'n'
-RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
-    npm install -g npm@latest && \
-    npm install -g yarn
-
-# Copy and set up bgutil-ytdlp-pot-provider
-COPY backend/bgutil-ytdlp-pot-provider /app/bgutil-ytdlp-pot-provider
-RUN cd /app/bgutil-ytdlp-pot-provider/server/ && yarn install --frozen-lockfile && npx tsc
-
-# Set up Supervisor
-COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
-
-# Back to main directory
-WORKDIR /app
-
-# Expose required ports
-EXPOSE 8000 4416
-
-RUN apt update && apt install -y lsof net-tools iproute2
-
-# Run Supervisor to manage services
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# Set the entrypoint
+ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]

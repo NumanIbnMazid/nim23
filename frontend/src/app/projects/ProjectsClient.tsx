@@ -26,26 +26,27 @@ export default function ProjectsClient({ initialProjects }: { initialProjects: P
 
   const [paginatedProjects, setPaginatedProjects] = useState<ProjectType[]>([])
   const [isProjectsReady, setIsProjectsReady] = useState(false) // Prevents pagination from appearing too soon
+  const [showPagination, setShowPagination] = useState(false) // State to control when pagination should show
 
   useEffect(() => {
     setLocalStorageItem('projectCurrentPage', currentPage)
   }, [currentPage])
 
   useEffect(() => {
-    setIsProjectsReady(false) // Reset before fetching new projects
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
     const endIndex = startIndex + ITEMS_PER_PAGE
     const newProjects = initialProjects.slice(startIndex, endIndex)
     setPaginatedProjects(newProjects)
 
-    // Delay pagination rendering slightly to ensure projects appear first
-    const timer = setTimeout(() => {
-      if (newProjects.length > 0) {
-        setIsProjectsReady(true)
-      }
-    }, 100) // Adjust delay if necessary
+    // Only set isProjectsReady to true when new projects are ready
+    if (newProjects.length > 0) {
+      setIsProjectsReady(true)
 
-    return () => clearTimeout(timer) // Cleanup timeout on re-renders
+      // Add delay to show pagination after a small timeout
+      setTimeout(() => {
+        setShowPagination(true)
+      }, 300) // 300ms delay before showing pagination
+    }
   }, [initialProjects, currentPage])
 
   const totalItems = initialProjects.length
@@ -53,6 +54,8 @@ export default function ProjectsClient({ initialProjects }: { initialProjects: P
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
     setLocalStorageItem('projectCurrentPage', page)
+    setShowPagination(false) // Hide pagination when the page is being changed
+    setIsProjectsReady(false) // Hide projects while new ones are being loaded
   }
 
   return (
@@ -67,10 +70,14 @@ export default function ProjectsClient({ initialProjects }: { initialProjects: P
             className="grid min-h-screen py-20 place-content-center"
           >
             <div>
-              {!isProjectsReady && <Loader />} {/* Show Loader until projects are ready */}
-              <ProjectSection projects={paginatedProjects} />
-              {/* Render pagination ONLY when projects are fully loaded */}
-              {isProjectsReady && (
+              {/* Show loader if projects are not ready */}
+              {!isProjectsReady && <Loader />}
+
+              {/* Only show ProjectSection after projects are ready */}
+              {isProjectsReady && <ProjectSection projects={paginatedProjects} />}
+
+              {/* Render pagination ONLY after delay and when projects are fully loaded */}
+              {showPagination && isProjectsReady && (
                 <div className="flex justify-center items-center mt-4">
                   <Pagination
                     current={currentPage}

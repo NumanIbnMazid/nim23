@@ -37,7 +37,7 @@ const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptio
         id="mediaType"
         ref={mediaTypeRef}
         onChange={updateFormatOptions}
-        className="select select-bordered w-full mt-2"
+        className="select select-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
       >
         <option value="video">Video</option>
         <option value="audio">Audio</option>

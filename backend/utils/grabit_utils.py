@@ -90,12 +90,13 @@ def fetch_media_info(url, detailed=False):
             "format_id": stream.itag,
             "ext": stream.mime_type.split("/")[-1],
             "quality": stream.resolution if format_type == "video" else stream.abr,
-            "bitrate": None,  # Pytube does not expose this directly
+            "bitrate": stream.bitrate if stream.bitrate else None,
+            "fps": stream.fps if format_type == "video" else None,
             "filesize": stream.filesize,  # Size in bytes
-            "url": stream.url,  # Direct URL to the stream
             "resolution": stream.resolution if format_type == "video" else None,
-            "protocol": "https",
-            "has_audio": stream.includes_audio_track
+            "has_audio": stream.includes_audio_track,
+            "is_dash": stream.is_dash,
+            "url": stream.url  # Direct URL to the stream
         }
 
         if detailed:

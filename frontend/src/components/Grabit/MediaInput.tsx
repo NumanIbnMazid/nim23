@@ -18,7 +18,7 @@ const MediaInput: React.FC<Props> = ({ mediaUrlRef, fetchMediaDetails, loading }
         defaultValue="https://www.youtube.com/watch?v=R3GfuzLMPkA&ab_channel=4KUltraHD"
         ref={mediaUrlRef}
         placeholder="Enter video URL"
-        className="input input-bordered w-full mt-2"
+        className="input input-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
       />
       <button onClick={fetchMediaDetails} disabled={loading} className="btn btn-primary mt-2">
         {loading ? 'Fetching...' : 'Get Video Details'}

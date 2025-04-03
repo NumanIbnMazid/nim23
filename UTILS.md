@@ -47,5 +47,9 @@ yarn install --frozen-lockfile
 npx tsc
 node build/main.js
 ```
+### Pytube Resources
 
-TODO: Use ffmpeg directly to download video.
+- https://pytubefix.readthedocs.io/en/latest/user/auth.html
+- https://pytube.io/en/latest/api.html
+- https://github.com/pytube/pytube/issues/1894#issue-2180600881
+- https://github.com/pytube/pytube/issues/1322

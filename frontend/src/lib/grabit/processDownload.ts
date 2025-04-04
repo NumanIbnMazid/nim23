@@ -36,8 +36,9 @@ export const processDownload = async (
   const mediaType = mediaTypeRef.current?.value || 'video'
   const selectedMediaFormat = mediaFormatRef.current?.value || 'mp4'
   // const DownloadPath = data.data.download_path || '~/Downloads'
-  // const audio_ext = data.data.audio_ext
-  // const video_ext = data.data.video_ext
+  const audioExt = data.data.audio_ext
+  const videoExt = data.data.video_ext
+  
   // Define the regex for valid filename characters
   const validFilenameRegex = /[^a-zA-Z0-9-_ .]/g
   // Filter the video title:
@@ -52,6 +53,8 @@ export const processDownload = async (
     outputFileName,
     selectedMediaFormat,
     mediaType,
+    audioExt,
+    videoExt,
     ffmpeg,
     setDownloadProgress,
     setStatusMessage

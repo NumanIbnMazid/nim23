@@ -7,8 +7,11 @@ interface Props {
 
 const FFmpegLoadingButton: React.FC<Props> = ({ load, isLoading }) => {
   return (
-    <button onClick={load} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent dark:text-blue-300 dark:hover:bg-blue-900 rounded mt-6 flex items-center">
-      Gear Up
+    <button
+      onClick={load}
+      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent dark:text-blue-300 dark:hover:bg-blue-900 rounded mt-6 flex items-center"
+    >
+      Gear Up to Download ⚡
       {isLoading && (
         <span className="animate-spin ml-3">
           <svg

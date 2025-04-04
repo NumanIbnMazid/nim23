@@ -109,6 +109,12 @@
   - Remove `export const dynamic = 'force-dynamic'` from every page.tsx. Then check yarn build if it fails. Specially in Home Page. Others are working fine a guess, but removing would be better.
   - Add audio file size to show in format details. Remove file size if still providing incorrect information.
   - Add progress of download.
+  - Add Iframe to show video details.
+  - Wait between downloading videos.
+  - Fix status message after error: processing videos.
+  - Hide media type and other fields while fetching video information.
+  - Fix Audio download issue.
+  - Add yt-dlp fallback for other platforms support.
 
 
 ## Improvement

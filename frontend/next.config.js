@@ -1,29 +1,23 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unused-vars
-const path = require("path");
+const path = require('path')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const dotenv = require("dotenv");
+const dotenv = require('dotenv')
 
-dotenv.config();
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const runtimeCaching = require("next-pwa/cache");
+dotenv.config()
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withPWA = require("next-pwa")({
-  dest: "public",
+const runtimeCaching = require('next-pwa/cache')
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withPWA = require('next-pwa')({
+  dest: 'public',
   runtimeCaching,
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === "development",
-  buildExcludes: [".next/static/chunks/pages/*.js"], // ✅ Prevents slow initial navigation
-  publicExcludes: [
-    "!resume.pdf",
-    "!robots.txt",
-    "!sitemap.xml",
-    "!workbox-*.js",
-    "!sw.js",
-  ],
-});
+  disable: process.env.NODE_ENV === 'development',
+  buildExcludes: ['.next/static/chunks/pages/*.js'], // ✅ Prevents slow initial navigation
+  publicExcludes: ['!resume.pdf', '!robots.txt', '!sitemap.xml', '!workbox-*.js', '!sw.js'],
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withPWA({
@@ -33,25 +27,14 @@ const nextConfig = withPWA({
     workerThreads: false, // ✅ Ensure service worker updates
   },
   generateBuildId: async () => {
-    return "nim23-build";
+    return 'nim23-build'
   },
   reactStrictMode: true,
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "postimg.cc",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "i.postimg.cc",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: `/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/**`,
+        protocol: 'https',
+        hostname: '**', // Allows images from any external host
       },
     ],
   },
@@ -91,11 +74,11 @@ const nextConfig = withPWA({
         ...config.resolve.fallback,
         canvas: false,
         fs: false,
-      };
+      }
     }
-    config.resolve.alias.canvas = false;
-    return config;
+    config.resolve.alias.canvas = false
+    return config
   },
-});
+})
 
-module.exports = nextConfig;
+module.exports = nextConfig

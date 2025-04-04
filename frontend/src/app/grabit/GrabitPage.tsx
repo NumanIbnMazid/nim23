@@ -7,6 +7,7 @@ import { fetchMediaDetails } from '@/lib/grabit/fetchMediaDetails'
 import { updateFormatOptions } from '@/lib/grabit/updateFormatOptions'
 import { processDownload } from '@/lib/grabit/processDownload'
 import MediaInput from '@/components/Grabit/MediaInput'
+import MediaInfo from '@/components/Grabit/MediaInfo'
 import MediaType from '@/components/Grabit/MediaType'
 import MediaSelect from '@/components/Grabit/MediaSelect'
 import MediaFormat from '@/components/Grabit/MediaFormat'
@@ -40,12 +41,13 @@ export default function GrabitPage() {
     setFfmpegLoading(true)
     try {
       await loadFFmpeg(ffmpegRef.current, setStatusMessage)
-      setFfmpegLoading(true)
+      setFfmpegLoading(false)
+      setFfmpegLoaded(true)
     } catch (error) {
       setError(`${error}`)
+      setFfmpegLoading(false)
+      setFfmpegLoaded(false)
     }
-    setFfmpegLoading(false)
-    setFfmpegLoaded(true)
   }
 
   // Reset statusMessage
@@ -123,6 +125,7 @@ export default function GrabitPage() {
           <MediaInput mediaUrlRef={mediaUrlRef} fetchMediaDetails={fetchDetails} loading={fetchMediaLoading} />
           {mediaData && (
             <div>
+              <MediaInfo mediaInfo={mediaData} videoUrl={mediaUrlRef.current?.value || ''} />
               <MediaType
                 mediaData={mediaData}
                 mediaTypeRef={mediaTypeRef}

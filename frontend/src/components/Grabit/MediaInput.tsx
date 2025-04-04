@@ -25,7 +25,7 @@ const MediaInput: React.FC<Props> = ({ mediaUrlRef, fetchMediaDetails, loading }
         disabled={loading}
         className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent dark:text-blue-300 dark:hover:bg-blue-900 rounded my-4"
       >
-        {loading ? 'Fetching...' : 'Get Video Details'}
+        {loading ? 'Fetching video metadata...⏳' : 'Get video details'}
       </button>
     </div>
   )

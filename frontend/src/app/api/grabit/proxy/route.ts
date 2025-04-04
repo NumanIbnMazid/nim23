@@ -13,12 +13,21 @@ export async function GET(req: Request) {
       headers: { Origin: '*' },
     })
 
+    const headers = new Headers()
+    headers.set('Content-Type', response.headers.get('content-type') || 'application/octet-stream')
+    headers.set('Access-Control-Allow-Origin', '*')
+    headers.set('Cache-Control', 'no-cache')
+
+    // Forward Content-Length if available
+    const contentLength = response.headers.get('content-length')
+    if (contentLength) {
+      headers.set('Content-Length', contentLength)
+    }
+
     return new Response(response.body, {
-      headers: {
-        'Content-Type': response.headers.get('content-type') || 'application/octet-stream',
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'no-cache',
-      },
+      status: response.status,
+      statusText: response.statusText,
+      headers,
     })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch video' }, { status: 500 })

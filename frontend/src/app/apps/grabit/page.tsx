@@ -1,5 +1,5 @@
 import GrabitClient from '@/app/apps/grabit/GrabitClient'
-import AppLayout from '@/app/LayoutApp'
+import AppLayout from '@/app/apps/layout'
 
 export const dynamic = 'force-dynamic'
 

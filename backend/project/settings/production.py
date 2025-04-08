@@ -5,8 +5,6 @@ from project.settings.base import *
 # ----------------------------------------------------
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host (Production)
-    "https://nim23.com",
-    "https://www.nim23.com",
     "nim23-staging.vercel.app",  # Frontend Host (Staging)
     "apps.nim23.com",  # Frontend Host (apps)
     "admin.nim23.com",  # Backend Host
@@ -50,29 +48,10 @@ SECURE_HSTS_PRELOAD = True
 
 # Neededf for CorsHeader
 CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 CORS_ORIGIN_WHITELIST = [
     "https://nim23.com",
     "https://www.nim23.com",
-]
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'ClientID',
-]
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'PATCH',
-    'DELETE',
-    'OPTIONS'
 ]
 
 # ----------------------------------------------------

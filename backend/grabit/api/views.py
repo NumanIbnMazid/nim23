@@ -46,7 +46,7 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
             )
         except Exception as e:
             return ResponseWrapper(
-                message="Failed to get media information!",
+                message="Failed to get media details!",
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )

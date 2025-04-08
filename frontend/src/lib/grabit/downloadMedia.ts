@@ -20,7 +20,7 @@ export const downloadMedia = async (
     const chunkSize = 1024 * 1024 * 2 // 2MB per chunk
     const output_file = `${outputFileName}.${mediaFormat}`
 
-    setDownloadProgress(10) // Update progress
+    setDownloadProgress(0) // Update progress
 
     setStatusMessage('Fetching video and audio.....')
     setStatusMessage('Please hold on. This may take a while. Rest of the process will be very quick.')
@@ -38,8 +38,8 @@ export const downloadMedia = async (
     const updateOverallProgress = () => {
       // *** Progress ***
       const totalProgress = (videoProgress + audioProgress) / 2
-      // Progress from 10% to 80%
-      const progressValue = Math.floor(10 + totalProgress * 80)
+      // Progress from 0% to 95%
+      const progressValue = Math.floor(0 + totalProgress * 95)
       setDownloadProgress(progressValue)
       // *** Size ***
       const totalSize = videoTotal + audioTotal
@@ -74,8 +74,6 @@ export const downloadMedia = async (
 
     // ======= Hard Part ========
 
-    setDownloadProgress(80) // Update progress
-
     setStatusMessage('Writing files.....')
 
     const writePromises = []
@@ -85,8 +83,7 @@ export const downloadMedia = async (
     }
     await Promise.all(writePromises)
 
-    setDownloadProgress(85) // Update progress
-
+    setDownloadProgress(97)
     setStatusMessage('Preparing video and audio....')
 
     // FFmpeg command depends on media type
@@ -111,11 +108,9 @@ export const downloadMedia = async (
 
     setStatusMessage('File is ready....')
 
-    setDownloadProgress(90) // Update progress
+    setDownloadProgress(99) // Update progress
 
     const data = (await ffmpeg.readFile(output_file)) as any
-
-    setDownloadProgress(95) // Update progress
 
     const videoUrl = URL.createObjectURL(
       new Blob([data.buffer], { type: mediaType === 'video' ? `video/${mediaFormat}` : `audio/${mediaFormat}` })

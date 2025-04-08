@@ -29,8 +29,6 @@ export const processDownload = async (
   const response = await fetch(downloadApiUrl)
   const data = await response.json()
 
-  setDownloadProgress(5)
-
   const outputFileName = data.data.video_title || videoTitle
   const videoUrl = data.data.video_url
   const audioUrl = data.data.audio_url

@@ -6,6 +6,7 @@ from project.settings.base import *
 ALLOWED_HOSTS = [
     "nim23.com",  # Frontend Host (Production)
     "nim23-staging.vercel.app",  # Frontend Host (Staging)
+    "apps.nim23.com",  # Frontend Host (apps)
     "admin.nim23.com",  # Backend Host
     "backend.nim23.com",  # Backend Host
     "nim23.koyeb.app",  # Backend Host

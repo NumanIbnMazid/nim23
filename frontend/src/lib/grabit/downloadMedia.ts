@@ -1,7 +1,7 @@
-// import { fetchFile } from '@ffmpeg/util'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
-import { PUBLIC_SITE_URL } from '@/lib/constants'
-import { fetchFileWithProgress } from '@/lib/grabit/fetchFileWithProgress'
+import { fetchFileInChunks } from '@/lib/grabit/fetchFileInChunks'
+import { formatBytes } from '@/lib/utils/helpers'
+
 
 export const downloadMedia = async (
   videoFile: string,
@@ -18,12 +18,10 @@ export const downloadMedia = async (
   try {
     setStatusMessage('Starting download....')
 
+    const chunkSize = 1024 * 1024 * 2 // 2MB per chunk
+
     const output_file = `${outputFileName}.${mediaFormat}`
     setDownloadProgress(10) // Update progress
-
-    // Write files to FFmpeg's virtual file system
-    const videoProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(videoFile)}`
-    const audioProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(audioFile)}`
 
     setStatusMessage('Fetching video and audio.....')
     setStatusMessage('Please hold on. This may take a while. Rest of the process will be very quick.')
@@ -33,23 +31,36 @@ export const downloadMedia = async (
 
     let videoProgress = 0
     let audioProgress = 0
+    let videoDownloaded = 0
+    let audioDownloaded = 0
+    let videoTotal = 0
+    let audioTotal = 0
 
     const updateOverallProgress = () => {
+      // *** Progress ***
       const totalProgress = (videoProgress + audioProgress) / 2
       // Progress from 10% to 80%
       const progressValue = Math.floor(10 + totalProgress * 80)
       setDownloadProgress(progressValue)
+      // *** Size ***
+      const totalSize = videoTotal + audioTotal
+      const downloadedSize = videoDownloaded + audioDownloaded
+      const totalSizeFormatted = formatBytes(totalSize)
+      const downloadedSizeFormatted = formatBytes(downloadedSize)
+      setStatusMessage(`Content Downloaded: ${downloadedSizeFormatted} / ${totalSizeFormatted}`)
     }
 
     const [videoData, audioData] = await Promise.all([
-      fetchFileWithProgress(videoProxyUrl, (p, downloaded, total) => {
+      fetchFileInChunks(videoFile, chunkSize, (p, downloaded, total) => {
         videoProgress = p
-        setStatusMessage(`Downloading video... ${downloaded} / ${total}`)
+        videoDownloaded = downloaded
+        videoTotal = total
         updateOverallProgress()
       }),
-      fetchFileWithProgress(audioProxyUrl, (p, downloaded, total) => {
+      fetchFileInChunks(audioFile, chunkSize, (p, downloaded, total) => {
         audioProgress = p
-        setStatusMessage(`Downloading audio... ${downloaded} / ${total}`)
+        audioDownloaded = downloaded
+        audioTotal = total
         updateOverallProgress()
       }),
     ])

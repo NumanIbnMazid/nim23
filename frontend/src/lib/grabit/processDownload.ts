@@ -31,6 +31,7 @@ export const processDownload = async (
 
   setDownloadProgress(5)
 
+  const filteredTitle = data.data.video_title || videoTitle
   const videoUrl = data.data.video_url
   const audioUrl = data.data.audio_url
   const mediaType = mediaTypeRef.current?.value || 'video'
@@ -40,11 +41,11 @@ export const processDownload = async (
   const videoExt = data.data.video_ext
   
   // Define the regex for valid filename characters
-  const validFilenameRegex = /[^a-zA-Z0-9-_ .]/g
-  // Filter the video title:
-  const filteredTitle = videoTitle
-    .replace(validFilenameRegex, '') // Remove invalid characters
-    .slice(0, 100) // Ensure the title doesn't exceed 100 characters
+  // const validFilenameRegex = /[^a-zA-Z0-9-_ .]/g
+  // // Filter the video title:
+  // const filteredTitle = videoTitle
+  //   .replace(validFilenameRegex, '') // Remove invalid characters
+  //   .slice(0, 100) // Ensure the title doesn't exceed 100 characters
   const outputFileName = filteredTitle.replace(/\s+/g, '_')
   // Merge and download media
   const isSucceed = await downloadMedia(

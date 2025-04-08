@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 interface Props {
   mediaUrlRef: React.RefObject<HTMLInputElement>
@@ -7,21 +7,41 @@ interface Props {
 }
 
 const MediaInput: React.FC<Props> = ({ mediaUrlRef, fetchMediaDetails, loading }) => {
+  const [error, setError] = useState<string | null>(null)
+
+  const handleClick = () => {
+    const url = mediaUrlRef.current?.value.trim()
+
+    if (!url) {
+      setError('Please enter a valid URL')
+      return
+    }
+
+    // Optional: Regex to validate URL format
+    const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w\-./?%&=]*)?$/
+    if (!urlPattern.test(url)) {
+      setError('Invalid URL format')
+      return
+    }
+
+    setError(null)
+    fetchMediaDetails()
+  }
+
   return (
     <div>
-      <label htmlFor="mediaUrl" className="block mt-4">
-        Enter Video URL:
-      </label>
       <input
         type="text"
         id="mediaUrl"
         defaultValue="https://www.youtube.com/watch?v=R3GfuzLMPkA&ab_channel=4KUltraHD"
         ref={mediaUrlRef}
         placeholder="Enter video URL"
-        className="input input-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
+        className="block w-full px-0 py-3 mt-2 mb-4 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
+        required
       />
+      {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
       <button
-        onClick={fetchMediaDetails}
+        onClick={handleClick}
         disabled={loading}
         className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent dark:text-blue-300 dark:hover:bg-blue-900 rounded my-4"
       >

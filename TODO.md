@@ -115,6 +115,10 @@
   - Hide media type and other fields while fetching video information.
   - Fix Audio download issue.
   - Add yt-dlp fallback for other platforms support.
+  - Implement API Rate Limiting.
+  - Add timer to detect problems while downloading and show error message.
+  - Problem while download taking more that 1 minute because of Vercel limitation. Implement chunk by chunk download on content with timer.
+  - Integrate image viewer in blog or snippets details page.
 
 
 ## Improvement

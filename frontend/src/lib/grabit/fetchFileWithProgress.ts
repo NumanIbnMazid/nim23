@@ -4,7 +4,8 @@ export const fetchFileWithProgress = async (
 ): Promise<Uint8Array> => {
   const response = await fetch(url)
   if (!response.ok || !response.body) {
-    throw new Error(`Failed to fetch ${url}`)
+    const errorText = await response.text().catch(() => '')
+    throw new Error(`Failed to fetch ${url}. Status: ${response.status}. ${errorText}`)
   }
 
   const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10)

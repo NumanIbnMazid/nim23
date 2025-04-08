@@ -3,7 +3,6 @@ argon2-cffi-bindings==21.2.0
 asgiref==3.8.1
 autopep8==1.7.0
 beautifulsoup4==4.12.2
-bgutil-ytdlp-pot-provider==0.8.2
 certifi==2024.7.4
 cffi==1.15.1
 channels==4.2.0
@@ -54,4 +53,3 @@ urllib3==2.2.2
 wheel==0.44.0
 whitenoise==6.7.0
 yt-dlp==2025.3.31
-yt-dlp-get-pot==0.3.0

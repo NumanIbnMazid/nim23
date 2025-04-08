@@ -25,15 +25,15 @@ const MediaType: React.FC<Props> = ({ mediaData, mediaTypeRef, updateFormatOptio
   }
 
   return (
-    <div>
-      <label htmlFor="mediaType" className="block mt-4">
-        Select Media Type:
+    <div className='mt-4'>
+      <label htmlFor="mediaType" className="text-md text-slate-600 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+        Select Media Type
       </label>
       <select
         id="mediaType"
         ref={mediaTypeRef}
         onChange={updateFormatOptions}
-        className="select select-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
+        className="mt-4 form-select appearance-none block w-full px-5 py-1 border rounded-lg bg-gray-200 dark:bg-darkSecondary dark:text-gray-100 shadow-lg placeholder-gray-400 focus:ring focus:outline-none"
       >
         <option value="video">Video</option>
         <option value="audio">Audio</option>

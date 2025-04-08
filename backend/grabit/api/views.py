@@ -46,7 +46,7 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
             )
         except Exception as e:
             return ResponseWrapper(
-                message="Failed to get media information!",
+                message="Failed to get media details!",
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -241,7 +241,8 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
             )
 
         try:
-            video_title = self.clean_filename(video_title)
+            # video_title = self.clean_filename(video_title)
+            video_title = video_title[:100]
 
             processed_data = prepare_download_request(
                 video_title,
@@ -262,6 +263,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        
 
     @swagger_auto_schema(
         manual_parameters=[

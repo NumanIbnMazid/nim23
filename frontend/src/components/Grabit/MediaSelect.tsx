@@ -39,34 +39,36 @@ const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
   }
 
   // create a method to convert filesize from bytes to MB or GB.
-  // function formatFilesize(filesize: number) {
-  //   if (!filesize || filesize <= 0) return ''
-  //   const kb = filesize / 1024 // Convert to KB
-  //   const mb = kb / 1024 // Convert to MB
-  //   const gb = mb / 1024 // Convert to GB
-  //   if (gb >= 1) {
-  //     return `${gb.toFixed(2)} GB`
-  //   } else if (mb >= 1) {
-  //     return `${mb.toFixed(2)} MB`
-  //   } else {
-  //     return `${kb.toFixed(2)} KB`
-  //   }
-  // }
+  function formatFilesize(filesize: number) {
+    if (!filesize || filesize <= 0) return ''
+    const kb = filesize / 1024 // Convert to KB
+    const mb = kb / 1024 // Convert to MB
+    const gb = mb / 1024 // Convert to GB
+    if (gb >= 1) {
+      return `${gb.toFixed(2)} GB`
+    } else if (mb >= 1) {
+      return `${mb.toFixed(2)} MB`
+    } else {
+      return `${kb.toFixed(2)} KB`
+    }
+  }
 
   return (
-    <div className="">
-      <label htmlFor="formatSelect" className="block mt-4">
-        Select Source Format:
+    <div className="mt-4">
+      <label htmlFor="formatSelect" className="text-md text-slate-600 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+        Select Source Format
       </label>
       <select
         id="formatSelect"
         ref={selectedFormatRef}
-        className="select select-bordered w-full mt-2 bg-gray-200 dark:bg-darkSecondary dark:text-gray-100"
+        className="mt-4 form-select appearance-none block w-full px-5 py-1 border rounded-lg bg-gray-200 dark:bg-darkSecondary dark:text-gray-100 shadow-lg placeholder-gray-400 focus:ring focus:outline-none"
       >
         {formats.map((media, index) => (
           <option key={index} value={JSON.stringify(media)}>
             {`[${formatExtension(media.ext, media.format)}] ${media.quality}` +
+              (media.resolution ? ` (${media.resolution})` : '') +
               (media.fps ? ` (${media.fps} fps)` : '') +
+              (media.filesize ? ` (${formatFilesize(media.filesize)})` : '') +
               (media.is_dash ? ` (Dash)` : '')}
           </option>
         ))}

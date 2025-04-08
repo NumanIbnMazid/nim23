@@ -1,7 +1,7 @@
-// import { fetchFile } from '@ffmpeg/util'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
-import { PUBLIC_SITE_URL } from '@/lib/constants'
-import { fetchFileWithProgress } from '@/lib/grabit/fetchFileWithProgress'
+import { fetchFileInChunks } from '@/lib/grabit/fetchFileInChunks'
+import { formatBytes } from '@/lib/utils/helpers'
+import { toast } from 'sonner'
 
 export const downloadMedia = async (
   videoFile: string,
@@ -15,15 +15,12 @@ export const downloadMedia = async (
   setDownloadProgress: any,
   setStatusMessage: any
 ) => {
+  const toastId = toast.loading('Downloading.....')
   try {
-    setStatusMessage('Starting download....')
-
+    const chunkSize = 1024 * 1024 * 2 // 2MB per chunk
     const output_file = `${outputFileName}.${mediaFormat}`
-    setDownloadProgress(10) // Update progress
 
-    // Write files to FFmpeg's virtual file system
-    const videoProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(videoFile)}`
-    const audioProxyUrl = `${PUBLIC_SITE_URL}/api/grabit/proxy?url=${encodeURIComponent(audioFile)}`
+    setDownloadProgress(10) // Update progress
 
     setStatusMessage('Fetching video and audio.....')
     setStatusMessage('Please hold on. This may take a while. Rest of the process will be very quick.')
@@ -33,26 +30,47 @@ export const downloadMedia = async (
 
     let videoProgress = 0
     let audioProgress = 0
+    let videoDownloaded = 0
+    let audioDownloaded = 0
+    let videoTotal = 0
+    let audioTotal = 0
 
     const updateOverallProgress = () => {
+      // *** Progress ***
       const totalProgress = (videoProgress + audioProgress) / 2
       // Progress from 10% to 80%
       const progressValue = Math.floor(10 + totalProgress * 80)
       setDownloadProgress(progressValue)
+      // *** Size ***
+      const totalSize = videoTotal + audioTotal
+      const downloadedSize = videoDownloaded + audioDownloaded
+      const totalSizeFormatted = formatBytes(totalSize)
+      const downloadedSizeFormatted = formatBytes(downloadedSize)
+      setStatusMessage(`Content Downloaded: ${downloadedSizeFormatted} / ${totalSizeFormatted}`)
     }
 
-    const [videoData, audioData] = await Promise.all([
-      fetchFileWithProgress(videoProxyUrl, (p, downloaded, total) => {
-        videoProgress = p
-        setStatusMessage(`Downloading video... ${downloaded} / ${total}`)
-        updateOverallProgress()
-      }),
-      fetchFileWithProgress(audioProxyUrl, (p, downloaded, total) => {
+    // Dynamically create the promises array based on the mediaType
+    const fetchPromises = []
+    fetchPromises.push(
+      fetchFileInChunks(audioFile, chunkSize, (p, downloaded, total) => {
         audioProgress = p
-        setStatusMessage(`Downloading audio... ${downloaded} / ${total}`)
+        audioDownloaded = downloaded
+        audioTotal = total
         updateOverallProgress()
-      }),
-    ])
+      })
+    )
+    if (mediaType === 'video') {
+      fetchPromises.push(
+        fetchFileInChunks(videoFile, chunkSize, (p, downloaded, total) => {
+          videoProgress = p
+          videoDownloaded = downloaded
+          videoTotal = total
+          updateOverallProgress()
+        })
+      )
+    }
+    // Await the fetch promises and assign them to variables
+    const [audioData, videoData] = await Promise.all(fetchPromises)
 
     // ======= Hard Part ========
 
@@ -60,28 +78,36 @@ export const downloadMedia = async (
 
     setStatusMessage('Writing files.....')
 
-    await Promise.all([
-      ffmpeg.writeFile(`input.${videoExt}`, videoData),
-      ffmpeg.writeFile(`input.${audioExt}`, audioData),
-    ])
+    const writePromises = []
+    writePromises.push(ffmpeg.writeFile(`input.${audioExt}`, audioData))
+    if (mediaType === 'video') {
+      writePromises.push(ffmpeg.writeFile(`input.${videoExt}`, videoData))
+    }
+    await Promise.all(writePromises)
 
     setDownloadProgress(85) // Update progress
 
     setStatusMessage('Preparing video and audio....')
 
-    await ffmpeg.exec([
-      '-i',
-      `input.${videoExt}`,
-      '-i',
-      `input.${audioExt}`,
-      '-c:v',
-      'copy',
-      '-c:a',
-      'copy',
-      '-strict',
-      'experimental',
-      output_file,
-    ])
+    // FFmpeg command depends on media type
+    const ffmpegArgs =
+      mediaType === 'video'
+        ? [
+            '-i',
+            `input.${videoExt}`,
+            '-i',
+            `input.${audioExt}`,
+            '-c:v',
+            'copy',
+            '-c:a',
+            'copy',
+            '-strict',
+            'experimental',
+            output_file,
+          ]
+        : ['-i', `input.${audioExt}`, '-c:a', 'mp3', '-strict', 'experimental', output_file] // For audio, no video input
+
+    await ffmpeg.exec(ffmpegArgs)
 
     setStatusMessage('File is ready....')
 
@@ -101,13 +127,19 @@ export const downloadMedia = async (
 
     setDownloadProgress(100) // Update progress
 
-    setStatusMessage('Download complete! ✅')
+    toast.success('Download complete!🎉', {
+      id: toastId,
+    })
 
     // Clean up
     URL.revokeObjectURL(videoUrl)
+    setStatusMessage(null)
 
     return true
   } catch (error) {
+    toast.error('Download failed!', {
+      id: toastId,
+    })
     throw new Error(`Failed to download media file! ${error}`)
   }
 }

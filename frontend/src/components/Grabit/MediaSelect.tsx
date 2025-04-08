@@ -16,10 +16,11 @@ interface MediaFormat {
 
 interface Props {
   formats: MediaFormat[]
+  bestAudioObject: MediaFormat
   selectedFormatRef: React.RefObject<HTMLSelectElement>
 }
 
-const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
+const MediaSelect: React.FC<Props> = ({ formats, bestAudioObject, selectedFormatRef }) => {
   // function formatBitrate(bitrate: number) {
   //   if (!bitrate || bitrate <= 0) return "";
 
@@ -41,7 +42,9 @@ const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
   // create a method to convert filesize from bytes to MB or GB.
   function formatFilesize(filesize: number) {
     if (!filesize || filesize <= 0) return ''
-    const kb = filesize / 1024 // Convert to KB
+    const bestAudioFileSize = bestAudioObject.filesize
+    const totalFilesize = filesize + bestAudioFileSize
+    const kb = totalFilesize / 1024 // Convert to KB
     const mb = kb / 1024 // Convert to MB
     const gb = mb / 1024 // Convert to GB
     if (gb >= 1) {
@@ -66,7 +69,7 @@ const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
         {formats.map((media, index) => (
           <option key={index} value={JSON.stringify(media)}>
             {`[${formatExtension(media.ext, media.format)}] ${media.quality}` +
-              (media.resolution ? ` (${media.resolution})` : '') +
+              (media.resolution && media.quality !== media.resolution ? ` (${media.resolution})` : '') +
               (media.fps ? ` (${media.fps} fps)` : '') +
               (media.filesize ? ` (${formatFilesize(media.filesize)})` : '') +
               (media.is_dash ? ` (Dash)` : '')}

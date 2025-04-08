@@ -14,5 +14,5 @@ export const navigationRoutes: string[] = [
   "stats",
   "contact",
   "privacy",
-  "grabit",
+  "apps",
 ]

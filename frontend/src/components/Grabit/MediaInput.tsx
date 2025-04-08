@@ -33,10 +33,10 @@ const MediaInput: React.FC<Props> = ({ mediaUrlRef, fetchMediaDetails, loading }
       <input
         type="text"
         id="mediaUrl"
-        defaultValue="https://www.youtube.com/watch?v=R3GfuzLMPkA&ab_channel=4KUltraHD"
+        defaultValue=""
         ref={mediaUrlRef}
         placeholder="Enter video URL"
-        className="block w-full px-0 py-3 mt-2 mb-4 text-sm bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer"
+        className="block w-full px-0 py-4 mt-2 mb-4 bg-transparent border-0 border-b-2 appearance-none text-white-900 border-slate-500 dark:text-white dark:border-gray-400 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-black peer text-lg dark:placeholder:text-gray-400 placeholder:text-gray-500"
         required
       />
       {error && <p className="text-red-500 text-sm mt-4">{error}</p>}

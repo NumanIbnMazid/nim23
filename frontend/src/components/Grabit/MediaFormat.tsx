@@ -6,8 +6,8 @@ interface Props {
 }
 
 const MediaFormat: React.FC<Props> = ({ mediaTypeRef, mediaFormatRef }) => {
-  const videoFormats = ['mp4', 'mkv', 'webm']
-  const audioFormats = ['mp3', 'wav', 'aac', 'flac', 'webm']
+  const videoFormats = ['mp4', 'mkv']
+  const audioFormats = ['mp3', 'wav']
 
   const getFormats = () => {
     const selectedType = mediaTypeRef.current?.value || 'video'

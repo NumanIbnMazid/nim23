@@ -21,10 +21,22 @@ interface MediaInfoProps {
 // format upload data from 20241125 to 2024-11-25
 function formatUploadDate(uploadDate: string | null): string | null {
   if (!uploadDate) return null
-  const year = uploadDate.slice(0, 4)
-  const month = uploadDate.slice(4, 6)
-  const day = uploadDate.slice(6, 8)
-  return `${year}-${month}-${day}`
+
+  // Already formatted: YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(uploadDate)) {
+    return uploadDate
+  }
+
+  // Compact format: YYYYMMDD
+  if (/^\d{8}$/.test(uploadDate)) {
+    const year = uploadDate.slice(0, 4)
+    const month = uploadDate.slice(4, 6)
+    const day = uploadDate.slice(6, 8)
+    return `${year}-${month}-${day}`
+  }
+
+  // Fallback if format is unrecognized
+  return uploadDate
 }
 
 const MediaInfo: React.FC<MediaInfoProps> = ({ mediaInfo, videoUrl }) => {

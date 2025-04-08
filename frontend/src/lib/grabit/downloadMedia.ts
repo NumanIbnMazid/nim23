@@ -1,6 +1,7 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFileInChunks } from '@/lib/grabit/fetchFileInChunks'
 import { formatBytes } from '@/lib/utils/helpers'
+import { toast } from 'sonner'
 
 export const downloadMedia = async (
   videoFile: string,
@@ -14,9 +15,8 @@ export const downloadMedia = async (
   setDownloadProgress: any,
   setStatusMessage: any
 ) => {
+  const toastId = toast.loading('Downloading.....')
   try {
-    setStatusMessage('Starting download....')
-
     const chunkSize = 1024 * 1024 * 2 // 2MB per chunk
     const output_file = `${outputFileName}.${mediaFormat}`
 
@@ -69,7 +69,8 @@ export const downloadMedia = async (
         })
       )
     }
-    const [videoData, audioData] = await Promise.all(fetchPromises)
+    // Await the fetch promises and assign them to variables
+    const [audioData, videoData] = await Promise.all(fetchPromises)
 
     // ======= Hard Part ========
 
@@ -104,7 +105,7 @@ export const downloadMedia = async (
             'experimental',
             output_file,
           ]
-        : ['-i', `input.${audioExt}`, '-c:a', 'copy', '-strict', 'experimental', output_file] // For audio, no video input
+        : ['-i', `input.${audioExt}`, '-c:a', 'mp3', '-strict', 'experimental', output_file] // For audio, no video input
 
     await ffmpeg.exec(ffmpegArgs)
 
@@ -126,13 +127,19 @@ export const downloadMedia = async (
 
     setDownloadProgress(100) // Update progress
 
-    setStatusMessage('Download complete! ✅')
+    toast.success('Download complete!🎉', {
+      id: toastId,
+    })
 
     // Clean up
     URL.revokeObjectURL(videoUrl)
+    setStatusMessage(null)
 
     return true
   } catch (error) {
+    toast.error('Download failed!', {
+      id: toastId,
+    })
     throw new Error(`Failed to download media file! ${error}`)
   }
 }

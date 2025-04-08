@@ -235,7 +235,7 @@ export default function BlogLayout({ blog, profileInfo }: { blog: BlogType; prof
             <div
               className={`${
                 blogInfoFull
-                  ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px] author transition-all duration-500 transition-all duration-500 opacity-0 top-[-100px]'
+                  ? 'fixed right-0 px-10 opacity-100 top-[50px] md:top-[80px] author transition-all duration-500'
                   : ''
               }`}
             >

@@ -9,7 +9,7 @@ from functools import wraps
 from utils.snippets import markdown_to_html, html_to_markdown
 
 
-class ResponseWrapper(Response, JSONRenderer):
+class ResponseWrapper(Response):
     def __init__(
         self,
         data=None,
@@ -22,12 +22,9 @@ class ResponseWrapper(Response, JSONRenderer):
         data_type=None,
     ):
         """
-        Alters the init arguments slightly.
-        For example, drop 'template_name', and instead use 'data'.
-
-        Setting 'renderer' and 'media_type' will typically be deferred,
-        For example being set automatically by the `APIView`.
+        Custom response wrapper for standardized API responses.
         """
+
         status_by_default_for_gz = 200
         if error_code is None and status is not None:
             if status > 299 or status < 200:
@@ -39,54 +36,26 @@ class ResponseWrapper(Response, JSONRenderer):
             status_by_default_for_gz = error_code
             response_success = False
 
-        # manipulate dynamic message
-        if message is not None and not message == "":
-            if message.lower() == "list":
-                message = (
-                    "List retrieved successfully!"
-                    if response_success
-                    else "Failed to retrieve the list!"
-                )
-            elif message.lower() == "create":
-                message = (
-                    "Created successfully!" if response_success else "Failed to create!"
-                )
-            elif message.lower() in ["update", "partial_update"]:
-                message = (
-                    "Updated successfully!" if response_success else "Failed to update!"
-                )
-            elif message.lower() == "destroy":
-                message = (
-                    "Deleted successfully!" if response_success else "Failed to delete!"
-                )
-            elif message.lower() == "retrieve":
-                message = (
-                    "Object retrieved successfully!"
-                    if response_success
-                    else "Failed to retrieve the object!"
-                )
-            else:
-                message = message
+        # Manipulate dynamic messages
+        message_map = {
+            "list": ("List retrieved successfully!", "Failed to retrieve the list!"),
+            "create": ("Created successfully!", "Failed to create!"),
+            "update": ("Updated successfully!", "Failed to update!"),
+            "partial_update": ("Updated successfully!", "Failed to update!"),
+            "destroy": ("Deleted successfully!", "Failed to delete!"),
+            "retrieve": ("Object retrieved successfully!", "Failed to retrieve the object!"),
+        }
+
+        if message:
+            message = message_map.get(message.lower(), (message, message))[0 if response_success else 1]
         else:
-            message = (
-                "SUCCESS!"
-                if response_success
-                else "FAILED!"
-            )
+            message = "SUCCESS!" if response_success else "FAILED!"
 
         output_data = {
             "success": response_success,
-            "status_code": error_code
-            if not error_code == "" and not error_code == None
-            else status_by_default_for_gz,
+            "status_code": error_code if error_code else status_by_default_for_gz,
             "data": data,
-            "message": message
-            if message
-            else "Success"
-            if response_success
-            else "Failed"
-            if response_success == False
-            else None,
+            "message": message,
             "error": {"code": error_code, "error_details": error_message},
         }
         if data_type is not None:
@@ -106,12 +75,28 @@ def custom_response_wrapper(viewset_cls):
 
     @wraps(original_finalize_response)
     def wrapped_finalize_response(self, request, response, *args, **kwargs):
+        # Ensure DRF's response attributes exist before wrapping
+        if not hasattr(response, 'accepted_renderer'):
+            response.accepted_renderer = request.accepted_renderer
+            response.accepted_media_type = request.accepted_media_type
+            response.renderer_context = {}
+
         if isinstance(response, ResponseWrapper):
             return response
-        response = ResponseWrapper(
-            data=response.data, message=self.action, status=response.status_code
+
+        # Create wrapped response after DRF has set attributes
+        wrapped_response = ResponseWrapper(
+            data=response.data, 
+            message=self.action, 
+            status=response.status_code
         )
-        return original_finalize_response(self, request, response, *args, **kwargs)
+
+        # Preserve DRF-required attributes
+        wrapped_response.accepted_renderer = response.accepted_renderer
+        wrapped_response.accepted_media_type = response.accepted_media_type
+        wrapped_response.renderer_context = response.renderer_context
+
+        return original_finalize_response(self, request, wrapped_response, *args, **kwargs)
 
     viewset_cls.finalize_response = wrapped_finalize_response
     return viewset_cls

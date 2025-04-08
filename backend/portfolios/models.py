@@ -75,11 +75,11 @@ class Skill(models.Model):
     Skill model.
     """
     class Level(models.TextChoices):
-        One = 1, '1'
-        Two = 2, '2'
-        Three = 3, '3'
-        Four = 4, '4'
-        Five = 5, '5'
+        One = "1", '1'
+        Two = "2", '2'
+        Three = "3", '3'
+        Four = "4", '4'
+        Five = "5", '5'
 
     title = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)

@@ -27,7 +27,7 @@ async function MainPrivacyPage() {
   const privacyPolicy = await getPrivacyPolicy() // ✅ Server-side fetch for better performance
 
   return privacyPolicy && privacyPolicy.meta ? (
-    <PrivacyClient privacyPolicy={{ ...privacyPolicy, meta: privacyPolicy.meta! }} />
+    <PrivacyClient />
   ) : (
     <div>Error loading privacy policy</div>
   ) // ✅ Pass data to the Client Component

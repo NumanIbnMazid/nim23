@@ -1,13 +1,4 @@
-#!/bin/sh
-
-# Currently using remote DB. Uncomment while use Docker DB.
-# echo "Waiting for postgres..."
-
-# while ! nc -z db 5432; do
-#   sleep 0.1
-# done
-
-# echo "PostgreSQL started"
+#!/bin/bash
 
 python manage.py migrate --noinput || exit 1
 
@@ -15,6 +6,15 @@ python manage.py migrate --noinput || exit 1
 python entrypoint.py
 
 python manage.py collectstatic --no-input
-python manage.py runserver 0.0.0.0:8000
+
+# Start Supervisor
+# Start Supervisor if not already running
+if ! ps aux | grep -q "[s]upervisor"; then
+    echo "Starting supervisor service ⏳"
+    exec /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
+    echo "Supervisor started ✅"
+else
+    echo "Supervisor is currently running ✅"
+fi
 
 exec "$@"

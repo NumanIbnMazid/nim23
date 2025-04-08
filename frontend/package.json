@@ -5,10 +5,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "tsc": "tsc",
     "build": "next build",
-    "start": "next start --turbopack",
+    "start": "next start",
     "tsc-watch": "tsc --watch",
     "lint": "next lint",
     "find:unused": "next-unused",
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "@google-analytics/data": "^3.3.0",
     "@prisma/client": "^6.3.1",
     "@tailwindcss/line-clamp": "^0.4.4",

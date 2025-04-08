@@ -42,6 +42,8 @@ LOCAL_APPS = [
     "code_snippets",
     "blogs",
     "others",
+    # Video Audio Downloader
+    "grabit",
 ]
 INSTALLED_APPS = (
     [

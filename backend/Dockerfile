@@ -15,6 +15,7 @@ RUN apt-get update && \
     gcc \
     curl \
     wget \
+    net-tools \
     musl-dev \
     libssl-dev \
     libffi-dev \
@@ -24,6 +25,9 @@ RUN apt-get update && \
     netcat \
     tzdata \
     ffmpeg \
+    supervisor \
+    ca-certificates \
+    && update-ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,6 +57,13 @@ WORKDIR /app
 COPY backend/requirements.txt /app/requirements.txt
 RUN $PYTHON -m pip install -r requirements.txt
 
+# Install Node.js via 'n' (Required for Pytube PO-Token)
+RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
+    npm install -g npm@latest
+
+# Set up Supervisor
+COPY backend/supervisord.conf /etc/supervisor/supervisord.conf
+
 # Add the entrypoint script and make it executable
 COPY backend/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
@@ -61,4 +72,4 @@ RUN chmod +x /app/entrypoint.sh
 COPY backend /app
 
 # Set the entrypoint
-ENTRYPOINT [ "sh", "-c", "/app/entrypoint.sh" ]
+ENTRYPOINT [ "bash", "-c", "/app/entrypoint.sh" ]

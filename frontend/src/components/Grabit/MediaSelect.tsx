@@ -39,19 +39,19 @@ const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
   }
 
   // create a method to convert filesize from bytes to MB or GB.
-  // function formatFilesize(filesize: number) {
-  //   if (!filesize || filesize <= 0) return ''
-  //   const kb = filesize / 1024 // Convert to KB
-  //   const mb = kb / 1024 // Convert to MB
-  //   const gb = mb / 1024 // Convert to GB
-  //   if (gb >= 1) {
-  //     return `${gb.toFixed(2)} GB`
-  //   } else if (mb >= 1) {
-  //     return `${mb.toFixed(2)} MB`
-  //   } else {
-  //     return `${kb.toFixed(2)} KB`
-  //   }
-  // }
+  function formatFilesize(filesize: number) {
+    if (!filesize || filesize <= 0) return ''
+    const kb = filesize / 1024 // Convert to KB
+    const mb = kb / 1024 // Convert to MB
+    const gb = mb / 1024 // Convert to GB
+    if (gb >= 1) {
+      return `${gb.toFixed(2)} GB`
+    } else if (mb >= 1) {
+      return `${mb.toFixed(2)} MB`
+    } else {
+      return `${kb.toFixed(2)} KB`
+    }
+  }
 
   return (
     <div className="">
@@ -66,7 +66,9 @@ const MediaSelect: React.FC<Props> = ({ formats, selectedFormatRef }) => {
         {formats.map((media, index) => (
           <option key={index} value={JSON.stringify(media)}>
             {`[${formatExtension(media.ext, media.format)}] ${media.quality}` +
+              (media.resolution ? ` (${media.resolution})` : '') +
               (media.fps ? ` (${media.fps} fps)` : '') +
+              (media.filesize ? ` (${formatFilesize(media.filesize)})` : '') +
               (media.is_dash ? ` (Dash)` : '')}
           </option>
         ))}

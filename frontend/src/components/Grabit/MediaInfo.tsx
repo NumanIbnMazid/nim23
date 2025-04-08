@@ -18,6 +18,15 @@ interface MediaInfoProps {
   videoUrl: string
 }
 
+// format upload data from 20241125 to 2024-11-25
+function formatUploadDate(uploadDate: string | null): string | null {
+  if (!uploadDate) return null
+  const year = uploadDate.slice(0, 4)
+  const month = uploadDate.slice(4, 6)
+  const day = uploadDate.slice(6, 8)
+  return `${year}-${month}-${day}`
+}
+
 const MediaInfo: React.FC<MediaInfoProps> = ({ mediaInfo, videoUrl }) => {
   return (
     <div className="mt-2 bg-gray-100 dark:bg-darkFifth p-4 rounded-lg shadow-md">
@@ -57,7 +66,7 @@ const MediaInfo: React.FC<MediaInfoProps> = ({ mediaInfo, videoUrl }) => {
           )}
           {mediaInfo && mediaInfo.duration && (
             <p className="text-sm text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Uploaded on:</span> {mediaInfo.upload_date} |
+              <span className="font-medium">Uploaded on:</span> {formatUploadDate(mediaInfo.upload_date)} |
             </p>
           )}
         </div>

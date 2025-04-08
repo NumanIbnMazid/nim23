@@ -9,6 +9,7 @@ from grabit.api.serializers import DownloadRequestSerializer
 from utils.helpers import custom_response_wrapper, ResponseWrapper
 from utils.grabit_utils import fetch_media_info
 from utils.snippets import random_string_generator
+from utils.throttles import MediaInfoRateThrottle
 import re
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -30,7 +31,12 @@ class FetchMediaInfoViewSet(GenericViewSet, RetrieveModelMixin):
             )
         ]
     )
-    @action(detail=False, methods=["get"], url_path="details")
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="details",
+        throttle_classes=[MediaInfoRateThrottle],
+    )
     def retrieve_media_info(self, request):
         """
         Retrieve media information (formats, quality) based on the provided URL in query parameter.
@@ -224,9 +230,7 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
         selected_media_object = json.loads(
             request.query_params.get("selected_media_object")
         )
-        best_audio_object = json.loads(
-            request.query_params.get("best_audio_object")
-        )
+        best_audio_object = json.loads(request.query_params.get("best_audio_object"))
         download_path = request.query_params.get("download_path", "~/Downloads")
 
         if (
@@ -263,7 +267,6 @@ class DownloadViewset(GenericViewSet, CreateModelMixin, RetrieveModelMixin):
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        
 
     @swagger_auto_schema(
         manual_parameters=[

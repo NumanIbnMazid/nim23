@@ -61,10 +61,11 @@ INSTALLED_APPS = (
         # Django Cloudinary Storage
         # going to use it only for media files though, it is django.contrib.staticfiles which has to be first
         "cloudinary_storage",
-        "cloudinary"
+        "cloudinary",
     ]
     + THIRD_PARTY_APPS
-    + LOCAL_APPS + [
+    + LOCAL_APPS
+    + [
         # Django Cleanup Needs to place after all apps
         "django_cleanup.apps.CleanupConfig"
     ]
@@ -210,70 +211,79 @@ SITE_ID = 1
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "user": "100/minute",  # Authenticated users
+        "anon": "50/minute",  # Unauthenticated users
+        "media_info": "5/minute",  # for Grabit
+    },
 }
 
 # Django Tinymce Configuration
 TINYMCE_DEFAULT_CONFIG = {
-    'height': "70vh",
-    'width': "100%",
+    "height": "70vh",
+    "width": "100%",
     # 'theme': "advanced",
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 10,
-    'selector': '.tinymce',
-    'plugins': '''
+    "cleanup_on_startup": True,
+    "custom_undo_redo_levels": 10,
+    "selector": ".tinymce",
+    "plugins": """
         textcolor save link image media preview codesample contextmenu
         table code lists fullscreen  insertdatetime  nonbreaking
         contextmenu directionality searchreplace wordcount visualblocks
         visualchars code fullscreen autolink lists charmap print  hr
         anchor pagebreak
-        ''',
-    'codesample_languages': [
-        {'text': 'Python', 'value': 'python'},
-        {'text': 'Markdown', 'value': 'markdown'},
-        {'text': 'Bash', 'value': 'bash'},
-        {'text': 'JSON', 'value': 'json'},
-        {'text': 'JavaScript', 'value': 'javascript'},
-        {'text': 'TypeScript', 'value': 'typescript'},
-        {'text': 'HTML/XML', 'value': 'markup'},
-        {'text': 'CSS', 'value': 'css'},
-        {'text': 'SCSS', 'value': 'scss'},
-        {'text': 'Sass', 'value': 'sass'},
-        {'text': 'Less', 'value': 'less'},
-        {'text': 'JSX', 'value': 'jsx'},
-        {'text': 'TSX', 'value': 'tsx'},
-        {'text': 'C', 'value': 'c'},
-        {'text': 'C++', 'value': 'cpp'},
-        {'text': 'C#', 'value': 'csharp'},
-        {'text': 'Go', 'value': 'go'},
-        {'text': 'Ruby', 'value': 'ruby'},
-        {'text': 'Rust', 'value': 'rust'},
-        {'text': 'CSV', 'value': 'csv'},
-        {'text': 'Docker', 'value': 'docker'},
-        {'text': 'nginx', 'value': 'nginx'},
-        {'text': 'MongoDB', 'value': 'mongodb'},
-        {'text': 'Makefile', 'value': 'makefile'},
-        {'text': 'Lua', 'value': 'lua'},
-        {'text': 'LaTeX', 'value': 'latex'},
-        {'text': '.ignore', 'value': 'ignore'},
-        {'text': 'GraphQL', 'value': 'graphql'},
-        {'text': 'PowerShell', 'value': 'powershell'},
-        {'text': 'React JSX', 'value': 'jsx'},
-        {'text': 'React TSX', 'value': 'tsx'},
-        {'text': 'Regex', 'value': 'regex'},
-        {'text': 'SQL', 'value': 'sql'},
-        {'text': 'TOML', 'value': 'toml'},
-        {'text': 'vim', 'value': 'vim'},
-        {'text': 'YAML', 'value': 'yaml'},
+        """,
+    "codesample_languages": [
+        {"text": "Python", "value": "python"},
+        {"text": "Markdown", "value": "markdown"},
+        {"text": "Bash", "value": "bash"},
+        {"text": "JSON", "value": "json"},
+        {"text": "JavaScript", "value": "javascript"},
+        {"text": "TypeScript", "value": "typescript"},
+        {"text": "HTML/XML", "value": "markup"},
+        {"text": "CSS", "value": "css"},
+        {"text": "SCSS", "value": "scss"},
+        {"text": "Sass", "value": "sass"},
+        {"text": "Less", "value": "less"},
+        {"text": "JSX", "value": "jsx"},
+        {"text": "TSX", "value": "tsx"},
+        {"text": "C", "value": "c"},
+        {"text": "C++", "value": "cpp"},
+        {"text": "C#", "value": "csharp"},
+        {"text": "Go", "value": "go"},
+        {"text": "Ruby", "value": "ruby"},
+        {"text": "Rust", "value": "rust"},
+        {"text": "CSV", "value": "csv"},
+        {"text": "Docker", "value": "docker"},
+        {"text": "nginx", "value": "nginx"},
+        {"text": "MongoDB", "value": "mongodb"},
+        {"text": "Makefile", "value": "makefile"},
+        {"text": "Lua", "value": "lua"},
+        {"text": "LaTeX", "value": "latex"},
+        {"text": ".ignore", "value": "ignore"},
+        {"text": "GraphQL", "value": "graphql"},
+        {"text": "PowerShell", "value": "powershell"},
+        {"text": "React JSX", "value": "jsx"},
+        {"text": "React TSX", "value": "tsx"},
+        {"text": "Regex", "value": "regex"},
+        {"text": "SQL", "value": "sql"},
+        {"text": "TOML", "value": "toml"},
+        {"text": "vim", "value": "vim"},
+        {"text": "YAML", "value": "yaml"},
     ],
-    'toolbar': '''
+    "toolbar": """
         undo redo | formatselect | bold italic backcolor |
         alignleft aligncenter alignright alignjustify |
         bullist numlist outdent indent | removeformat | table | code | fullscreen
-        ''',
-    'toolbar_sticky': True,
-    'skin': 'oxide',
-    'menubar': True,
-    'statusbar': True,
+        """,
+    "toolbar_sticky": True,
+    "skin": "oxide",
+    "menubar": True,
+    "statusbar": True,
 }
 TINYMCE_SPELLCHECKER = False  # Need to install libenchant package on linux
 TINYMCE_COMPRESSOR = False
@@ -284,12 +294,12 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # Django Cloudinary
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config.CLOUDINARY_CLOUD_NAME,
-    'API_KEY': config.CLOUDINARY_API_KEY,
-    'API_SECRET': config.CLOUDINARY_API_SECRET
+    "CLOUD_NAME": config.CLOUDINARY_CLOUD_NAME,
+    "API_KEY": config.CLOUDINARY_API_KEY,
+    "API_SECRET": config.CLOUDINARY_API_SECRET,
     # 'API_SECRET': os.getenv("CLOUDINARY_API_SECRET")
 }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # ----------------------------------------------------
 # *** Configurable Values ***
@@ -297,4 +307,4 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 BACKEND_SUBDOMAIN = "/backend"
 BLOG_WORDS_PER_MINUTE = 200
 LOGIN_URL = BACKEND_SUBDOMAIN + "/admin/login/"
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = "/"

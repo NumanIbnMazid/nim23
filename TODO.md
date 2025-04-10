@@ -117,6 +117,7 @@
   - Implement API Rate Limiting.
   - (DONE) Add timer to detect problems while downloading and show error message.
   - (DONE) Problem while download taking more that 1 minute because of Vercel limitation. Implement chunk by chunk download on content with timer.
+  - Debug Video download Error for this URL: https://www.youtube.com/watch?v=kKndI2sAiBU&ab_channel=DeeptoNews. Error: Failed to download media file! ErrnoError: FS error
   - Integrate image viewer in blog or snippets details page.
 
 

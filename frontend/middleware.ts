@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl
 
   // Handle subdomain logic
-  if (hostname.startsWith('app.')) {
+  if (hostname.startsWith('apps.')) {
     // If request is going to `/`, rewrite to `/apps`
     if (url.pathname === '/') {
       url.pathname = '/apps'

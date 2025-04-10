@@ -10,10 +10,10 @@ export const revalidate = 60
 
 // Generate metadata for the landing page
 export const metadata: Metadata = getPageMetadata({
-  title: pageMeta.home.title,
-  description: pageMeta.home.description,
-  image: pageMeta.home.image,
-  keywords: pageMeta.home.keywords,
+  title: pageMeta.apps.title,
+  description: pageMeta.apps.description,
+  image: pageMeta.apps.image,
+  keywords: pageMeta.apps.keywords,
   url: PUBLIC_SITE_URL,
 })
 
@@ -30,7 +30,7 @@ async function AppsLandingPage() {
     {
       name: 'Grabit',
       link: '/apps/grabit',
-      description: "Online Video Downloader and Audio Converter"
+      description: "A powerful online video and audio downloader that lets you easily download content from YouTube, Facebook, Instagram, Twitter, TikTok, and many more platforms. Fast, secure, and completely free to use."
     },
   ]
   return <AppsClient apps={apps} />

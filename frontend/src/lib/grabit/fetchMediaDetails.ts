@@ -17,6 +17,6 @@ export const fetchMediaDetails = async (url: string, setStatusMessage: any) => {
   }
 
   const result = await response.json()
-  setStatusMessage('Please choose your desired media to download.....')
+  setStatusMessage('Please choose your desired media format to download')
   return result.success ? result.data.media_info : null
 }

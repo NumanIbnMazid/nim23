@@ -125,7 +125,7 @@ export default function GrabitPage() {
         viewport={{ once: true }}
         className="max-w-6xl mx-auto py-16"
       >
-        <section className="">
+        <section className="mx-auto px-5">
           <HomeHeading title="Grabit" />
           <Concern />
 

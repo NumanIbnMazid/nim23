@@ -27,6 +27,12 @@ export const processDownload = async (
     `download_path=${encodeURIComponent(downloadPathRef.current?.value || '~/Downloads')}`
 
   const response = await fetch(downloadApiUrl)
+
+  if (!response.ok) {
+    const errorText = await response.text() // fetch raw HTML for debugging
+    console.error("Error response from server:", errorText)
+    throw new Error(`Failed to process download! Server responded with ${response.status}`)
+  }
   const data = await response.json()
 
   const outputFileName = data.data.video_title || videoTitle

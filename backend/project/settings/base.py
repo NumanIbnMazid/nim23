@@ -44,6 +44,10 @@ LOCAL_APPS = [
     "others",
     # Video Audio Downloader
     "grabit",
+    # AI Text Humanizer
+    "humanizer_ai",
+    # AI Text Detector
+    "detect_ai",
 ]
 INSTALLED_APPS = (
     [

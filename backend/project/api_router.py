@@ -22,6 +22,16 @@ from others.api.routers import *
 # ----------------------------------------------------
 from grabit.api.routers import *
 
+# ----------------------------------------------------
+# *** humanizer AI ***
+# ----------------------------------------------------
+from humanizer_ai.api.routers import *
+
+# ----------------------------------------------------
+# *** AI Text Detector ***
+# ----------------------------------------------------
+from detect_ai.api.routers import *
+
 
 app_name = "nim23_backend_api"
 urlpatterns = router.urls

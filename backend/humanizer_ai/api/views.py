@@ -62,7 +62,7 @@ class HumanizerAiViewset(GenericViewSet):
                 messages=messages,
             )
             # TODO: Remove after testing
-            print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
+            # print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
 
             if response.content:
                 humanized_text = response.content
@@ -85,7 +85,7 @@ class HumanizerAiViewset(GenericViewSet):
                 messages=messages,
             )
             # TODO: Remove after testing
-            print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
+            # print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
 
             if response.choices:
                 humanized_text = response.choices[0].message.content
@@ -117,7 +117,7 @@ class HumanizerAiViewset(GenericViewSet):
                 ),
             )
             # TODO: Remove after testing
-            print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
+            # print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
 
             if response:
                 humanized_text = response.text
@@ -159,8 +159,9 @@ class HumanizerAiViewset(GenericViewSet):
         try:
             system_prompt = (
                 "You are a professional writing assistant. Rephrase the following text to sound "
-                "more natural, fluent, and human-written — without changing the original meaning "
-                "or adding or removing anything. Only return the rephrased text. Do not add any introduction, explanation, or comments."
+                "more natural, fluent, and human-written — without changing the original meaning or adding or removing anything. "
+                "Please try to preserve formatting of the source text as much as possible. "
+                "Only return the rephrased text. Do not add any introduction, explanation, or comments. "
             )
             user_prompt = input_text
 

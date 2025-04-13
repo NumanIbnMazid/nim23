@@ -30,7 +30,14 @@ async function AppsLandingPage() {
     {
       name: 'Grabit',
       link: '/apps/grabit',
-      description: "A powerful online video and audio downloader that lets you easily download content from YouTube, Facebook, Instagram, Twitter, TikTok, and many more platforms. Fast, secure, and completely free to use."
+      description:
+        'A powerful online video and audio downloader that lets you easily download content from YouTube, Facebook, Instagram, Twitter, TikTok, and many more platforms. Fast, secure, and completely free to use.',
+    },
+    {
+      name: 'Humanizer AI',
+      link: '/apps/humanizer-ai',
+      description:
+        'Humanizer AI by NIM23 is a free online tool that transforms robotic or AI-generated text into natural, human-sounding language. Perfect for emails, blogs, captions, and more.',
     },
   ]
   return <AppsClient apps={apps} />

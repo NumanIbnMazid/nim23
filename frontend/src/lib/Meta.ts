@@ -2,7 +2,6 @@ import { PageMeta } from '@/lib/types'
 import type { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 
-
 const myImage = 'images/numan.png'
 const blogImage = 'static-images/blog.png'
 const projectImage = 'static-images/project.png'
@@ -112,7 +111,7 @@ export const pageMeta: PageMeta = {
     title: 'Apps | NIM23',
     description:
       'Discover a range of useful and innovative apps created and offered by NIM23. From productivity tools to creative utilities, each app is built with care to solve real-world problems and enhance your digital experience.',
-    image: logoImage, // Replace this with the actual imported image for the apps page
+    image: logoImage,
     keywords:
       'nim23 apps, numanibnmazid apps, web apps by nim23, productivity tools, creative apps, useful apps, nim23 tools, react apps, django apps, web development tools, youtube downloader, youtube video downloader, youtube video converter, nim23 grabit, nim23 grabit app, facebook video downloader, facebook video converter, tiktok video downloader, tiktok video converter, instagram video downloader, instagram video converter, twitter video downloader, twitter video converter, video to audio converter, audio converter, youtube 4k video downloader, youtube 8k video downloader, youtube 2k video downloader, youtube 1080p video downloader, youtube 720p video downloader',
   },
@@ -120,9 +119,17 @@ export const pageMeta: PageMeta = {
     title: 'Grabit - Download Videos & Audio from Any Platform | NIM23',
     description:
       'Grabit by NIM23 is a powerful video and audio downloader that lets you easily download content from YouTube, Facebook, Instagram, Twitter, TikTok, and many more platforms. Fast, secure, and completely free to use.',
-    image: logoImage, // Replace with your actual image import
+    image: logoImage,
     keywords:
       'video downloader, audio downloader, youtube video downloader, facebook video downloader, instagram video downloader, tiktok downloader, twitter video downloader, yt-dlp downloader, online media downloader, grabit downloader, nim23 grabit, nim23 video tools, download youtube mp3, download mp4, download HD videos, free media downloader, yt-dlp frontend, open source downloader, youtube to mp3, video to audio extractor, best video downloader 2025, grabit app nim23, fast youtube downloader, no ads downloader, privacy-safe downloader, youtube 4k video downloader, youtube 8k video downloader, youtube 2k video downloader, youtube 1080p video downloader, youtube 720p video downloader, facebook hd video downloader, facebook 4k video downloader',
+  },
+  humanizerAI: {
+    title: 'Humanizer AI - Convert AI Text to Human-Like Content | NIM23',
+    description:
+      'Humanizer AI by NIM23 is a free online tool that transforms robotic or AI-generated text into natural, human-sounding language. Perfect for emails, blogs, captions, and more.',
+    image: logoImage,
+    keywords:
+      'AI text humanizer, humanize ai text, convert AI to human, rewrite AI content, natural language converter, robotic text to human, GPT humanizer, OpenRouter AI tool, AI detector bypass tool, human-like text generator, rewrite ChatGPT text, make AI text sound human, humanize GPT output, AI content editor, ai rewriter, ai paraphraser, AI text fixer, best ai humanizer 2025, free ai text converter, humanizer app by nim23, ai to human tone adjuster, content tone enhancer, seo friendly humanized text, human-like copywriter',
   },
 }
 
@@ -300,7 +307,6 @@ export function getPageMetadata({
     },
   }
 }
-
 
 // ✅ Export viewport separately as required by Next.js 14+
 export const viewport = {

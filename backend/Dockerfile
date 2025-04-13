@@ -1,5 +1,5 @@
 # Use Ubuntu as the base image
-FROM ubuntu:22.04
+FROM ubuntu:25.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -9,8 +9,8 @@ ENV TZ=Asia/Dhaka
 ENV PYTHON_VERSION=3.12.2
 
 # Install required system dependencies (including zlib-dev)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt update && \
+    apt install -y --no-install-recommends \
     build-essential \
     gcc \
     curl \
@@ -22,7 +22,7 @@ RUN apt-get update && \
     libjpeg-dev \
     libpq-dev \
     zlib1g-dev \
-    netcat \
+    netcat-traditional \
     tzdata \
     ffmpeg \
     supervisor \
@@ -56,10 +56,6 @@ WORKDIR /app
 # Copy the requirements file and install Python dependencies
 COPY backend/requirements.txt /app/requirements.txt
 RUN $PYTHON -m pip install -r requirements.txt
-
-# Install Node.js via 'n' (Required for Pytube PO-Token)
-RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts && \
-    npm install -g npm@latest
 
 # Set up Supervisor
 COPY backend/supervisord.conf /etc/supervisor/supervisord.conf

@@ -1,26 +1,28 @@
 # Use Ubuntu as the base image
-FROM ubuntu:22.04
+FROM ubuntu:25.04
 
 # Install required system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt update && \
+    apt install -y --no-install-recommends \
     build-essential \
     gcc \
     curl \
     gnupg2 \
     ca-certificates \
     apt-transport-https \
-    && apt-get clean \
+    && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 20.2.0
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
+RUN apt install -y nodejs
 
 # Install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn
+RUN mkdir -p /etc/apt/keyrings \
+  && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
+  && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt update && apt install -y yarn
 
 # Install webpack
 RUN yarn global add webpack

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import socialMedia from '@/content/socialMedia'
 import { FadeContainer, opacityVariant, popUp } from '@/content/FramerMotionVariants'
-import { navigationRoutes } from '@/utils/utils'
+import { namedNavigationRoutesAll } from '@/utils/utils'
 import { motion } from 'framer-motion'
 import useSWR from 'swr'
 import fetcher from '@/lib/fetcher'
@@ -31,17 +31,20 @@ export default function Footer({ setShowQR, showQR }: { setShowQR: (value: boole
         <section className="grid grid-cols-3 md:grid-cols-6 gap-10">
           {/* 1st 5 navigation routes */}
           <div className="flex flex-col gap-4 capitalize">
-            {navigationRoutes.slice(0, 5).map((text, index) => {
-              return <FooterLink key={index} route={text} text={text} />
-            })}
+            {Object.entries(namedNavigationRoutesAll)
+              .slice(0, 9)
+              .map(([route, text], index) => (
+                <FooterLink key={index} route={route} text={text} />
+              ))}
           </div>
           {/* Last navigation routes */}
           <div className="flex flex-col gap-4 capitalize">
-            {navigationRoutes.slice(5, navigationRoutes.length).map((route, index) => {
-              let text = route
-              if (route === 'rss') text = 'RSS'
-              return <FooterLink key={index} route={route} text={text} />
-            })}
+            {Object.entries(namedNavigationRoutesAll)
+              .slice(9)
+              .map(([route, text], index) => (
+                <FooterLink key={index} route={route} text={text === 'rss' ? 'RSS' : text} />
+              ))}
+
             {/* Submit Issue in Github */}
             <Link
               href="https://github.com/NumanIbnMazid/nim23-issues/issues"

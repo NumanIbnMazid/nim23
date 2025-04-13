@@ -3,6 +3,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.conf import settings
 
 from humanizer_ai.api.serializers import HumanizerRequestSerializer
 from utils.helpers import custom_response_wrapper, ResponseWrapper
@@ -157,12 +158,13 @@ class HumanizerAiViewset(GenericViewSet):
         MODEL = os.getenv("HUMANIZER_AI_MODEL")
 
         try:
-            system_prompt = (
-                "You are a professional writing assistant. Rephrase the following text to sound "
-                "more natural, fluent, and human-written — without changing the original meaning or adding or removing anything. "
-                "Please try to preserve formatting of the source text as much as possible. "
-                "Only return the rephrased text. Do not add any introduction, explanation, or comments. "
-            )
+            # Define the token file path
+            BASE_DIR = settings.BASE_DIR
+            PROMPTS_DIR = os.path.join(BASE_DIR, "humanizer_ai/prompts")
+            SYSTEM_PROMPT_FILE = os.path.join(PROMPTS_DIR, "system-prompt.md")
+
+            with open(SYSTEM_PROMPT_FILE, "r") as file:
+                system_prompt = file.read()
             user_prompt = input_text
 
             response = self.get_response(

@@ -53,3 +53,13 @@ node build/main.js
 - https://pytube.io/en/latest/api.html
 - https://github.com/pytube/pytube/issues/1894#issue-2180600881
 - https://github.com/pytube/pytube/issues/1322
+
+### Humanizer AI
+
+#### Shortlisted Models
+
+URL: https://openrouter.ai/models
+
+Models:
+- nvidia/llama-3.1-nemotron-nano-8b-v1:free
+- 

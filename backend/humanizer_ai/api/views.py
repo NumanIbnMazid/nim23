@@ -9,6 +9,8 @@ from utils.helpers import custom_response_wrapper, ResponseWrapper
 import os
 from openai import OpenAI
 import anthropic
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 import json
 
@@ -35,13 +37,24 @@ class HumanizerAiViewset(GenericViewSet):
                 api_key=OPENROUTER_API_KEY,
             )
             return client
+        elif client_name == "gemini":
+            GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+            client = genai.Client(api_key=GEMINI_API_KEY)
+            return client
         else:
             raise ValueError("Invalid client name")
 
-    def get_response(self, client_name, client, model, messages):
+    def get_response(self, client_name, client, model, system_prompt, user_prompt):
         """
         Get the response from the client.
         """
+        messages = [
+            {
+                "role": "system",
+                "content": system_prompt,
+            },
+            {"role": "user", "content": user_prompt},
+        ]
         if client_name == "anthropic":
             response = client.messages.create(
                 model=model,
@@ -50,7 +63,7 @@ class HumanizerAiViewset(GenericViewSet):
             )
             # TODO: Remove after testing
             print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
-            
+
             if response.content:
                 humanized_text = response.content
                 return ResponseWrapper(
@@ -58,13 +71,6 @@ class HumanizerAiViewset(GenericViewSet):
                 )
             elif response.error:
                 error_message = response.error.get("message")
-                try:
-                    error_message = json.loads(
-                        response.error.get("metadata").get("raw")
-                    ).get("error")
-                except Exception as e:
-                    pass
-
                 return ResponseWrapper(
                     message=f"Failed to humanize text! Please try again later.",
                     error_message=error_message,
@@ -101,6 +107,31 @@ class HumanizerAiViewset(GenericViewSet):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             return response
+        elif client_name == "gemini":
+            response = client.models.generate_content(
+                model=model,
+                contents=user_prompt,
+                config=types.GenerateContentConfig(
+                    temperature=1,
+                    system_instruction=system_prompt,
+                ),
+            )
+            # TODO: Remove after testing
+            print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
+
+            if response:
+                humanized_text = response.text
+                return ResponseWrapper(
+                    data={"humanized_text": humanized_text}, status=status.HTTP_200_OK
+                )
+            elif response.error:
+                error_message = response.error.get("message")
+                return ResponseWrapper(
+                    message=f"Failed to humanize text! Please try again later.",
+                    error_message=error_message,
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            return response
         else:
             raise ValueError("Invalid client name")
 
@@ -126,19 +157,16 @@ class HumanizerAiViewset(GenericViewSet):
         MODEL = os.getenv("HUMANIZER_AI_MODEL")
 
         try:
-            humanized_text = ""
-            messages = [
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a professional writing assistant. Rephrase the following text to sound "
-                        "more natural, fluent, and human-written — without changing the original meaning "
-                        "or adding or removing anything. Only return the rephrased text. Do not add any introduction, explanation, or comments. "
-                    ),
-                },
-                {"role": "user", "content": input_text},
-            ]
-            response = self.get_response(client_name, client, MODEL, messages)
+            system_prompt = (
+                "You are a professional writing assistant. Rephrase the following text to sound "
+                "more natural, fluent, and human-written — without changing the original meaning "
+                "or adding or removing anything. Only return the rephrased text. Do not add any introduction, explanation, or comments."
+            )
+            user_prompt = input_text
+
+            response = self.get_response(
+                client_name, client, MODEL, system_prompt, user_prompt
+            )
 
             return response
 

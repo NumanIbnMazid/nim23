@@ -22,7 +22,7 @@ const HumanizerInput: React.FC<Props> = ({ inputText, maxLength, setInputText, o
   return (
     <div className="mb-6">
       <textarea
-        rows={8}
+        rows={10}
         value={inputText}
         onChange={handleChange}
         placeholder="Paste your AI-generated text here..."

@@ -15,7 +15,8 @@ export default function HumanizerAiClient() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const maxLength = 3000 // Words
+  const maxLength = 500 // Words
+  const minLength = 23 // Words
 
   const handleSubmit = async () => {
     if (!inputText.trim()) {
@@ -26,6 +27,10 @@ export default function HumanizerAiClient() {
     const wordCount = countWords(inputText)
     if (wordCount > maxLength) {
       setError(`Input exceeds ${maxLength} words. Current: ${wordCount}`)
+      return
+    }
+    if (wordCount < minLength) {
+      setError(`Input must be at least ${minLength} words. Current: ${wordCount}`)
       return
     }
 
@@ -62,6 +67,7 @@ export default function HumanizerAiClient() {
             <HumanizerInput
               inputText={inputText}
               maxLength={maxLength}
+              minLength={minLength}
               setInputText={setInputText}
               onSubmit={handleSubmit}
               loading={loading}

@@ -113,7 +113,8 @@ class HumanizerAiViewset(GenericViewSet):
                 model=model,
                 contents=user_prompt,
                 config=types.GenerateContentConfig(
-                    temperature=1,
+                    temperature=1.0,
+                    max_output_tokens=8192,
                     system_instruction=system_prompt,
                 ),
             )

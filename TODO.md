@@ -120,6 +120,7 @@
   - Debug Video download Error for this URL: https://www.youtube.com/watch?v=kKndI2sAiBU&ab_channel=DeeptoNews. Error: Failed to download media file! ErrnoError: FS error
   - Integrate image viewer in blog or snippets details page.
   - Implement API rate limiting globally and for humanizer_ai.
+  - Add minimum word count in humanizer ai.
 
 
 ## Improvement

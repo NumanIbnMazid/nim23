@@ -48,6 +48,8 @@ LOCAL_APPS = [
     "humanizer_ai",
     # AI Text Detector
     "detect_ai",
+    # Recommendation System
+    "recommendr",
 ]
 INSTALLED_APPS = (
     [

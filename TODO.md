@@ -121,6 +121,9 @@
   - Integrate image viewer in blog or snippets details page.
   - Implement API rate limiting globally and for humanizer_ai.
   - Add minimum word count in humanizer ai.
+  - Download IMDB data locally after a certain period of time and look in that instead of everytime fetching from IMDB.
+  - Add uniqueness of recommendation while recommending media using recommendr.
+  - Ask user in frontend about what metadata they wants and warn them it will be slow.
 
 
 ## Improvement

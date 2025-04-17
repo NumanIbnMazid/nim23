@@ -124,6 +124,7 @@
   - Download IMDB data locally after a certain period of time and look in that instead of everytime fetching from IMDB.
   - Add uniqueness of recommendation while recommending media using recommendr.
   - Ask user in frontend about what metadata they wants and warn them it will be slow.
+  - Make recommendr preferences dynamic from database.
 
 
 ## Improvement

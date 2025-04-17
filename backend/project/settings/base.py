@@ -187,7 +187,8 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+            "format": "%(levelname)s [%(asctime)s] [%(name)s] [%(module)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         }
     },
     "handlers": {
@@ -199,7 +200,7 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": [],
+            "handlers": ["console"],
             "level": config.DJANGO_LOG_LEVEL,
             "propagate": True,
         },
@@ -222,9 +223,10 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.AnonRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "user": "100/minute",  # Authenticated users
-        "anon": "50/minute",  # Unauthenticated users
-        "media_info": "5/minute",  # for Grabit
+        "user": "150/minute",  # Authenticated users
+        "anon": "100/minute",  # Unauthenticated users
+        "grabit_rate_limit": "10/minute",  # for Grabit
+        "recommendr_rate_limit": "1000/minute",  # for Recommendr
     },
 }
 

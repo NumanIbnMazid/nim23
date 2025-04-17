@@ -6,8 +6,8 @@ from drf_yasg import openapi
 from django.conf import settings
 from dotenv import load_dotenv
 from pydantic import BaseModel
-
 from recommendr.api.serializers import RecommendationRequestSerializer
+from recommendr.models import RecommendrUtils
 from utils.helpers import custom_response_wrapper, ResponseWrapper
 
 from langchain.agents import initialize_agent, Tool
@@ -16,12 +16,18 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.tools import DuckDuckGoSearchResults
 
 from google import genai
-
+from googleapiclient.discovery import build
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 from imdb import Cinemagoer
 
 import os
 import json
 import random
+import logging
+
+
+logger = logging.getLogger("recommendr")
 
 
 class RecommendationResponseObject(BaseModel):
@@ -40,6 +46,20 @@ class RecommendationResponseObject(BaseModel):
     music_youtube_link: str
 
 
+load_dotenv()
+RECOMMENDR_MODEL = os.getenv("RECOMMENDR_AI_MODEL")
+YOUTUBE_API_KEY = os.getenv("GOOGLE_API_KEY")
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+# Spotify instance
+spotify = spotipy.Spotify(
+    auth_manager=SpotifyClientCredentials(
+        client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET
+    )
+)
+
+
 @custom_response_wrapper
 class RecommendationViewSet(GenericViewSet):
     permission_classes = (permissions.AllowAny,)
@@ -49,12 +69,64 @@ class RecommendationViewSet(GenericViewSet):
         load_dotenv()
         return genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-    def load_prompt(self):
-        path = os.path.join(
-            settings.BASE_DIR, "recommendr/api/prompts/recommendation-prompt.md"
+    def get_prompt(self):
+        system_prompt = RecommendrUtils.objects.first().system_prompt
+        if not system_prompt:
+            raise ValueError("System prompt is empty")
+        return system_prompt
+
+    def update_data_with_imdb(self, resultObj, index, title, media_type):
+        if media_type in ["movie", "tv_show", "web series", "documentary"]:
+            ia = Cinemagoer()
+            results = ia.search_movie(title)
+            logger.info(f"🔍 Searching for `{title}` in IMDB...")
+
+            if results:
+                # Get detailed info from first match
+                movie = results[0]
+                logger.info(f"✅ Found `{title}` in IMDB with ID: {movie.movieID}")
+                ia.update(movie)
+                resultObj[index]["title"] = movie.get("title")
+                resultObj[index]["cover_url"] = movie.get("cover url")
+                resultObj[index]["year"] = movie.get("year")
+                resultObj[index]["genres"] = movie.get("genres")
+                resultObj[index][
+                    "review_link"
+                ] = f"https://www.imdb.com/title/tt{movie.movieID}/"
+                resultObj[index]["rating"] = movie.get("rating")
+                resultObj[index]["languages"] = movie.get("languages")
+                resultObj[index]["description"] = movie.get("plot")
+                resultObj[index]["cast"] = movie.get("cast")
+                resultObj[index]["director"] = movie.get("director")
+                resultObj[index]["producer"] = movie.get("producer")
+                resultObj[index]["writer"] = movie.get("writer")
+                return resultObj
+            else:
+                logger.info(f"⚠️ No results found for `{title}` in IMDB.")
+                return resultObj
+        return resultObj
+
+    def get_youtube_link(self, query):
+        logger.info(f"🔍 Searching for `{query}` in YouTube...")
+        youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+        request = youtube.search().list(
+            q=query, part="snippet", maxResults=1, type="video"
         )
-        with open(path, "r") as f:
-            return f.read()
+        response = request.execute()
+        if response["items"]:
+            video_id = response["items"][0]["id"]["videoId"]
+            logger.info(f"✅ Found `{query}` in YouTube with ID: {video_id}")
+            return f"https://www.youtube.com/watch?v={video_id}"
+        return ""
+
+    def get_spotify_link(self, query):
+        logger.info(f"🔍 Searching for `{query}` in Spotify...")
+        results = spotify.search(q=query, limit=1, type="track")
+        tracks = results.get("tracks", {}).get("items", [])
+        if tracks:
+            logger.info(f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}")
+            return tracks[0]["external_urls"]["spotify"]
+        return ""
 
     def generate_recommendation(self, input_data):
         phrasing_variants = [
@@ -64,32 +136,18 @@ class RecommendationViewSet(GenericViewSet):
             "Give me 5 great",
         ]
         input_data["random_intro"] = random.choice(phrasing_variants)
-        prompt_template = self.load_prompt()
+        prompt_template = self.get_prompt()
         user_prompt = prompt_template.format(**input_data)
 
         # TODO: Remove after testing
         # print(f"\n\n🔥🔥🔥User Prompt:🔥🔥🔥\n {user_prompt} \n\n")
 
-        # client = self.get_gemini_client()
-        load_dotenv()
-        model = os.getenv("RECOMMENDR_AI_MODEL")
-        if not model:
+        if not RECOMMENDR_MODEL:
             raise ValueError("GEMINI model name not found in environment variables")
-        # response = client.models.generate_content(
-        #     model=model,
-        #     contents=user_prompt,
-        #     config=types.GenerateContentConfig(
-        #         temperature=2,
-        #         max_output_tokens=8192,
-        #         response_mime_type="application/json",
-        #         response_schema=list[RecommendationResponseObject],
-        #         system_instruction="You are a helpful recommendation assistant. Provide creative and accurate suggestions with rich metadata.",
-        #     ),
-        # )
 
         # Step 1: Initialize Gemini (ChatGoogleGenerativeAI)
         llm = ChatGoogleGenerativeAI(
-            model=model, api_key=os.getenv("GEMINI_API_KEY"), temperature=0.3
+            model=RECOMMENDR_MODEL, api_key=os.getenv("GEMINI_API_KEY"), temperature=0.3
         )
 
         # Step 2: Add a search tool (e.g. DuckDuckGoSearchRun or SerpAPI)
@@ -111,6 +169,7 @@ class RecommendationViewSet(GenericViewSet):
             agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
             verbose=True,
             handle_parsing_errors=True,
+            max_iterations=50,
         )
 
         query = user_prompt
@@ -121,15 +180,14 @@ class RecommendationViewSet(GenericViewSet):
         # Check if we have a valid response with the movie recommendations
         output = response.get("output")
 
-        print(f"🔥🔥🔥Response:🔥🔥🔥\n {output} \n\n")
-        
-        #TODO: Uncomment
-        # # If the output contains multiple movie recommendations, return those
-        # if isinstance(output, list):
-        #     return output  # Returning the list of movie recommendations directly
-        # else:
-        #     # If no valid list is found, we can fallback to a default or empty response
-        #     return []
+        # logger.info(f"🔥🔥🔥Response:🔥🔥🔥\n {output} \n\n")
+
+        # If the output contains multiple movie recommendations, return those
+        if isinstance(output, list):
+            return output  # Returning the list of movie recommendations directly
+        else:
+            # If no valid list is found, we can fallback to a default or empty response
+            return []
         return output
 
     @swagger_auto_schema(
@@ -145,9 +203,6 @@ class RecommendationViewSet(GenericViewSet):
         try:
             result = self.generate_recommendation(serializer.validated_data)
 
-            # TODO: Remove after testing
-            # print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {result} \n\n")
-
             if not result:
                 return ResponseWrapper(
                     message="No recommendations found",
@@ -155,53 +210,45 @@ class RecommendationViewSet(GenericViewSet):
                 )
             if isinstance(result, str):
                 result = json.loads(result)
-            
-            # IMDB SEARCH
-            for index, data in enumerate(result):
-                title = data.get("title")
-                media_type = data.get("media_type")
 
+            filtered_result = [item for item in result if item.get("title", "").strip()]
+
+            media_type = serializer.validated_data.get("media_type")
+
+            # Update METADATA
+            for index, data in enumerate(filtered_result):
+                title = data.get("title")
                 if not title or not media_type:
                     return ResponseWrapper(
                         message="Missing 'title' or 'media_type' parameter.",
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
+                # ATTACH IMDB DATA
                 if media_type in ["movie", "tv_show", "web series", "documentary"]:
-                    ia = Cinemagoer()
-                    results = ia.search_movie(title)
+                    filtered_result = self.update_data_with_imdb(
+                        result, index, title, media_type
+                    )
 
-                    print(f"Searching for `{title}` in IMDB...")
-
-                    if not results:
-                        print(f"No results found for `{title}` in IMDB.")
-                        continue
-
-                    # Get detailed info from first match
-                    movie = results[0]
-                    print(f"Found `{title}` in IMDB with ID: {movie.movieID}")
-                    ia.update(movie)
-                    result[index]["title"] = movie.get("title")
-                    result[index]["cover_url"] = movie.get("cover url")
-                    result[index]["year"] = movie.get("year")
-                    result[index]["genres"] = movie.get("genres")
-                    result[index]["review_link"] = f"https://www.imdb.com/title/tt{movie.movieID}/"
-                    result[index]["rating"] = movie.get("rating")
-                    result[index]["languages"] = movie.get("languages")
-                    result[index]["description"] = movie.get("plot")
-                    # TODO: Uncomment
-                    # result[index]["director"] = movie.get("director")
-                    # result[index]["producer"] = movie.get("producer")
-                    # result[index]["writer"] = movie.get("writer")
-                    # result[index]["cast"] = movie.get("cast")
-
+                # ATTACH YOUTUBE, SPOTIFY LINK
+                query = f"{title} {media_type}"
+                if media_type == "music":
+                    artist_list = data.get("artist", [])
+                    query = f"{title}" + (
+                        f" artist:{', '.join(artist_list)}" if artist_list else ""
+                    )
+                if media_type in ["music", "podcast", "audiobook"]:
+                    filtered_result[index]["spotify_link"] = self.get_spotify_link(
+                        query
+                    )
+                filtered_result[index]["youtube_link"] = self.get_youtube_link(query)
 
             return ResponseWrapper(
-                data={"recommendations": result}, status=status.HTTP_200_OK
+                data={"recommendations": filtered_result}, status=status.HTTP_200_OK
             )
         except Exception as e:
-            # TODO: Remove after testing
-            print(f"\n\ERROR:🔥🔥🔥\n {e} \n\n")
+            raise e
+            logger.error(f"⚠️ Error: {e}")
             return ResponseWrapper(
                 message="Recommendation failed",
                 error_message=str(e),

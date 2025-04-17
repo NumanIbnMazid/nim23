@@ -5,6 +5,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.conf import settings
 
+from others.models import HumanizerAiUtils
+
 from humanizer_ai.api.serializers import HumanizerRequestSerializer
 from utils.helpers import custom_response_wrapper, ResponseWrapper
 import os
@@ -159,17 +161,13 @@ class HumanizerAiViewset(GenericViewSet):
         MODEL = os.getenv("HUMANIZER_AI_MODEL")
 
         try:
-            # Define the token file path
-            BASE_DIR = settings.BASE_DIR
-            PROMPTS_DIR = os.path.join(BASE_DIR, "humanizer_ai/prompts")
-            SYSTEM_PROMPT_FILE = os.path.join(PROMPTS_DIR, "system-prompt.md")
-
-            with open(SYSTEM_PROMPT_FILE, "r") as file:
-                system_prompt = file.read()
-            user_prompt = input_text
-
+            system_prompt = HumanizerAiUtils.objects.first().system_prompt
+            if not system_prompt:
+                raise ValueError("System prompt is empty")
+            # print(f"\n\n🔥🔥🔥System Prompt:🔥🔥🔥\n {system_prompt} \n\n")
+            # print(f"\n\n🔥🔥🔥Input Text:🔥🔥🔥\n {input_text} \n\n")
             response = self.get_response(
-                client_name, client, MODEL, system_prompt, user_prompt
+                client_name, client, MODEL, system_prompt, input_text
             )
 
             return response

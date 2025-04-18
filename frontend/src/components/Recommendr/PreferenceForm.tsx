@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ReactModal from 'react-modal'
 import { FaCheck, FaPaperPlane, FaSliders, FaChevronDown, FaChevronUp } from 'react-icons/fa6'
 
@@ -9,25 +9,34 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
     initialValues || {
       mood: '',
       media_type: '',
-      language: [] as string[],
-      occasion: [] as string[],
-      genre: [] as string[],
+      language: [],
+      occasion: [],
+      genres: [],
       media_age: [],
       rating: [],
-      category: [],
+      categories: [],
       other_preferences: '',
     }
   )
 
-  // ✅ Ensure `setAppElement` is only called on the client side
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     ReactModal.setAppElement('#__next')
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      ReactModal.setAppElement('#__app_root')
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('Initial Values:', initialValues)
+    if (initialValues && initialValues.media_type) {
+      setFormData((prev: any) => ({
+        ...prev,
+        genres: initialValues.genres || [],
+        categories: initialValues.categories || [],
+      }))
+    }
+  }, [initialValues?.media_type])
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  // const openModal = () => setModalIsOpen(true)
   const closeModal = () => setModalIsOpen(false)
   const [openSections, setOpenSections] = useState<string[]>([])
 
@@ -35,35 +44,17 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
     setOpenSections((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]))
   }
 
-  const fields = [
-    { label: 'Language', key: 'language', options: preferences.language, multi: true },
-    { label: 'Occasion', key: 'occasion', options: preferences.occasion, multi: true },
-    {
-      label: 'Genre',
-      key: 'genre',
-      options: preferences.genres[formData.media_type] || [],
-      multi: true,
-    },
-    { label: 'Media Age', key: 'media_age', options: preferences.media_age, multi: true },
-    { label: 'Rating', key: 'rating', options: preferences.rating, multi: true },
-    {
-      label: 'Category',
-      key: 'category',
-      options: preferences.categories[formData.media_type] || [],
-      multi: true,
-    },
-    { label: 'Other Preferences', key: 'other_preferences', isTextInput: true },
-  ]
-
   const handleSelect = (key: keyof typeof formData, value: string, multi?: boolean) => {
     if (multi) {
-      const selected = formData[key] as string[]
+      const selected = Array.isArray(formData[key]) ? (formData[key] as string[]) : []
       const updated = selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value]
-      setFormData((prev: typeof formData) => ({ ...prev, [key]: updated }))
+      setFormData((prev: Record<string, unknown>) => ({ ...prev, [key]: updated }))
     } else {
-      setFormData((prev: typeof formData) => ({ ...prev, [key]: value }))
+      setFormData((prev: Record<string, unknown>) => ({ ...prev, [key]: value }))
     }
   }
+
+  const canSubmit = formData.mood && formData.media_type
 
   const handleSubmit = () => {
     const payload = {
@@ -71,17 +62,64 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
       media_type: formData.media_type,
       language: formData.language.length > 0 ? formData.language : [''],
       occasion: formData.occasion.length > 0 ? formData.occasion : [''],
-      genres: formData.genre.length > 0 ? formData.genre : [''],
+      genres: formData.genres.length > 0 ? formData.genres : [''],
       media_age: formData.media_age.length > 0 ? formData.media_age : [''],
       rating: formData.rating.length > 0 ? formData.rating : [''],
-      categories: formData.category.length > 0 ? formData.category : [''],
+      categories: formData.categories.length > 0 ? formData.categories : [''],
       other_preferences: formData.other_preferences || '',
     }
 
     onSubmit(payload)
   }
 
-  const canSubmit = formData.mood && formData.media_type
+  const fields = [
+    { label: 'Language', key: 'language', options: preferences.language, multi: true },
+    {
+      label: 'Genres',
+      key: 'genres',
+      options: [
+        ...(preferences.genres[formData.media_type] || []),
+        ...(Array.isArray(formData.genres) ? formData.genres : []).filter(
+          (g: string) => !(preferences.genres[formData.media_type] || []).includes(g)
+        ),
+      ],
+      multi: true,
+    },
+    {
+      label: 'Occasion',
+      key: 'occasion',
+      options: preferences.occasion,
+      multi: true,
+    },
+    {
+      label: 'Media Age',
+      key: 'media_age',
+      options: preferences.media_age,
+      multi: true,
+    },
+    {
+      label: 'Rating',
+      key: 'rating',
+      options: preferences.rating,
+      multi: true,
+    },
+    {
+      label: 'Categories',
+      key: 'categories',
+      options: [
+        ...(preferences.categories[formData.media_type] || []),
+        ...(Array.isArray(formData.categories) ? formData.categories : []).filter(
+          (c: string) => !(preferences.categories[formData.media_type] || []).includes(c)
+        ),
+      ],
+      multi: true,
+    },
+    {
+      label: 'Other Preferences',
+      key: 'other_preferences',
+      isTextInput: true,
+    },
+  ]
 
   const renderField = ({ label, key, options, multi, isTextInput }: any) => {
     const isOpen = openSections.includes(key)
@@ -104,15 +142,13 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
                 className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
                 placeholder="E.g. Songs by A.R. Rahman"
                 value={formData.other_preferences}
-                onChange={(e) =>
-                  setFormData((prev: { [key: string]: any }) => ({ ...prev, other_preferences: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev: any) => ({ ...prev, other_preferences: e.target.value }))}
               />
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {options?.map((option: string) => {
                   const isSelected = multi
-                    ? (formData[key as keyof typeof formData] as string[]).includes(option)
+                    ? (formData[key as keyof typeof formData] as string[])?.includes(option)
                     : formData[key as keyof typeof formData] === option
 
                   return (
@@ -186,23 +222,21 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
       </div>
 
       {/* Advanced Filters Button */}
-      {formData.mood && formData.media_type && (
-        <div className="flex justify-between items-center pt-2">
+      {canSubmit && (
+        <div className="flex flex-col sm:flex-row justify-between items-center pt-2">
           <button
             onClick={() => setModalIsOpen(true)}
-            className="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+            className="inline-flex items-center gap-2 my-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
           >
             <FaSliders /> Advanced Filters
           </button>
 
-          {canSubmit && (
-            <button
-              onClick={handleSubmit}
-              className="inline-flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
-            >
-              Get Recommendation <FaPaperPlane />
-            </button>
-          )}
+          <button
+            onClick={handleSubmit}
+            className="inline-flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          >
+            Get Recommendation <FaPaperPlane />
+          </button>
         </div>
       )}
 
@@ -210,16 +244,14 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="Media Modal"
+        contentLabel="Advanced Filters"
         className="modal dark:bg-slate-800 dark:text-slate-100 p-6 rounded-lg shadow-lg max-w-2xl mx-auto my-20 overflow-auto outline-none"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
       >
-        {/* Modal Body */}
         <div className="h-full">
-          {/* Header Section */}
           <div className="sticky top-0 bg-white dark:bg-slate-800 py-3 z-10">
             <button
-              className="absolute top-4 right-0 font-extrabold bg-red-700 text-red-300 rounded-full hover:text-red-400"
+              className="absolute top-4 right-0 font-extrabold bg-rose-500 text-red-300 rounded-full hover:bg-rose-700"
               onClick={closeModal}
             >
               <svg
@@ -234,12 +266,11 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
             </button>
             <h2 className="text-2xl font-bold mb-2 text-center">Advanced Filters</h2>
           </div>
-          {/* Modal Content */}
+
           <div className="flex-1 overflow-y-auto">{fields.map(renderField)}</div>
 
-          {/* Modal Footer */}
           <div className="flex justify-between items-center pt-2">
-            <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={closeModal}>
+            <button className="mt-4 bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded" onClick={closeModal}>
               Close
             </button>
             {canSubmit && (

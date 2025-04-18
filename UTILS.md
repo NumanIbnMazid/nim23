@@ -1,5 +1,19 @@
 # UTILS FILE
 
+## Running Project
+
+### With Supervisor
+
+```bash
+supervisord -c supervisord.conf
+```
+
+### Local Daphne with Reload for File Changes
+
+```bash
+python dev_server.py
+```
+
 ## Code Quality Analysis Github Workflow
 
 * <https://github.com/code4romania/seismic-risc/tree/develop/.github/workflows>

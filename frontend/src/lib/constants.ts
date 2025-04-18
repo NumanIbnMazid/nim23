@@ -27,3 +27,7 @@ export const STATIC_SITE_URL = isDev
   : process.env.MODE === 'PRODUCTION'
   ? 'https://nim23.com'
   : 'https://nim23.com'
+
+export const WEBSOCKET_URL = isDev
+  ? `ws://localhost:8000` // Localhost with dynamic port
+  : `wss://${process.env.BACKEND_DOMAIN}`

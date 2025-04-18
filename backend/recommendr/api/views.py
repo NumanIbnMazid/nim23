@@ -5,10 +5,9 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.conf import settings
 from dotenv import load_dotenv
-from pydantic import BaseModel
 from recommendr.api.serializers import RecommendationRequestSerializer
 from recommendr.models import RecommendrUtils
-from utils.helpers import custom_response_wrapper, ResponseWrapper
+from utils.helpers import custom_response_wrapper, ResponseWrapper, send_log_message
 from django.conf import settings
 
 from langchain.agents import initialize_agent, Tool
@@ -29,22 +28,6 @@ import logging
 
 
 logger = logging.getLogger("recommendr")
-
-
-class RecommendationResponseObject(BaseModel):
-    title: str
-    media_type: str
-    description: str
-    language: str
-    genres: list[str]
-    category_tags: list[str]
-    release_year: str
-    imdb_rating: str
-    imdb_link: str
-    trailer_youtube_link: str
-    music_spotify_link: str
-    music_soundcloud_link: str
-    music_youtube_link: str
 
 
 load_dotenv()
@@ -81,11 +64,18 @@ class RecommendationViewSet(GenericViewSet):
             ia = Cinemagoer()
             results = ia.search_movie(title)
             logger.info(f"🔍 Searching for `{title}` in IMDB...")
+            send_log_message(
+                f"🔍 Searching for `{title}` in IMDB...", module="recommendr"
+            )
 
             if results:
                 # Get detailed info from first match
                 movie = results[0]
                 logger.info(f"✅ Found `{title}` in IMDB with ID: {movie.movieID}")
+                send_log_message(
+                    f"✅ Found `{title}` in IMDB with ID: {movie.movieID}",
+                    module="recommendr",
+                )
                 ia.update(movie)
                 resultObj[index]["title"] = movie.get("title")
                 resultObj[index]["cover_url"] = movie.get("cover url")
@@ -104,11 +94,17 @@ class RecommendationViewSet(GenericViewSet):
                 return resultObj
             else:
                 logger.info(f"⚠️ No results found for `{title}` in IMDB.")
+                send_log_message(
+                    f"⚠️ No results found for `{title}` in IMDB.", module="recommendr"
+                )
                 return resultObj
         return resultObj
 
     def get_youtube_link(self, query):
         logger.info(f"🔍 Searching for `{query}` in YouTube...")
+        send_log_message(
+            f"🔍 Searching for `{query}` in YouTube...", module="recommendr"
+        )
         youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
         request = youtube.search().list(
             q=query, part="snippet", maxResults=1, type="video"
@@ -117,15 +113,26 @@ class RecommendationViewSet(GenericViewSet):
         if response["items"]:
             video_id = response["items"][0]["id"]["videoId"]
             logger.info(f"✅ Found `{query}` in YouTube with ID: {video_id}")
+            send_log_message(
+                f"✅ Found `{query}` in YouTube with ID: {video_id}",
+                module="recommendr",
+            )
             return f"https://www.youtube.com/watch?v={video_id}"
         return ""
 
     def get_spotify_track(self, query):
         logger.info(f"🔍 Searching for `{query}` in Spotify...")
+        send_log_message(
+            f"🔍 Searching for `{query}` in Spotify...", module="recommendr"
+        )
         results = spotify.search(q=query, limit=1, type="track")
         tracks = results.get("tracks", {}).get("items", [])
         if tracks:
             logger.info(f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}")
+            send_log_message(
+                f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}",
+                module="recommendr",
+            )
             return tracks[0]
         return
 
@@ -175,6 +182,24 @@ class RecommendationViewSet(GenericViewSet):
 
         query = user_prompt
 
+        media_type_name_plural = input_data.get("media_type")
+        if input_data.get("media_type") in [
+            "movie",
+            "tv_show",
+            "music",
+            "podcast",
+            "audiobook",
+        ]:
+            media_type_name_plural = f"{media_type_name_plural}s"
+        elif input_data.get("media_type") == "web series":
+            media_type_name_plural = "web series"
+        elif input_data.get("media_type") == "documentary":
+            media_type_name_plural = "documentaries"
+        send_log_message(
+            f"Finding best {media_type_name_plural} for you...",
+            module="recommendr",
+        )
+
         # Step 5: Use it!
         response = agent.invoke(query)
 
@@ -199,6 +224,7 @@ class RecommendationViewSet(GenericViewSet):
     @action(detail=False, methods=["post"], url_path="recommend")
     def recommend(self, request):
         # TODO: Remove this dummy data after testing
+        # Thread(target=long_running_task).start()
         # with open(os.path.join(settings.BASE_DIR, "utils/tester.json"), "r") as f:
         #     data = json.load(f)["data"]
         # return ResponseWrapper(message="Recommendation successful", data=data)
@@ -207,6 +233,8 @@ class RecommendationViewSet(GenericViewSet):
         serializer.is_valid(raise_exception=True)
 
         try:
+            send_log_message(f"Generating recommendations...", module="recommendr")
+            logger.info(f"\n\n🔥 Request data:🔥\n\n {serializer.validated_data}\n\n")
             result = self.generate_recommendation(serializer.validated_data)
 
             if not result:
@@ -240,9 +268,8 @@ class RecommendationViewSet(GenericViewSet):
                 query = f"{title} {media_type}"
                 if media_type == "music":
                     artist_list = data.get("artist", [])
-                    query = (
-                        f"{title}"
-                        + (f" artist:{', '.join(artist_list)}" if artist_list else "")
+                    query = f"{title}" + (
+                        f" artist:{', '.join(artist_list)}" if artist_list else ""
                     )
                 # SPOTIFY
                 if media_type in ["music", "podcast", "audiobook"]:
@@ -265,7 +292,7 @@ class RecommendationViewSet(GenericViewSet):
                 except Exception as e:
                     logger.error(f"Error fetching YouTube link: {e}")
 
-            logger.info(f"\n\n🔥 Final Result:\n {filtered_result} \n\n")
+            # logger.info(f"\n\n🔥 Final Result:\n {filtered_result} \n\n")
 
             return ResponseWrapper(
                 data={"recommendations": filtered_result}, status=status.HTTP_200_OK

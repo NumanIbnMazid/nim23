@@ -51,7 +51,7 @@ export default function RecommendationList({
       </div>
 
       {results.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-300">No recommendations found.</p>
+        <p className="text-yellow-700 dark:text-yellow-600 text-center p-6 text-lg">Sorry! No recommendations found.</p>
       ) : (
         <div>
           <p className="mt-2 text-xs text-yellow-600 dark:text-yellow-400 text-center pb-6">Note: Data might not always be accurate.</p>

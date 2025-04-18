@@ -35,6 +35,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     # Django TinyMCE
     "tinymce",
+    # Django Channels
+    "channels",
 ]
 LOCAL_APPS = [
     "users",
@@ -131,6 +133,11 @@ AUTH_USER_MODEL = "users.User"
 WSGI_APPLICATION = "project.wsgi.application"
 
 # ----------------------------------------------------
+# *** ASGI Application ***
+# ----------------------------------------------------
+WSGI_APPLICATION = "project.asgi.application"
+
+# ----------------------------------------------------
 # *** Database Configuration ***
 # ----------------------------------------------------
 DATABASES = {
@@ -204,9 +211,19 @@ LOGGING = {
             "level": config.DJANGO_LOG_LEVEL,
             "propagate": True,
         },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
     },
     "root": {"level": config.DJANGO_LOG_LEVEL, "handlers": ["console"]},
 }
+
+# ----------------------------------------------------
+# *** Django Channels ***
+# ----------------------------------------------------
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # ----------------------------------------------------
 # *** Other Definitions ***

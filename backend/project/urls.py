@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include, re_path
 from .views import IndexView
@@ -75,12 +76,12 @@ THIRD_PARTY_URLS = [
     re_path(
         r"^redoc/$",
         authenticated_user_required(schema_view.with_ui("redoc", cache_timeout=0)),
-        name="schema-redoc"
+        name="schema-redoc",
     ),
     # ----------------------------------------------------
     # *** TinyMCE URLs ***
     # ----------------------------------------------------
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 urlpatterns = [

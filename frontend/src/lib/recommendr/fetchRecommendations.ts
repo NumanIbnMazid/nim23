@@ -1,7 +1,5 @@
 export async function getRecommendations(preferences: any) {
   const apiURL = `${process.env.BACKEND_API_BASE_URL}/recommendr/recommend/`
-  console.log(`Fetching recommendations from ${apiURL} with preferences:`, preferences)
-
   // Enforcing the expected request structure
   const body = {
     media_type: preferences.media_type,

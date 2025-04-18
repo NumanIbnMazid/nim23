@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from recommendr.api.serializers import RecommendationRequestSerializer
 from recommendr.models import RecommendrUtils
 from utils.helpers import custom_response_wrapper, ResponseWrapper
+from django.conf import settings
 
 from langchain.agents import initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
@@ -119,14 +120,14 @@ class RecommendationViewSet(GenericViewSet):
             return f"https://www.youtube.com/watch?v={video_id}"
         return ""
 
-    def get_spotify_link(self, query):
+    def get_spotify_track(self, query):
         logger.info(f"🔍 Searching for `{query}` in Spotify...")
         results = spotify.search(q=query, limit=1, type="track")
         tracks = results.get("tracks", {}).get("items", [])
         if tracks:
             logger.info(f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}")
-            return tracks[0]["external_urls"]["spotify"]
-        return ""
+            return tracks[0]
+        return
 
     def generate_recommendation(self, input_data):
         phrasing_variants = [
@@ -197,6 +198,11 @@ class RecommendationViewSet(GenericViewSet):
     )
     @action(detail=False, methods=["post"], url_path="recommend")
     def recommend(self, request):
+        # TODO: Remove this dummy data after testing
+        # with open(os.path.join(settings.BASE_DIR, "utils/tester.json"), "r") as f:
+        #     data = json.load(f)["data"]
+        # return ResponseWrapper(message="Recommendation successful", data=data)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -211,18 +217,18 @@ class RecommendationViewSet(GenericViewSet):
             if isinstance(result, str):
                 result = json.loads(result)
 
-            filtered_result = [item for item in result if item.get("title", "").strip()]
+            filtered_result = [
+                item for item in result if item.get("title") and item["title"].strip()
+            ]
 
             media_type = serializer.validated_data.get("media_type")
 
             # Update METADATA
             for index, data in enumerate(filtered_result):
                 title = data.get("title")
-                if not title or not media_type:
-                    return ResponseWrapper(
-                        message="Missing 'title' or 'media_type' parameter.",
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
+                if not title or title.strip() == "":
+                    del filtered_result[index]
+                    continue
 
                 # ATTACH IMDB DATA
                 if media_type in ["movie", "tv_show", "web series", "documentary"]:
@@ -234,14 +240,32 @@ class RecommendationViewSet(GenericViewSet):
                 query = f"{title} {media_type}"
                 if media_type == "music":
                     artist_list = data.get("artist", [])
-                    query = f"{title}" + (
-                        f" artist:{', '.join(artist_list)}" if artist_list else ""
+                    query = (
+                        f"{title}"
+                        + (f" artist:{', '.join(artist_list)}" if artist_list else "")
                     )
+                # SPOTIFY
                 if media_type in ["music", "podcast", "audiobook"]:
-                    filtered_result[index]["spotify_link"] = self.get_spotify_link(
+                    try:
+                        spotify_track = self.get_spotify_track(query)
+                        if spotify_track:
+                            filtered_result[index]["spotify_link"] = spotify_track[
+                                "external_urls"
+                            ]["spotify"]
+                            filtered_result[index]["cover_url"] = spotify_track[
+                                "album"
+                            ]["images"][0]["url"]
+                    except Exception as e:
+                        logger.error(f"Error fetching Spotify link: {e}")
+                # YOUTUBE
+                try:
+                    filtered_result[index]["youtube_link"] = self.get_youtube_link(
                         query
                     )
-                filtered_result[index]["youtube_link"] = self.get_youtube_link(query)
+                except Exception as e:
+                    logger.error(f"Error fetching YouTube link: {e}")
+
+            logger.info(f"\n\n🔥 Final Result:\n {filtered_result} \n\n")
 
             return ResponseWrapper(
                 data={"recommendations": filtered_result}, status=status.HTTP_200_OK

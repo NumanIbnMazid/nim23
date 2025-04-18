@@ -35,6 +35,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     # Django TinyMCE
     "tinymce",
+    # Django Channels
+    "channels",
 ]
 LOCAL_APPS = [
     "users",
@@ -48,6 +50,8 @@ LOCAL_APPS = [
     "humanizer_ai",
     # AI Text Detector
     "detect_ai",
+    # Recommendation System
+    "recommendr",
 ]
 INSTALLED_APPS = (
     [
@@ -129,6 +133,11 @@ AUTH_USER_MODEL = "users.User"
 WSGI_APPLICATION = "project.wsgi.application"
 
 # ----------------------------------------------------
+# *** ASGI Application ***
+# ----------------------------------------------------
+WSGI_APPLICATION = "project.asgi.application"
+
+# ----------------------------------------------------
 # *** Database Configuration ***
 # ----------------------------------------------------
 DATABASES = {
@@ -185,7 +194,8 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+            "format": "%(levelname)s [%(asctime)s] [%(name)s] [%(module)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         }
     },
     "handlers": {
@@ -197,13 +207,23 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            "handlers": [],
+            "handlers": ["console"],
             "level": config.DJANGO_LOG_LEVEL,
             "propagate": True,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
         },
     },
     "root": {"level": config.DJANGO_LOG_LEVEL, "handlers": ["console"]},
 }
+
+# ----------------------------------------------------
+# *** Django Channels ***
+# ----------------------------------------------------
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # ----------------------------------------------------
 # *** Other Definitions ***
@@ -220,9 +240,10 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.AnonRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "user": "100/minute",  # Authenticated users
-        "anon": "50/minute",  # Unauthenticated users
-        "media_info": "5/minute",  # for Grabit
+        "user": "150/minute",  # Authenticated users
+        "anon": "100/minute",  # Unauthenticated users
+        "grabit_rate_limit": "10/minute",  # for Grabit
+        "recommendr_rate_limit": "1000/minute",  # for Recommendr
     },
 }
 

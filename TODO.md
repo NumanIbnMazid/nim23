@@ -121,6 +121,16 @@
   - Integrate image viewer in blog or snippets details page.
   - Implement API rate limiting globally and for humanizer_ai.
   - Add minimum word count in humanizer ai.
+  - (NOT NEEDED) Recommendr: Download IMDB data locally after a certain period of time and look in that instead of everytime fetching from IMDB.
+  - Recommendr: Add uniqueness of recommendation while recommending media using recommendr.
+  - Recommendr: Ask user in frontend about what metadata they wants and warn them it will be slow.
+  - Recommendr: Make recommendr preferences dynamic from database.
+  - Recommendr: Add play button for spotify music.
+  - (DONE) Recommendr: Show Mandatory fields first, and then all other fields collapsed. So that user might not have to press next everytime to filter.
+  - (DONE) Recommendr: Keep form state while updating preferences.
+  - (DONE) Recommendr: Show engaging message while fetching recommendations.
+  - (DONE) Recommendr: Show current active filters.
+  - Recommendr: Generate preferences in such a way so that they do not contradict with each other.
 
 
 ## Improvement

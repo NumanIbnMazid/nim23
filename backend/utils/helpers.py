@@ -7,6 +7,8 @@ from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from utils.snippets import markdown_to_html, html_to_markdown
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 class ResponseWrapper(Response):
@@ -43,11 +45,16 @@ class ResponseWrapper(Response):
             "update": ("Updated successfully!", "Failed to update!"),
             "partial_update": ("Updated successfully!", "Failed to update!"),
             "destroy": ("Deleted successfully!", "Failed to delete!"),
-            "retrieve": ("Object retrieved successfully!", "Failed to retrieve the object!"),
+            "retrieve": (
+                "Object retrieved successfully!",
+                "Failed to retrieve the object!",
+            ),
         }
 
         if message:
-            message = message_map.get(message.lower(), (message, message))[0 if response_success else 1]
+            message = message_map.get(message.lower(), (message, message))[
+                0 if response_success else 1
+            ]
         else:
             message = "SUCCESS!" if response_success else "FAILED!"
 
@@ -76,7 +83,7 @@ def custom_response_wrapper(viewset_cls):
     @wraps(original_finalize_response)
     def wrapped_finalize_response(self, request, response, *args, **kwargs):
         # Ensure DRF's response attributes exist before wrapping
-        if not hasattr(response, 'accepted_renderer'):
+        if not hasattr(response, "accepted_renderer"):
             response.accepted_renderer = request.accepted_renderer
             response.accepted_media_type = request.accepted_media_type
             response.renderer_context = {}
@@ -86,9 +93,7 @@ def custom_response_wrapper(viewset_cls):
 
         # Create wrapped response after DRF has set attributes
         wrapped_response = ResponseWrapper(
-            data=response.data, 
-            message=self.action, 
-            status=response.status_code
+            data=response.data, message=self.action, status=response.status_code
         )
 
         # Preserve DRF-required attributes
@@ -96,7 +101,9 @@ def custom_response_wrapper(viewset_cls):
         wrapped_response.accepted_media_type = response.accepted_media_type
         wrapped_response.renderer_context = response.renderer_context
 
-        return original_finalize_response(self, request, wrapped_response, *args, **kwargs)
+        return original_finalize_response(
+            self, request, wrapped_response, *args, **kwargs
+        )
 
     viewset_cls.finalize_response = wrapped_finalize_response
     return viewset_cls
@@ -110,11 +117,7 @@ def handle_invalid_serializer(exception_obj, message=None):
 
     response_message = " ".join(error_messages)
 
-    return ResponseWrapper(
-        message=message,
-        error_message=response_message,
-        status=400
-    )
+    return ResponseWrapper(message=message, error_message=response_message, status=400)
 
 
 class CustomModelManager(models.Manager):
@@ -122,6 +125,7 @@ class CustomModelManager(models.Manager):
     Custom Model Manager
     actions: all(), get_by_id(id), get_by_slug(slug)
     """
+
     def all(self):
         return self.get_queryset()
 
@@ -151,12 +155,11 @@ class ProjectGenericModelViewset(ModelViewSet):
     pagination_class = None
     lookup_field = "slug"
 
-
     def get_queryset(self):
         queryset = super().get_queryset()
-        limit = self.request.GET.get('_limit')
+        limit = self.request.GET.get("_limit")
         if limit:
-            queryset = queryset[:int(limit)]
+            queryset = queryset[: int(limit)]
         return queryset
 
 
@@ -179,13 +182,14 @@ def sync_markdown_html_fields(instance, markdown_field_name, html_field_name):
             setattr(instance, html_field_name, markdown_to_html(markdown_content))
     else:  # Updating existing instance
         model_class = instance.__class__  # Dynamically get the model class
-        old_instance = model_class.objects.get(pk=instance.pk)  # Access objects using the model class
+        old_instance = model_class.objects.get(
+            pk=instance.pk
+        )  # Access objects using the model class
 
         markdown_content = getattr(instance, markdown_field_name)
         html_content = getattr(instance, html_field_name)
         old_markdown_content = getattr(old_instance, markdown_field_name)
         old_html_content = getattr(old_instance, html_field_name)
-
 
         if old_html_content != html_content:
             # HTML content updated
@@ -193,3 +197,22 @@ def sync_markdown_html_fields(instance, markdown_field_name, html_field_name):
         elif old_markdown_content != markdown_content:
             # Markdown content updated
             setattr(instance, html_field_name, markdown_to_html(markdown_content))
+
+
+# Django Channels
+
+channel_layer = get_channel_layer()
+
+
+def send_log_message(message=None, *, type="event", module="common", **kwargs):
+    payload = {
+        "type": "send.log",  # This is the handler method name in your consumer
+        "message": {
+            "type": type,
+            "module": module,
+            "message": message,
+            **kwargs,  # This allows for any extra keys to be added if needed
+        },
+    }
+
+    async_to_sync(channel_layer.group_send)("log_group", payload)

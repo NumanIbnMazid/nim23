@@ -355,6 +355,7 @@ export type PageMeta = {
   apps: PageData
   grabit: PageData
   humanizerAI: PageData
+  recommendr: PageData
 }
 
 export type MovieType = {

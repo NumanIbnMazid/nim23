@@ -131,6 +131,14 @@ export const pageMeta: PageMeta = {
     keywords:
       'AI text humanizer, humanize ai text, convert AI to human, rewrite AI content, natural language converter, robotic text to human, GPT humanizer, OpenRouter AI tool, AI detector bypass tool, human-like text generator, rewrite ChatGPT text, make AI text sound human, humanize GPT output, AI content editor, ai rewriter, ai paraphraser, AI text fixer, best ai humanizer 2025, free ai text converter, humanizer app by nim23, ai to human tone adjuster, content tone enhancer, seo friendly humanized text, human-like copywriter',
   },
+  recommendr: {
+    title: 'Recommendr – Best Media Recommendation App | NIM23',
+    description:
+      'Recommendr by NIM23 is a smart media recommendation engine that curates personalized movies, music, shows, and podcasts based on your mood and vibe. Discover what suits you best, effortlessly.',
+    image: logoImage, // Update with actual image path
+    keywords:
+      'mood-based recommendations, media recommendation engine, personalized movie recommendations, music discovery tool, mood playlists, AI media curator, recommendr app, NIM23 recommendr, smart content suggestions, mood media finder, best recommendation engine 2025, emotion-based recommendations, what to watch, what to listen to, curated content tool, mood AI assistant, entertainment suggester, discover music by mood, show and movie finder, vibe-based content',
+  },
 }
 
 export const commonMeta: Metadata = {

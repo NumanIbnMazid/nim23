@@ -36,8 +36,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <>
       {process.env.NODE_ENV === 'production' && <GoogleAnalytics strategy="lazyOnload" />}
 
-      {children}
-      
+      <div id='__app_root'>{children}</div>
+
       {/* ✅ Add the Sonner Toaster */}
       <Toaster
         position="top-right"

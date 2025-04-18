@@ -1,0 +1,50 @@
+{
+  "movie": [
+    "Action",
+    "Adventure",
+    "Comedy",
+    "Crime",
+    "Drama",
+    "Fantasy",
+    "Historical",
+    "Horror",
+    "Romance",
+    "Sci-Fi",
+    "Thriller",
+    "Mystery",
+    "Animation",
+    "Documentary",
+    "Musical",
+    "Biography"
+  ],
+  "tv_show": [
+    "Sitcom",
+    "Crime",
+    "Drama",
+    "Reality",
+    "Talk Show",
+    "Historical",
+    "Sci-Fi",
+    "Documentary",
+    "Fantasy",
+    "Game Show"
+  ],
+  "series": ["Crime", "Mystery", "Fantasy", "Sci-Fi", "Drama", "Thriller", "Comedy", "Romance", "Adventure"],
+  "music": [
+    "Pop",
+    "Rock",
+    "Hip-Hop",
+    "Jazz",
+    "Classical",
+    "Electronic",
+    "Lo-Fi",
+    "Indie",
+    "Country",
+    "Reggae",
+    "R&B",
+    "Soul",
+    "Blues",
+    "Metal",
+    "Folk"
+  ]
+}

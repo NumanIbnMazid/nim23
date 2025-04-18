@@ -1,28 +1,41 @@
+'use client'
+
 import { useState } from 'react'
-import { FaCheck, FaPaperPlane, FaChevronDown, FaChevronUp } from 'react-icons/fa6'
+import ReactModal from 'react-modal'
+import { FaCheck, FaPaperPlane, FaSliders, FaChevronDown, FaChevronUp } from 'react-icons/fa6'
 
-export default function PreferenceForm({ preferences, onSubmit }: any) {
-  const [formData, setFormData] = useState({
-    mood: '',
-    media_type: '',
-    language: [] as string[],
-    occasion: [] as string[],
-    genre: [] as string[],
-    media_age: [],
-    rating: [],
-    category: [],
-    other_preferences: '',
-  })
+export default function PreferenceForm({ preferences, onSubmit, initialValues }: any) {
+  const [formData, setFormData] = useState(
+    initialValues || {
+      mood: '',
+      media_type: '',
+      language: [] as string[],
+      occasion: [] as string[],
+      genre: [] as string[],
+      media_age: [],
+      rating: [],
+      category: [],
+      other_preferences: '',
+    }
+  )
 
-  const [openSections, setOpenSections] = useState(['mood', 'media_type'])
+  // ✅ Ensure `setAppElement` is only called on the client side
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     ReactModal.setAppElement('#__next')
+  //   }
+  // }, [])
+
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  // const openModal = () => setModalIsOpen(true)
+  const closeModal = () => setModalIsOpen(false)
+  const [openSections, setOpenSections] = useState<string[]>([])
 
   const toggleSection = (key: string) => {
     setOpenSections((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]))
   }
 
   const fields = [
-    { label: 'Mood', key: 'mood', options: preferences.mood, required: true },
-    { label: 'Media Type', key: 'media_type', options: preferences.media_types, required: true },
     { label: 'Language', key: 'language', options: preferences.language, multi: true },
     { label: 'Occasion', key: 'occasion', options: preferences.occasion, multi: true },
     {
@@ -46,11 +59,12 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
     if (multi) {
       const selected = formData[key] as string[]
       const updated = selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value]
-      setFormData((prev) => ({ ...prev, [key]: updated }))
+      setFormData((prev: typeof formData) => ({ ...prev, [key]: updated }))
     } else {
-      setFormData((prev) => ({ ...prev, [key]: value }))
+      setFormData((prev: typeof formData) => ({ ...prev, [key]: value }))
     }
   }
+
   const handleSubmit = () => {
     const payload = {
       mood: formData.mood,
@@ -67,7 +81,9 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
     onSubmit(payload)
   }
 
-  const renderField = ({ label, key, options, multi, isTextInput, required }: any) => {
+  const canSubmit = formData.mood && formData.media_type
+
+  const renderField = ({ label, key, options, multi, isTextInput }: any) => {
     const isOpen = openSections.includes(key)
 
     return (
@@ -76,10 +92,7 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
           onClick={() => toggleSection(key)}
           className="w-full flex justify-between items-center px-4 py-3 bg-gray-100 dark:bg-gray-700 text-left font-medium text-gray-800 dark:text-white"
         >
-          <span className=''>
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
-          </span>
+          <span>{label}</span>
           {isOpen ? <FaChevronUp /> : <FaChevronDown />}
         </button>
 
@@ -88,10 +101,12 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
             {isTextInput ? (
               <textarea
                 rows={3}
-                placeholder="E.g. Movie like Interstellar, Song by Scorpions etc."
                 className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
+                placeholder="E.g. Songs by A.R. Rahman"
                 value={formData.other_preferences}
-                onChange={(e) => setFormData((prev) => ({ ...prev, other_preferences: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev: { [key: string]: any }) => ({ ...prev, other_preferences: e.target.value }))
+                }
               />
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -113,7 +128,7 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
                       {option} {isSelected && <FaCheck className="ml-2" />}
                     </button>
                   )
-                })}{' '}
+                })}
               </div>
             )}
           </div>
@@ -122,23 +137,122 @@ export default function PreferenceForm({ preferences, onSubmit }: any) {
     )
   }
 
-  const canSubmit = formData.mood && formData.media_type
-
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg space-y-6 max-w-2xl mx-auto my-12">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg space-y-6 max-w-2xl mx-auto my-8">
       <h2 className="text-xl font-bold text-gray-800 dark:text-white">Pick your preferences</h2>
-      {fields.map(renderField)}
 
-      {canSubmit && (
-        <div className="flex justify-end pt-4">
+      {/* Mood */}
+      <div>
+        <p className="font-medium text-gray-700 dark:text-white">
+          Mood<span className="text-red-500 ml-1">*</span>
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+          {preferences.mood.map((m: string) => (
+            <button
+              key={m}
+              onClick={() => handleSelect('mood', m)}
+              className={`py-2 px-3 rounded-lg border transition ${
+                formData.mood === m
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'border-gray-300 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              {m}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Media Type */}
+      <div>
+        <p className="font-medium text-gray-700 dark:text-white">
+          Media Type<span className="text-red-500 ml-1">*</span>
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+          {preferences.media_types.map((t: string) => (
+            <button
+              key={t}
+              onClick={() => handleSelect('media_type', t)}
+              className={`py-2 px-3 rounded-lg border transition ${
+                formData.media_type === t
+                  ? 'bg-blue-600 text-white border-blue-600'
+                  : 'border-gray-300 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Advanced Filters Button */}
+      {formData.mood && formData.media_type && (
+        <div className="flex justify-between items-center pt-2">
           <button
-            onClick={handleSubmit}
-            className="inline-flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+            onClick={() => setModalIsOpen(true)}
+            className="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
           >
-            Get Recommendation <FaPaperPlane />
+            <FaSliders /> Advanced Filters
           </button>
+
+          {canSubmit && (
+            <button
+              onClick={handleSubmit}
+              className="inline-flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+            >
+              Get Recommendation <FaPaperPlane />
+            </button>
+          )}
         </div>
       )}
+
+      {/* Modal */}
+      <ReactModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Media Modal"
+        className="modal dark:bg-slate-800 dark:text-slate-100 p-6 rounded-lg shadow-lg max-w-2xl mx-auto my-20 overflow-auto outline-none"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      >
+        {/* Modal Body */}
+        <div className="h-full">
+          {/* Header Section */}
+          <div className="sticky top-0 bg-white dark:bg-slate-800 py-3 z-10">
+            <button
+              className="absolute top-4 right-0 font-extrabold bg-red-700 text-red-300 rounded-full hover:text-red-400"
+              onClick={closeModal}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h2 className="text-2xl font-bold mb-2 text-center">Advanced Filters</h2>
+          </div>
+          {/* Modal Content */}
+          <div className="flex-1 overflow-y-auto">{fields.map(renderField)}</div>
+
+          {/* Modal Footer */}
+          <div className="flex justify-between items-center pt-2">
+            <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={closeModal}>
+              Close
+            </button>
+            {canSubmit && (
+              <button
+                onClick={handleSubmit}
+                className="inline-flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+              >
+                Get Recommendation <FaPaperPlane />
+              </button>
+            )}
+          </div>
+        </div>
+      </ReactModal>
     </div>
   )
 }

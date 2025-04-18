@@ -130,6 +130,7 @@
   - Recommendr: Keep form state while updating preferences.
   - Recommendr: Show engaging message while fetching recommendations.
   - Recommendr: Show current active filters.
+  - Recommendr: Generate preferences in such a way so that they do not contradict with each other.
 
 
 ## Improvement

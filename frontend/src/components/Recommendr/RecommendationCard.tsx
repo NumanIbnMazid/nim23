@@ -5,6 +5,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
   const {
     title,
     media_type,
+    artist,
     description,
     languages,
     genres,
@@ -63,6 +64,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
           ))}
         <div className="mt-3 flex flex-wrap gap-2 text-sm text-gray-700 dark:text-gray-300">
           {languages?.length > 0 && <span>🌍 {languages.join(', ')}</span>}
+          {artist?.length > 0 && <span>🎤 {artist.join(', ')}</span>}
           {genres?.length > 0 && <span>🎭 {genres.join(', ')}</span>}
           {category_tags?.length > 0 && <span>🏷️ {category_tags.join(', ')}</span>}
           {rating && <span>⭐ {rating}</span>}

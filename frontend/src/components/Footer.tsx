@@ -12,7 +12,8 @@ import { useDarkMode } from '@/context/darkModeContext'
 import { GOOGLE_ANALYTICS_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function Footer({ setShowQR, showQR }: { setShowQR: (value: boolean) => void; showQR: boolean }) {
-  const { data: visitors } = useSWR(GOOGLE_ANALYTICS_API_ROUTE, fetcher)
+  const isDev = process.env.NODE_ENV !== 'production'
+  const { data: visitors } = !isDev ? useSWR(GOOGLE_ANALYTICS_API_ROUTE, fetcher) : { data: null }
   const { isDarkMode } = useDarkMode()
 
   const footerClass = isDarkMode ? 'footer-with-rays-dark' : 'footer-with-rays'

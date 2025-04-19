@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
 
 import { getRecommendations } from '@/lib/recommendr/fetchRecommendations'
-import PreferenceForm from '@/components/Recommendr/PreferenceForm'
+import PreferenceForm from '@/components/Recommendr/PreferencesForm/PreferenceForm'
 import RecommendationList from '@/components/Recommendr/RecommendationList'
 import LoadingRecommendations from '@/components/Recommendr/LoadingRecommendations'
 import { HomeHeading } from '@/app/HomeClient'

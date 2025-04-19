@@ -31,21 +31,24 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
         wsRef.current = ws
 
         ws!.onopen = () => {
-          // console.log('✅ WebSocket connected')
+          console.log('✅ WebSocket connected')
           ws!.send(JSON.stringify({ type: 'ready' }))
         }
         ws.onclose = (e) => {
-          // console.warn('🔌 WebSocket closed:', e)
+          console.warn('🔌 WebSocket closed:', e)
           // Retry connection after a small delay if not closed cleanly
           if (!e.wasClean) {
             reconnectTimeout = setTimeout(() => {
-              // console.log('🔄 Reconnecting WebSocket...')
+              console.log('🔄 Reconnecting WebSocket...')
               connect()
             }, 1000) // retry after 1 second
           }
         }
+        ws.onerror = (err) => {
+          console.error('🔴 WebSocket error:', err)
+        }
       } catch (err) {
-        // console.error('WebSocket init error:', err)
+        console.error('🔴 WebSocket init error:', err)
       }
     }
 

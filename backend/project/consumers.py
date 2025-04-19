@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 from django.core.cache import cache
+import asyncio
 
 
 logger = logging.getLogger("recommendr")
@@ -12,10 +13,23 @@ class LogConsumer(AsyncWebsocketConsumer):
         logger.info("🟢 WebSocket connected (LogConsumer)")
         await self.channel_layer.group_add("log_group", self.channel_name)
         await self.accept()
+        # Start a background task for keep-alive (pinging)
+        self.keep_alive_task = asyncio.create_task(self.keep_alive())
 
     async def disconnect(self, close_code):
+        if hasattr(self, "keep_alive_task"):
+            self.keep_alive_task.cancel()
         logger.info(f"🔴 WebSocket disconnected (code: {close_code})")
         await self.channel_layer.group_discard("log_group", self.channel_name)
+
+    async def keep_alive(self):
+        logger.info("🟢 Keep-alive started")
+        try:
+            while True:
+                await asyncio.sleep(20)  # Adjust ping interval as needed
+                await self.send(text_data="ping")
+        except asyncio.CancelledError:
+            pass
 
     async def send_log(self, event):
         logger.info(f"Sending log message: {event['message']}")

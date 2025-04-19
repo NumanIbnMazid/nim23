@@ -74,6 +74,7 @@ marshmallow==3.26.1
 multidict==6.4.3
 mypy-extensions==1.0.0
 numpy==2.2.4
+omdb==0.10.1
 openai==1.72.0
 orjson==3.10.16
 packaging==24.2

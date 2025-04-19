@@ -16,7 +16,8 @@ from googleapiclient.discovery import build
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from imdb import Cinemagoer
-from pydantic import BaseModel, Field
+from omdb import OMDBClient
+from pydantic import BaseModel
 
 import os
 import json
@@ -33,13 +34,20 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 YOUTUBE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 
-# Spotify instance
-spotify = spotipy.Spotify(
+# Spotify Client
+spotify_client = spotipy.Spotify(
     auth_manager=SpotifyClientCredentials(
         client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET
     )
 )
+# YouTube Client
+youtube_client = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+# OMDB Client
+omdb_client = OMDBClient(apikey="6da2e614")
+# IMDB Client
+imdb_client = Cinemagoer()
 
 
 class MediaRecommendation(BaseModel):
@@ -109,7 +117,7 @@ class RecommendationViewSet(GenericViewSet):
                 temperature=1.0,
                 max_output_tokens=8192,
                 system_instruction=system_prompt,
-                response_mime_type='application/json',
+                response_mime_type="application/json",
                 response_schema=list[MediaRecommendation],
             ),
         )
@@ -123,54 +131,88 @@ class RecommendationViewSet(GenericViewSet):
             raise ValueError("System prompt is empty")
         return system_prompt
 
-    def update_data_with_imdb(self, resultObj, index, title, media_type):
-        if media_type in ["movie", "tv_show", "web series", "documentary"]:
-            ia = Cinemagoer()
-            results = ia.search_movie(title)
-            logger.info(f"🔍 Searching for `{title}` in IMDB...")
+    def update_data_with_omdb(self, resultObj, index):
+        title = resultObj[index].get("title")
+        logger.info(f"🔍 Searching for `{title}` in OMDB...")
+        send_log_message(
+            f"🔍 Searching for `{title}` in Movie Database...", module="recommendr"
+        )
+        result = omdb_client.request(
+            t=resultObj[index].get("title"),
+            y=resultObj[index].get("release_year"),
+            plot="short",
+            r="json",
+        )
+        result_byte_data = result.content
+        decoded_str = result_byte_data.decode("utf-8")
+        json_data = json.loads(decoded_str)
+        if json_data.get("Response") == "True":
+            logger.info(f"✅ Found `{title}` in OMDB")
             send_log_message(
-                f"🔍 Searching for `{title}` in IMDB...", module="recommendr"
+                f"✅ Found `{title}` in Movie Database.", module="recommendr"
             )
+            # Update Data
+            resultObj[index]["title"] = json_data.get("Title")
+            resultObj[index]["cover_url"] = json_data.get("Poster")
+            resultObj[index]["year"] = json_data.get("Year")
+            resultObj[index]["genres"] = json_data.get("Genre").split(", ")
+            resultObj[index][
+                "review_link"
+            ] = f"https://www.imdb.com/title/tt{json_data.get('imdbID')}/"
+            resultObj[index]["imdb_rating"] = json_data.get("imdbRating")
+            resultObj[index]["languages"] = json_data.get("languages")
+            resultObj[index]["description"] = json_data.get("Plot")
+            resultObj[index]["cast"] = json_data.get("Actors").split(", ")
+            resultObj[index]["director"] = json_data.get("Director").split(", ")
+            resultObj[index]["writer"] = json_data.get("Writer").split(", ")
+            resultObj[index]["imdb_id"] = json_data.get("imdbID")
+            return True
+        else:
+            logger.info(f"❌ Could not find `{title}` in OMDB")
+        return False
 
-            if results:
-                # Get detailed info from first match
-                movie = results[0]
-                logger.info(f"✅ Found `{title}` in IMDB with ID: {movie.movieID}")
-                send_log_message(
-                    f"✅ Found `{title}` in IMDB with ID: {movie.movieID}",
-                    module="recommendr",
-                )
-                ia.update(movie)
-                resultObj[index]["title"] = movie.get("title")
-                resultObj[index]["cover_url"] = movie.get("cover url")
-                resultObj[index]["year"] = movie.get("year")
-                resultObj[index]["genres"] = movie.get("genres")
-                resultObj[index][
-                    "review_link"
-                ] = f"https://www.imdb.com/title/tt{movie.movieID}/"
-                resultObj[index]["rating"] = movie.get("rating")
-                resultObj[index]["languages"] = movie.get("languages")
-                resultObj[index]["description"] = movie.get("plot")
-                resultObj[index]["cast"] = movie.get("cast")
-                resultObj[index]["director"] = movie.get("director")
-                resultObj[index]["producer"] = movie.get("producer")
-                resultObj[index]["writer"] = movie.get("writer")
-                return resultObj
-            else:
-                logger.info(f"⚠️ No results found for `{title}` in IMDB.")
-                send_log_message(
-                    f"⚠️ No results found for `{title}` in IMDB.", module="recommendr"
-                )
-                return resultObj
-        return resultObj
+    def update_data_with_imdb(self, resultObj, index):
+        title = resultObj[index].get("title")
+        logger.info(f"🔍 Searching for `{title}` in IMDB...")
+        send_log_message(f"🔍 Searching for `{title}` in IMDB...", module="recommendr")
+        results = imdb_client.search_movie(title)
+        if results:
+            # Get detailed info from first match
+            movie = results[0]
+            movieID = movie.movieID
+            logger.info(f"✅ Found `{title}` in IMDB with ID: {movie.movieID}")
+            send_log_message(
+                f"✅ Found `{title}` in IMDB with ID: {movieID}",
+                module="recommendr",
+            )
+            imdb_client.update(movie)
+            resultObj[index]["title"] = movie.get("title")
+            resultObj[index]["cover_url"] = movie.get("cover url")
+            resultObj[index]["year"] = movie.get("year")
+            resultObj[index]["genres"] = movie.get("genres")
+            resultObj[index]["review_link"] = f"https://www.imdb.com/title/tt{movieID}/"
+            resultObj[index]["rating"] = movie.get("rating")
+            resultObj[index]["languages"] = movie.get("languages")
+            resultObj[index]["description"] = movie.get("plot")
+            resultObj[index]["cast"] = movie.get("cast")
+            resultObj[index]["director"] = movie.get("director")
+            resultObj[index]["producer"] = movie.get("producer")
+            resultObj[index]["writer"] = movie.get("writer")
+            resultObj[index]["imdb_id"] = movieID
+            return True
+        else:
+            logger.info(f"⚠️ No results found for `{title}` in IMDB.")
+            send_log_message(
+                f"⚠️ No results found for `{title}` in IMDB.", module="recommendr"
+            )
+        return False
 
     def get_youtube_link(self, query):
         logger.info(f"🔍 Searching for `{query}` in YouTube...")
         send_log_message(
             f"🔍 Searching for `{query}` in YouTube...", module="recommendr"
         )
-        youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
-        request = youtube.search().list(
+        request = youtube_client.search().list(
             q=query, part="snippet", maxResults=1, type="video"
         )
         response = request.execute()
@@ -189,7 +231,7 @@ class RecommendationViewSet(GenericViewSet):
         send_log_message(
             f"🔍 Searching for `{query}` in Spotify...", module="recommendr"
         )
-        results = spotify.search(q=query, limit=1, type="track")
+        results = spotify_client.search(q=query, limit=1, type="track")
         tracks = results.get("tracks", {}).get("items", [])
         if tracks:
             logger.info(f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}")
@@ -274,6 +316,8 @@ class RecommendationViewSet(GenericViewSet):
         try:
             send_log_message(f"Generating recommendations...", module="recommendr")
             logger.info(f"\n\n🔥 Request data:🔥\n\n {serializer.validated_data}\n\n")
+
+            # Generate recommendations
             result = self.generate_recommendation(serializer.validated_data)
 
             if not result:
@@ -298,19 +342,31 @@ class RecommendationViewSet(GenericViewSet):
 
             # Update METADATA
             for index, data in enumerate(filtered_result):
+
                 title = data.get("title")
+
                 if not title or title.strip() == "":
                     del filtered_result[index]
                     continue
 
+                # ATTACH HARD CODED MEDIA TYPE
+                filtered_result[index]["media_type"] = media_type
+
                 # ATTACH IMDB DATA
                 if media_type in ["movie", "tv_show", "web series", "documentary"]:
                     try:
-                        filtered_result = self.update_data_with_imdb(
-                            result, index, title, media_type
+                        is_omdb_update_success = self.update_data_with_omdb(
+                            filtered_result, index
                         )
                     except Exception as e:
-                        logger.error(f"Error updating data with IMDB: {e}")
+                        logger.error(f"Error updating data with OMDB: {e}")
+                        is_omdb_update_success = False
+                    if not is_omdb_update_success:
+                        logger.info("Trying to update data with IMDB...")
+                        try:
+                            self.update_data_with_imdb(filtered_result, index)
+                        except Exception as e:
+                            logger.error(f"Error updating data with IMDB: {e}")
 
                 # ATTACH YOUTUBE, SPOTIFY LINK
                 query = f"{title} {media_type}"
@@ -348,10 +404,9 @@ class RecommendationViewSet(GenericViewSet):
                 data={"recommendations": filtered_result}, status=status.HTTP_200_OK
             )
         except Exception as e:
-            raise e
-            logger.error(f"⚠️ Error: {e}")
+            logger.error(f"⚠️ Error generating recommendations: {e}")
             return ResponseWrapper(
-                message="Recommendation failed",
+                message="Generating recommendation failed!",
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )

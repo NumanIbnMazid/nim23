@@ -9,7 +9,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
     description,
     languages,
     genres,
-    rating,
+    imdb_rating,
     review_link,
     youtube_link,
     spotify_link,
@@ -67,7 +67,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
           {artist?.length > 0 && <span>🎤 {artist.join(', ')}</span>}
           {genres?.length > 0 && <span>🎭 {genres.join(', ')}</span>}
           {category_tags?.length > 0 && <span>🏷️ {category_tags.join(', ')}</span>}
-          {rating && <span>⭐ {rating}</span>}
+          {imdb_rating && <span>⭐ {imdb_rating}</span>}
           {release_year && <span>📅 {release_year}</span>}
           {getNames(cast, 'Cast', '🎬')}
           {getNames(director, 'Director', '🎥')}

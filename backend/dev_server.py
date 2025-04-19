@@ -14,7 +14,7 @@ def run():
             "--timeout",
             "300",
             "--log-level",
-            "debug"
+            "info"
         ]
     )
 

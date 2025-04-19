@@ -26,7 +26,6 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
   }, [])
 
   useEffect(() => {
-    console.log('Initial Values:', initialValues)
     if (initialValues && initialValues.media_type) {
       setFormData((prev: any) => ({
         ...prev,

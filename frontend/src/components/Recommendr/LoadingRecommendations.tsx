@@ -14,8 +14,12 @@ export default function LoadingRecommendations({ wsRef }: LoadingRecommendations
         const data = JSON.parse(event.data)
         // console.log('WebSocket message received:', data)
 
-        if (data.message.type === 'event' && data.message.module === 'recommendr') {
+        if (data?.message?.type === 'event' && data?.message?.module === 'recommendr') {
           setLogs(data.message.message)
+        }
+        if (data.type === 'ping') {
+          console.log('✅ Ping received')
+          wsRef.current?.send(JSON.stringify({ type: 'pong' }))
         }
       }
     }

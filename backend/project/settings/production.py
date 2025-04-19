@@ -11,6 +11,7 @@ ALLOWED_HOSTS = [
     "backend.nim23.com",  # Backend Host
     "nim23.koyeb.app",  # Backend Host
     "p01--nim23--47v76khxj6jn.code.run",  # Northflank Host (Production)
+    "admin.nim23.com.numa-zjzm.dns.northflank.app",  # Northflank Host (Production)
     "staging.nim23.com",  # Northflank Host (Staging)
     "p01--nim23-staging--47v76khxj6jn.code.run",  # Northflank Host (Staging)
 ]

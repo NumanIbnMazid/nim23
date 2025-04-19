@@ -7,6 +7,7 @@ from django.conf import settings
 from dotenv import load_dotenv
 from recommendr.api.serializers import RecommendationRequestSerializer
 from recommendr.models import RecommendrUtils
+from utils.throttles import RecommendrRateThrottle
 from utils.helpers import custom_response_wrapper, ResponseWrapper, send_log_message
 from django.conf import settings
 
@@ -58,7 +59,7 @@ class RecommendationViewSet(GenericViewSet):
         if not system_prompt:
             raise ValueError("System prompt is empty")
         return system_prompt
-
+        
     def update_data_with_imdb(self, resultObj, index, title, media_type):
         if media_type in ["movie", "tv_show", "web series", "documentary"]:
             ia = Cinemagoer()
@@ -144,6 +145,7 @@ class RecommendationViewSet(GenericViewSet):
             "Give me 5 great",
         ]
         input_data["random_intro"] = random.choice(phrasing_variants)
+            
         prompt_template = self.get_prompt()
         user_prompt = prompt_template.format(**input_data)
 
@@ -182,6 +184,7 @@ class RecommendationViewSet(GenericViewSet):
 
         query = user_prompt
 
+        # Showing Logs
         media_type_name_plural = input_data.get("media_type")
         if input_data.get("media_type") in [
             "movie",
@@ -220,6 +223,7 @@ class RecommendationViewSet(GenericViewSet):
         method="post",
         request_body=RecommendationRequestSerializer,
         responses={200: openapi.Response("Recommended content")},
+        throttle_classes=[RecommendrRateThrottle]
     )
     @action(detail=False, methods=["post"], url_path="recommend")
     def recommend(self, request):
@@ -228,6 +232,9 @@ class RecommendationViewSet(GenericViewSet):
         # with open(os.path.join(settings.BASE_DIR, "utils/tester.json"), "r") as f:
         #     data = json.load(f)["data"]
         # return ResponseWrapper(message="Recommendation successful", data=data)
+
+        # Configurations
+        ATTACH_YOUTUBE_LINK = False
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -260,9 +267,12 @@ class RecommendationViewSet(GenericViewSet):
 
                 # ATTACH IMDB DATA
                 if media_type in ["movie", "tv_show", "web series", "documentary"]:
-                    filtered_result = self.update_data_with_imdb(
-                        result, index, title, media_type
-                    )
+                    try:
+                        filtered_result = self.update_data_with_imdb(
+                            result, index, title, media_type
+                        )
+                    except Exception as e:
+                        logger.error(f"Error updating data with IMDB: {e}")
 
                 # ATTACH YOUTUBE, SPOTIFY LINK
                 query = f"{title} {media_type}"
@@ -284,13 +294,15 @@ class RecommendationViewSet(GenericViewSet):
                             ]["images"][0]["url"]
                     except Exception as e:
                         logger.error(f"Error fetching Spotify link: {e}")
-                # YOUTUBE
-                try:
-                    filtered_result[index]["youtube_link"] = self.get_youtube_link(
-                        query
-                    )
-                except Exception as e:
-                    logger.error(f"Error fetching YouTube link: {e}")
+
+                if ATTACH_YOUTUBE_LINK == True:
+                    # YOUTUBE
+                    try:
+                        filtered_result[index]["youtube_link"] = self.get_youtube_link(
+                            query
+                        )
+                    except Exception as e:
+                        logger.error(f"Error fetching YouTube link: {e}")
 
             # logger.info(f"\n\n🔥 Final Result:\n {filtered_result} \n\n")
 

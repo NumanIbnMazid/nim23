@@ -35,8 +35,8 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
     if (initialValues?.media_type) {
       setFormData((prev: typeof formData) => ({
         ...prev,
-        genres: initialValues.genres || [],
-        categories: initialValues.categories || [],
+        genres: (initialValues.genres || []).filter((g: string) => g.trim() !== ''),
+        categories: (initialValues.categories || []).filter((c: string) => c.trim() !== ''),
       }))
     }
   }, [initialValues?.media_type])

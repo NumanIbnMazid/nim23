@@ -11,17 +11,21 @@ from utils.throttles import RecommendrRateThrottle
 from utils.helpers import custom_response_wrapper, ResponseWrapper, send_log_message
 from django.conf import settings
 
+from langchain.agents import initialize_agent, Tool
+from langchain.agents.agent_types import AgentType
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_community.tools import DuckDuckGoSearchResults
+
 from google import genai
 from googleapiclient.discovery import build
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from imdb import Cinemagoer
-from pydantic import BaseModel, Field
 
 import os
 import json
+import random
 import logging
-from typing import List
 
 
 logger = logging.getLogger("recommendr")
@@ -29,7 +33,6 @@ logger = logging.getLogger("recommendr")
 
 load_dotenv()
 RECOMMENDR_MODEL = os.getenv("RECOMMENDR_AI_MODEL")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 YOUTUBE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -42,80 +45,14 @@ spotify = spotipy.Spotify(
 )
 
 
-class MediaRecommendation(BaseModel):
-    title: str
-    artist: List[str]
-    media_type: str
-    description: str
-    languages: List[str]
-    genres: List[str]
-    category_tags: List[str]
-    release_year: str
-    rating: str
-    review_link: str
-    youtube_link: str
-    spotify_link: str
-
-
 @custom_response_wrapper
 class RecommendationViewSet(GenericViewSet):
     permission_classes = (permissions.AllowAny,)
     serializer_class = RecommendationRequestSerializer
 
-    @swagger_auto_schema(
-        method="get", responses={200: openapi.Response("Available preferences")}
-    )
-    @action(detail=False, methods=["get"], url_path="preferences")
-    def get_preferences(self, request):
-        data_path = os.path.join(settings.BASE_DIR, "recommendr/api/data")
-
-        def load_json(file):
-            with open(os.path.join(data_path, file), "r") as f:
-                return json.load(f)
-
-        preferences = {
-            "media_types": load_json("media_types.json"),
-            "mood": load_json("moods.json"),
-            "language": load_json("languages.json"),
-            "occasion": load_json("occasions.json"),
-            "genres": load_json("genres.json"),
-            "media_age": load_json("media_age.json"),
-            "rating": load_json("ratings.json"),
-            "categories": load_json("categories.json"),
-        }
-
-        return ResponseWrapper(data=preferences, status=status.HTTP_200_OK)
-
     def get_gemini_client(self):
-        return genai.Client(api_key=GEMINI_API_KEY)
-
-    def get_client(self, client_name):
-        """
-        Get the appropriate client based on the client name.
-        """
-        if client_name == "gemini":
-            return self.get_gemini_client()
-        else:
-            raise ValueError("Invalid client name")
-
-    def get_response(self, client, model, system_prompt, user_prompt):
-        """
-        Get the response from the client.
-        """
-        response = client.models.generate_content(
-            model=model,
-            contents=user_prompt,
-            config=genai.types.GenerateContentConfig(
-                temperature=1.0,
-                max_output_tokens=8192,
-                system_instruction=system_prompt,
-                response_mime_type='application/json',
-                response_schema=list[MediaRecommendation],
-            ),
-        )
-        # TODO: Remove after testing
-        # print(f"\n\n🔥🔥🔥Response:🔥🔥🔥\n {response} \n\n")
-        return response.text
+        load_dotenv()
+        return genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
     def get_prompt(self):
         system_prompt = RecommendrUtils.objects.first().system_prompt
@@ -201,17 +138,51 @@ class RecommendationViewSet(GenericViewSet):
         return
 
     def generate_recommendation(self, input_data):
+        phrasing_variants = [
+            "Can you recommend 5 amazing",
+            "Suggest 5 interesting",
+            "What are your top 5 picks for",
+            "Give me 5 great",
+        ]
+        input_data["random_intro"] = random.choice(phrasing_variants)
+
         prompt_template = self.get_prompt()
-        system_prompt = prompt_template.format(**input_data)
+        user_prompt = prompt_template.format(**input_data)
 
         # TODO: Remove after testing
-        # print(f"\n\n🔥🔥🔥User Prompt:🔥🔥🔥\n {system_prompt} \n\n")
+        # print(f"\n\n🔥🔥🔥User Prompt:🔥🔥🔥\n {user_prompt} \n\n")
 
         if not RECOMMENDR_MODEL:
             raise ValueError("RECOMMENDR_AI_MODEL not found in environment variables")
 
-        # Initialize LLM Client
-        client = self.get_client("gemini")
+        # Step 1: Initialize Gemini (ChatGoogleGenerativeAI)
+        llm = ChatGoogleGenerativeAI(
+            model=RECOMMENDR_MODEL, api_key=os.getenv("GEMINI_API_KEY"), temperature=0.3
+        )
+
+        # Step 2: Add a search tool (e.g. DuckDuckGoSearchRun or SerpAPI)
+        search = DuckDuckGoSearchResults()
+
+        # Step 3: Define tools
+        tools = [
+            Tool(
+                name="search",
+                func=search.run,
+                description="Useful for searching for real-time data like ratings, descriptions, or links for movies, shows, or music.",
+            ),
+        ]
+
+        # Step 4: Initialize agent with tools
+        agent = initialize_agent(
+            tools=tools,
+            llm=llm,
+            agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
+            verbose=True,
+            handle_parsing_errors=True,
+            max_iterations=50,
+        )
+
+        query = user_prompt
 
         # Showing Logs
         media_type_name_plural = input_data.get("media_type")
@@ -232,23 +203,20 @@ class RecommendationViewSet(GenericViewSet):
             module="recommendr",
         )
 
-        # Generate the response
-        output = self.get_response(
-            client=client,
-            model=RECOMMENDR_MODEL,
-            system_prompt=system_prompt,
-            user_prompt="Please give me a list of 5 recommendations",
-        )
+        # Step 5: Use it!
+        response = agent.invoke(query)
 
-        # TODO: Remove after testing
-        # print(f"\n\n🔥🔥🔥 Response: 🔥🔥🔥\n {output} \n\n")
+        # Check if we have a valid response with the movie recommendations
+        output = response.get("output")
+
+        # logger.info(f"🔥🔥🔥Response:🔥🔥🔥\n {output} \n\n")
 
         # If the output contains multiple movie recommendations, return those
-        # if isinstance(output, list):
-        #     return output  # Returning the list of movie recommendations directly
-        # else:
-        #     # If no valid list is found, we can fallback to a default or empty response
-        #     return []
+        if isinstance(output, list):
+            return output  # Returning the list of movie recommendations directly
+        else:
+            # If no valid list is found, we can fallback to a default or empty response
+            return []
         return output
 
     @swagger_auto_schema(
@@ -282,12 +250,6 @@ class RecommendationViewSet(GenericViewSet):
                     status=status.HTTP_404_NOT_FOUND,
                 )
             if isinstance(result, str):
-                # Clean markdown if present
-                result = result.strip()
-                if result.startswith("```json"):
-                    result = result.lstrip("```json").rstrip("```").strip()
-                elif result.startswith("```"):
-                    result = result.strip("```").strip()
                 result = json.loads(result)
 
             filtered_result = [
@@ -355,3 +317,27 @@ class RecommendationViewSet(GenericViewSet):
                 error_message=str(e),
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+    @swagger_auto_schema(
+        method="get", responses={200: openapi.Response("Available preferences")}
+    )
+    @action(detail=False, methods=["get"], url_path="preferences")
+    def get_preferences(self, request):
+        data_path = os.path.join(settings.BASE_DIR, "recommendr/api/data")
+
+        def load_json(file):
+            with open(os.path.join(data_path, file), "r") as f:
+                return json.load(f)
+
+        preferences = {
+            "media_types": load_json("media_types.json"),
+            "mood": load_json("moods.json"),
+            "language": load_json("languages.json"),
+            "occasion": load_json("occasions.json"),
+            "genres": load_json("genres.json"),
+            "media_age": load_json("media_age.json"),
+            "rating": load_json("ratings.json"),
+            "categories": load_json("categories.json"),
+        }
+
+        return ResponseWrapper(data=preferences, status=status.HTTP_200_OK)

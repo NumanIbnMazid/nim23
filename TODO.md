@@ -132,6 +132,8 @@
   - (DONE) Recommendr: Show current active filters.
   - Recommendr: Generate preferences in such a way so that they do not contradict with each other.
   - Recommendr: Fix websocket error. Modifying preferences or regenarating recommendations not showing logs.
+  - Recommendr: User TMDB: https://developer.themoviedb.org/reference/search-movie
+  - Recommendr: Add trending movies, tv shows, and people using TMDB API.
 
 
 ## Improvement

@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
-import { getPreferences } from '@/lib/recommendr/fetchPreferences'
+
 import { getRecommendations } from '@/lib/recommendr/fetchRecommendations'
 import PreferenceForm from '@/components/Recommendr/PreferenceForm'
 import RecommendationList from '@/components/Recommendr/RecommendationList'
@@ -12,7 +12,7 @@ import { HomeHeading } from '@/app/HomeClient'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { WEBSOCKET_URL } from '@/lib/constants'
 
-export default function RecommendrClient() {
+export default function RecommendrClient({ preferencesChoices }: { preferencesChoices: any }) {
   const [preferences, setPreferences] = useState<any | null>(null)
   const [userPrefs, setUserPrefs] = useState<any | null>(null)
   const [recommendations, setRecommendations] = useState<any[]>([])
@@ -61,7 +61,7 @@ export default function RecommendrClient() {
   }, [])
 
   useEffect(() => {
-    getPreferences().then(setPreferences)
+    setPreferences(preferencesChoices)
     setLoading(false)
   }, [])
 

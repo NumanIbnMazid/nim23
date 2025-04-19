@@ -151,7 +151,7 @@ class RecommendationViewSet(GenericViewSet):
         # print(f"\n\n🔥🔥🔥User Prompt:🔥🔥🔥\n {user_prompt} \n\n")
 
         if not RECOMMENDR_MODEL:
-            raise ValueError("GEMINI model name not found in environment variables")
+            raise ValueError("RECOMMENDR_AI_MODEL not found in environment variables")
 
         # Step 1: Initialize Gemini (ChatGoogleGenerativeAI)
         llm = ChatGoogleGenerativeAI(

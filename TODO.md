@@ -131,6 +131,7 @@
   - (DONE) Recommendr: Show engaging message while fetching recommendations.
   - (DONE) Recommendr: Show current active filters.
   - Recommendr: Generate preferences in such a way so that they do not contradict with each other.
+  - Recommendr: Fix websocket error. Modifying preferences or regenarating recommendations not showing logs.
 
 
 ## Improvement

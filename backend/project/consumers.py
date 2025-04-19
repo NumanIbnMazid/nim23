@@ -27,7 +27,7 @@ class LogConsumer(AsyncWebsocketConsumer):
         try:
             while True:
                 await asyncio.sleep(20)  # Adjust ping interval as needed
-                await self.send(text_data="ping")
+                await self.send(text_data=json.dumps({"type": "ping"}))
         except asyncio.CancelledError:
             pass
 

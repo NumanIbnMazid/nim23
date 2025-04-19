@@ -45,15 +45,33 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
 
   const handleSelect = (key: keyof typeof formData, value: string, multi?: boolean) => {
     setFormData((prev: typeof formData) => {
-      const currentValue = prev[key]
-      const updated = multi
-        ? Array.isArray(currentValue)
-          ? currentValue.includes(value)
-            ? currentValue.filter((v: string) => v !== value)
-            : [...currentValue, value]
-          : [value]
-        : value
-      return { ...prev, [key]: updated }
+      // Handle multi-select fields
+      if (multi) {
+        const currentValue = prev[key]
+        return {
+          ...prev,
+          [key]: Array.isArray(currentValue)
+            ? currentValue.includes(value)
+              ? currentValue.filter((v: string) => v !== value)
+              : [...currentValue, value]
+            : [value],
+        }
+      }
+
+      // Only reset genres/categories if media_type is *changing*
+      if (key === 'media_type' && value !== prev.media_type) {
+        return {
+          ...prev,
+          media_type: value,
+          genres: [],
+          categories: [],
+        }
+      }
+
+      return {
+        ...prev,
+        [key]: value,
+      }
     })
   }
 

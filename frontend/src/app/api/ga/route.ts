@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { BetaAnalyticsDataClient } from '@google-analytics/data'
 
 const propertyId = process.env.GA_PROPERTY_ID
-const DAYS = 28
+const DAYS = 30
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   credentials: {

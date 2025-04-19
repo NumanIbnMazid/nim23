@@ -13,7 +13,9 @@ import { GOOGLE_ANALYTICS_API_ROUTE } from '@/lib/apiRouteMaps'
 
 export default function Footer({ setShowQR, showQR }: { setShowQR: (value: boolean) => void; showQR: boolean }) {
   const isDev = process.env.NODE_ENV !== 'production'
-  const { data: visitors } = !isDev ? useSWR(GOOGLE_ANALYTICS_API_ROUTE, fetcher) : { data: null }
+  const { data: visitors } = !isDev
+    ? useSWR(GOOGLE_ANALYTICS_API_ROUTE, fetcher)
+    : { data: { totalVisitors: 0, days: 0 } }
   const { isDarkMode } = useDarkMode()
 
   const footerClass = isDarkMode ? 'footer-with-rays-dark' : 'footer-with-rays'

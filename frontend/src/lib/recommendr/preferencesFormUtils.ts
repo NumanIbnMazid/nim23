@@ -13,31 +13,41 @@ export function buildPayload(formData: any) {
 }
 
 export function getFieldDefinitions(preferences: any, formData: any) {
-  return [
+  const fields = [
     { label: 'Language', key: 'language', options: preferences.language, multi: true },
-    {
-      label: 'Genres',
-      key: 'genres',
-      options: [
-        ...(preferences.genres[formData.media_type] || []),
-        ...(formData.genres || []).filter((g: string) => !(preferences.genres[formData.media_type] || []).includes(g)),
-      ],
-      multi: true,
-    },
     { label: 'Occasion', key: 'occasion', options: preferences.occasion, multi: true },
     { label: 'Media Age', key: 'media_age', options: preferences.media_age, multi: true },
     { label: 'Rating', key: 'rating', options: preferences.rating, multi: true },
-    {
+    { label: 'Other Preferences', key: 'other_preferences', isTextInput: true },
+  ]
+
+  const mediaType = formData.media_type
+
+  // Only include genres if available for selected media_type
+  if (preferences.genres?.[mediaType]) {
+    fields.splice(1, 0, {
+      label: 'Genres',
+      key: 'genres',
+      options: [
+        ...preferences.genres[mediaType],
+        ...(formData.genres || []).filter((g: string) => !preferences.genres[mediaType].includes(g)),
+      ],
+      multi: true,
+    })
+  }
+
+  // Only include categories if available for selected media_type
+  if (preferences.categories?.[mediaType]) {
+    fields.splice(fields.length - 1, 0, {
       label: 'Categories',
       key: 'categories',
       options: [
-        ...(preferences.categories[formData.media_type] || []),
-        ...(formData.categories || []).filter(
-          (c: string) => !(preferences.categories[formData.media_type] || []).includes(c)
-        ),
+        ...preferences.categories[mediaType],
+        ...(formData.categories || []).filter((c: string) => !preferences.categories[mediaType].includes(c)),
       ],
       multi: true,
-    },
-    { label: 'Other Preferences', key: 'other_preferences', isTextInput: true },
-  ]
+    })
+  }
+
+  return fields
 }

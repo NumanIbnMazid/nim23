@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 
 class RecommendationRequestSerializer(serializers.Serializer):
+    client_id = serializers.CharField()
     media_type = serializers.CharField()
     mood = serializers.CharField()
     occasion = serializers.ListField(child=serializers.CharField(allow_blank=True), allow_empty=True)

@@ -74,7 +74,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
           {getNames(cast, 'Cast', '🎬')}
           {getNames(director, 'Director', '🎥')}
         </div>
-        <div className="flex gap-4 mt-4 text-lg">
+        <div className="flex gap-4 mt-4 text-2xl">
           {review_link && (
             <a href={review_link} target="_blank" rel="noopener noreferrer" className="text-yellow-500">
               <FaImdb />

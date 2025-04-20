@@ -34,7 +34,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         const data = JSON.parse(event.data)
         setLogs(data)
         if (data.type === 'ping') {
-        //   console.log('✅ Ping received')
+          //   console.log('✅ Ping received')
           ws.send(JSON.stringify({ type: 'pong' }))
         }
       }
@@ -47,7 +47,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       }
 
       ws.onerror = (err) => {
-        console.error('🔴 WebSocket error:', err)
+        console.warn('🔴 WebSocket error:', err)
       }
     }
 

@@ -8,6 +8,18 @@ services:
   #     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
   #   networks:
   #     - net-tier
+  
+  # redis:
+  #   image: redis:7.4.2-alpine
+  #   container_name: redis
+  #   ports:
+  #     - '6379:6379'
+  #   environment:
+  #     REDIS_HOST: ${REDIS_HOST}
+  #     REDIS_PORT: ${REDIS_PORT}
+  #     REDIS_DB: ${REDIS_DB}
+  #   networks:
+  #     - net-tier
 
   backend:
     # depends_on:
@@ -20,14 +32,14 @@ services:
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
-    build: 
+    build:
       context: .
       dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/app
     ports:
-      - "8000:8000"
-      - "4416:4416"
+      - '8000:8000'
+      - '4416:4416'
     networks:
       - net-tier
 
@@ -36,13 +48,13 @@ services:
       - backend
     env_file: ./frontend/.env
     container_name: frontend
-    build: 
+    build:
       context: .
       dockerfile: ./frontend/Dockerfile
     volumes:
       - ./frontend:/app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     stdin_open: true
     tty: true
     environment:

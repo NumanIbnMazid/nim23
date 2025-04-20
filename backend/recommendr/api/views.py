@@ -7,6 +7,11 @@ from django.conf import settings
 from dotenv import load_dotenv
 from recommendr.api.serializers import RecommendationRequestSerializer
 from recommendr.models import RecommendrUtils
+from recommendr.api.cache import (
+    get_previous_titles,
+    save_recommendations,
+    extract_titles_by_type,
+)
 from utils.throttles import RecommendrRateThrottle
 from utils.helpers import custom_response_wrapper, ResponseWrapper, send_log_message
 from django.conf import settings
@@ -378,7 +383,26 @@ class RecommendationViewSet(GenericViewSet):
                 module="recommendr",
                 scope="get-recommendation",
             )
-            logger.info(f"\n\n🔥 Request data:🔥\n\n {serializer.validated_data}\n\n")
+            # logger.info(f"\n\n🔥 Request data:🔥\n\n {serializer.validated_data}\n\n")
+
+            # Get client id
+            client_id = serializer.validated_data.get("client_id")
+            # Get media type
+            media_type = serializer.validated_data.get("media_type")
+
+            if not client_id or not media_type:
+                return ResponseWrapper(
+                    message="Client ID and Media Type is required!",
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Get exclusions from redis
+            previously_recommended_titles = get_previous_titles(client_id, media_type)
+
+            # Add previous recommended titles to serializer validated data
+            serializer.validated_data["previously_recommended_titles"] = (
+                previously_recommended_titles
+            )
 
             # Generate recommendations
             result = self.generate_recommendation(serializer.validated_data)
@@ -388,6 +412,7 @@ class RecommendationViewSet(GenericViewSet):
                     message="No recommendations found",
                     status=status.HTTP_404_NOT_FOUND,
                 )
+
             if isinstance(result, str):
                 # Clean markdown if present
                 result = result.strip()
@@ -400,8 +425,6 @@ class RecommendationViewSet(GenericViewSet):
             filtered_result = [
                 item for item in result if item.get("title") and item["title"].strip()
             ]
-
-            media_type = serializer.validated_data.get("media_type")
 
             # Update METADATA
             for index, data in enumerate(filtered_result):
@@ -433,14 +456,14 @@ class RecommendationViewSet(GenericViewSet):
 
                 # ATTACH YOUTUBE, SPOTIFY LINK
                 query = f"{title} {media_type}"
-                if media_type == "music":
-                    artist_list = data.get("artist", [])
-                    query = f"{title}" + (
-                        f" artist:{', '.join(artist_list)}" if artist_list else ""
-                    )
+
                 # SPOTIFY
                 if media_type in ["Music"]:
                     try:
+                        artist_list = data.get("artist", [])
+                        query = f"{title}" + (
+                            f" artist:{', '.join(artist_list)}" if artist_list else ""
+                        )
                         spotify_track = self.get_spotify_track(query)
                         if spotify_track:
                             filtered_result[index]["spotify_link"] = spotify_track[
@@ -460,6 +483,11 @@ class RecommendationViewSet(GenericViewSet):
                         )
                     except Exception as e:
                         logger.error(f"Error fetching YouTube link: {e}")
+
+            # Step 4: Save new ones
+            by_type = extract_titles_by_type(filtered_result)
+            titles = by_type.get(media_type.lower(), [])
+            save_recommendations(client_id, media_type, titles)
 
             # logger.info(f"\n\n🔥 Final Result:\n {filtered_result} \n\n")
 

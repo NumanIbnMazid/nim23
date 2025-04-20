@@ -5,6 +5,9 @@ from pathlib import Path
 import os
 from config import config
 from rest_framework.settings import api_settings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ----------------------------------------------------
 # *** Project's BASE DIRECTORY ***
@@ -223,7 +226,29 @@ LOGGING = {
 # ----------------------------------------------------
 # *** Django Channels ***
 # ----------------------------------------------------
-CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                f"redis://{config.REDIS.REDIS_HOST}:{config.REDIS.REDIS_PORT}/{config.REDIS.REDIS_DB}"
+            ],
+        },
+    },
+}
+
+# ----------------------------------------------------
+# *** Cachee Configuration ****
+# ----------------------------------------------------
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{config.REDIS.REDIS_HOST}:{config.REDIS.REDIS_PORT}/{config.REDIS.REDIS_DB}",  # 'redis' is the Docker service name
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
 
 # ----------------------------------------------------
 # *** Other Definitions ***
@@ -333,3 +358,6 @@ BACKEND_SUBDOMAIN = "/backend"
 BLOG_WORDS_PER_MINUTE = 200
 LOGIN_URL = BACKEND_SUBDOMAIN + "/admin/login/"
 LOGOUT_REDIRECT_URL = "/"
+RECOMMENDATION_CACHE_TIMEOUT = int(
+    os.getenv("RECOMMENDR_RECOMMENDATION_CACHE_TIMEOUT", 600)
+)

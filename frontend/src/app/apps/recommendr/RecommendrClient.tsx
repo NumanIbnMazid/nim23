@@ -9,6 +9,7 @@ import RecommendationList from '@/components/Recommendr/RecommendationList'
 import LoadingRecommendations from '@/components/Recommendr/LoadingRecommendations'
 import AppIntro from '@/components/Recommendr/AppIntro'
 import SkeletonLoader from '@/components/SkeletonLoader'
+import { useClientID } from '@/context/clientIdContext'
 
 export default function RecommendrClient({ preferencesChoices }: { preferencesChoices: any }) {
   const [preferences, setPreferences] = useState<any | null>(null)
@@ -18,6 +19,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   const [recommendationLoading, setRecommendationLoading] = useState(false)
   const [showForm, setShowForm] = useState(true)
   const [currentPreferences, setCurrentPreferences] = useState<any>(null)
+  const { clientID } = useClientID()
 
   useEffect(() => {
     setPreferences(preferencesChoices)
@@ -31,7 +33,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
     setShowForm(false)
     setCurrentPreferences(prefs)
     try {
-      const response = await getRecommendations(prefs)
+      const response = await getRecommendations(prefs, clientID)
       setRecommendations(response || [])
     } catch (error) {
       console.error('Error fetching recommendations:', error)

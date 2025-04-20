@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import RecommendationCard from './RecommendationCard'
+import RecommendationCard from '@/components/Recommendr/RecommendationCard'
 import { FaRedo, FaPen } from 'react-icons/fa'
 
 export default function RecommendationList({

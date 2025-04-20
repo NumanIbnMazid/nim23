@@ -15,6 +15,7 @@ RUN apt update && \
     gcc \
     curl \
     wget \
+    redis-server \
     net-tools \
     musl-dev \
     libssl-dev \

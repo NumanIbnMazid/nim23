@@ -306,18 +306,10 @@ class RecommendationViewSet(GenericViewSet):
 
         # Showing Logs
         media_type_name_plural = input_data.get("media_type")
-        if input_data.get("media_type") in [
-            "movie",
-            "tv_show",
-            "music",
-            "podcast",
-            "audiobook",
-        ]:
+        if input_data.get("media_type") in ["Movie", "TV Show", "Music"]:
             media_type_name_plural = f"{media_type_name_plural}s"
-        elif input_data.get("media_type") == "web series":
-            media_type_name_plural = "web series"
-        elif input_data.get("media_type") == "documentary":
-            media_type_name_plural = "documentaries"
+        elif input_data.get("media_type") == "Documentary":
+            media_type_name_plural = "Documentaries"
         send_log_message(
             f"Finding best {media_type_name_plural} for you...",
             module="recommendr",

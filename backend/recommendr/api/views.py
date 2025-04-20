@@ -136,7 +136,9 @@ class RecommendationViewSet(GenericViewSet):
         title = resultObj[index].get("title")
         logger.info(f"🔍 Searching for `{title}` in OMDB...")
         send_log_message(
-            f"🔍 Searching for `{title}` in Movie Database...", module="recommendr", scope="get-recommendation"
+            f"🔍 Searching for `{title}` in Movie Database...",
+            module="recommendr",
+            scope="get-recommendation",
         )
         result = omdb_client.request(
             t=resultObj[index].get("title"),
@@ -150,7 +152,9 @@ class RecommendationViewSet(GenericViewSet):
         if json_data.get("Response") == "True":
             logger.info(f"✅ Found `{title}` in OMDB")
             send_log_message(
-                f"✅ Found `{title}` in Movie Database.", module="recommendr", scope="get-recommendation"
+                f"✅ Found `{title}` in Movie Database.",
+                module="recommendr",
+                scope="get-recommendation",
             )
             # Update Data
             resultObj[index]["title"] = json_data.get("Title")
@@ -160,7 +164,7 @@ class RecommendationViewSet(GenericViewSet):
             resultObj[index]["genres"] = json_data.get("Genre").split(", ")
             resultObj[index][
                 "review_link"
-            ] = f"https://www.imdb.com/title/tt{json_data.get('imdbID')}/"
+            ] = f"https://www.imdb.com/title/{json_data.get('imdbID')}/"
             resultObj[index]["imdb_id"] = json_data.get("imdbID")
             resultObj[index]["imdb_rating"] = json_data.get("imdbRating")
             resultObj[index]["languages"] = json_data.get("Language").split(", ")
@@ -219,7 +223,11 @@ class RecommendationViewSet(GenericViewSet):
 
         title = resultObj[index].get("title")
         logger.info(f"🔍 Searching for `{title}` in IMDB...")
-        send_log_message(f"🔍 Searching for `{title}` in IMDB...", module="recommendr", scope="get-recommendation")
+        send_log_message(
+            f"🔍 Searching for `{title}` in IMDB...",
+            module="recommendr",
+            scope="get-recommendation",
+        )
         results = imdb_client.search_movie(title)
         if results:
             # Get detailed info from first match
@@ -229,7 +237,7 @@ class RecommendationViewSet(GenericViewSet):
             send_log_message(
                 f"✅ Found `{title}` in IMDB with ID: {movieID}",
                 module="recommendr",
-                scope="get-recommendation"
+                scope="get-recommendation",
             )
             imdb_client.update(movie)
             resultObj[index]["title"] = movie.get("title")
@@ -253,14 +261,18 @@ class RecommendationViewSet(GenericViewSet):
         else:
             logger.info(f"⚠️ No results found for `{title}` in IMDB.")
             send_log_message(
-                f"⚠️ No results found for `{title}` in IMDB.", module="recommendr", scope="get-recommendation"
+                f"⚠️ No results found for `{title}` in IMDB.",
+                module="recommendr",
+                scope="get-recommendation",
             )
         return False
 
     def get_youtube_link(self, query):
         logger.info(f"🔍 Searching for `{query}` in YouTube...")
         send_log_message(
-            f"🔍 Searching for `{query}` in YouTube...", module="recommendr", scope="get-recommendation"
+            f"🔍 Searching for `{query}` in YouTube...",
+            module="recommendr",
+            scope="get-recommendation",
         )
         request = youtube_client.search().list(
             q=query, part="snippet", maxResults=1, type="video"
@@ -271,7 +283,8 @@ class RecommendationViewSet(GenericViewSet):
             logger.info(f"✅ Found `{query}` in YouTube with ID: {video_id}")
             send_log_message(
                 f"✅ Found `{query}` in YouTube with ID: {video_id}",
-                module="recommendr", scope="get-recommendation"
+                module="recommendr",
+                scope="get-recommendation",
             )
             return f"https://www.youtube.com/watch?v={video_id}"
         return ""
@@ -279,7 +292,9 @@ class RecommendationViewSet(GenericViewSet):
     def get_spotify_track(self, query):
         logger.info(f"🔍 Searching for `{query}` in Spotify...")
         send_log_message(
-            f"🔍 Searching for `{query}` in Spotify...", module="recommendr", scope="get-recommendation"
+            f"🔍 Searching for `{query}` in Spotify...",
+            module="recommendr",
+            scope="get-recommendation",
         )
         results = spotify_client.search(q=query, limit=1, type="track")
         tracks = results.get("tracks", {}).get("items", [])
@@ -287,7 +302,8 @@ class RecommendationViewSet(GenericViewSet):
             logger.info(f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}")
             send_log_message(
                 f"✅ Found `{query}` in Spotify with ID: {tracks[0]['id']}",
-                module="recommendr", scope="get-recommendation"
+                module="recommendr",
+                scope="get-recommendation",
             )
             return tracks[0]
         return
@@ -313,7 +329,8 @@ class RecommendationViewSet(GenericViewSet):
             media_type_name_plural = "Documentaries"
         send_log_message(
             f"Finding best {media_type_name_plural} for you...",
-            module="recommendr", scope="get-recommendation"
+            module="recommendr",
+            scope="get-recommendation",
         )
 
         # Generate the response

@@ -25,6 +25,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   }, [])
 
   const handleFormSubmit = async (prefs: any) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // Scroll to top smoothly
     setUserPrefs(prefs)
     setRecommendationLoading(true)
     setShowForm(false)

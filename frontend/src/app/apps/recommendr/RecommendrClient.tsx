@@ -1,16 +1,14 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
-
 import { getRecommendations } from '@/lib/recommendr/fetchRecommendations'
 import PreferenceForm from '@/components/Recommendr/PreferencesForm/PreferenceForm'
 import RecommendationList from '@/components/Recommendr/RecommendationList'
 import LoadingRecommendations from '@/components/Recommendr/LoadingRecommendations'
 import { HomeHeading } from '@/app/HomeClient'
 import SkeletonLoader from '@/components/SkeletonLoader'
-import { WEBSOCKET_URL } from '@/lib/constants'
 
 export default function RecommendrClient({ preferencesChoices }: { preferencesChoices: any }) {
   const [preferences, setPreferences] = useState<any | null>(null)
@@ -20,48 +18,6 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   const [recommendationLoading, setRecommendationLoading] = useState(false)
   const [showForm, setShowForm] = useState(true)
   const [currentPreferences, setCurrentPreferences] = useState<any>(null)
-  const wsRef = useRef<WebSocket | null>(null)
-
-  useEffect(() => {
-    let ws: WebSocket | null = null
-    let reconnectTimeout: ReturnType<typeof setTimeout> | null = null
-    const connect = () => {
-      try {
-        ws = new WebSocket(`${WEBSOCKET_URL}/ws/logs/`)
-        wsRef.current = ws
-
-        ws!.onopen = () => {
-          console.log('✅ WebSocket connected')
-          ws!.send(JSON.stringify({ type: 'ready' }))
-        }
-        ws.onclose = (e) => {
-          console.warn('🔌 WebSocket closed:', e)
-          // Retry connection after a small delay if not closed cleanly
-          if (!e.wasClean) {
-            reconnectTimeout = setTimeout(() => {
-              console.log('🔄 Reconnecting WebSocket...')
-              connect()
-            }, 1000) // retry after 1 second
-          }
-        }
-        ws.onerror = (err) => {
-          console.error('🔴 WebSocket error:', err)
-        }
-      } catch (err) {
-        console.error('🔴 WebSocket init error:', err)
-      }
-    }
-
-    const timeout = setTimeout(() => {
-      connect()
-    }, 500) // wait 0.5 sec to ensure backend is ready
-
-    return () => {
-      if (ws) ws.close()
-      if (reconnectTimeout) clearTimeout(reconnectTimeout)
-      if (timeout) clearTimeout(timeout)
-    }
-  }, [])
 
   useEffect(() => {
     setPreferences(preferencesChoices)
@@ -100,7 +56,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
           {showForm && preferences && (
             <PreferenceForm preferences={preferences} onSubmit={handleFormSubmit} initialValues={userPrefs} />
           )}
-          {recommendationLoading && <LoadingRecommendations wsRef={wsRef} />}
+          {recommendationLoading && <LoadingRecommendations />}
           {!recommendationLoading && userPrefs && (
             <RecommendationList
               results={recommendations}

@@ -204,12 +204,15 @@ def sync_markdown_html_fields(instance, markdown_field_name, html_field_name):
 channel_layer = get_channel_layer()
 
 
-def send_log_message(message=None, *, type="event", module="common", **kwargs):
+def send_log_message(
+    message=None, *, type="event", module="common", scope=None, **kwargs
+):
     payload = {
         "type": "send.log",  # This is the handler method name in your consumer
         "message": {
             "type": type,
             "module": module,
+            "scope": scope,
             "message": message,
             **kwargs,  # This allows for any extra keys to be added if needed
         },

@@ -2,11 +2,12 @@ import '@/styles/globals.css' // ✅ Load global styles
 import { Inter } from 'next/font/google'
 import { DarkModeProvider } from '@/context/darkModeContext'
 import { ClientIDProvider } from '@/context/clientIdContext'
+import { WebSocketProvider } from '@/context/WebSocketContext'
 import Layout from '@/layout/Layout'
 import LayoutClient from '@/app/LayoutClient'
 import { Metadata } from 'next'
-import { pageMeta } from "@/lib/Meta"
-import SitemapPrefetch from "@/components/SitemapPrefetch";
+import { pageMeta } from '@/lib/Meta'
+import SitemapPrefetch from '@/components/SitemapPrefetch'
 
 // revalidate all fetch requests in a route segment
 export const revalidate = 60 // revalidate at 1 min
@@ -71,10 +72,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <DarkModeProvider>
           <ClientIDProvider>
-            <Layout>
-              <LayoutClient>{children}</LayoutClient>
-              <SitemapPrefetch />
-            </Layout>
+            <WebSocketProvider>
+              <Layout>
+                <LayoutClient>{children}</LayoutClient>
+                <SitemapPrefetch />
+              </Layout>
+            </WebSocketProvider>
           </ClientIDProvider>
         </DarkModeProvider>
       </body>

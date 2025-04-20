@@ -134,6 +134,7 @@
   - Recommendr: Fix websocket error. Modifying preferences or regenarating recommendations not showing logs.
   - Recommendr: User TMDB: https://developer.themoviedb.org/reference/search-movie
   - Recommendr: Add trending movies, tv shows, and people using TMDB API.
+  - Recommendr: Genre and categories are contradictory for music. Both are looking same.
 
 
 ## Improvement

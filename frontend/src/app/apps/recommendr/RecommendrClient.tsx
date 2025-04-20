@@ -7,7 +7,7 @@ import { getRecommendations } from '@/lib/recommendr/fetchRecommendations'
 import PreferenceForm from '@/components/Recommendr/PreferencesForm/PreferenceForm'
 import RecommendationList from '@/components/Recommendr/RecommendationList'
 import LoadingRecommendations from '@/components/Recommendr/LoadingRecommendations'
-import { HomeHeading } from '@/app/HomeClient'
+import AppIntro from '@/components/Recommendr/AppIntro'
 import SkeletonLoader from '@/components/SkeletonLoader'
 
 export default function RecommendrClient({ preferencesChoices }: { preferencesChoices: any }) {
@@ -47,7 +47,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
       viewport={{ once: true }}
       className="max-w-7xl mx-auto px-4 py-16"
     >
-      <HomeHeading title="🎬 Recommendr" />
+      <AppIntro />
 
       {loading ? (
         <SkeletonLoader />

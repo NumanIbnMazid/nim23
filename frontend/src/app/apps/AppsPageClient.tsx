@@ -4,8 +4,13 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FadeContainer, opacityVariant } from '@/content/FramerMotionVariants'
 import { FiArrowRight } from 'react-icons/fi'
+import { ReactNode } from 'react'
 
-export default function AppsClient({ apps }: { apps: { name: string; link: string, description: string }[] }) {
+export default function AppsClient({
+  apps,
+}: {
+  apps: { name: string; link: string; description: string; icon: ReactNode }[]
+}) {
   return (
     <div className="px-4">
       <div className="max-w-6xl mx-auto py-16 mt-6 px-2">
@@ -28,6 +33,7 @@ export default function AppsClient({ apps }: { apps: { name: string; link: strin
               variants={opacityVariant}
               className="shadow-lg hover:shadow-2xl transition-all duration-300 w-full p-4 bg-white dark:bg-darkFourth ring-1 hover:bg-darkWhite dark:hover:bg-darkThird dark:hover:ring-[#555] ring-gray-300 hover:ring-gray-400 dark:ring-[#444] flex flex-col gap-2 rounded"
             >
+              <div className="flex justify-center mb-3">{app.icon}</div>
               <h3 className="text-3xl font-semibold text-center mb-2">{app.name}</h3>
               <h4 className="text-sm text-center mb-4">{app.description}</h4>
               <div className="flex justify-center">

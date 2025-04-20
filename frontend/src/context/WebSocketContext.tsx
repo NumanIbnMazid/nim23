@@ -26,7 +26,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       wsRef.current = ws
 
       ws.onopen = () => {
-        console.log('✅ WebSocket connected')
+        // console.log('✅ WebSocket connected')
         ws.send(JSON.stringify({ type: 'ready' }))
       }
 
@@ -34,7 +34,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         const data = JSON.parse(event.data)
         setLogs(data)
         if (data.type === 'ping') {
-          console.log('✅ Ping received')
+        //   console.log('✅ Ping received')
           ws.send(JSON.stringify({ type: 'pong' }))
         }
       }

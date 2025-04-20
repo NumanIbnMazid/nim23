@@ -3,9 +3,9 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
-import { HomeHeading } from '@/app/HomeClient'
 import HumanizerInput from '@/components/humanizerAI/HumanizerInput'
 import HumanizedOutput from '@/components/humanizerAI/HumanizedOutput'
+import AppIntro from '@/components/humanizerAI/AppIntro'
 import ErrorMessage from '@/components/humanizerAI/ErrorMessage'
 import { fetchHumanizedText } from '@/lib/humanizerAI/fetchHumanizedText'
 
@@ -62,7 +62,7 @@ export default function HumanizerAiClient() {
         className="max-w-4xl mx-auto py-16"
       >
         <div className="px-4">
-          <HomeHeading title="Humanizer AI" />
+          <AppIntro />
           <div className="mt-8">
             <HumanizerInput
               inputText={inputText}

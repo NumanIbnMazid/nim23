@@ -134,7 +134,7 @@ export const pageMeta: PageMeta = {
   recommendr: {
     title: 'Recommendr – Best Media Recommendation App | NIM23',
     description:
-      'Recommendr by NIM23 is a smart media recommendation engine that curates personalized movies, music, shows, and podcasts based on your mood and vibe. Discover what suits you best, effortlessly.',
+      'Recommendr by NIM23 is a smart media recommendation engine that curates personalized movies, music, tv-shows, web-series, documentaries etc. based on your mood and vibe. Discover what suits you best, effortlessly.',
     image: logoImage, // Update with actual image path
     keywords:
       'mood-based recommendations, media recommendation engine, personalized movie recommendations, music discovery tool, mood playlists, AI media curator, recommendr app, NIM23 recommendr, smart content suggestions, mood media finder, best recommendation engine 2025, emotion-based recommendations, what to watch, what to listen to, curated content tool, mood AI assistant, entertainment suggester, discover music by mood, show and movie finder, vibe-based content',

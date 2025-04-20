@@ -4,6 +4,7 @@ import { getPageMetadata, pageMeta } from '@/lib/Meta'
 import { Metadata } from 'next'
 import { PUBLIC_SITE_URL } from '@/lib/constants'
 import AppsClient from '@/app/apps/AppsPageClient'
+import { FaDownload, FaUserEdit, FaMagic } from 'react-icons/fa'
 
 // Revalidate every 60 seconds
 export const revalidate = 60
@@ -31,16 +32,19 @@ async function AppsLandingPage() {
       name: 'Grabit',
       link: '/apps/grabit',
       description: pageMeta.grabit.description,
+      icon: <FaDownload className="text-green-500 text-4xl" />,
     },
     {
       name: 'Humanizer AI',
       link: '/apps/humanizer-ai',
       description: pageMeta.humanizerAI.description,
+      icon: <FaUserEdit className="text-purple-500 text-4xl" />,
     },
     {
       name: 'Recommendr',
       link: '/apps/recommendr',
       description: pageMeta.recommendr.description,
+      icon: <FaMagic className="text-purple-500 text-4xl" />,
     },
   ]
   return <AppsClient apps={apps} />

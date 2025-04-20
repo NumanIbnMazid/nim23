@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FadeContainer } from '@/content/FramerMotionVariants'
-import { HomeHeading } from '@/app/HomeClient'
 import { loadFFmpeg } from '@/lib/grabit/loadFFmpeg'
 import { fetchMediaDetails } from '@/lib/grabit/fetchMediaDetails'
 import { updateFormatOptions } from '@/lib/grabit/updateFormatOptions'
@@ -16,6 +15,7 @@ import DownloadButton from '@/components/Grabit/DownloadButton'
 import FFmpegLoadingButton from '@/components/Grabit/FFmpegLoadingButton'
 import StatusMessage from '@/components/Grabit/StatusMessage'
 import ErrorMessage from '@/components/Grabit/ErrorMessage'
+import AppIntro from '@/components/Grabit/AppIntro'
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 
 export default function GrabitPage() {
@@ -126,7 +126,7 @@ export default function GrabitPage() {
         className="max-w-6xl mx-auto py-16"
       >
         <section className="mx-auto px-5">
-          <HomeHeading title="Grabit" />
+          <AppIntro />
           <Concern />
 
           <div className="items-center my-4 dark:text-gray-300">

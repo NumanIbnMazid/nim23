@@ -42,7 +42,7 @@ export default function RecommendationCard({ recommendation }: { recommendation:
             alt={title}
             width={250}
             height={250}
-            quality={50}
+            quality={100}
             src={cover_url}
             className="w-full sm:w-24 sm:h-36 rounded-lg object-cover"
           />

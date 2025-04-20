@@ -21,7 +21,7 @@ export function getFieldDefinitions(preferences: any, formData: any) {
     { label: 'Other Preferences', key: 'other_preferences', isTextInput: true },
   ]
 
-  const mediaType = formData.media_type
+  const mediaType = formData.media_type?.toLowerCase().replace(/\s+/g, '_')
 
   // Only include genres if available for selected media_type
   if (preferences.genres?.[mediaType]) {

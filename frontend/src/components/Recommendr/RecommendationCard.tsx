@@ -21,12 +21,14 @@ export default function RecommendationCard({ recommendation }: { recommendation:
   } = recommendation
 
   const getNames = (arr: any[], label: string, icon: string) =>
-    arr?.length > 0 && (
+    Array.isArray(arr) &&
+    arr.length > 0 && (
       <span>
         {icon} {label}:{' '}
         {arr
           .slice(0, 5)
-          .map((person) => person.name || '')
+          .map((person) => (typeof person === 'string' ? person : person?.name || ''))
+          .filter(Boolean) // removes empty strings
           .join(', ')}
         {arr.length > 5 && '...'}
       </span>

@@ -1,9 +1,10 @@
 [
   "Doesn’t matter",
-  "Must be appropriate for all ages",
-  "Only above 13",
-  "Only above 16",
-  "Strictly 18+",
-  "Include only IMDb rating above 7",
-  "Only award-winning titles"
+  "Good rating titles",
+  "Award-winning titles",
+  "Critically acclaimed titles",
+  "Popular titles",
+  "Cult classics",
+  "Underrated gems",
+  "Box office hits"
 ]

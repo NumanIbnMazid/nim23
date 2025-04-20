@@ -16,6 +16,7 @@ from googleapiclient.discovery import build
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from imdb import Cinemagoer
+from imdb.Person import Person
 from omdb import OMDBClient
 from pydantic import BaseModel
 
@@ -59,7 +60,7 @@ class MediaRecommendation(BaseModel):
     genres: List[str]
     category_tags: List[str]
     release_year: str
-    rating: str
+    imdb_rating: str
     review_link: str
     youtube_link: str
     spotify_link: str
@@ -153,25 +154,69 @@ class RecommendationViewSet(GenericViewSet):
             )
             # Update Data
             resultObj[index]["title"] = json_data.get("Title")
+            resultObj[index]["data_source"] = "OMDB"
             resultObj[index]["cover_url"] = json_data.get("Poster")
             resultObj[index]["year"] = json_data.get("Year")
             resultObj[index]["genres"] = json_data.get("Genre").split(", ")
             resultObj[index][
                 "review_link"
             ] = f"https://www.imdb.com/title/tt{json_data.get('imdbID')}/"
-            resultObj[index]["imdb_rating"] = json_data.get("imdbRating")
-            resultObj[index]["languages"] = json_data.get("languages")
-            resultObj[index]["description"] = json_data.get("Plot")
-            resultObj[index]["cast"] = json_data.get("Actors").split(", ")
-            resultObj[index]["director"] = json_data.get("Director").split(", ")
-            resultObj[index]["writer"] = json_data.get("Writer").split(", ")
             resultObj[index]["imdb_id"] = json_data.get("imdbID")
+            resultObj[index]["imdb_rating"] = json_data.get("imdbRating")
+            resultObj[index]["languages"] = json_data.get("Language").split(", ")
+            resultObj[index]["countries"] = json_data.get("Country").split(", ")
+            resultObj[index]["description"] = json_data.get("Plot")
+            resultObj[index]["cast"] = json_data.get("Actors").split(", ")[:7]
+            resultObj[index]["director"] = json_data.get("Director").split(", ")[:7]
+            resultObj[index]["writer"] = json_data.get("Writer").split(", ")[:7]
             return True
         else:
             logger.info(f"❌ Could not find `{title}` in OMDB")
         return False
 
     def update_data_with_imdb(self, resultObj, index):
+
+        def extract_names_from_field(
+            data: dict, field: str, max_count: int = 7
+        ) -> list[str]:
+            """
+            Efficiently extracts up to `max_count` names from a field in the given dictionary.
+            Handles IMDbPy Person objects, dicts with 'name', and plain strings.
+
+            Args:
+                data (dict): The dictionary containing the target field.
+                field (str): The field name to extract names from (e.g., 'director').
+                max_count (int): Maximum number of names to return.
+
+            Returns:
+                list[str]: List of extracted names.
+            """
+            items = data.get(field, [])
+            names = []
+            count = 0
+
+            for item in items:
+                if count >= max_count:
+                    break
+
+                if isinstance(item, Person):
+                    name = item.get("name")
+                    if name:
+                        names.append(name)
+                        count += 1
+
+                elif isinstance(item, dict):
+                    name = item.get("name")
+                    if name:
+                        names.append(name)
+                        count += 1
+
+                elif isinstance(item, str):
+                    names.append(item)
+                    count += 1
+
+            return names
+
         title = resultObj[index].get("title")
         logger.info(f"🔍 Searching for `{title}` in IMDB...")
         send_log_message(f"🔍 Searching for `{title}` in IMDB...", module="recommendr")
@@ -187,18 +232,22 @@ class RecommendationViewSet(GenericViewSet):
             )
             imdb_client.update(movie)
             resultObj[index]["title"] = movie.get("title")
+            resultObj[index]["data_source"] = "IMDB"
             resultObj[index]["cover_url"] = movie.get("cover url")
             resultObj[index]["year"] = movie.get("year")
             resultObj[index]["genres"] = movie.get("genres")
             resultObj[index]["review_link"] = f"https://www.imdb.com/title/tt{movieID}/"
-            resultObj[index]["rating"] = movie.get("rating")
-            resultObj[index]["languages"] = movie.get("languages")
-            resultObj[index]["description"] = movie.get("plot")
-            resultObj[index]["cast"] = movie.get("cast")
-            resultObj[index]["director"] = movie.get("director")
-            resultObj[index]["producer"] = movie.get("producer")
-            resultObj[index]["writer"] = movie.get("writer")
             resultObj[index]["imdb_id"] = movieID
+            resultObj[index]["imdb_rating"] = movie.get("rating")
+            resultObj[index]["languages"] = movie.get("languages")
+            resultObj[index]["countries"] = movie.get("countries")
+            resultObj[index]["description"] = movie.get("plot", [])[:1]
+            resultObj[index]["cast"] = extract_names_from_field(movie, "cast")
+            resultObj[index]["director"] = extract_names_from_field(
+                movie, "director", max_count=7
+            )
+            resultObj[index]["producer"] = extract_names_from_field(movie, "producer")
+            resultObj[index]["writer"] = extract_names_from_field(movie, "writer")
             return True
         else:
             logger.info(f"⚠️ No results found for `{title}` in IMDB.")
@@ -353,7 +402,7 @@ class RecommendationViewSet(GenericViewSet):
                 filtered_result[index]["media_type"] = media_type
 
                 # ATTACH IMDB DATA
-                if media_type in ["movie", "tv_show", "web series", "documentary"]:
+                if media_type in ["Movie", "TV Show", "Web Series", "Documentary"]:
                     try:
                         is_omdb_update_success = self.update_data_with_omdb(
                             filtered_result, index
@@ -376,7 +425,7 @@ class RecommendationViewSet(GenericViewSet):
                         f" artist:{', '.join(artist_list)}" if artist_list else ""
                     )
                 # SPOTIFY
-                if media_type in ["music", "podcast", "audiobook"]:
+                if media_type in ["Music"]:
                     try:
                         spotify_track = self.get_spotify_track(query)
                         if spotify_track:

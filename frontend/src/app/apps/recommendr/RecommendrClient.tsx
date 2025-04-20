@@ -10,6 +10,7 @@ import LoadingRecommendations from '@/components/Recommendr/LoadingRecommendatio
 import AppIntro from '@/components/Recommendr/AppIntro'
 import SkeletonLoader from '@/components/SkeletonLoader'
 import { useClientID } from '@/context/clientIdContext'
+import PreferenceControls from '@/components/Recommendr/PreferenceControls'
 
 export default function RecommendrClient({ preferencesChoices }: { preferencesChoices: any }) {
   const [preferences, setPreferences] = useState<any | null>(null)
@@ -20,6 +21,35 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   const [showForm, setShowForm] = useState(true)
   const [currentPreferences, setCurrentPreferences] = useState<any>(null)
   const { clientID } = useClientID()
+
+  const [liveFormData, setLiveFormData] = useState<any>({
+    mood: '',
+    media_type: '',
+    language: [],
+    occasion: [],
+    genres: [],
+    media_age: [],
+    rating: [],
+    categories: [],
+    other_preferences: '',
+  })
+
+  const clearPreferences = () => {
+    const emptyForm = {
+      mood: '',
+      media_type: '',
+      language: [],
+      occasion: [],
+      genres: [],
+      media_age: [],
+      rating: [],
+      categories: [],
+      other_preferences: '',
+    }
+
+    setLiveFormData(emptyForm)
+    setUserPrefs(emptyForm) // <-- force PreferenceForm to reset
+  }
 
   useEffect(() => {
     setPreferences(preferencesChoices)
@@ -57,10 +87,18 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
       ) : (
         <div>
           {showForm && preferences && (
-            <PreferenceForm preferences={preferences} onSubmit={handleFormSubmit} initialValues={userPrefs} />
+            <>
+              <PreferenceControls formData={liveFormData} onClear={clearPreferences} />
+              <PreferenceForm
+                preferences={preferences}
+                onSubmit={handleFormSubmit}
+                initialValues={userPrefs}
+                onChange={setLiveFormData}
+              />
+            </>
           )}
           {recommendationLoading && <LoadingRecommendations />}
-          {!recommendationLoading && userPrefs && (
+          {!recommendationLoading && userPrefs && recommendations.length > 0 && (
             <RecommendationList
               results={recommendations}
               currentPreferences={currentPreferences}

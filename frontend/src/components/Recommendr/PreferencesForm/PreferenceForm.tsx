@@ -7,20 +7,24 @@ import RequiredFields from '@/components/Recommendr/PreferencesForm/RequiredFiel
 import ModalWrapper from '@/components/Recommendr/PreferencesForm/ModalWrapper'
 import { buildPayload, getFieldDefinitions } from '@/lib/recommendr/preferencesFormUtils'
 
-export default function PreferenceForm({ preferences, onSubmit, initialValues }: any) {
-  const [formData, setFormData] = useState(
-    initialValues || {
-      mood: '',
-      media_type: '',
-      language: [],
-      occasion: [],
-      genres: [],
-      media_age: [],
-      rating: [],
-      categories: [],
-      other_preferences: '',
-    }
-  )
+export default function PreferenceForm({ preferences, onSubmit, onChange, initialValues }: any) {
+  const defaultFormData = {
+    mood: '',
+    media_type: '',
+    language: [],
+    occasion: [],
+    genres: [],
+    media_age: [],
+    rating: [],
+    categories: [],
+    other_preferences: '',
+  }
+
+  const [formData, setFormData] = useState(initialValues || defaultFormData)
+
+  useEffect(() => {
+    setFormData(initialValues || defaultFormData)
+  }, [initialValues])
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [openSections, setOpenSections] = useState<string[]>([])
@@ -42,6 +46,10 @@ export default function PreferenceForm({ preferences, onSubmit, initialValues }:
   }, [initialValues?.media_type])
 
   const canSubmit = formData.mood && formData.media_type
+
+  useEffect(() => {
+    onChange?.(formData)
+  }, [formData])
 
   const handleSelect = (key: keyof typeof formData, value: string, multi?: boolean) => {
     setFormData((prev: typeof formData) => {

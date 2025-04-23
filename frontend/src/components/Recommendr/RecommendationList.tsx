@@ -34,7 +34,7 @@ export default function RecommendationList({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-3" id='recommendation-list'>
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Recommendations</h2>
       </div>
 

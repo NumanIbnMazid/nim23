@@ -34,9 +34,18 @@ export default function RecommendationCard({ recommendation }: { recommendation:
       </span>
     )
 
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url)
+      return true
+    } catch {
+      return false
+    }
+  }
+
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4 flex flex-col sm:flex-row gap-4">
-      {cover_url && (
+      {isValidUrl(cover_url) && (
         <div className="flex-shrink-0">
           <Image
             alt={title}

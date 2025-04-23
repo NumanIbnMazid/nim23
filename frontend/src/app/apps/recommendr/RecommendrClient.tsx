@@ -22,7 +22,8 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   const [currentPreferences, setCurrentPreferences] = useState<any>(null)
   const { clientID } = useClientID()
   const [modifyPreferencesScrollToPrefs, setModifyPreferencesScrollToPrefs] = useState(false)
-  const [loadingRecommendationsScrollToPrefs, setLoadingRecommendationsScrollToPrefs] = useState(false)
+  const [loadingRecommendationsScrollTo, setLoadingRecommendationsScrollTo] = useState(false)
+  const [recommendationListScrollTo, setRecommendationListScrollTo] = useState(false)
 
   const [liveFormData, setLiveFormData] = useState<any>({
     mood: '',
@@ -63,7 +64,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
     setRecommendationLoading(true)
     setShowForm(false)
     setCurrentPreferences(prefs)
-    setLoadingRecommendationsScrollToPrefs(true)
+    setLoadingRecommendationsScrollTo(true)
 
     try {
       const response = await getRecommendations(prefs, clientID)
@@ -72,18 +73,29 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
       console.error('Error fetching recommendations:', error)
     } finally {
       setRecommendationLoading(false)
+      setRecommendationListScrollTo(true)
     }
   }
 
   useEffect(() => {
-    if (recommendationLoading && loadingRecommendationsScrollToPrefs) {
+    if (recommendationLoading && loadingRecommendationsScrollTo) {
       const el = document.getElementById('loading-recommendations')
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        setLoadingRecommendationsScrollToPrefs(false)
+        setLoadingRecommendationsScrollTo(false)
       }
     }
-  }, [recommendationLoading, loadingRecommendationsScrollToPrefs])
+  }, [recommendationLoading, loadingRecommendationsScrollTo])
+
+  useEffect(() => {
+    if (!recommendationLoading && recommendationListScrollTo) {
+      const el = document.getElementById('recommendation-list')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setRecommendationListScrollTo(false)
+      }
+    }
+  }, [recommendationLoading, recommendationListScrollTo])
 
   useEffect(() => {
     if (showForm && modifyPreferencesScrollToPrefs) {

@@ -22,7 +22,7 @@ const HumanizedOutput: React.FC<Props> = ({ output }) => {
       <h3 className="text-lg font-semibold mb-2 text-green-700 dark:text-green-300">Humanized Output:</h3>
       {/* output */}
       <div className="relative bg-gray-100 dark:bg-[#182031] p-4 rounded-md mt-4 border dark:border-gray-700 h-80 overflow-auto">
-        <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100">{output}</pre>
+        <div className="whitespace-pre-wrap break-words text-gray-900 dark:text-gray-100">{output}</div>
       </div>
 
       {/* copy button */}

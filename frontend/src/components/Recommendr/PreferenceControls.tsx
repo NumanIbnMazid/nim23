@@ -16,7 +16,7 @@ export default function PreferenceControls({ formData, onClear }: { formData: an
   if (!hasActivePreferences) return null
 
   return (
-    <div className="flex justify-center gap-4 mb-6">
+    <div className="flex justify-center gap-4 mb-6" id='preference-controls'>
       <button
         onClick={() => setShowModal(true)}
         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"

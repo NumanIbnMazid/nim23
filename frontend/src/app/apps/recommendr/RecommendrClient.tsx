@@ -21,6 +21,8 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   const [showForm, setShowForm] = useState(true)
   const [currentPreferences, setCurrentPreferences] = useState<any>(null)
   const { clientID } = useClientID()
+  const [modifyPreferencesScrollToPrefs, setModifyPreferencesScrollToPrefs] = useState(false)
+  const [loadingRecommendationsScrollToPrefs, setLoadingRecommendationsScrollToPrefs] = useState(false)
 
   const [liveFormData, setLiveFormData] = useState<any>({
     mood: '',
@@ -57,11 +59,12 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
   }, [])
 
   const handleFormSubmit = async (prefs: any) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' }) // Scroll to top smoothly
     setUserPrefs(prefs)
     setRecommendationLoading(true)
     setShowForm(false)
     setCurrentPreferences(prefs)
+    setLoadingRecommendationsScrollToPrefs(true)
+
     try {
       const response = await getRecommendations(prefs, clientID)
       setRecommendations(response || [])
@@ -71,6 +74,26 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
       setRecommendationLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (recommendationLoading && loadingRecommendationsScrollToPrefs) {
+      const el = document.getElementById('loading-recommendations')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setLoadingRecommendationsScrollToPrefs(false)
+      }
+    }
+  }, [recommendationLoading, loadingRecommendationsScrollToPrefs])
+
+  useEffect(() => {
+    if (showForm && modifyPreferencesScrollToPrefs) {
+      const el = document.getElementById('preference-controls')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setModifyPreferencesScrollToPrefs(false)
+      }
+    }
+  }, [showForm, modifyPreferencesScrollToPrefs])
 
   return (
     <motion.section
@@ -105,6 +128,7 @@ export default function RecommendrClient({ preferencesChoices }: { preferencesCh
               handleSubmit={handleFormSubmit}
               showForm={showForm}
               setShowForm={setShowForm}
+              setModifyPreferencesScrollToPrefs={setModifyPreferencesScrollToPrefs}
             />
           )}
         </div>

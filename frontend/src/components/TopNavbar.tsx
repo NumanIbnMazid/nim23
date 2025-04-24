@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion, useAnimation, AnimatePresence } from 'framer-motion'
 import { FadeContainer, hamFastFadeContainer, mobileNavItemSideways, popUp } from '../content/FramerMotionVariants'
 import { useDarkMode } from '@/context/darkModeContext'
-import { navigationRoutes } from '@/utils/utils'
+import { namedNavigationRoutesAll } from '@/utils/utils'
 import Logo from './SVG/Logo'
 import { DarkModeSwitch } from 'react-toggle-dark-mode'
 
@@ -49,7 +49,7 @@ export default function TopNavbar() {
       className="fixed w-full dark:text-white top-0 flex items-center justify-between px-4 py-[10px] sm:px-6 z-50 print:hidden backdrop-filter backdrop-blur-lg transition-colors duration-500"
     >
       <HamBurger open={navOpen} handleClick={handleClick} />
-      <AnimatePresence>{navOpen && <MobileMenu links={navigationRoutes} handleClick={handleClick} />}</AnimatePresence>
+      <AnimatePresence>{navOpen && <MobileMenu handleClick={handleClick} />}</AnimatePresence>
 
       <Link href="/" className="mr-3" aria-label="Link to Home Page" prefetch={true}>
         <Logo className="relative hidden w-8 h-8 sm:inline-flex" />
@@ -57,11 +57,15 @@ export default function TopNavbar() {
 
       <motion.nav className="z-10 hidden sm:flex md:inset-0 md:justify-center">
         <motion.div initial="hidden" animate="visible" variants={FadeContainer} className="flex items-center md:gap-2">
-          {navigationRoutes.map((link, index) => (
-            <NavItem key={index} href={`/${link}`} text={link} pathname={pathname ?? ''} />
-          ))}
-          {/* Hardcoded Portfolio Link */}
-          <NavItem href={`${process.env.NIM23_APPS_SITE_URL}`} text="Apps" pathname="" target="_blank" />
+          <div>
+            {Object.entries(namedNavigationRoutesAll)
+              .slice(0, 9)
+              .map(([route, text], index) => (
+                <NavItem key={index} href={`/${route}`} text={text} pathname={pathname ?? ''} />
+              ))}
+            {/* Hardcoded Apps Link */}
+            <NavItem href={`${process.env.NIM23_APPS_SITE_URL}`} text="Apps" pathname="" target="_blank" />
+          </div>
         </motion.div>
       </motion.nav>
 
@@ -123,7 +127,7 @@ function HamBurger({ open, handleClick }: { open: boolean; handleClick: () => vo
 }
 
 // Mobile navigation menu
-const MobileMenu = ({ links, handleClick }: { links: string[]; handleClick: () => void }) => {
+const MobileMenu = ({ handleClick }: { handleClick: () => void }) => {
   return (
     <motion.div
       className="absolute top-0 left-0 z-10 w-screen h-screen font-normal bg-white dark:bg-darkPrimary sm:hidden"
@@ -133,19 +137,21 @@ const MobileMenu = ({ links, handleClick }: { links: string[]; handleClick: () =
       exit="hidden"
     >
       <motion.nav className="flex flex-col mx-8 mt-28">
-        {links.map((link, index) => {
-          const navlink = link.toLowerCase() === 'home' ? '/' : `/${link.toLowerCase()}`
-          return (
-            <Link
-              href={navlink}
-              key={`mobileNav-${index}`}
-              onClick={handleClick}
-              className="flex w-auto py-4 text-base font-semibold text-gray-900 capitalize border-b border-gray-300 cursor-pointer dark:border-gray-700 dark:text-gray-100"
-            >
-              <motion.p variants={mobileNavItemSideways}>{link === 'rss' ? link.toUpperCase() : link}</motion.p>
-            </Link>
-          )
-        })}
+        {Object.entries(namedNavigationRoutesAll)
+          .slice(0, 9)
+          .map(([route, text]) => {
+            const navlink = route.toLowerCase() === 'home' ? '/' : `/${route}`
+            return (
+              <Link
+                key={route}
+                href={navlink}
+                onClick={handleClick}
+                className="flex w-auto py-4 text-base font-semibold text-gray-900 capitalize border-b border-gray-300 cursor-pointer dark:border-gray-700 dark:text-gray-100"
+              >
+                <motion.p variants={mobileNavItemSideways}>{text === 'rss' ? text.toUpperCase() : text}</motion.p>
+              </Link>
+            )
+          })}{' '}
         {/* Hardcoded Portfolio Link */}
         <Link
           href={`${process.env.NIM23_APPS_SITE_URL}`}

@@ -1,26 +1,4 @@
 services:
-  # db:
-  #   image: postgres:14.5-alpine
-  #   volumes:
-  #     - ./data/db:/var/lib/postgresql/data
-  #   environment:
-  #     - PGDATA=/var/lib/postgresql/data/db-files
-  #     - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-  #   networks:
-  #     - net-tier
-  
-  # redis:
-  #   image: redis:7.4.2-alpine
-  #   container_name: redis
-  #   ports:
-  #     - '6379:6379'
-  #   environment:
-  #     REDIS_HOST: ${REDIS_HOST}
-  #     REDIS_PORT: ${REDIS_PORT}
-  #     REDIS_DB: ${REDIS_DB}
-  #   networks:
-  #     - net-tier
-
   backend:
     # depends_on:
     #   - db

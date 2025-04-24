@@ -15,7 +15,6 @@ RUN apt update && \
     gcc \
     curl \
     wget \
-    redis-server \
     net-tools \
     musl-dev \
     libssl-dev \
@@ -25,7 +24,6 @@ RUN apt update && \
     zlib1g-dev \
     netcat-traditional \
     tzdata \
-    ffmpeg \
     supervisor \
     ca-certificates \
     && update-ca-certificates \

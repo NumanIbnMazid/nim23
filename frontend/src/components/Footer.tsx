@@ -35,7 +35,7 @@ export default function Footer({ setShowQR, showQR }: { setShowQR: (value: boole
           {/* 1st 5 navigation routes */}
           <div className="flex flex-col gap-4 capitalize">
             {Object.entries(namedNavigationRoutesAll)
-              .slice(0, 9)
+              .slice(0, 6)
               .map(([route, text], index) => (
                 <FooterLink key={index} route={route} text={text} />
               ))}
@@ -43,10 +43,17 @@ export default function Footer({ setShowQR, showQR }: { setShowQR: (value: boole
           {/* Last navigation routes */}
           <div className="flex flex-col gap-4 capitalize">
             {Object.entries(namedNavigationRoutesAll)
-              .slice(9)
+              .slice(6)
               .map(([route, text], index) => (
                 <FooterLink key={index} route={route} text={text === 'rss' ? 'RSS' : text} />
               ))}
+
+            {/* Apps */}
+            <Link href={`${process.env.NIM23_APPS_SITE_URL}`} target="_blank" rel="noopener noreferrer">
+              <motion.p className="hover:text-black dark:hover:text-white w-fit" variants={popUp}>
+                Apps
+              </motion.p>
+            </Link>
 
             {/* Submit Issue in Github */}
             <Link

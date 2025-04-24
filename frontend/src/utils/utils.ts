@@ -14,7 +14,6 @@ export const navigationRoutes: string[] = [
   'stats',
   'contact',
   'privacy',
-  'apps',
 ]
 
 export const navigationRoutesAll: string[] = [
@@ -27,10 +26,6 @@ export const navigationRoutesAll: string[] = [
   'stats',
   'contact',
   'privacy',
-  'apps',
-  'apps/grabit',
-  'apps/humanizer-ai',
-  'apps/recommendr',
 ]
 
 export const namedNavigationRoutesAll: { [key: string]: string } = {
@@ -43,8 +38,4 @@ export const namedNavigationRoutesAll: { [key: string]: string } = {
   stats: 'Stats',
   contact: 'Contact',
   privacy: 'Privacy',
-  apps: 'Apps',
-  'apps/grabit': 'Grabit',
-  'apps/humanizer-ai': 'Humanizer AI',
-  'apps/recommendr': 'Recommendr',
 }

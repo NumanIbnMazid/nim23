@@ -1,5 +1,5 @@
 from django.contrib import admin
-from others.models import NewsletterSubscription, UploadedFile, HumanizerAiUtils
+from others.models import NewsletterSubscription, UploadedFile
 from utils.mixins import CustomModelAdminMixin
 
 
@@ -37,19 +37,3 @@ class UploadedFileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UploadedFile, UploadedFileAdmin)
-
-
-# ----------------------------------------------------
-# *** UploadedFile ***
-# ----------------------------------------------------
-
-
-@admin.register(HumanizerAiUtils)
-class PromptConfigAdmin(admin.ModelAdmin):
-    list_display = ("title", "slug", "system_prompt", "created_at", "updated_at")
-
-    def has_add_permission(self, request):
-        # Prevent adding new entries if one already exists
-        if HumanizerAiUtils.objects.count() >= 1:
-            return False
-        return super().has_add_permission(request)

@@ -27,15 +27,8 @@ class DatabaseConfig(BaseConfig):
     PASSWORD: str = Field(..., alias="DATABASE_PASSWORD")
 
 
-class RedisConfig(BaseConfig):
-    REDIS_HOST: str = Field("localhost", alias="REDIS_HOST")
-    REDIS_PORT: str = Field("6379", alias="REDIS_PORT")
-    REDIS_DB: str = Field("1", alias="REDIS_DB")
-
-
 class ProjectConfig(BaseConfig):
     DATABASE: BaseConfig = DatabaseConfig()
-    REDIS: BaseConfig = RedisConfig()
 
 
 class ProjectDevelopmentConfig(ProjectConfig): ...

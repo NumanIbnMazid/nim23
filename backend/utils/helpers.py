@@ -1,14 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.renderers import JSONRenderer
 from rest_framework import permissions
 from django.db import models
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from utils.snippets import markdown_to_html, html_to_markdown
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 
 
 class ResponseWrapper(Response):
@@ -197,25 +194,3 @@ def sync_markdown_html_fields(instance, markdown_field_name, html_field_name):
         elif old_markdown_content != markdown_content:
             # Markdown content updated
             setattr(instance, html_field_name, markdown_to_html(markdown_content))
-
-
-# Django Channels
-
-channel_layer = get_channel_layer()
-
-
-def send_log_message(
-    message=None, *, type="event", module="common", scope=None, **kwargs
-):
-    payload = {
-        "type": "send.log",  # This is the handler method name in your consumer
-        "message": {
-            "type": type,
-            "module": module,
-            "scope": scope,
-            "message": message,
-            **kwargs,  # This allows for any extra keys to be added if needed
-        },
-    }
-
-    async_to_sync(channel_layer.group_send)("log_group", payload)

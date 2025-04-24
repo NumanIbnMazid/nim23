@@ -38,8 +38,6 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     # Django TinyMCE
     "tinymce",
-    # Django Channels
-    "channels",
 ]
 LOCAL_APPS = [
     "users",
@@ -47,14 +45,6 @@ LOCAL_APPS = [
     "code_snippets",
     "blogs",
     "others",
-    # Video Audio Downloader
-    "grabit",
-    # AI Text Humanizer
-    "humanizer_ai",
-    # AI Text Detector
-    "detect_ai",
-    # Recommendation System
-    "recommendr",
 ]
 INSTALLED_APPS = (
     [
@@ -134,11 +124,6 @@ AUTH_USER_MODEL = "users.User"
 # *** WSGI Application ***
 # ----------------------------------------------------
 WSGI_APPLICATION = "project.wsgi.application"
-
-# ----------------------------------------------------
-# *** ASGI Application ***
-# ----------------------------------------------------
-WSGI_APPLICATION = "project.asgi.application"
 
 # ----------------------------------------------------
 # *** Database Configuration ***
@@ -224,33 +209,6 @@ LOGGING = {
 }
 
 # ----------------------------------------------------
-# *** Django Channels ***
-# ----------------------------------------------------
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [
-                f"redis://{config.REDIS.REDIS_HOST}:{config.REDIS.REDIS_PORT}/{config.REDIS.REDIS_DB}"
-            ],
-        },
-    },
-}
-
-# ----------------------------------------------------
-# *** Cachee Configuration ****
-# ----------------------------------------------------
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{config.REDIS.REDIS_HOST}:{config.REDIS.REDIS_PORT}/{config.REDIS.REDIS_DB}",  # 'redis' is the Docker service name
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
-
-# ----------------------------------------------------
 # *** Other Definitions ***
 # ----------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -267,8 +225,6 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "user": "150/minute",  # Authenticated users
         "anon": "100/minute",  # Unauthenticated users
-        "grabit_rate_limit": "10/minute",  # for Grabit
-        "recommendr_rate_limit": "1000/minute",  # for Recommendr
     },
 }
 
@@ -358,6 +314,3 @@ BACKEND_SUBDOMAIN = "/backend"
 BLOG_WORDS_PER_MINUTE = 200
 LOGIN_URL = BACKEND_SUBDOMAIN + "/admin/login/"
 LOGOUT_REDIRECT_URL = "/"
-RECOMMENDATION_CACHE_TIMEOUT = int(
-    os.getenv("RECOMMENDR_RECOMMENDATION_CACHE_TIMEOUT", 600)
-)

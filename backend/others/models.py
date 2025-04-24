@@ -143,32 +143,3 @@ def delete_file_from_cloudinary(sender, instance, **kwargs):
                 print(f"Failed to delete file {public_id} from Cloudinary: {response}")
         except Exception as e:
             print(f"Error deleting file from Cloudinary: {e}")
-
-
-""" *************** Humanizer AI Utils *************** """
-
-
-@autoSlugFromUUID()
-class HumanizerAiUtils(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
-    system_prompt = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = "humanizer_ai_utils"
-        verbose_name = _("Humanizer AI Utils")
-        verbose_name_plural = _("Humanizer AI Utils")
-        ordering = ("-created_at",)
-
-    def __str__(self):
-        return f"{self.title}"
-
-    def clean(self):
-        if HumanizerAiUtils.objects.exclude(pk=self.pk).exists():
-            raise ValidationError("Only one PromptConfig instance is allowed.")
-
-    def save(self, *args, **kwargs):
-        self.full_clean()  # Triggers the `clean` method above
-        super().save(*args, **kwargs)

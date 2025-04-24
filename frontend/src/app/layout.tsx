@@ -2,7 +2,6 @@ import '@/styles/globals.css' // ✅ Load global styles
 import { Inter } from 'next/font/google'
 import { DarkModeProvider } from '@/context/darkModeContext'
 import { ClientIDProvider } from '@/context/clientIdContext'
-import { WebSocketProvider } from '@/context/WebSocketContext'
 import Layout from '@/layout/Layout'
 import LayoutClient from '@/app/LayoutClient'
 import { Metadata } from 'next'
@@ -72,12 +71,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <DarkModeProvider>
           <ClientIDProvider>
-            <WebSocketProvider>
-              <Layout>
-                <LayoutClient>{children}</LayoutClient>
-                <SitemapPrefetch />
-              </Layout>
-            </WebSocketProvider>
+            <Layout>
+              <LayoutClient>{children}</LayoutClient>
+              <SitemapPrefetch />
+            </Layout>
           </ClientIDProvider>
         </DarkModeProvider>
       </body>

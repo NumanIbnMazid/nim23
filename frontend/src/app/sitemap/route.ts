@@ -22,8 +22,6 @@ export async function GET() {
       "contact",
       "privacy",
       "stats",
-      "apps",
-      "apps/grabit"
     ];
   
     // ✅ Generate sitemap entries
